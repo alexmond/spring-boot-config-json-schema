@@ -14,6 +14,25 @@
     <name>spring-boot-json-schema</name>
     <packaging>pom</packaging>
     <description>spring-boot-jsonschema</description>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Alex Mondshain</name>
+            <email>alexmond@users.noreply.github.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/alexmond/spring-boot-json-schema.git</connection>
+        <developerConnection>scm:git:git@github.com:alexmond/spring-boot-json-schema.git</developerConnection>
+        <url>https://github.com/alexmond/spring-boot-json-schema</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <modules>
         <module>spring-boot-config-json-schema-starter</module>
         <module>spring-boot-json-schema-sample</module>
