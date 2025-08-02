@@ -3,6 +3,7 @@ package org.alexmond.sample.config;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -24,6 +25,7 @@ public class ConfigSample {
     // Java doc style comments required for config metadata processor
     /** String sample **/
     @Schema(description = "Sample string property", defaultValue = "stringSample")
+    @NotNull
     String stringSample = "stringSample";
     /**
      * Boolean sample

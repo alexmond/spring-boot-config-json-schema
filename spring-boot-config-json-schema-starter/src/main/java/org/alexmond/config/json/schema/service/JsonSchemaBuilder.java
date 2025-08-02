@@ -1,10 +1,12 @@
 
 package org.alexmond.config.json.schema.service;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
+import org.springframework.util.ReflectionUtils;
 
 import java.util.*;
 
@@ -83,6 +85,12 @@ public class JsonSchemaBuilder {
             processHints(propDef, prop);
             processEnumValues(propDef, prop);
             processDeprecation(propDef, prop);
+            if(config.isUseValidation()) {
+                processValidated(propDef, prop);
+            }
+            if (config.isUseOpenapi()) {
+                processOpenapi(propDef, prop);
+            }
 
             if (typeMappingService.mapType(prop.getType()).equals("array")) {
                 String itemType = typeMappingService.extractListItemType(prop.getType());
@@ -132,6 +140,99 @@ public class JsonSchemaBuilder {
             }
             Map<String, Object> child = (Map<String, Object>) propsObj;
             addProperty(child, path, idx + 1, prop);
+        }
+    }
+
+    private void processOpenapi(Map<String, Object> propDef, Property prop) {
+        log.debug("OpenAPI: Processing schema for property: {}", prop.getName());
+        if (prop.getSourceType() != null) {
+            String propertyName = prop.getName();
+            String lastField = propertyName.substring(propertyName.lastIndexOf('.') + 1);
+            String classField = toCamelCase(lastField);
+
+            try {
+                log.debug("Processing OpenAPI schema for property: {}, class: {}", prop.getName(), prop.getSourceType());
+                Class<?> clazz = Class.forName(prop.getSourceType());
+                var field = ReflectionUtils.findField(clazz, classField);
+                if (field != null && field.isAnnotationPresent(Schema.class)) {
+                    Schema schema = field.getAnnotation(Schema.class);
+                    if (!schema.description().isEmpty()) {
+                        propDef.put("description", schema.description());
+                    }
+                    if (!schema.example().isEmpty()) {
+                        propDef.put("example", schema.example());
+                    }
+                    if (schema.deprecated()) {
+                        propDef.put("deprecated", true);
+                    }
+//                    if (!schema.defaultValue().isEmpty()) {
+//                        propDef.put("default", schema.defaultValue());
+//                    }
+                }
+            } catch (Exception e) {
+                log.debug("OpenAPI: Class or field {} not found for schema processing: {}", classField, e.toString());
+                log.debug("For property: {}", prop);
+            }
+        }
+    }
+
+    private void processValidated(Map<String, Object> propDef, Property prop) {
+
+        log.debug("Validation: Processing validation for property: {}", prop.getName());
+        if (prop.getSourceType() != null ) {
+            String propertyName = prop.getName();
+            String lastField = propertyName.substring(propertyName.lastIndexOf('.') + 1);
+            String classField = toCamelCase(lastField);
+
+            try {
+                log.debug("Processing validation for property: {}, class: {}", prop.getName(), prop.getSourceType());
+                Class<?> clazz = Class.forName(prop.getSourceType());
+                log.debug("Processing validation for property: {}, field: {}", prop.getName(), classField);
+                var field = ReflectionUtils.findField(clazz,classField);
+                if (field != null) {
+
+                    if (field.isAnnotationPresent(jakarta.validation.constraints.Min.class)) {
+                        var value = field.getAnnotation(jakarta.validation.constraints.Min.class).value();
+                        propDef.put("minimum", value);
+                        log.info("Validation: Added Min validation with value {} for field {}", value, field.getName());
+                    }
+                    if (field.isAnnotationPresent(jakarta.validation.constraints.Max.class)) {
+                        var value = field.getAnnotation(jakarta.validation.constraints.Max.class).value();
+                        propDef.put("maximum", value);
+                        log.info("Validation: Added Max validation with value {} for field {}", value, field.getName());
+                    }
+                    if (field.isAnnotationPresent(jakarta.validation.constraints.Size.class)) {
+                        var size = field.getAnnotation(jakarta.validation.constraints.Size.class);
+                        if (size.min() > 0) {
+                            propDef.put("minLength", size.min());
+                            log.info("Validation: Added Size.min validation with value {} for field {}", size.min(), field.getName());
+                        }
+                        if (size.max() < Integer.MAX_VALUE) {
+                            propDef.put("maxLength", size.max());
+                            log.info("Validation: Added Size.max validation with value {} for field {}", size.max(), field.getName());
+                        }
+                    }
+                    if (field.isAnnotationPresent(jakarta.validation.constraints.Pattern.class)) {
+                        var pattern = field.getAnnotation(jakarta.validation.constraints.Pattern.class).regexp();
+                        propDef.put("pattern", pattern);
+                        log.info("Validation: Added Pattern validation with regexp {} for field {}", pattern, field.getName());
+                    }
+                    if (field.isAnnotationPresent(jakarta.validation.constraints.NotNull.class)) {
+                        propDef.put("required", true);
+                        log.info("Validation: Added NotNull validation for field {}", field.getName());
+                    }
+                    if (field.isAnnotationPresent(jakarta.validation.constraints.NotEmpty.class)) {
+                        propDef.put("minLength", 1);
+                        propDef.put("required", true);
+                        log.info("Validation: Added NotEmpty validation for field {}", field.getName());
+                    }
+                }
+            } catch (Exception e) {
+
+                log.debug("Validation: Class or field {} not found for validation processing: {}", classField, e.toString());
+                log.debug("For property: {}", prop);
+
+            }
         }
     }
 
@@ -211,4 +312,32 @@ public class JsonSchemaBuilder {
             }
         }
     }
+
+    private String toCamelCase(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+
+        StringBuilder result = new StringBuilder();
+        boolean nextUpper = false;
+
+        for (int i = 0; i < str.length(); i++) {
+            char currentChar = str.charAt(i);
+
+            if (currentChar == '-' || currentChar == '_') {
+                nextUpper = true;
+            } else {
+                if (nextUpper) {
+                    result.append(Character.toUpperCase(currentChar));
+                    nextUpper = false;
+                } else {
+                    result.append(Character.toLowerCase(currentChar));
+                }
+            }
+        }
+
+        return result.toString();
+    }
+
+
 }

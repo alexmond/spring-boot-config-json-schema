@@ -38,7 +38,7 @@ public class ConfigurationPropertyCollector {
         context.getBeansWithAnnotation(ConfigurationProperties.class).forEach((key, configBean) -> {
             ConfigurationProperties annotation = AnnotationUtils.findAnnotation(configBean.getClass(), ConfigurationProperties.class);
             if (annotation != null) {
-                log.debug("Annotation value (AnnotationUtils): {}", annotation.value());
+                log.info("Annotation value (AnnotationUtils): {}", annotation.value());
                 included.add(annotation.value());
             }
         });

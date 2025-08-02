@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 public class ConfigSchemaStarter {
 
     @Bean
-    @ConfigurationProperties(prefix = "configschema")
     public JsonConfigSchemaConfig  jsonConfigSchemaConfig() {
         return new JsonConfigSchemaConfig();
     }
