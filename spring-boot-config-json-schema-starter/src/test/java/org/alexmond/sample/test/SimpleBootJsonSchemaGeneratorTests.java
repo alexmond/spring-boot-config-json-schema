@@ -59,7 +59,7 @@ class SimpleBootJsonSchemaGeneratorTests {
     void useJacksonSchema() throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
         JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
 
         // Generate schema for the Product class

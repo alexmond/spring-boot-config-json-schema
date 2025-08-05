@@ -187,7 +187,7 @@ public class TypeMappingService {
                         }
                     }
                 }
-                properties.put(toSnakeCase(field.getName()), fieldDef);
+                properties.put(toKebabCase(field.getName()), fieldDef);
             }
         } catch (ClassNotFoundException e) {
             log.debug("Type not found: {}", type);
@@ -218,8 +218,8 @@ public class TypeMappingService {
         return "object";
     }
 
-    public String toSnakeCase(String input) {
+    public String toKebabCase(String input) {
         if (input == null) return null;
-        return input.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
+        return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
     }
 }
