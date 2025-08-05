@@ -19,28 +19,10 @@ public class ConfigSchemaStarter {
     }
 
     @Bean
-    public ConfigurationMetadataService configurationMetadataService() {
-        return new ConfigurationMetadataService();
-    }
-
-    @Bean
     public ConfigurationPropertyCollector configurationPropertyCollector(ApplicationContext context,
                                                                          ConfigurableEnvironment env,
                                                                          JsonConfigSchemaConfig config) {
         return new ConfigurationPropertyCollector(context, env, config);
-    }
-
-    @Bean
-    public JsonSchemaBuilder jsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
-        return new JsonSchemaBuilder(config, typeMappingService);
-    }
-
-    @Bean
-    public JsonSchemaService jsonSchemaService(ConfigurationPropertyCollector propertyCollector,
-                                               ConfigurationMetadataService metadataService,
-                                               JsonSchemaBuilder schemaBuilder,
-                                               ObjectMapper mapper, BootConfigMetaLoader bootConfigMetaLoader) {
-        return new JsonSchemaService(propertyCollector, metadataService, schemaBuilder, mapper, bootConfigMetaLoader);
     }
 
     @Bean
@@ -54,8 +36,15 @@ public class ConfigSchemaStarter {
     }
 
     @Bean
-    public BootConfigMetaLoader bootConfigMetaLoader() {
-        return new BootConfigMetaLoader();
+    public JsonSchemaBuilder jsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
+        return new JsonSchemaBuilder(config, typeMappingService);
+    }
+
+    @Bean
+    public JsonSchemaService jsonSchemaService(ConfigurationPropertyCollector propertyCollector,
+                                               JsonSchemaBuilder schemaBuilder,
+                                               ObjectMapper mapper) {
+        return new JsonSchemaService(propertyCollector, schemaBuilder, mapper);
     }
     
 }

@@ -14,20 +14,17 @@ import java.util.Map;
 public class JsonSchemaService {
 
     private final ConfigurationPropertyCollector propertyCollector;
-    private final ConfigurationMetadataService metadataService;
+    private final ConfigurationMetadataService metadataService = new ConfigurationMetadataService();
     private final JsonSchemaBuilder schemaBuilder;
     private final ObjectMapper mapper;
-    private final BootConfigMetaLoader bootConfigMetaLoader;
+    private final BootConfigMetaLoader bootConfigMetaLoader = new BootConfigMetaLoader();
 
     public JsonSchemaService(ConfigurationPropertyCollector propertyCollector,
-                           ConfigurationMetadataService metadataService,
                            JsonSchemaBuilder schemaBuilder,
-                           ObjectMapper mapper, BootConfigMetaLoader bootConfigMetaLoader) {
+                           ObjectMapper mapper) {
         this.propertyCollector = propertyCollector;
-        this.metadataService = metadataService;
         this.schemaBuilder = schemaBuilder;
         this.mapper = mapper;
-        this.bootConfigMetaLoader = bootConfigMetaLoader;
     }
 
     public String generateFullSchema() throws Exception {
