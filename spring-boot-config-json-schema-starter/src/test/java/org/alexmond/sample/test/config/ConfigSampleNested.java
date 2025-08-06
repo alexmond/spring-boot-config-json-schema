@@ -8,6 +8,9 @@ import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.validation.annotation.Validated;
 
+@Schema(description = "Sample enumeration values")
+enum NestEnumSample {NEN1, NEN2, NEN3}
+
 @Data
 @Schema(description = "Configuration class containing nested configuration properties")
 @Validated
@@ -26,5 +29,8 @@ public class ConfigSampleNested {
     
     @URL
     private String urlTest = "http://localhost:8080";
+
+    @Schema(description = "Enumeration sample field")
+    private NestEnumSample nestEnumSample;
 
 }

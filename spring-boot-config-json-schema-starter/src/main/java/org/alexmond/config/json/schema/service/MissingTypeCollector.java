@@ -9,7 +9,7 @@ import java.util.Map;
 public class MissingTypeCollector {
     Map<String, Integer> missingTypes = new HashMap<>();
 
-    public void addType(String type) {
+    public void addType(String type,String prop) {
         missingTypes.merge(type, 1, Integer::sum);
     }
 

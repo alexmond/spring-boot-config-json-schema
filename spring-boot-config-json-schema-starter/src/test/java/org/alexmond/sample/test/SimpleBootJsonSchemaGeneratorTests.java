@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 
 @SpringBootTest
@@ -56,7 +57,7 @@ class SimpleBootJsonSchemaGeneratorTests {
     }
 
     @Test
-    void useJacksonSchema() throws JsonProcessingException {
+    void useJacksonSchema() throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
@@ -64,8 +65,8 @@ class SimpleBootJsonSchemaGeneratorTests {
 
         // Generate schema for the Product class
         JsonSchema productSchema = schemaGen.generateSchema(ConfigSample.class);
-        System.out.println("==================================");
-        System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(productSchema));
+        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+        writer.writeValue(Paths.get("gen.json").toFile(), productSchema);
 
     }
 

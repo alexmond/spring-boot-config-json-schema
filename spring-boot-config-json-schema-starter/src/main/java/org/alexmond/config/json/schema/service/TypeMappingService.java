@@ -2,6 +2,7 @@
 package org.alexmond.config.json.schema.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -15,8 +16,14 @@ public class TypeMappingService {
     public TypeMappingService(MissingTypeCollector missingTypeCollector) {
         this.missingTypeCollector = missingTypeCollector;
     }
-
     public String mapType(String springType) {
+        return mapTypeProp(springType,"not migrated yet");
+    }
+
+    public String mapTypeProp(String springType, String prop) {
+        if (springType.equals("java.lang.String[]")) {
+            log.info("====================== java.lang.String[]");
+        }
         log.debug("Mapping Spring type: {}", springType);
         if (springType == null) return "string";
         switch (springType) {
@@ -53,8 +60,8 @@ public class TypeMappingService {
             case "java.math.BigDecimal":
                 return "number";
         }
-        if (springType.startsWith("java.util.List") || springType.startsWith("java.util.Set")) return "array";
-        if (springType.startsWith("java.util.Map")) return "object";
+        if (springType.startsWith("java.util.List") || springType.startsWith("java.util.Set") || springType.startsWith("java.util.EnumSet")) return "array";
+        if (springType.startsWith("java.util.Map") || springType.startsWith("java.util.EnumMap")) return "object";
         try {
             Class<?> type = Class.forName(springType);
             if (type.isEnum()) return "string";
@@ -62,7 +69,8 @@ public class TypeMappingService {
         } catch (ClassNotFoundException e) {
             if (springType.contains("Enum")) return "string";
         }
-        missingTypeCollector.addType(springType);
+        missingTypeCollector.addType(springType,prop);
+        log.debug("Mapping Spring type: {}  for Property {}", springType,prop);
         return "string";
     }
 
@@ -137,13 +145,13 @@ public class TypeMappingService {
 //        return "object";
 //    }
 
-    public Map<String, Object> processComplexType(String type) {
-        return processComplexType(type, new HashSet<>());
+    public Map<String, Object> processComplexType(String type, Property bootProp) {
+        return processComplexType(type, bootProp,new HashSet<>());
     }
 
-    public Map<String, Object> processComplexType(String type, Set<String> visited) {
+    public Map<String, Object> processComplexType(String type, Property bootProp,Set<String> visited) {
         if (visited.contains(type)) {
-            log.warn("Detected cyclic reference for type: {}. Skipping nested properties.", type);
+            log.warn("Detected cyclic reference for type: {}. Skipping nested properties. for Property {}", type,bootProp.getName());
             return new HashMap<>();
         }
         visited.add(type);
@@ -160,7 +168,7 @@ public class TypeMappingService {
                     Map<String, Object> items = new HashMap<>();
                     items.put("type", mapType(itemType));
                     if (mapType(itemType).equals("object")) {
-                        Map<String, Object> itemProperties = processComplexType(itemType, visited);
+                        Map<String, Object> itemProperties = processComplexType(itemType, bootProp,visited);
                         if (itemProperties != null) {
                             items.put("properties", itemProperties);
                         }
@@ -170,7 +178,7 @@ public class TypeMappingService {
                     if (fieldType.startsWith("java.util.Map")) {
                         String valueType = extractMapValueType(field.getGenericType().getTypeName());
                         if (mapType(valueType).equals("object")) {
-                            Map<String, Object> valueTypeProperties = processComplexType(valueType, visited);
+                            Map<String, Object> valueTypeProperties = processComplexType(valueType, bootProp,visited);
                             if (valueTypeProperties != null) {
                                 fieldDef.put("additionalProperties", Map.of(
                                         "type", "object",
@@ -181,7 +189,7 @@ public class TypeMappingService {
                             fieldDef.put("additionalProperties", Map.of("type", mapType(valueType)));
                         }
                     } else {
-                        Map<String, Object> nestedProperties = processComplexType(fieldType, visited);
+                        Map<String, Object> nestedProperties = processComplexType(fieldType, bootProp, visited);
                         if (nestedProperties != null) {
                             fieldDef.put("properties", nestedProperties);
                         }

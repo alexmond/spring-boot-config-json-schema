@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,12 @@ import java.util.Map;
 
 @Schema(description = "Sample enumeration values")
 enum EnumSample {EN1, EN2, EN3}
+
+@Schema(description = "Sample type values")
+enum SampleType {TYPE1, TYPE2, TYPE3}
+
+@Schema(description = "Sample status values")
+enum SampleStatus {ACTIVE, PENDING, INACTIVE}
 
 @Component
 @ConfigurationProperties(prefix = "sample")
@@ -35,6 +43,8 @@ public class ConfigSample {
      **/
     @Schema(description = "Sample boolean property", defaultValue = "true")
     Boolean booleanSample = true;
+
+    String[] stringArraySample;
     /**
      * Integer sample
      **/
@@ -62,4 +72,13 @@ public class ConfigSample {
     @NestedConfigurationProperty // required for config metadata processor
     @Schema(description = "Nested configuration sample")
     ConfigSampleNested configSampleNested = new ConfigSampleNested();
+
+    @Schema(description = "Sample type set")
+    EnumSet<SampleType> enumTypeSet = EnumSet.noneOf(SampleType.class);
+
+    @Schema(description = "Sample status map")
+    EnumMap<SampleStatus, String> enumStatusMap = new EnumMap<>(SampleStatus.class);
+
+    
+    
 }

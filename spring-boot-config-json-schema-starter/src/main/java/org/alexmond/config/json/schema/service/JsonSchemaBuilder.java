@@ -85,6 +85,7 @@ public class JsonSchemaBuilder {
             processHints(propDef, prop);
             processEnumValues(propDef, prop);
             processDeprecation(propDef, prop);
+
             if(config.isUseValidation()) {
                 processValidated(propDef, prop);
             }
@@ -93,13 +94,27 @@ public class JsonSchemaBuilder {
             }
 
             if (typeMappingService.mapType(prop.getType()).equals("array")) {
+                if(prop.getName().contains("enum-type-set")) {
+                    log.debug("Skipping property is enum-type-set");
+                }
                 String itemType = typeMappingService.extractListItemType(prop.getType());
                 Map<String, Object> items = new HashMap<>();
                 items.put("type", typeMappingService.mapType(itemType));
                 if (typeMappingService.mapType(itemType).equals("object")) {
-                    Map<String, Object> complexProperties = typeMappingService.processComplexType(itemType);
+                    Map<String, Object> complexProperties = typeMappingService.processComplexType(itemType, prop);
                     if (complexProperties != null) {
                         items.put("properties", complexProperties);
+                    }
+                }else {
+                    try {
+                        if(Class.forName(itemType).isEnum()){
+                            List<String> values = processEnumItem(itemType);
+                            if (values != null) {
+                                items.put("enum", values);
+                            }
+                        }
+                    } catch (ClassNotFoundException e) {
+                        log.info(e.getMessage());
                     }
                 }
                 propDef.put("items", items);
@@ -107,7 +122,7 @@ public class JsonSchemaBuilder {
                 if (prop.getType().startsWith("java.util.Map")) {
                     String valueType = typeMappingService.extractMapValueType(prop.getType());
                     if (typeMappingService.mapType(valueType).equals("object")) {
-                        Map<String, Object> valueTypeProperties = typeMappingService.processComplexType(valueType);
+                        Map<String, Object> valueTypeProperties = typeMappingService.processComplexType(valueType,prop);
                         if (valueTypeProperties != null) {
                             propDef.put("additionalProperties", Map.of(
                                     "type", "object",
@@ -118,7 +133,7 @@ public class JsonSchemaBuilder {
                         propDef.put("additionalProperties", Map.of("type", typeMappingService.mapType(valueType)));
                     }
                 } else {
-                    Map<String, Object> complexProperties = typeMappingService.processComplexType(prop.getType());
+                    Map<String, Object> complexProperties = typeMappingService.processComplexType(prop.getType(),prop);
                     if (complexProperties != null) {
                         propDef.put("properties", complexProperties);
                     }
@@ -141,6 +156,30 @@ public class JsonSchemaBuilder {
             Map<String, Object> child = (Map<String, Object>) propsObj;
             addProperty(child, path, idx + 1, prop);
         }
+    }
+
+    private  List<String> processEnumItem(String enumType) {
+        log.debug("Processing enum values for property: {}", enumType);
+        if (enumType != null) {
+            try {
+                Class<?> type = Class.forName(enumType);
+                if (type.isEnum()) {
+                    Object[] enumConstants = type.getEnumConstants();
+                    if (enumConstants != null) {
+                        List<String> enumValues = Arrays.stream(enumConstants)
+                                .flatMap(enumConstant -> Arrays.stream(new String[]{
+                                        enumConstant.toString(),
+                                        enumConstant.toString().toLowerCase()
+                                }))
+                                .toList();
+                            return  enumValues;
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                return  null;
+            }
+        }
+        return null;
     }
 
     private void processOpenapi(Map<String, Object> propDef, Property prop) {
@@ -177,7 +216,6 @@ public class JsonSchemaBuilder {
     }
 
     private void processValidated(Map<String, Object> propDef, Property prop) {
-
         log.debug("Validation: Processing validation for property: {}", prop.getName());
         if (prop.getSourceType() != null ) {
             String propertyName = prop.getName();
