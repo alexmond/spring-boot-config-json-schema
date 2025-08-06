@@ -16,6 +16,13 @@ import java.util.*;
 @Schema(description = "Sample enumeration values")
 enum EnumSample {EN1, EN2, EN3}
 
+@Schema(description = "Sample type values")
+enum SampleType {TYPE1, TYPE2, TYPE3}
+
+@Schema(description = "Sample status values")
+enum SampleStatus {ACTIVE, PENDING, INACTIVE}
+
+
 @Component
 @ConfigurationProperties(prefix = "sample")
 @Validated
@@ -59,4 +66,10 @@ public class ConfigSample {
     @NestedConfigurationProperty // required for config metadata processor
     @Schema(description = "Nested configuration sample")
     ConfigSampleNested configSampleNested = new ConfigSampleNested();
+
+    @Schema(description = "Sample type set")
+    EnumSet<SampleType> enumTypeSet = EnumSet.noneOf(SampleType.class);
+
+    @Schema(description = "Sample status map")
+    EnumMap<SampleStatus, String> enumStatusMap = new EnumMap<>(SampleStatus.class);
 }
