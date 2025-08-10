@@ -4,6 +4,7 @@ package org.alexmond.config.json.schema.service;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.metamodel.Property;
 
+import javax.swing.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -17,18 +18,18 @@ public class TypeMappingService {
         this.missingTypeCollector = missingTypeCollector;
     }
     public String mapType(String springType) {
-        return mapTypeProp(springType,"not migrated yet");
+        return mapTypeProp(springType,"null");
     }
 
     public String mapTypeProp(String springType, String prop) {
-        if (springType.equals("java.lang.String[]")) {
-            log.info("====================== java.lang.String[]");
+        if (springType.equals("T")) {
+            log.info("====================== T");
         }
-        log.debug("Mapping Spring type: {}", springType);
+//        log.debug("Mapping Spring type: {}", springType);
         if (springType == null) return "string";
         switch (springType) {
             case "java.lang.String":
-            case "java.lang.String[]":
+//            case "java.lang.String[]":
             case "java.nio.charset.Charset":
             case "java.time.Duration": // can improve by introducing some regexp
             case "java.util.Locale":
@@ -59,12 +60,14 @@ public class TypeMappingService {
             case "java.lang.Double":
             case "java.math.BigDecimal":
                 return "number";
+            case "java.lang.Object":
+                return "object";
         }
-        if (springType.startsWith("java.util.List") || springType.startsWith("java.util.Set") || springType.startsWith("java.util.EnumSet")) return "array";
-        if (springType.startsWith("java.util.Map") || springType.startsWith("java.util.EnumMap")) return "object";
+        if (isArray(springType)) return "array";
+        if (isMap(springType)) return "object";
+        if (isEnum(springType)) return "string";
         try {
             Class<?> type = Class.forName(springType);
-            if (type.isEnum()) return "string";
             if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) return "object";
         } catch (ClassNotFoundException e) {
             if (springType.contains("Enum")) return "string";
@@ -74,160 +77,51 @@ public class TypeMappingService {
         return "string";
     }
 
-//    public String mapType(String springType) {
-//        if (springType == null) return "object";
-//        switch (springType) {
-//            case "java.lang.String":
-//            case "java.lang.String[]":
-//            case "java.nio.charset.Charset":
-//            case "java.time.Duration": // can improve by introducing some regexp
-//            case "java.util.Locale":
-//            case "java.util.Date":
-//            case "java.util.Calendar":
-//            case "java.util.TimeZone":
-//            case "org.springframework.util.unit.DataSize":
-//                return "string";
-//            case "java.lang.Boolean":
-//            case "boolean":
-//                return "boolean";
-//            case "java.lang.Integer":
-//            case "int":
-//            case "java.lang.Long":
-//            case "long":
-//            case "java.lang.Short":
-//            case "short":
-//            case "java.math.BigInteger":
-//                return "integer";
-//            case "java.lang.Float":
-//            case "float":
-//            case "double":
-//            case "java.lang.Double":
-//            case "java.math.BigDecimal":
-//                return "number";
-//        }
-//        try {
-//            Class<?> clazz = Class.forName(springType);
-//            if (String.class.isAssignableFrom(clazz)) {
-//                return "string";
-//            }
-//        } catch (ClassNotFoundException e) {
-//            // Ignore and continue with string comparison
-//        }
-//        try {
-//            Class<?> clazz = Class.forName(springType);
-//            if (Set.class.isAssignableFrom(clazz)) {
-//                return "array";
-//            }
-//        } catch (ClassNotFoundException e) {
-//            // Ignore and continue with string comparison
-//        }
-//        try {
-//            Class<?> clazz = Class.forName(springType);
-//            if (List.class.isAssignableFrom(clazz)) {
-//                return "array";
-//            }
-//        } catch (ClassNotFoundException e) {
-//            // Ignore and continue with string comparison
-//        }
-//        try {
-//            Class<?> clazz = Class.forName(springType);
-//            if (Map.class.isAssignableFrom(clazz)) {
-//                return "object";
-//            }
-//        } catch (ClassNotFoundException e) {
-//            // Ignore and continue with string comparison
-//        }
-//        if(!(springType.startsWith("java.util.List") || springType.startsWith("java.util.Set") || springType.startsWith("java.util.Map"))) {
-//            log.error("Unknown springType: {}, returning object", springType);
-//        }else{
-//            log.debug("Found springType: {}, returning object", springType);
-//        }
-//        return "object";
-//    }
-
-    public Map<String, Object> processComplexType(String type, Property bootProp) {
-        return processComplexType(type, bootProp,new HashSet<>());
-    }
-
-    public Map<String, Object> processComplexType(String type, Property bootProp,Set<String> visited) {
-        if (visited.contains(type)) {
-            log.warn("Detected cyclic reference for type: {}. Skipping nested properties. for Property {}", type,bootProp.getName());
-            return new HashMap<>();
-        }
-        visited.add(type);
-        Map<String, Object> properties = new HashMap<>();
-        try {
-            Class<?> clazz = Class.forName(type);
-            for (Field field : clazz.getDeclaredFields()) {
-                Map<String, Object> fieldDef = new HashMap<>();
-                String fieldType = field.getType().getName();
-                fieldDef.put("type", mapType(fieldType));
-                
-                if (mapType(fieldType).equals("array")) {
-                    String itemType = extractListItemType(field.getGenericType().getTypeName());
-                    Map<String, Object> items = new HashMap<>();
-                    items.put("type", mapType(itemType));
-                    if (mapType(itemType).equals("object")) {
-                        Map<String, Object> itemProperties = processComplexType(itemType, bootProp,visited);
-                        if (itemProperties != null) {
-                            items.put("properties", itemProperties);
-                        }
-                    }
-                    fieldDef.put("items", items);
-                } else if (mapType(fieldType).equals("object")) {
-                    if (fieldType.startsWith("java.util.Map")) {
-                        String valueType = extractMapValueType(field.getGenericType().getTypeName());
-                        if (mapType(valueType).equals("object")) {
-                            Map<String, Object> valueTypeProperties = processComplexType(valueType, bootProp,visited);
-                            if (valueTypeProperties != null) {
-                                fieldDef.put("additionalProperties", Map.of(
-                                        "type", "object",
-                                        "properties", valueTypeProperties
-                                ));
-                            }
-                        } else {
-                            fieldDef.put("additionalProperties", Map.of("type", mapType(valueType)));
-                        }
-                    } else {
-                        Map<String, Object> nestedProperties = processComplexType(fieldType, bootProp, visited);
-                        if (nestedProperties != null) {
-                            fieldDef.put("properties", nestedProperties);
-                        }
-                    }
-                }
-                properties.put(toKebabCase(field.getName()), fieldDef);
+    public boolean isArray(String springType) {
+        Class<?> clazz = null;
+        try{
+            if(springType.contains("java.lang.String[]")){return true;}
+            if(springType.contains("<")){
+                springType=springType.split("<")[0];
+            }
+            clazz = Class.forName(springType);
+            if (List.class.isAssignableFrom(clazz)) {
+                return true;
+            }
+            if (Set.class.isAssignableFrom(clazz)) {
+                return true;
             }
         } catch (ClassNotFoundException e) {
-            log.debug("Type not found: {}", type);
+            log.error("Error while mapping Spring type: {}  for Property {}", springType, e);
+            return false;
         }
-        visited.remove(type);
-        return properties;
+        return false;
     }
-
-    public String extractListItemType(String type) {
-        if (type.contains("<") && type.contains(">")) {
-            String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
-            if (inner.contains(",")) {
-                inner = inner.split(",")[0];
+    public boolean isMap(String springType) {
+        Class<?> clazz = null;
+        try {
+            if(springType.contains("<")){
+                springType=springType.split("<")[0];
             }
-            return inner.trim();
-        }
-        return "object";
-    }
-
-    public String extractMapValueType(String type) {
-        if (type.contains("<") && type.contains(">")) {
-            String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
-            if (inner.contains(",")) {
-                String[] arr = inner.split(",", 2);
-                return arr[1].trim();
+            clazz = Class.forName(springType);
+            if (Map.class.isAssignableFrom(clazz)) {
+                return true;
             }
+        } catch (ClassNotFoundException e) {
+            return false;
         }
-        return "object";
+        return false;
     }
-
-    public String toKebabCase(String input) {
-        if (input == null) return null;
-        return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
+    public boolean isEnum(String springType) {
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName(springType);
+            if (clazz.isEnum()) {
+                return true;
+            }
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+        return false;
     }
 }

@@ -22,7 +22,6 @@ enum SampleType {TYPE1, TYPE2, TYPE3}
 @Schema(description = "Sample status values")
 enum SampleStatus {ACTIVE, PENDING, INACTIVE}
 
-
 @Component
 @ConfigurationProperties(prefix = "sample")
 @Validated
@@ -39,6 +38,8 @@ public class ConfigSample {
      **/
     @Schema(description = "Sample boolean property", defaultValue = "true")
     Boolean booleanSample = true;
+
+    String[] stringArraySample;
     /**
      * Integer sample
      **/
@@ -54,6 +55,9 @@ public class ConfigSample {
     List<String> collectionSample = new ArrayList<>();
     @Schema(description = "Sample nested configuration collection")
     List<ConfigSampleNested2> configSampleObjectArray = new ArrayList<>();
+
+    List<Integer> sampleIntArray = new ArrayList<>();
+
     @Schema(description = "Sample string map")
     Map<String, String> mapSample = new HashMap<>();
 
@@ -72,4 +76,10 @@ public class ConfigSample {
 
     @Schema(description = "Sample status map")
     EnumMap<SampleStatus, String> enumStatusMap = new EnumMap<>(SampleStatus.class);
+
+    Properties propertiesExample = new Properties();
+
+    Map<String,String> propertiesMapExample = new HashMap<>();
+
+    String[] stringArrayExample;
 }

@@ -8,6 +8,7 @@ import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 @Slf4j
@@ -48,7 +49,12 @@ public class JsonSchemaBuilder {
     }
 
     private void addProperty(Map<String, Object> node, String[] path, int idx, Property prop) {
-        log.debug("Processing property at path: {}, index: {}", String.join(".", path), idx);
+        if (prop.getName().contains("enum-type-set")) {
+            log.info("Skipping enum-type-set property");
+        }
+        log.info("Processing property at path: {}, index: {}", String.join(".", path), idx);
+        String propType;
+        String propMappedType;
         if (node == null) {
             log.error("Null node encountered while adding property at path: {}, index: {}", String.join(".", path), idx);
             throw new IllegalArgumentException("Node must not be null in addProperty: idx=" + idx + ", path=" + String.join(".", path));
@@ -64,8 +70,11 @@ public class JsonSchemaBuilder {
             if(prop.getType() == null) {
                 log.error("property {} prop.type is null", prop.getName());
                 return;
+            }else{
+                propType=prop.getType();
+                propMappedType = typeMappingService.mapType(propType);
             }
-            propDef.put("type", typeMappingService.mapType(prop.getType()));
+            propDef.put("type", propMappedType);
 
 //            if (prop.getShortDescription() != null) {
 //                propDef.put("title", prop.getShortDescription());
@@ -83,7 +92,6 @@ public class JsonSchemaBuilder {
                 propDef.put("default", prop.getDefaultValue());
             }
             processHints(propDef, prop);
-            processEnumValues(propDef, prop);
             processDeprecation(propDef, prop);
 
             if(config.isUseValidation()) {
@@ -92,54 +100,27 @@ public class JsonSchemaBuilder {
             if (config.isUseOpenapi()) {
                 processOpenapi(propDef, prop);
             }
-
-            if (typeMappingService.mapType(prop.getType()).equals("array")) {
-                if(prop.getName().contains("enum-type-set")) {
-                    log.debug("Skipping property is enum-type-set");
-                }
-                String itemType = typeMappingService.extractListItemType(prop.getType());
-                Map<String, Object> items = new HashMap<>();
-                items.put("type", typeMappingService.mapType(itemType));
-                if (typeMappingService.mapType(itemType).equals("object")) {
-                    Map<String, Object> complexProperties = typeMappingService.processComplexType(itemType, prop);
-                    if (complexProperties != null) {
-                        items.put("properties", complexProperties);
-                    }
-                }else {
-                    try {
-                        if(Class.forName(itemType).isEnum()){
-                            List<String> values = processEnumItem(itemType);
-                            if (values != null) {
-                                items.put("enum", values);
-                            }
-                        }
-                    } catch (ClassNotFoundException e) {
-                        log.info(e.getMessage());
-                    }
-                }
-                propDef.put("items", items);
-            } else if (typeMappingService.mapType(prop.getType()).equals("object")) {
-                if (prop.getType().startsWith("java.util.Map")) {
-                    String valueType = typeMappingService.extractMapValueType(prop.getType());
-                    if (typeMappingService.mapType(valueType).equals("object")) {
-                        Map<String, Object> valueTypeProperties = typeMappingService.processComplexType(valueType,prop);
-                        if (valueTypeProperties != null) {
-                            propDef.put("additionalProperties", Map.of(
-                                    "type", "object",
-                                    "properties", valueTypeProperties
-                            ));
-                        }
-                    } else {
-                        propDef.put("additionalProperties", Map.of("type", typeMappingService.mapType(valueType)));
-                    }
-                } else {
-                    Map<String, Object> complexProperties = typeMappingService.processComplexType(prop.getType(),prop);
-                    if (complexProperties != null) {
-                        propDef.put("properties", complexProperties);
-                    }
+            if (typeMappingService.isEnum(propType)){
+                processEnumValues(propDef, prop);
+                node.put(key, propDef);
+                return;
+            }
+            if (propMappedType.equals("array")) {
+                processArray(prop, prop.getType(), propDef,null);
+                node.put(key, propDef);
+                return;
+            }
+            if (typeMappingService.isMap(propType)) {
+                processMap(prop, prop.getType(), propDef,null);
+                node.put(key, propDef);
+                return;
+            }
+            if (propMappedType.equals("object")) {
+                Map<String, Object> complexProperties = processComplexType(prop.getType(),prop);
+                if (complexProperties != null) {
+                    propDef.put("properties", complexProperties);
                 }
             }
-
             node.put(key, propDef);
         } else {
             Map<String, Object> obj = (Map<String, Object>) node.computeIfAbsent(key, k -> {
@@ -157,6 +138,71 @@ public class JsonSchemaBuilder {
             addProperty(child, path, idx + 1, prop);
         }
     }
+
+    private void processMap(Property prop, String propType, Map<String, Object> propDef,Set<String> visited) {
+        if(propType.contains("java.util.Properties")) {
+            propDef.put("additional-properties", Map.of(
+                    "type", "object"
+            ));
+            return;
+        }
+        String valueType = extractMapValueType(propType);
+        if( valueType.equals("java.lang.Object") || valueType.contains("<T>")) {
+            propDef.put("additional-properties", Map.of(
+                    "type", "object"));
+            return;
+        }
+        if (typeMappingService.mapType(valueType).equals("object")) {
+            if( visited == null ) {
+                visited = new HashSet<>();
+            }
+            Map<String, Object> valueTypeProperties = processComplexType(valueType, prop,visited);
+            if (valueTypeProperties != null) {
+                propDef.put("additional-properties", Map.of(
+                        "type", "object",
+                        "properties", valueTypeProperties
+                ));
+            }
+        } else {
+            propDef.put("additional-properties", Map.of("type", typeMappingService.mapType(valueType)));
+        }
+    }
+
+    private void processArray(Property prop,String propType ,Map<String, Object> propDef,Set<String> visited) {
+        Map<String, Object> items = new HashMap<>();
+        if( propType.equals("java.lang.String[]") ) {
+            propDef.put("items", Map.of("type", "string"));
+            return;
+        }
+        String itemType = extractListItemType(propType);
+        if( itemType.equals("java.lang.Object") || itemType.contains("<T>")) {
+            propDef.put("items", Map.of("type", "object"));
+            return;
+        }
+        items.put("type", typeMappingService.mapType(itemType));
+        if (typeMappingService.mapType(itemType).equals("object")) {
+            if( visited == null ) {
+                visited = new HashSet<>();
+            }
+            Map<String, Object> complexProperties = processComplexType(itemType, prop,visited);
+            if (complexProperties != null) {
+                items.put("properties", complexProperties);
+            }
+        }else {
+            try {
+                if(Class.forName(itemType).isEnum()){
+                    List<String> values = processEnumItem(itemType);
+                    if (values != null) {
+                        items.put("enum", values);
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                log.info(e.getMessage());
+            }
+        }
+        propDef.put("items", items);
+    }
+
 
     private  List<String> processEnumItem(String enumType) {
         log.debug("Processing enum values for property: {}", enumType);
@@ -351,6 +397,68 @@ public class JsonSchemaBuilder {
         }
     }
 
+    public Map<String, Object> processComplexType(String type, Property bootProp) {
+        return processComplexType(type, bootProp,new HashSet<>());
+    }
+
+    public Map<String, Object> processComplexType(String type, Property bootProp,Set<String> visited) {
+        if (visited.contains(type)) {
+            log.warn("Detected cyclic reference for type: {}. Skipping nested properties. for Property {}", type,bootProp.getName());
+            return new HashMap<>();
+        }
+        visited.add(type);
+        Map<String, Object> properties = new HashMap<>();
+        try {
+            Class<?> clazz = Class.forName(type);
+            for (Field field : clazz.getDeclaredFields()) {
+                Map<String, Object> fieldDef = new HashMap<>();
+                String fieldType = field.getType().getName();
+                String fieldGenName = field.getGenericType().getTypeName();
+                fieldDef.put("type", typeMappingService.mapType(fieldType));
+
+                if (typeMappingService.mapType(fieldType).equals("array")) {
+                    processArray(bootProp,fieldGenName, fieldDef, visited);
+                } else if (typeMappingService.mapType(fieldType).equals("object")) {
+                    if (typeMappingService.isMap(fieldType)) {
+                        processMap(bootProp, fieldGenName, fieldDef, visited);
+                    } else {
+                        Map<String, Object> nestedProperties = processComplexType(fieldType, bootProp, visited);
+                        if (nestedProperties != null) {
+                            fieldDef.put("properties", nestedProperties);
+                        }
+                    }
+                }
+                properties.put(toKebabCase(field.getName()), fieldDef);
+            }
+        } catch (ClassNotFoundException e) {
+            log.debug("Type not found: {}", type);
+        }
+        visited.remove(type);
+        return properties;
+    }
+
+    public String extractListItemType(String type) {
+        if (type.contains("<") && type.contains(">")) {
+            String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
+            if (inner.contains(",")) {
+                inner = inner.split(",")[0];
+            }
+            return inner.trim();
+        }
+        return "object";
+    }
+
+    public String extractMapValueType(String type) {
+        if (type.contains("<") && type.contains(">")) {
+            String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
+            if (inner.contains(",")) {
+                String[] arr = inner.split(",", 2);
+                return arr[1].trim();
+            }
+        }
+        return type;
+    }
+
     private String toCamelCase(String str) {
         if (str == null || str.isEmpty()) {
             return str;
@@ -377,5 +485,9 @@ public class JsonSchemaBuilder {
         return result.toString();
     }
 
+    public String toKebabCase(String input) {
+        if (input == null) return null;
+        return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
+    }
 
 }

@@ -1,0 +1,12 @@
+$schema: ./gen.json
+
+properties-example:
+  aaaa: aaaaaa
+  bbbb: zzzzzz
+  zzzz: 1234
+  enable: true
+
+properties-map-example:
+  aaaa: 123
+  bbbb: bbbbbb
+  enable: true
