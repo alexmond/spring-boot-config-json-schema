@@ -2,10 +2,6 @@
 package org.alexmond.config.json.schema.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.alexmond.config.json.schema.metamodel.Property;
-
-import javax.swing.*;
-import java.lang.reflect.Field;
 import java.util.*;
 
 
@@ -26,7 +22,6 @@ public class TypeMappingService {
             log.info("====================== T");
         }
 //        log.debug("Mapping Spring type: {}", springType);
-        if (springType == null) return "string";
         switch (springType) {
             case "java.lang.String":
 //            case "java.lang.String[]":
@@ -78,7 +73,7 @@ public class TypeMappingService {
     }
 
     public boolean isArray(String springType) {
-        Class<?> clazz = null;
+        Class<?> clazz;
         try{
             if(springType.contains("java.lang.String[]")){return true;}
             if(springType.contains("<")){
@@ -92,13 +87,13 @@ public class TypeMappingService {
                 return true;
             }
         } catch (ClassNotFoundException e) {
-            log.error("Error while mapping Spring type: {}  for Property {}", springType, e);
+            log.error("Error while mapping Spring type: {}  for Property {}", springType, e.getMessage());
             return false;
         }
         return false;
     }
     public boolean isMap(String springType) {
-        Class<?> clazz = null;
+        Class<?> clazz;
         try {
             if(springType.contains("<")){
                 springType=springType.split("<")[0];
@@ -113,7 +108,7 @@ public class TypeMappingService {
         return false;
     }
     public boolean isEnum(String springType) {
-        Class<?> clazz = null;
+        Class<?> clazz;
         try {
             clazz = Class.forName(springType);
             if (clazz.isEnum()) {

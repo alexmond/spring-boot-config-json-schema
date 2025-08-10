@@ -69,9 +69,9 @@ class SimpleBootJsonSchemaGeneratorTests {
         mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
         JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
         // Generate schema for the Product class
-//        JsonSchema productSchema = schemaGen.generateSchema(ConfigSample.class);
+        JsonSchema productSchema = schemaGen.generateSchema(ConfigSample.class);
 //        JsonSchema productSchema = schemaGen.generateSchema(io.swagger.v3.oas.models.media.Schema.class);
-        JsonSchema productSchema = schemaGen.generateSchema(SpringDocConfigProperties.class);
+//        JsonSchema productSchema = schemaGen.generateSchema(SpringDocConfigProperties.class);
         productSchema.set$schema("https://json-schema.org/draft/2020-12/schema");
 //        productSchema.setId("your-schema-id");
         productSchema.setDescription("This is a simple JSON Schema");

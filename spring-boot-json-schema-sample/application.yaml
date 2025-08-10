@@ -1,11 +1,9 @@
 $schema: ./sample-schema.yaml
 spring:
   profiles:
-    active:
-      - test
+    active: test
 
 sample:
-  string-array-sample: aaa,bbb,ccc
   boolean-sample: false
   string-sample: "config string"
   integer-sample: 10
@@ -40,11 +38,14 @@ server:
 spring:
   config:
     activate:
-      on-profile:
-          - test
+      on-profile: test
 
-sample:
-  string-sample: "Test profile"
+
+
+
+
+
+
 
 
 

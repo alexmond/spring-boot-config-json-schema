@@ -62,7 +62,7 @@ public class JsonSchemaBuilder {
         String key = path[idx];
         if (idx == path.length - 1) {
             Map<String, Object> propDef = new LinkedHashMap<>();
-            // skip deprecated property with error level
+            // skip deprecated property with the error level
             if(prop.getDeprecated() != null && prop.getDeprecated() && ( prop.getDeprecation().getLevel() == Deprecation.Level.ERROR || prop.getDeprecation().getLevel() == Deprecation.Level.error)){
                 log.debug("Skipping property is deprecated and removed: {}", prop.getName());
                 return;
@@ -141,14 +141,14 @@ public class JsonSchemaBuilder {
 
     private void processMap(Property prop, String propType, Map<String, Object> propDef,Set<String> visited) {
         if(propType.contains("java.util.Properties")) {
-            propDef.put("additional-properties", Map.of(
+            propDef.put("additionalProperties", Map.of(
                     "type", "object"
             ));
             return;
         }
         String valueType = extractMapValueType(propType);
         if( valueType.equals("java.lang.Object") || valueType.contains("<T>")) {
-            propDef.put("additional-properties", Map.of(
+            propDef.put("additionalProperties", Map.of(
                     "type", "object"));
             return;
         }
@@ -158,13 +158,13 @@ public class JsonSchemaBuilder {
             }
             Map<String, Object> valueTypeProperties = processComplexType(valueType, prop,visited);
             if (valueTypeProperties != null) {
-                propDef.put("additional-properties", Map.of(
+                propDef.put("additionalProperties", Map.of(
                         "type", "object",
                         "properties", valueTypeProperties
                 ));
             }
         } else {
-            propDef.put("additional-properties", Map.of("type", typeMappingService.mapType(valueType)));
+            propDef.put("additionalProperties", Map.of("type", typeMappingService.mapType(valueType)));
         }
     }
 
@@ -361,7 +361,6 @@ public class JsonSchemaBuilder {
                                 }))
                                 .toList();
                         propDef.put("enum", enumValues);
-                        return;
                     }
                 }
             } catch (ClassNotFoundException e) {

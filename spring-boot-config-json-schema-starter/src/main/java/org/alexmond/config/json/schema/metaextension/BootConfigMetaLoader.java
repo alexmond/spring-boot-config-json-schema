@@ -7,19 +7,12 @@ import org.alexmond.config.json.schema.metamodel.BootConfigMeta;
 import org.alexmond.config.json.schema.metamodel.Hints;
 import org.alexmond.config.json.schema.metamodel.Property;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 
 @NoArgsConstructor
 @Slf4j
 public class BootConfigMetaLoader {
-    public BootConfigMeta loadFromFile(String path) throws Exception {
-        log.info("Loading configuration from file: {}", path);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new File(path), BootConfigMeta.class);
-    }
-
     public  BootConfigMeta loadFromStream(InputStream stream) throws Exception {
         log.info("Loading configuration from input stream");
         ObjectMapper mapper = new ObjectMapper();
@@ -57,7 +50,7 @@ public class BootConfigMetaLoader {
             if (!propertyMap.containsKey(property.getName()) && !ignorelist.contains(property.getName())) {
                 propertyMap.put(property.getName(), property);
             } else {
-                log.error("Duplicate or Ignored property name: " + property.getName());
+                log.error("Duplicate or Ignored property name: {}", property.getName());
             }
         }
 
@@ -66,7 +59,7 @@ public class BootConfigMetaLoader {
                 Property property = propertyMap.get(hint.getName());
                 property.setHints(hint);
             } else {
-                log.info("Missing property name for a hint: " + hint.getName());
+                log.info("Missing property name for a hint: {}", hint.getName());
             }
         }
         return propertyMap;

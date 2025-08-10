@@ -1,8 +1,6 @@
 package org.alexmond.config.json.schema.service;
 
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.boot.configurationmetadata.ConfigurationMetadataRepository;
-//import org.springframework.boot.configurationmetadata.ConfigurationMetadataRepositoryJsonBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,16 +23,6 @@ public class ConfigurationMetadataService {
             streams.add(url.openStream());
         }
         return streams;
-    }
-
-    private void closeStreams(List<InputStream> streams) {
-        for (InputStream stream : streams) {
-            try {
-                stream.close();
-            } catch (IOException ignored) {
-                log.warn("Failed to close metadata stream");
-            }
-        }
     }
 
 }

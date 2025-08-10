@@ -28,7 +28,7 @@ public class JsonSchemaService {
     }
 
     public String generateFullSchema() throws Exception {
-        HashMap<String,Property> meta = new HashMap<>();
+        HashMap<String,Property> meta;
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         meta = bootConfigMetaLoader.loadFromInputStreams(metadataService.collectMetadataStreams(classLoader));
         List<String> included = propertyCollector.collectIncludedPropertyNames();
