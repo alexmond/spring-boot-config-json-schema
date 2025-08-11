@@ -17,7 +17,7 @@ public class BootConfigMetaLoader {
     private final ObjectMapper mapper = new ObjectMapper();
 
     public BootConfigMeta loadFromStream(InputStream stream){
-        log.info("Loading configuration from input stream");
+        log.debug("Loading configuration from input stream");
         BootConfigMeta config = null;
         try {
             config = mapper.readValue(stream, BootConfigMeta.class);
@@ -52,7 +52,7 @@ public class BootConfigMetaLoader {
                 Property property = propertyMap.get(hint.getName());
                 property.setHint(hint);
             } else {
-                log.info("Missing property name for a hint: {}", hint.getName());
+                log.debug("Missing property name for a hint: {}", hint.getName());
             }
         }
         return propertyMap;

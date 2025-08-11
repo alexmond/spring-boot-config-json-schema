@@ -49,10 +49,7 @@ public class JsonSchemaBuilder {
     }
 
     private void addProperty(Map<String, Object> node, String[] path, int idx, Property prop) {
-        if (prop.getName().contains("enum-type-set")) {
-            log.info("Skipping enum-type-set property");
-        }
-        log.info("Processing property at path: {}, index: {}", String.join(".", path), idx);
+        log.debug("Processing property at path: {}, index: {}", String.join(".", path), idx);
         String propType;
         String propMappedType;
         if (node == null) {
@@ -147,11 +144,25 @@ public class JsonSchemaBuilder {
             return;
         }
         String valueType = extractMapValueType(propType);
-        if( valueType.equals("java.lang.Object") || valueType.contains("<T>")) {
+        if( valueType.equals("java.lang.Object") ) {
             propDef.put("additionalProperties", Map.of(
                     "type", "object"));
             return;
         }
+        try {
+            if((Class.forName(valueType)).getTypeParameters().length > 0){
+                propDef.put("additionalProperties", Map.of(
+                        "type", "object"));
+                return;
+            }
+        } catch (ClassNotFoundException e) {
+            log.debug("Cannot find class for property type: {}, treating as object", valueType);
+            propDef.put("additionalProperties", Map.of(
+                    "type", "object"));
+            return;
+        }
+
+
         if (typeMappingService.mapType(valueType).equals("object")) {
             if( visited == null ) {
                 visited = new HashSet<>();
@@ -176,6 +187,16 @@ public class JsonSchemaBuilder {
         }
         String itemType = extractListItemType(propType);
         if( itemType.equals("java.lang.Object") || itemType.contains("<T>")) {
+            propDef.put("items", Map.of("type", "object"));
+            return;
+        }
+        try {
+            if((Class.forName(itemType)).getTypeParameters().length > 0){
+                propDef.put("items", Map.of("type", "object"));
+                return;
+            }
+        } catch (ClassNotFoundException e) {
+            log.debug("Cannot find class for property type: {}, treating as object", itemType);
             propDef.put("items", Map.of("type", "object"));
             return;
         }
@@ -278,12 +299,12 @@ public class JsonSchemaBuilder {
                     if (field.isAnnotationPresent(jakarta.validation.constraints.Min.class)) {
                         var value = field.getAnnotation(jakarta.validation.constraints.Min.class).value();
                         propDef.put("minimum", value);
-                        log.info("Validation: Added Min validation with value {} for field {}", value, field.getName());
+                        log.debug("Validation: Added Min validation with value {} for field {}", value, field.getName());
                     }
                     if (field.isAnnotationPresent(jakarta.validation.constraints.Max.class)) {
                         var value = field.getAnnotation(jakarta.validation.constraints.Max.class).value();
                         propDef.put("maximum", value);
-                        log.info("Validation: Added Max validation with value {} for field {}", value, field.getName());
+                        log.debug("Validation: Added Max validation with value {} for field {}", value, field.getName());
                     }
                     if (field.isAnnotationPresent(jakarta.validation.constraints.Size.class)) {
                         var size = field.getAnnotation(jakarta.validation.constraints.Size.class);
@@ -303,12 +324,12 @@ public class JsonSchemaBuilder {
                     }
                     if (field.isAnnotationPresent(jakarta.validation.constraints.NotNull.class)) {
                         propDef.put("required", true);
-                        log.info("Validation: Added NotNull validation for field {}", field.getName());
+                        log.debug("Validation: Added NotNull validation for field {}", field.getName());
                     }
                     if (field.isAnnotationPresent(jakarta.validation.constraints.NotEmpty.class)) {
                         propDef.put("minLength", 1);
                         propDef.put("required", true);
-                        log.info("Validation: Added NotEmpty validation for field {}", field.getName());
+                        log.debug("Validation: Added NotEmpty validation for field {}", field.getName());
                     }
                 }
             } catch (Exception e) {
@@ -421,9 +442,18 @@ public class JsonSchemaBuilder {
                     if (typeMappingService.isMap(fieldType)) {
                         processMap(bootProp, fieldGenName, fieldDef, visited);
                     } else {
-                        Map<String, Object> nestedProperties = processComplexType(fieldType, bootProp, visited);
-                        if (nestedProperties != null) {
-                            fieldDef.put("properties", nestedProperties);
+                        try{
+                            if((Class.forName(fieldType)).getTypeParameters().length > 0){
+                                fieldDef.put("properties", Map.of("type", "object"));
+                            } else {
+                                Map<String, Object> nestedProperties = processComplexType(fieldType, bootProp, visited);
+                                if (nestedProperties != null) {
+                                    fieldDef.put("properties", nestedProperties);
+                                }
+                            }
+                        } catch (ClassNotFoundException e) {
+                            log.debug("Cannot find class for property type: {}, treating as object", fieldType);
+                            fieldDef.put("properties", Map.of("type", "object"));
                         }
                     }
                 }

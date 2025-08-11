@@ -87,7 +87,7 @@ public class TypeMappingService {
                 return true;
             }
         } catch (ClassNotFoundException e) {
-            log.error("Error while mapping Spring type: {}  for Property {}", springType, e.getMessage());
+            log.debug("Error while mapping Spring type: {}  for Property {}", springType, e.getMessage());
             return false;
         }
         return false;

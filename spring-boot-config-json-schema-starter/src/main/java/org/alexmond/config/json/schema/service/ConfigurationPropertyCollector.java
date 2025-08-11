@@ -3,9 +3,8 @@ package org.alexmond.config.json.schema.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertySource;
@@ -29,13 +28,20 @@ public class ConfigurationPropertyCollector {
     }
 
     private void collectAnnotatedBeanProperties(List<String> included) {
-        context.getBeansWithAnnotation(ConfigurationProperties.class).forEach((key, configBean) -> {
-            ConfigurationProperties annotation = AnnotationUtils.findAnnotation(configBean.getClass(), ConfigurationProperties.class);
-            if (annotation != null) {
-                log.info("Annotation value (AnnotationUtils): {}", annotation.value());
-                included.add(annotation.value());
-            }
-        });
+        // Inside the loop from the previous step]
+        Map<String, ConfigurationPropertiesBean> beans = ConfigurationPropertiesBean.getAll(context);
+
+        beans.forEach((beanName, configBean) -> {
+                    String prefix = configBean.getAnnotation().prefix();
+                    if (prefix.isEmpty()) {
+                        prefix = configBean.getAnnotation().value();
+                    }
+
+                    if (!prefix.isEmpty()) {
+                        log.info("Adding property for processing: {} (from bean: {})", prefix, beanName);
+                        included.add(prefix);
+                    }
+                });
     }
 
     private void collectEnvironmentPropertyKeys(List<String> included) {
