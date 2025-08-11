@@ -2,15 +2,13 @@ package org.alexmond.config.json.schema;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
-import org.alexmond.config.json.schema.metaextension.BootConfigMetaLoader;
 import org.alexmond.config.json.schema.service.*;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 public class ConfigSchemaStarter {
 
     @Bean

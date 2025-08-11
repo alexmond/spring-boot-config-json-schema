@@ -1,5 +1,6 @@
 package org.alexmond.config.json.schema.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,19 +13,12 @@ import org.springframework.core.env.PropertySource;
 import java.util.*;
 
 @Slf4j
+@RequiredArgsConstructor
 public class ConfigurationPropertyCollector {
 
     private final ApplicationContext context;
     private final ConfigurableEnvironment env;
     private final JsonConfigSchemaConfig config;
-
-    public ConfigurationPropertyCollector(ApplicationContext context, 
-                                        ConfigurableEnvironment env, 
-                                        JsonConfigSchemaConfig config) {
-        this.context = context;
-        this.env = env;
-        this.config = config;
-    }
 
     public List<String> collectIncludedPropertyNames() {
         List<String> included = new ArrayList<>();

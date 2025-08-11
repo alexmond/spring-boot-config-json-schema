@@ -1,8 +1,6 @@
 package org.alexmond.sample.test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -14,18 +12,11 @@ import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.config.json.schema.service.MissingTypeCollector;
 import org.alexmond.sample.config.ConfigSample;
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.bind.annotation.GetMapping;
-//import org.apache.tomcat.jdbc.pool.DataSource;
-import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootTest
 @Slf4j

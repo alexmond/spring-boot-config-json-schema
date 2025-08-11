@@ -7,27 +7,12 @@ import java.util.List;
 
 @Data
 public class BootConfigMeta {
-    private List<Group> groups;
-    private List<Property> properties;
-    private List<Hints> hints;
-    private Ignored ignored;
+    private List<Group> groups = new ArrayList<>();
+    private List<Property> properties = new ArrayList<>();
+    private List<Hint> hints = new ArrayList<>();
+    private Ignored ignored = new Ignored();
 
     public List<String> getIgnoredList() {
-        List<String> result = new ArrayList<>();
-        if (ignored == null || ignored.getProperties() == null ) {
-            return null;
-        }
-        for ( Ignored.Property property : ignored.getProperties()) {
-            result.add(property.getName());
-        }
-        return result;
+        return ignored.getProperties().stream().map(Ignored.Property::getName).toList();
     }
-
-    public BootConfigMeta() {
-        this.groups = new ArrayList<>();
-        this.properties = new ArrayList<>();
-        this.hints = new ArrayList<>();
-        this.ignored = new Ignored();
-    }
-
 }

@@ -1,0 +1,2 @@
+test what happens if ConfigurationProperties annotation's value = "" (default)
+consider multiple public methods of JsonSchemaService to return schema in different formats

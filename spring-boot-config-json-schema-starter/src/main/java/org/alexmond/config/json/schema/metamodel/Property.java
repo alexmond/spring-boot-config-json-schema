@@ -11,5 +11,5 @@ public class Property {
     private Object defaultValue;
     private Boolean deprecated = null;
     private Deprecation deprecation;
-    private Hints hints;
+    private Hint hint;
 }

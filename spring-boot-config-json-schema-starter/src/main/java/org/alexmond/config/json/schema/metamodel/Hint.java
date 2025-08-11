@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Hints {
+public class Hint {
     private String name;
     private List<HintValue> values;
     private List<HintProvider> providers;

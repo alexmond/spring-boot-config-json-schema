@@ -4,46 +4,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.metamodel.BootConfigMeta;
-import org.alexmond.config.json.schema.metamodel.Hints;
+import org.alexmond.config.json.schema.metamodel.Hint;
 import org.alexmond.config.json.schema.metamodel.Property;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
 @NoArgsConstructor
 @Slf4j
 public class BootConfigMetaLoader {
-    public  BootConfigMeta loadFromStream(InputStream stream) throws Exception {
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    public BootConfigMeta loadFromStream(InputStream stream){
         log.info("Loading configuration from input stream");
-        ObjectMapper mapper = new ObjectMapper();
-        BootConfigMeta config;
-        config = mapper.readValue(stream, BootConfigMeta.class);
+        BootConfigMeta config = null;
+        try {
+            config = mapper.readValue(stream, BootConfigMeta.class);
+        } catch (IOException e) {
+            log.error("Failed to load config metadata {}", e.getMessage());
+        }
         return config;
     }
 
-    public HashMap<String, Property> loadFromInputStreams(List<InputStream> streams) throws Exception {
-        HashMap<String, Property> propertyMap = new HashMap<>();
-        log.info("Loading and merging configuration from {} input streams", streams.size());
+    public HashMap<String, Property> mergeConfig(List<BootConfigMeta> metaList) {
         BootConfigMeta mergedConfig = new BootConfigMeta();
+        HashMap<String, Property> propertyMap = new HashMap<>();
         List<String> ignorelist = new ArrayList<>();
 
-        for (InputStream stream : streams) {
-            if (stream != null) {
-                BootConfigMeta config = new BootConfigMetaLoader().loadFromStream(stream);
-                // Merge the configurations
-                if (config.getGroups() != null) {
-                    mergedConfig.getGroups().addAll(config.getGroups());
-                }
-                if (config.getProperties() != null) {
-                    mergedConfig.getProperties().addAll(config.getProperties());
-                }
-                if (config.getHints() != null) {
-                    mergedConfig.getHints().addAll(config.getHints());
-                }
-                if (config.getIgnoredList() != null) {
-                    ignorelist.addAll(config.getIgnoredList());
-                }
-            }
+        for (var config : metaList) {
+            mergedConfig.getGroups().addAll(config.getGroups());
+            mergedConfig.getProperties().addAll(config.getProperties());
+            mergedConfig.getHints().addAll(config.getHints());
+            ignorelist.addAll(config.getIgnoredList());
         }
 
         for (Property property : mergedConfig.getProperties()) {
@@ -54,14 +47,15 @@ public class BootConfigMetaLoader {
             }
         }
 
-        for (Hints hint : mergedConfig.getHints()) {
+        for (Hint hint : mergedConfig.getHints()) {
             if (propertyMap.containsKey(hint.getName())) {
                 Property property = propertyMap.get(hint.getName());
-                property.setHints(hint);
+                property.setHint(hint);
             } else {
                 log.info("Missing property name for a hint: {}", hint.getName());
             }
         }
         return propertyMap;
     }
+
 }

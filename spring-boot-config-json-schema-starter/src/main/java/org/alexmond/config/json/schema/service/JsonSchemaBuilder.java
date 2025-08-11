@@ -332,9 +332,9 @@ public class JsonSchemaBuilder {
             log.debug("Processing relaxed-query-chars property: {}", prop.getName());
         }
         log.debug("Processing hints for property: {}", prop.getName());
-        if (prop.getHints() != null) {
-            if (prop.getHints().getValues() != null && !prop.getHints().getValues().isEmpty()) {
-                var hints = prop.getHints().getValues().stream()
+        if (prop.getHint() != null) {
+            if (prop.getHint().getValues() != null && !prop.getHint().getValues().isEmpty()) {
+                var hints = prop.getHint().getValues().stream()
                         .map(hint -> hint.getValue())
                         .filter(value -> value != null)
                         .toList();
@@ -365,8 +365,8 @@ public class JsonSchemaBuilder {
                 }
             } catch (ClassNotFoundException e) {
                 if (prop.getType().contains("Enum")) {
-                    if (prop.getHints() != null && prop.getHints().getValues() != null) {
-                        List<String> enumValues = prop.getHints().getValues().stream()
+                    if (prop.getHint() != null && prop.getHint().getValues() != null) {
+                        List<String> enumValues = prop.getHint().getValues().stream()
                                 .flatMap(hint -> Arrays.stream(new String[]{
                                         hint.getValue().toString(),
                                         hint.getValue().toString().toLowerCase()
