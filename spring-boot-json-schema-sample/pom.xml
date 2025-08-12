@@ -12,7 +12,7 @@
     <name>spring-boot-json-schema-sample</name>
     <description>spring-boot-json-schema-sample</description>
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
