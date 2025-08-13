@@ -47,6 +47,8 @@ jobs:
           env
           mkdir -p ~/.m2
           cp .github/settings.xml ~/.m2/settings.xml
+      - name: Verify GPG key
+        run: gpg --list-secret-keys --keyid-format LONG
 
       - name: Deploy to Maven Central
         run: mvn --batch-mode -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} clean deploy
