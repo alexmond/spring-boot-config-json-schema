@@ -28,7 +28,7 @@
     <scm>
         <connection>scm:git:git@github.com:alexmond/spring-boot-config-json-schema.git</connection>
         <developerConnection>scm:git:git@github.com:alexmond/spring-boot-json-schema.git</developerConnection>
-        <url>https://github.com/alexmond/spring-boot-json-schema</url>
+        <url>https://github.com/alexmond/spring-boot-config-json-schema/</url>
         <tag>HEAD</tag>
     </scm>
     <developers>
