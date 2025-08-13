@@ -128,6 +128,95 @@
 
     <modules>
         <module>spring-boot-config-json-schema-starter</module>
-        <module>spring-boot-json-schema-sample</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <modules>
+                <module>spring-boot-config-json-schema-starter</module>
+                <module>spring-boot-json-schema-sample</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-source-plugin</artifactId>
+                            <version>3.2.1</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-sources</id>
+                                    <goals>
+                                        <goal>jar-no-fork</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                        <!-- Generate JavaDoc JAR -->
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>3.4.1</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-javadocs</id>
+                                    <goals>
+                                        <goal>jar</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+
+                        <!-- GPG signing -->
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-gpg-plugin</artifactId>
+                            <version>3.0.1</version>
+                            <executions>
+                                <execution>
+                                    <id>sign-artifacts</id>
+                                    <phase>verify</phase>
+                                    <goals>
+                                        <goal>sign</goal>
+                                    </goals>
+                                    <configuration>
+                                        <!-- Prevent gpg from using pinentry -->
+                                        <gpgArguments>
+                                            <arg>--pinentry-mode</arg>
+                                            <arg>loopback</arg>
+                                        </gpgArguments>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.sonatype.central</groupId>
+                            <artifactId>central-publishing-maven-plugin</artifactId>
+                            <version>0.8.0</version>
+                            <extensions>true</extensions>
+                            <configuration>
+                                <publishingServerId>central</publishingServerId>
+                                <autoPublish>true</autoPublish>
+                                <waitUntil>published</waitUntil>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
