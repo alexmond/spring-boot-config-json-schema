@@ -13,12 +13,14 @@
     <version>0.0.3-SNAPSHOT</version>
     <name>spring-boot-json-schema</name>
     <packaging>pom</packaging>
-    <description>spring-boot-jsonschema</description>
     <properties>
-
         <java.version>17</java.version>
-
     </properties>
+    <url>https://github.com/alexmond/spring-boot-config-json-schema/</url>
+    <description>A Spring Boot library for generating JSON Schema documentation from configuration properties,
+        supporting both annotated beans and environment properties. Includes type mapping and property collection
+        services.
+    </description>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>

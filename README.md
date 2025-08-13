@@ -26,7 +26,16 @@ Schema from your Spring Boot configuration classes.
 ### Maven
 ## to use as a part of unitest 
 Add the following dependency to your `pom.xml`:
+```xml
+        <dependency>
+            <groupId>org.alexmond</groupId>
+            <artifactId>spring-boot-config-json-schema-starter</artifactId>
+            <version>0.0.2</version>
+            <scope>test</scope>
+        </dependency>
+```
 
+```java title=SampleJsonSchemaGeneratorTests.java
 @SpringBootTest
 @Slf4j
 class SampleJsonSchemaGeneratorTests {
@@ -53,20 +62,21 @@ class SampleJsonSchemaGeneratorTests {
     }
 
 }
+```
 
 ### Using as REST API Endpoint
 
 To expose the JSON schema via a REST endpoint (similar to Swagger API docs), first add the following dependency to your
 `pom.xml`:
-
+```xml
         <dependency>
             <groupId>org.alexmond</groupId>
             <artifactId>spring-boot-config-json-schema-starter</artifactId>
             <version>0.0.2</version>
         </dependency>
-
+```
 Then create a REST controller:
-
+```java title=GenerateJsonSchema.java
 @RestController
 @Slf4j
 public class GenerateJsonSchema {
@@ -80,7 +90,7 @@ public class GenerateJsonSchema {
     }
 
 }
-
+```
 
 
 

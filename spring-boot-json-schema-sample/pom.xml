@@ -9,8 +9,6 @@
     </parent>
     <artifactId>spring-boot-json-schema-sample</artifactId>
     <version>0.0.3-SNAPSHOT</version>
-    <name>spring-boot-json-schema-sample</name>
-    <description>spring-boot-json-schema-sample</description>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
