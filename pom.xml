@@ -26,7 +26,7 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:https://github.com/alexmond/spring-boot-json-schema.git</connection>
+        <connection>scm:git:git@github.com:alexmond/spring-boot-config-json-schema.git</connection>
         <developerConnection>scm:git:git@github.com:alexmond/spring-boot-json-schema.git</developerConnection>
         <url>https://github.com/alexmond/spring-boot-json-schema</url>
         <tag>HEAD</tag>
