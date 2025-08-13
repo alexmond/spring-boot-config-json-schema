@@ -19,31 +19,11 @@ sample:
     nested-config1: nestedConfig
 logging:
   level:
-    root: info
+    root: debug
     sun:
       rmi: error
     javax:
       management: error
-
-server:
-  error:
-    whitelabel:
-      enabled: true
-  servlet:
-    session:
-      cookie:
-        partitioned: true
----
-spring:
-  config:
-    activate:
-      on-profile: test
-  web:
-    resources:
-      static-locations:
-        - classpath:/META-INF/resources/
-        - classpath:/resources/
-        - classpath:/static/, classpath:/public/
 
 
 
