@@ -11,25 +11,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-config-json-schema-starter</name>
     <description>spring-boot-config-json-schema-starter</description>
-    <url/>
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
-        </license>
-    </licenses>
-    <developers>
-        <developer>
-            <name>Alex Mondshain</name>
-            <email>alex.mondshain@gmail.com</email>
-        </developer>
-    </developers>
-    <scm>
-        <connection>scm:git:git://github.com/alexmond/spring-boot-json-schema.git</connection>
-        <developerConnection>scm:git:ssh://github.com:alexmond/spring-boot-json-schema.git</developerConnection>
-        <tag>HEAD</tag>
-        <url>https://github.com/alexmond/spring-boot-json-schema</url>
-    </scm>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -95,8 +76,8 @@
                 <artifactId>maven-gpg-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
