@@ -47,8 +47,19 @@ jobs:
           env
           mkdir -p ~/.m2
           cp .github/settings.xml ~/.m2/settings.xml
-      - name: Verify GPG key
-        run: gpg --list-secret-keys --keyid-format LONG
+
+      - name: Import GPG key
+        run: |
+          # Create a temporary file for the key
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" > private_key.asc
+          # Import the key with proper permissions
+          gpg --batch --import private_key.asc
+          # Clean up
+          rm private_key.asc
+          # Trust the key
+          echo -e "5\ny\n" | gpg --batch --command-fd 0 --expert --edit-key $(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2) trust
+          # Verify the key is imported
+          gpg --list-secret-keys --keyid-format LONG
 
       - name: Deploy to Maven Central
         run: mvn --batch-mode -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} clean deploy
