@@ -31,11 +31,6 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
 
-      - name: Install GPG secret key
-        run: |
-            echo "${{ secrets.GPG_SECRET_KEY }}" | gpg --batch --import
-            gpg --list-secret-keys --keyid-format LONG
-
       - name: Configure Git User
         run: |
           git config user.name "GitHub Actions"
