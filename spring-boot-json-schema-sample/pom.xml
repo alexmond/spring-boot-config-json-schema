@@ -11,9 +11,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-json-schema-sample</name>
     <description>spring-boot-json-schema-sample</description>
-    <properties>
-        <java.version>17</java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

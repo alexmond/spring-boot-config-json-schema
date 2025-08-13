@@ -31,6 +31,11 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
 
+      - name: Install GPG secret key
+        run: |
+            echo "${{ secrets.GPG_SECRET_KEY }}" | gpg --batch --import
+            gpg --list-secret-keys --keyid-format LONG
+
       - name: Configure Git User
         run: |
           git config user.name "GitHub Actions"
@@ -41,6 +46,12 @@ jobs:
           mvn versions:set -DnewVersion=${{ github.event.inputs.releaseVersion }}
           git commit -am "Prepare release ${{ github.event.inputs.releaseVersion }}"
           git tag -a v${{ github.event.inputs.releaseVersion }} -m "Release v${{ github.event.inputs.releaseVersion }}"
+
+      - name: Copy Maven settings.xml
+        run: |
+          env
+          mkdir -p ~/.m2
+          cp .github/settings.xml ~/.m2/settings.xml
 
 #      - name: Deploy to Maven Central
 #        run: mvn --batch-mode -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} clean deploy
