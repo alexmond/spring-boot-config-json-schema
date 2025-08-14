@@ -9,8 +9,14 @@
     </parent>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
     <version>0.0.4-SNAPSHOT</version>
-    <name>spring-boot-config-json-schema-starter</name>
-    <description>spring-boot-config-json-schema-starter</description>
+    <name>Spring Boot Config Json Schema Starter</name>
+
+    <url>https://github.com/alexmond/spring-boot-config-json-schema/</url>
+    <description>A Spring Boot library for generating JSON Schema documentation from configuration properties,
+        supporting both annotated beans and environment properties. Includes type mapping and property collection
+        services.
+    </description>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,6 +79,10 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>pl.project13.maven</groupId>
+                        <artifactId>git-commit-id-plugin</artifactId>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

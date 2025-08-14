@@ -15,6 +15,14 @@
     <packaging>pom</packaging>
     <properties>
         <java.version>17</java.version>
+
+        <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
+
+        <antora-maven-plugin.version>0.0.4</antora-maven-plugin.version>
+        <org-antora-maven-plugin.version>1.0.0-alpha.5</org-antora-maven-plugin.version>
+        <node.version>v16.20.2</node.version>
+        <antora-maven-plugin.phase>prepare-package</antora-maven-plugin.phase>
+
     </properties>
     <url>https://github.com/alexmond/spring-boot-config-json-schema/</url>
     <description>A Spring Boot library for generating JSON Schema documentation from configuration properties,
@@ -49,10 +57,36 @@
 <!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
 <!--        </repository>-->
 <!--    </distributionManagement>-->
+    <dependencyManagement>
+        <dependencies>
 
+        </dependencies>
+    </dependencyManagement>
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>pl.project13.maven</groupId>
+                    <artifactId>git-commit-id-plugin</artifactId>
+                    <version>${git-commit-id-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>revision</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <verbose>true</verbose>
+                        <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+                        <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                        <generateGitPropertiesFilename>
+                            ${project.build.outputDirectory}/git.properties
+                        </generateGitPropertiesFilename>
+                        <skipPoms>false</skipPoms>
+                        <useNativeGit>true</useNativeGit>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
@@ -116,16 +150,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
     </build>
 
     <modules>
@@ -141,73 +165,15 @@
             </modules>
         </profile>
         <profile>
+            <id>docs</id>
+            <modules>
+                <module>spring-boot-config-json-schema-starter</module>
+                <module>docs</module>
+            </modules>
+        </profile>
+        <profile>
             <id>release</id>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-source-plugin</artifactId>
-                            <version>3.2.1</version>
-                            <executions>
-                                <execution>
-                                    <id>attach-sources</id>
-                                    <goals>
-                                        <goal>jar-no-fork</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                        <!-- Generate JavaDoc JAR -->
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <version>3.4.1</version>
-                            <executions>
-                                <execution>
-                                    <id>attach-javadocs</id>
-                                    <goals>
-                                        <goal>jar</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-
-                        <!-- GPG signing -->
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-gpg-plugin</artifactId>
-                            <version>3.0.1</version>
-                            <executions>
-                                <execution>
-                                    <id>sign-artifacts</id>
-                                    <phase>verify</phase>
-                                    <goals>
-                                        <goal>sign</goal>
-                                    </goals>
-                                    <configuration>
-                                        <!-- Prevent gpg from using pinentry -->
-                                        <gpgArguments>
-                                            <arg>--pinentry-mode</arg>
-                                            <arg>loopback</arg>
-                                        </gpgArguments>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.sonatype.central</groupId>
-                            <artifactId>central-publishing-maven-plugin</artifactId>
-                            <version>0.8.0</version>
-                            <extensions>true</extensions>
-                            <configuration>
-                                <publishingServerId>central</publishingServerId>
-                                <autoPublish>true</autoPublish>
-                                <waitUntil>published</waitUntil>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
