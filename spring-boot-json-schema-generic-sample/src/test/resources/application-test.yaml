@@ -1,0 +1,8 @@
+logging:
+  level:
+    root: debug
+
+spring:
+  cloud:
+    config:
+      enabled: false

@@ -25,6 +25,16 @@ A Spring Boot starter library uses spring context for @ConfigurationProperties a
 - Java 17 or higher
 - Spring Boot 3.x
 - Maven or Gradle build system
+- To process project own properties following dependency should be included
+
+[source,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+</dependency>
+----
 
 [#usage]
 == Usage
@@ -33,12 +43,12 @@ A Spring Boot starter library uses spring context for @ConfigurationProperties a
 
 Add the following dependency to your `pom.xml`:
 
-[source,xml]
+[source,xml,subs=+attributes]
 ----
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>0.0.2</version>
+    <version>{project-version}</version>
     <scope>test</scope>
 </dependency>
 ----
@@ -79,12 +89,12 @@ class SampleJsonSchemaGeneratorTests {
 
 To expose the JSON schema via a REST endpoint (similar to Swagger API docs), first add the following dependency to your `pom.xml`:
 
-[source,xml]
+[source,xml,subs=+attributes]
 ----
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>0.0.2</version>
+    <version>{project-version}</version>
 </dependency>
 ----
 
@@ -105,3 +115,8 @@ public class GenerateJsonSchema {
 
 }
 ----
+
+[#editors]
+=== Using in editors
+
+

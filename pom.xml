@@ -162,12 +162,14 @@
             <modules>
                 <module>spring-boot-config-json-schema-starter</module>
                 <module>spring-boot-json-schema-sample</module>
+                <module>spring-boot-json-schema-generic-sample</module>
                 <module>docs</module>
             </modules>
         </profile>
         <profile>
             <id>docs</id>
             <modules>
+                <module>spring-boot-json-schema-generic-sample</module>
                 <module>spring-boot-config-json-schema-starter</module>
                 <module>docs</module>
             </modules>
