@@ -13,9 +13,6 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -52,31 +49,11 @@ jobs:
           cp .github/settings.xml ~/.m2/settings.xml
 
       - name: Deploy to Maven Central
-        run: mvn --batch-mode -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} clean deploy -Prelease
+        run: mvn --batch-mode -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} clean deploy -Prelease --no-transfer-progress
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
-      - name: Build with Docs
-        run: mvn -B package --file pom.xml -Pdocs
-
-      - name: Verify docs output exists
-        run: |
-          if [ ! -d "docs/target/docs/multipage" ]; then
-            echo "Expected directory 'docs/target/docs/multipage' not found."
-            echo "Please build your docs before deploying (ensure the build job populates this path)."
-            exit 1
-          fi
-
-      - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/target/docs/multipage
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
 
       - name: Prepare for Next Development Version
         run: |
