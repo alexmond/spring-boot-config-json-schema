@@ -5,27 +5,33 @@ Alex Mondshain <alex.mondshaing@gmail.com>
 :example-caption!:
 ifndef::imagesdir[:imagesdir: images]
 
-A Spring Boot starter library that automatically generates JSON Schema documentation for your application's configuration properties. It simplifies the process of documenting and validating configuration by generating JSON Schema from your Spring Boot configuration classes.
+A Spring Boot starter library that automatically generates JSON Schema documentation for your application's configuration properties.
+It simplifies the process of documenting and validating configuration by generating JSON Schema from your Spring Boot configuration classes.
 
 [#introduction]
 == Introduction
 
-A Spring Boot starter library uses spring context for @ConfigurationProperties and processes all relevant properties from spring boot own config metadata in class path spring-configuration-metadata.json to produce json schema that then can be used by compatible editors to edit and validate configuration outside of the java project project or validate configuration during ci
+A Spring Boot starter library uses Spring Context to process @ConfigurationProperties annotated classes and relevant properties from Spring Boot's configuration metadata (spring-configuration-metadata.json) to generate JSON Schema.
+The generated schema can be used by compatible editors for configuration validation and assistance outside of the Java project, as well as for configuration validation during CI/CD pipelines.
 
 == Key Features
 
-- Support for validation annotations and property constraints
-- Compatible with Spring Boot 3.x
+- Automatic JSON Schema generation from @ConfigurationProperties classes
+- Support for validation annotations and property constraints (JSR-380/Bean Validation)
+- Full compatibility with Spring Boot 3.x
 - Java 17+ runtime support
-- REST API endpoint for schema access
+- Built-in REST API endpoint for schema access
 - Unit test integration for schema generation
+- IDE integration support for configuration assistance
+- Support for nested properties and complex types
+- Custom validation rule support
 
 == Prerequisites
 
 - Java 17 or higher
 - Spring Boot 3.x
 - Maven or Gradle build system
-- To process project own properties following dependency should be included
+- Configuration processor for property metadata generation:
 
 [source,xml,subs=+attributes]
 ----
@@ -117,6 +123,44 @@ public class GenerateJsonSchema {
 ----
 
 [#editors]
-=== Using in editors
+== Using in editors
 
+=== Usage in IntelliJ IDEA and other JetBrains IDEs
 
+Add schema reference to your YAML configuration file:
+
+[source,yaml]
+----
+$schema: "https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json"
+
+spring:
+  datasource:
+    url:
+----
+
+Examples:
+
+[.thumb]
+image::Intellij1.png[scaledwidth=75%]
+[.thumb]
+image::Intellij2.png[scaledwidth=75%]
+
+=== Usage in Visual Studio Code
+
+Add schema reference using YAML language server directive (requires YAML Language Support by Red Hat extension):
+
+[source,yaml]
+----
+# yaml-language-server: $schema=https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json
+
+spring:
+  datasource:
+    name:
+----
+
+Examples:
+
+[.thumb]
+image::vcs1.png[scaledwidth=75%]
+[.thumb]
+image::vcs2.png[scaledwidth=75%]

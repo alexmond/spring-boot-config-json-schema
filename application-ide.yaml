@@ -1,0 +1,10 @@
+$schema: "https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json"
+
+spring:
+  datasource:
+    url:
+
+
+
+
+
