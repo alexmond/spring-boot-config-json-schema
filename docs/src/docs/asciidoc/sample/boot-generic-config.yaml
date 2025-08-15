@@ -563,7 +563,6 @@ properties:
                 type: "object"
                 description: "Java keystore SSL trust material."
                 additionalProperties:
-                  type: "object"
                   properties:
                     keystore:
                       type: "object"
@@ -587,6 +586,7 @@ properties:
                           type: "string"
                         type:
                           type: "string"
+                  type: "object"
               watch:
                 type: "object"
                 properties:
@@ -601,7 +601,6 @@ properties:
                 type: "object"
                 description: "PEM-encoded SSL trust material."
                 additionalProperties:
-                  type: "object"
                   properties:
                     keystore:
                       type: "object"
@@ -629,6 +628,7 @@ properties:
                           type: "string"
                         type:
                           type: "string"
+                  type: "object"
       sql:
         type: "object"
         properties:
@@ -2640,7 +2640,7 @@ properties:
             description: "Maximum total number of parts permitted in a multipart/form-data\
               \ request. Requests that exceed this limit will be rejected. A value\
               \ of less than 0 means no limit."
-            default: 10
+            default: 50
           additional-tld-skip-patterns:
             type: "array"
             description: "List of additional patterns that match jars to ignore for\
@@ -3345,7 +3345,6 @@ properties:
         type: "object"
         description: "Sample object map"
         additionalProperties:
-          type: "object"
           properties:
             nested-config-list:
               type: "array"
@@ -3355,6 +3354,7 @@ properties:
               type: "integer"
             config-map1:
               type: "string"
+          type: "object"
       integer-sample:
         type: "integer"
         description: "Sample integer property"

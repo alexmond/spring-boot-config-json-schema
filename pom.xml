@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.alexmond</groupId>
@@ -17,12 +17,6 @@
         <java.version>17</java.version>
 
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-
-        <antora-maven-plugin.version>0.0.4</antora-maven-plugin.version>
-        <org-antora-maven-plugin.version>1.0.0-alpha.5</org-antora-maven-plugin.version>
-        <node.version>v16.20.2</node.version>
-        <antora-maven-plugin.phase>prepare-package</antora-maven-plugin.phase>
-
     </properties>
     <url>https://github.com/alexmond/spring-boot-config-json-schema/</url>
     <description>A Spring Boot library for generating JSON Schema documentation from configuration properties,

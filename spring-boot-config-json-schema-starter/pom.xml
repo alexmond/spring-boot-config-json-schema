@@ -16,6 +16,9 @@
         supporting both annotated beans and environment properties. Includes type mapping and property collection
         services.
     </description>
+    <properties>
+        <commons-text.version>1.14.0</commons-text.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -25,6 +28,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${commons-text.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,7 +65,8 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jsonSchema</artifactId>
-            <version>2.17.0</version> <!-- Use the latest stable version -->
+            <version>2.17.0</version>
+            <scope>test</scope><!-- Use the latest stable version -->
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>

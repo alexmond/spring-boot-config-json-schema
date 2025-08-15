@@ -661,7 +661,6 @@
                   "type" : "object",
                   "description" : "Java keystore SSL trust material.",
                   "additionalProperties" : {
-                    "type" : "object",
                     "properties" : {
                       "keystore" : {
                         "type" : "object",
@@ -697,7 +696,8 @@
                           }
                         }
                       }
-                    }
+                    },
+                    "type" : "object"
                   }
                 },
                 "watch" : {
@@ -719,7 +719,6 @@
                   "type" : "object",
                   "description" : "PEM-encoded SSL trust material.",
                   "additionalProperties" : {
-                    "type" : "object",
                     "properties" : {
                       "keystore" : {
                         "type" : "object",
@@ -761,7 +760,8 @@
                           }
                         }
                       }
-                    }
+                    },
+                    "type" : "object"
                   }
                 }
               }
@@ -3131,7 +3131,7 @@
             "max-part-count" : {
               "type" : "integer",
               "description" : "Maximum total number of parts permitted in a multipart/form-data request. Requests that exceed this limit will be rejected. A value of less than 0 means no limit.",
-              "default" : 10
+              "default" : 50
             },
             "additional-tld-skip-patterns" : {
               "type" : "array",
@@ -3877,7 +3877,6 @@
           "type" : "object",
           "description" : "Sample object map",
           "additionalProperties" : {
-            "type" : "object",
             "properties" : {
               "nested-config-list" : {
                 "type" : "array",
@@ -3891,7 +3890,8 @@
               "config-map1" : {
                 "type" : "string"
               }
-            }
+            },
+            "type" : "object"
           }
         },
         "integer-sample" : {
