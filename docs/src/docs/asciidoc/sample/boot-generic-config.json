@@ -1,0 +1,4005 @@
+{
+  "$schema" : "https://json-schema.org/draft/2020-12/schema",
+  "$id" : "your-schema-id",
+  "title" : "Spring Boot Configuration Properties",
+  "description" : "Auto-generated schema from configuration metadata",
+  "type" : "object",
+  "properties" : {
+    "logging" : {
+      "type" : "object",
+      "properties" : {
+        "charset" : {
+          "type" : "object",
+          "properties" : {
+            "console" : {
+              "type" : "string",
+              "description" : "Charset to use for console output."
+            },
+            "file" : {
+              "type" : "string",
+              "description" : "Charset to use for file output."
+            }
+          }
+        },
+        "include-application-name" : {
+          "type" : "boolean",
+          "description" : "Whether to include the application name in the logs.",
+          "default" : true
+        },
+        "level" : {
+          "type" : "object",
+          "description" : "Log levels severity mapping. For instance, `logging.level.org.springframework=DEBUG`.",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "include-application-group" : {
+          "type" : "boolean",
+          "description" : "Whether to include the application group in the logs.",
+          "default" : true
+        },
+        "pattern" : {
+          "type" : "object",
+          "properties" : {
+            "console" : {
+              "type" : "string",
+              "description" : "Appender pattern for output to the console. Its default value varies according to the logging system."
+            },
+            "file" : {
+              "type" : "string",
+              "description" : "Appender pattern for output to a file. Its default value varies according to the logging system."
+            },
+            "correlation" : {
+              "type" : "string",
+              "description" : "Appender pattern for log correlation. Its default value varies according to the logging system."
+            },
+            "level" : {
+              "type" : "string",
+              "description" : "Appender pattern for log level.",
+              "default" : "%5p"
+            },
+            "rolling-file-name" : {
+              "type" : "string",
+              "description" : "Pattern for rolled-over log file names. Supported only with the default Logback setup.",
+              "default" : "${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz",
+              "deprecated" : true,
+              "deprecationReplacement" : "logging.logback.rollingpolicy.file-name-pattern"
+            },
+            "dateformat" : {
+              "type" : "string",
+              "description" : "Appender pattern for log date format.",
+              "default" : "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+            }
+          }
+        },
+        "threshold" : {
+          "type" : "object",
+          "properties" : {
+            "console" : {
+              "type" : "string",
+              "description" : "Log level threshold for console output.",
+              "default" : "TRACE"
+            },
+            "file" : {
+              "type" : "string",
+              "description" : "Log level threshold for file output.",
+              "default" : "TRACE"
+            }
+          }
+        },
+        "register-shutdown-hook" : {
+          "type" : "boolean",
+          "description" : "Register a shutdown hook for the logging system when it is initialized. Disabled automatically when deployed as a war file.",
+          "default" : true
+        },
+        "log4j2" : {
+          "type" : "object",
+          "properties" : {
+            "config" : {
+              "type" : "object",
+              "properties" : {
+                "override" : {
+                  "type" : "array",
+                  "description" : "Overriding configuration files used to create a composite configuration. Can be prefixed with 'optional:' to only load the override if it exists.",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "logback" : {
+          "type" : "object",
+          "properties" : {
+            "rollingpolicy" : {
+              "type" : "object",
+              "properties" : {
+                "file-name-pattern" : {
+                  "type" : "string",
+                  "description" : "Pattern for rolled-over log file names.",
+                  "default" : "${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz"
+                },
+                "clean-history-on-start" : {
+                  "type" : "boolean",
+                  "description" : "Whether to clean the archive log files on startup.",
+                  "default" : false
+                },
+                "max-history" : {
+                  "type" : "integer",
+                  "description" : "Maximum number of archive log files to keep.",
+                  "default" : 7
+                },
+                "max-file-size" : {
+                  "type" : "string",
+                  "description" : "Maximum log file size.",
+                  "default" : "10MB"
+                },
+                "total-size-cap" : {
+                  "type" : "string",
+                  "description" : "Total size of log backups to be kept.",
+                  "default" : "0B"
+                }
+              }
+            }
+          }
+        },
+        "file" : {
+          "type" : "object",
+          "properties" : {
+            "path" : {
+              "type" : "string",
+              "description" : "Location of the log file. For instance, `/var/log`."
+            },
+            "clean-history-on-start" : {
+              "type" : "boolean",
+              "description" : "Whether to clean the archive log files on startup. Only supported with the default logback setup.",
+              "default" : false,
+              "deprecated" : true,
+              "deprecationReplacement" : "logging.logback.rollingpolicy.clean-history-on-start"
+            },
+            "max-history" : {
+              "type" : "integer",
+              "description" : "Maximum number of archive log files to keep. Only supported with the default logback setup.",
+              "default" : 7,
+              "deprecated" : true,
+              "deprecationReplacement" : "logging.logback.rollingpolicy.max-history"
+            },
+            "name" : {
+              "type" : "string",
+              "description" : "Log file name (for instance, `myapp.log`). Names can be an exact location or relative to the current directory."
+            },
+            "max-size" : {
+              "type" : "string",
+              "description" : "Maximum log file size. Only supported with the default logback setup.",
+              "default" : "10MB",
+              "deprecated" : true,
+              "deprecationReplacement" : "logging.logback.rollingpolicy.max-file-size"
+            },
+            "total-size-cap" : {
+              "type" : "string",
+              "description" : "Total size of log backups to be kept. Only supported with the default logback setup.",
+              "default" : "0B",
+              "deprecated" : true,
+              "deprecationReplacement" : "logging.logback.rollingpolicy.total-size-cap"
+            }
+          }
+        },
+        "exception-conversion-word" : {
+          "type" : "string",
+          "description" : "Conversion word used when logging exceptions.",
+          "default" : "%wEx"
+        },
+        "structured" : {
+          "type" : "object",
+          "properties" : {
+            "ecs" : {
+              "type" : "object",
+              "properties" : {
+                "service" : {
+                  "type" : "object",
+                  "properties" : {
+                    "environment" : {
+                      "type" : "string",
+                      "description" : "Structured ECS service environment."
+                    },
+                    "node-name" : {
+                      "type" : "string",
+                      "description" : "Structured ECS service node name."
+                    },
+                    "name" : {
+                      "type" : "string",
+                      "description" : "Structured ECS service name (defaults to 'spring.application.name')."
+                    },
+                    "version" : {
+                      "type" : "string",
+                      "description" : "Structured ECS service version (defaults to 'spring.application.version')."
+                    }
+                  }
+                }
+              }
+            },
+            "gelf" : {
+              "type" : "object",
+              "properties" : {
+                "service" : {
+                  "type" : "object",
+                  "properties" : {
+                    "version" : {
+                      "type" : "string",
+                      "description" : "Structured GELF service version (defaults to 'spring.application.version')."
+                    }
+                  }
+                },
+                "host" : {
+                  "type" : "string",
+                  "description" : "Structured GELF host (defaults to 'spring.application.name')."
+                }
+              }
+            },
+            "format" : {
+              "type" : "object",
+              "properties" : {
+                "console" : {
+                  "type" : "string",
+                  "description" : "Structured logging format for output to the console. Must be either a format id or a fully qualified class name.",
+                  "examples" : [ "ecs", "gelf", "logstash" ]
+                },
+                "file" : {
+                  "type" : "string",
+                  "description" : "Structured logging format for output to a file. Must be either a format id or a fully qualified class name.",
+                  "examples" : [ "ecs", "gelf", "logstash" ]
+                }
+              }
+            },
+            "json" : {
+              "type" : "object",
+              "properties" : {
+                "add" : {
+                  "type" : "object",
+                  "description" : "Additional members that should be added to structured logging JSON",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                },
+                "include" : {
+                  "type" : "array",
+                  "description" : "Member paths that should be included in structured logging JSON",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "stacktrace" : {
+                  "type" : "object",
+                  "properties" : {
+                    "include-common-frames" : {
+                      "type" : "boolean",
+                      "description" : "Whether common frames should be included."
+                    },
+                    "include-hashes" : {
+                      "type" : "boolean",
+                      "description" : "Whether stack trace hashes should be included."
+                    },
+                    "printer" : {
+                      "type" : "string",
+                      "description" : "Name of the printer to use. Can be 'standard', 'logging-system', or the fully-qualified class name of a StackTracePrinter. When not specified 'logging-system' or 'standard' will be used depending if other properties are set.",
+                      "examples" : [ "standard", "logging-system" ]
+                    },
+                    "root" : {
+                      "type" : "string",
+                      "description" : "Root ordering (root first or root last)."
+                    },
+                    "max-length" : {
+                      "type" : "integer",
+                      "description" : "Maximum length to print."
+                    },
+                    "max-throwable-depth" : {
+                      "type" : "integer",
+                      "description" : "Maximum throwable depth to print."
+                    }
+                  }
+                },
+                "rename" : {
+                  "type" : "object",
+                  "description" : "Mapping between member paths and an alternative name that should be used in structured logging JSON",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                },
+                "context" : {
+                  "type" : "object",
+                  "properties" : {
+                    "include" : {
+                      "type" : "boolean",
+                      "description" : "Whether context data should be included in the JSON."
+                    },
+                    "prefix" : {
+                      "type" : "string",
+                      "description" : "The prefix to use when inserting context data."
+                    }
+                  }
+                },
+                "exclude" : {
+                  "type" : "array",
+                  "description" : "Member paths that should be excluded from structured logging JSON",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "customizer" : {
+                  "type" : "array",
+                  "description" : "Fully qualified class names of StructuredLoggingJsonMembersCustomizer implementations",
+                  "items" : {
+                    "type" : "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "config" : {
+          "type" : "string",
+          "description" : "Location of the logging configuration file. For instance, `classpath:logback.xml` for Logback."
+        },
+        "group" : {
+          "type" : "object",
+          "description" : "Log groups to quickly change multiple loggers at the same time. For instance, `logging.group.db=org.hibernate,org.springframework.jdbc`.",
+          "additionalProperties" : {
+            "type" : "object"
+          }
+        }
+      }
+    },
+    "spring" : {
+      "type" : "object",
+      "properties" : {
+        "webservices" : {
+          "type" : "object",
+          "properties" : {
+            "path" : {
+              "type" : "string",
+              "description" : "Path that serves as the base URI for the services.",
+              "default" : "/services"
+            },
+            "wsdl-locations" : {
+              "type" : "array",
+              "description" : "Comma-separated list of locations of WSDLs and accompanying XSDs to be exposed as beans.",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "servlet" : {
+              "type" : "object",
+              "properties" : {
+                "init" : {
+                  "type" : "object",
+                  "description" : "Servlet init parameters to pass to Spring Web Services.",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                },
+                "load-on-startup" : {
+                  "type" : "integer",
+                  "description" : "Load on startup priority of the Spring Web Services servlet.",
+                  "default" : -1
+                }
+              }
+            }
+          }
+        },
+        "data" : {
+          "type" : "object",
+          "properties" : {
+            "web" : {
+              "type" : "object",
+              "properties" : {
+                "pageable" : {
+                  "type" : "object",
+                  "properties" : {
+                    "page-parameter" : {
+                      "type" : "string",
+                      "description" : "Page index parameter name.",
+                      "default" : "page"
+                    },
+                    "serialization-mode" : {
+                      "type" : "string",
+                      "description" : "Configures how to render Spring Data Pageable instances.",
+                      "default" : "direct",
+                      "enum" : [ "DIRECT", "direct", "VIA_DTO", "via_dto" ]
+                    },
+                    "one-indexed-parameters" : {
+                      "type" : "boolean",
+                      "description" : "Whether to expose and assume 1-based page number indexes. Defaults to \"false\", meaning a page number of 0 in the request equals the first page.",
+                      "default" : false
+                    },
+                    "max-page-size" : {
+                      "type" : "integer",
+                      "description" : "Maximum page size to be accepted.",
+                      "default" : 2000
+                    },
+                    "prefix" : {
+                      "type" : "string",
+                      "description" : "General prefix to be prepended to the page number and page size parameters.",
+                      "default" : ""
+                    },
+                    "size-parameter" : {
+                      "type" : "string",
+                      "description" : "Page size parameter name.",
+                      "default" : "size"
+                    },
+                    "default-page-size" : {
+                      "type" : "integer",
+                      "description" : "Default page size.",
+                      "default" : 20
+                    },
+                    "qualifier-delimiter" : {
+                      "type" : "string",
+                      "description" : "Delimiter to be used between the qualifier and the actual page number and size properties.",
+                      "default" : "_"
+                    }
+                  }
+                },
+                "sort" : {
+                  "type" : "object",
+                  "properties" : {
+                    "sort-parameter" : {
+                      "type" : "string",
+                      "description" : "Sort parameter name.",
+                      "default" : "sort"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servlet" : {
+          "type" : "object",
+          "properties" : {
+            "multipart" : {
+              "type" : "object",
+              "properties" : {
+                "max-request-size" : {
+                  "type" : "string",
+                  "description" : "Max request size.",
+                  "default" : "10MB"
+                },
+                "max-file-size" : {
+                  "type" : "string",
+                  "description" : "Max file size.",
+                  "default" : "1MB"
+                },
+                "strict-servlet-compliance" : {
+                  "type" : "boolean",
+                  "description" : "Whether to resolve the multipart request strictly complying with the Servlet specification, only to be used for \"multipart/form-data\" requests.",
+                  "default" : false
+                },
+                "location" : {
+                  "type" : "string",
+                  "description" : "Intermediate location of uploaded files."
+                },
+                "file-size-threshold" : {
+                  "type" : "string",
+                  "description" : "Threshold after which files are written to disk.",
+                  "default" : "0B"
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Whether to enable support of multipart uploads.",
+                  "default" : true
+                },
+                "resolve-lazily" : {
+                  "type" : "boolean",
+                  "description" : "Whether to resolve the multipart request lazily at the time of file or parameter access.",
+                  "default" : false
+                }
+              }
+            }
+          }
+        },
+        "profiles" : {
+          "type" : "object",
+          "properties" : {
+            "active" : {
+              "type" : "array",
+              "description" : "Comma-separated list of active profiles. Can be overridden by a command line switch.",
+              "items" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "webflux" : {
+          "type" : "object",
+          "properties" : {
+            "static-path-pattern" : {
+              "type" : "string",
+              "description" : "Path pattern used for static resources.",
+              "default" : "/**"
+            },
+            "webjars-path-pattern" : {
+              "type" : "string",
+              "description" : "Path pattern used for WebJar assets.",
+              "default" : "/webjars/**"
+            },
+            "hiddenmethod" : {
+              "type" : "object",
+              "properties" : {
+                "filter" : {
+                  "type" : "object",
+                  "properties" : {
+                    "enabled" : {
+                      "type" : "boolean",
+                      "description" : "Whether to enable Spring's HiddenHttpMethodFilter.",
+                      "default" : false
+                    }
+                  }
+                }
+              }
+            },
+            "multipart" : {
+              "type" : "object",
+              "properties" : {
+                "file-storage-directory" : {
+                  "type" : "string",
+                  "description" : "Directory used to store file parts larger than 'maxInMemorySize'. Default is a directory named 'spring-multipart' created under the system temporary directory. Ignored when using the PartEvent streaming support."
+                },
+                "max-in-memory-size" : {
+                  "type" : "string",
+                  "description" : "Maximum amount of memory allowed per part before it's written to disk. Set to -1 to store all contents in memory.",
+                  "default" : "256KB"
+                },
+                "max-parts" : {
+                  "type" : "integer",
+                  "description" : "Maximum number of parts allowed in a given multipart request. Default is -1 which enforces no limits.",
+                  "default" : -1
+                },
+                "headers-charset" : {
+                  "type" : "string",
+                  "description" : "Character set used to decode headers.",
+                  "default" : "UTF-8"
+                },
+                "max-headers-size" : {
+                  "type" : "string",
+                  "description" : "Maximum amount of memory allowed per headers section of each part. Set to -1 to enforce no limits.",
+                  "default" : "10KB"
+                },
+                "max-disk-usage-per-part" : {
+                  "type" : "string",
+                  "description" : "Maximum amount of disk space allowed per part. Default is -1 which enforces no limits.",
+                  "default" : "-1B"
+                }
+              }
+            },
+            "format" : {
+              "type" : "object",
+              "properties" : {
+                "date" : {
+                  "type" : "string",
+                  "description" : "Date format to use, for example 'dd/MM/yyyy'. Used for formatting of java.util.Date and java.time.LocalDate.",
+                  "examples" : [ "dd/MM/yyyy", "iso" ]
+                },
+                "date-time" : {
+                  "type" : "string",
+                  "description" : "Date-time format to use, for example 'yyyy-MM-dd HH:mm:ss'. Used for formatting of java.time's LocalDateTime, OffsetDateTime, and ZonedDateTime.",
+                  "examples" : [ "yyyy-MM-dd HH:mm:ss", "iso", "iso-offset" ]
+                },
+                "time" : {
+                  "type" : "string",
+                  "description" : "Time format to use, for example 'HH:mm:ss'. Used for formatting of java.time's LocalTime and OffsetTime.",
+                  "examples" : [ "HH:mm:ss", "iso", "iso-offset" ]
+                }
+              }
+            },
+            "base-path" : {
+              "type" : "string",
+              "description" : "Base path for all web handlers."
+            },
+            "problemdetails" : {
+              "type" : "object",
+              "properties" : {
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Whether RFC 9457 Problem Details support should be enabled.",
+                  "default" : false
+                }
+              }
+            }
+          }
+        },
+        "jdbc" : {
+          "type" : "object",
+          "properties" : {
+            "template" : {
+              "type" : "object",
+              "properties" : {
+                "max-rows" : {
+                  "type" : "integer",
+                  "description" : "Maximum number of rows. Use -1 to use the JDBC driver's default configuration.",
+                  "default" : -1
+                },
+                "ignore-warnings" : {
+                  "type" : "boolean",
+                  "description" : "Whether to ignore JDBC statement warnings (SQLWarning). When set to false, throw an SQLWarningException instead.",
+                  "default" : true
+                },
+                "skip-results-processing" : {
+                  "type" : "boolean",
+                  "description" : "Whether results processing should be skipped. Can be used to optimize callable statement processing when we know that no results are being passed back.",
+                  "default" : false
+                },
+                "fetch-size" : {
+                  "type" : "integer",
+                  "description" : "Number of rows that should be fetched from the database when more rows are needed. Use -1 to use the JDBC driver's default configuration.",
+                  "default" : -1
+                },
+                "results-map-case-insensitive" : {
+                  "type" : "boolean",
+                  "description" : "Whether execution of a CallableStatement will return the results in a Map that uses case-insensitive names for the parameters.",
+                  "default" : false
+                },
+                "skip-undeclared-results" : {
+                  "type" : "boolean",
+                  "description" : "Whether undeclared results should be skipped.",
+                  "default" : false
+                },
+                "query-timeout" : {
+                  "type" : "string",
+                  "description" : "Query timeout. Default is to use the JDBC driver's default configuration. If a duration suffix is not specified, seconds will be used."
+                }
+              }
+            }
+          }
+        },
+        "ssl" : {
+          "type" : "object",
+          "properties" : {
+            "bundle" : {
+              "type" : "object",
+              "properties" : {
+                "jks" : {
+                  "type" : "object",
+                  "description" : "Java keystore SSL trust material.",
+                  "additionalProperties" : {
+                    "type" : "object",
+                    "properties" : {
+                      "keystore" : {
+                        "type" : "object",
+                        "properties" : {
+                          "password" : {
+                            "type" : "string"
+                          },
+                          "provider" : {
+                            "type" : "string"
+                          },
+                          "location" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "truststore" : {
+                        "type" : "object",
+                        "properties" : {
+                          "password" : {
+                            "type" : "string"
+                          },
+                          "provider" : {
+                            "type" : "string"
+                          },
+                          "location" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "watch" : {
+                  "type" : "object",
+                  "properties" : {
+                    "file" : {
+                      "type" : "object",
+                      "properties" : {
+                        "quiet-period" : {
+                          "type" : "string",
+                          "description" : "Quiet period, after which changes are detected.",
+                          "default" : "10s"
+                        }
+                      }
+                    }
+                  }
+                },
+                "pem" : {
+                  "type" : "object",
+                  "description" : "PEM-encoded SSL trust material.",
+                  "additionalProperties" : {
+                    "type" : "object",
+                    "properties" : {
+                      "keystore" : {
+                        "type" : "object",
+                        "properties" : {
+                          "verify-keys" : {
+                            "type" : "boolean"
+                          },
+                          "private-key" : {
+                            "type" : "string"
+                          },
+                          "certificate" : {
+                            "type" : "string"
+                          },
+                          "private-key-password" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "truststore" : {
+                        "type" : "object",
+                        "properties" : {
+                          "verify-keys" : {
+                            "type" : "boolean"
+                          },
+                          "private-key" : {
+                            "type" : "string"
+                          },
+                          "certificate" : {
+                            "type" : "string"
+                          },
+                          "private-key-password" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "sql" : {
+          "type" : "object",
+          "properties" : {
+            "init" : {
+              "type" : "object",
+              "properties" : {
+                "mode" : {
+                  "type" : "string",
+                  "description" : "Mode to apply when determining whether initialization should be performed.",
+                  "default" : "embedded",
+                  "enum" : [ "ALWAYS", "always", "EMBEDDED", "embedded", "NEVER", "never" ]
+                },
+                "password" : {
+                  "type" : "string",
+                  "description" : "Password of the database to use when applying initialization scripts (if different)."
+                },
+                "schema-locations" : {
+                  "type" : "array",
+                  "description" : "Locations of the schema (DDL) scripts to apply to the database.",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "data-locations" : {
+                  "type" : "array",
+                  "description" : "Locations of the data (DML) scripts to apply to the database.",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "encoding" : {
+                  "type" : "string",
+                  "description" : "Encoding of the schema and data scripts."
+                },
+                "separator" : {
+                  "type" : "string",
+                  "description" : "Statement separator in the schema and data scripts.",
+                  "default" : ";"
+                },
+                "platform" : {
+                  "type" : "string",
+                  "description" : "Platform to use in the default schema or data script locations, schema-${platform}.sql and data-${platform}.sql.",
+                  "default" : "all"
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Whether basic script-based initialization of an SQL database is enabled.",
+                  "default" : true,
+                  "deprecated" : true,
+                  "deprecationReplacement" : "spring.sql.init.mode"
+                },
+                "username" : {
+                  "type" : "string",
+                  "description" : "Username of the database to use when applying initialization scripts (if different)."
+                },
+                "continue-on-error" : {
+                  "type" : "boolean",
+                  "description" : "Whether initialization should continue when an error occurs.",
+                  "default" : false
+                }
+              }
+            }
+          }
+        },
+        "lifecycle" : {
+          "type" : "object",
+          "properties" : {
+            "timeout-per-shutdown-phase" : {
+              "type" : "string",
+              "description" : "Timeout for the shutdown of any phase (group of SmartLifecycle beans with the same 'phase' value).",
+              "default" : "30s"
+            }
+          }
+        },
+        "cloud" : {
+          "type" : "object",
+          "properties" : {
+            "discovery" : {
+              "type" : "object",
+              "properties" : {
+                "client" : {
+                  "type" : "object",
+                  "properties" : {
+                    "simple" : {
+                      "type" : "object",
+                      "properties" : {
+                        "instances" : {
+                          "type" : "object",
+                          "additionalProperties" : {
+                            "type" : "object"
+                          }
+                        },
+                        "local" : {
+                          "type" : "object",
+                          "properties" : {
+                            "service-id" : {
+                              "type" : "string"
+                            },
+                            "metadata" : {
+                              "type" : "object",
+                              "additionalProperties" : {
+                                "type" : "string"
+                              }
+                            },
+                            "port" : {
+                              "type" : "integer",
+                              "default" : 0
+                            },
+                            "instance-id" : {
+                              "type" : "string"
+                            },
+                            "host" : {
+                              "type" : "string"
+                            },
+                            "secure" : {
+                              "type" : "boolean",
+                              "default" : false
+                            },
+                            "uri" : {
+                              "type" : "object",
+                              "properties" : {
+                                "l_upalpha" : {
+                                  "type" : "integer"
+                                },
+                                "l_alphanum" : {
+                                  "type" : "integer"
+                                },
+                                "user-info" : {
+                                  "type" : "string"
+                                },
+                                "h_uric" : {
+                                  "type" : "integer"
+                                },
+                                "l_server" : {
+                                  "type" : "integer"
+                                },
+                                "l_scheme" : {
+                                  "type" : "integer"
+                                },
+                                "serial-version-uid" : {
+                                  "type" : "integer"
+                                },
+                                "decoded-path" : {
+                                  "type" : "string"
+                                },
+                                "l_alpha" : {
+                                  "type" : "integer"
+                                },
+                                "l_scope_id" : {
+                                  "type" : "integer"
+                                },
+                                "decoded-authority" : {
+                                  "type" : "string"
+                                },
+                                "path" : {
+                                  "type" : "string"
+                                },
+                                "l_unreserved" : {
+                                  "type" : "integer"
+                                },
+                                "l_escaped" : {
+                                  "type" : "integer"
+                                },
+                                "h_userinfo" : {
+                                  "type" : "integer"
+                                },
+                                "h_server_percent" : {
+                                  "type" : "integer"
+                                },
+                                "h_dot" : {
+                                  "type" : "integer"
+                                },
+                                "scheme-specific-part" : {
+                                  "type" : "string"
+                                },
+                                "h_server" : {
+                                  "type" : "integer"
+                                },
+                                "h_scheme" : {
+                                  "type" : "integer"
+                                },
+                                "host" : {
+                                  "type" : "string"
+                                },
+                                "decoded-fragment" : {
+                                  "type" : "string"
+                                },
+                                "h_mark" : {
+                                  "type" : "integer"
+                                },
+                                "h_hex" : {
+                                  "type" : "integer"
+                                },
+                                "l_path" : {
+                                  "type" : "integer"
+                                },
+                                "l_pchar" : {
+                                  "type" : "integer"
+                                },
+                                "l_server_percent" : {
+                                  "type" : "integer"
+                                },
+                                "query" : {
+                                  "type" : "string"
+                                },
+                                "h_lowalpha" : {
+                                  "type" : "integer"
+                                },
+                                "hex-digits" : {
+                                  "type" : "object",
+                                  "properties" : { }
+                                },
+                                "l_lowalpha" : {
+                                  "type" : "integer"
+                                },
+                                "l_dash" : {
+                                  "type" : "integer"
+                                },
+                                "port" : {
+                                  "type" : "integer"
+                                },
+                                "authority" : {
+                                  "type" : "string"
+                                },
+                                "decoded-query" : {
+                                  "type" : "string"
+                                },
+                                "h_escaped" : {
+                                  "type" : "integer"
+                                },
+                                "decoded-scheme-specific-part" : {
+                                  "type" : "string"
+                                },
+                                "hash" : {
+                                  "type" : "integer"
+                                },
+                                "h_digit" : {
+                                  "type" : "integer"
+                                },
+                                "scheme" : {
+                                  "type" : "string"
+                                },
+                                "string" : {
+                                  "type" : "string"
+                                },
+                                "h_reserved" : {
+                                  "type" : "integer"
+                                },
+                                "h_reg_name" : {
+                                  "type" : "integer"
+                                },
+                                "h_pchar" : {
+                                  "type" : "integer"
+                                },
+                                "l_hex" : {
+                                  "type" : "integer"
+                                },
+                                "l_uric" : {
+                                  "type" : "integer"
+                                },
+                                "l_userinfo" : {
+                                  "type" : "integer"
+                                },
+                                "l_reg_name" : {
+                                  "type" : "integer"
+                                },
+                                "l_reserved" : {
+                                  "type" : "integer"
+                                },
+                                "h_unreserved" : {
+                                  "type" : "integer"
+                                },
+                                "h_dash" : {
+                                  "type" : "integer"
+                                },
+                                "l_dot" : {
+                                  "type" : "integer"
+                                },
+                                "h_alpha" : {
+                                  "type" : "integer"
+                                },
+                                "$assertions-disabled" : {
+                                  "type" : "boolean"
+                                },
+                                "h_alphanum" : {
+                                  "type" : "integer"
+                                },
+                                "fragment" : {
+                                  "type" : "string"
+                                },
+                                "h_upalpha" : {
+                                  "type" : "integer"
+                                },
+                                "h_scope_id" : {
+                                  "type" : "integer"
+                                },
+                                "l_digit" : {
+                                  "type" : "integer"
+                                },
+                                "l_mark" : {
+                                  "type" : "integer"
+                                },
+                                "h_path" : {
+                                  "type" : "integer"
+                                },
+                                "decoded-user-info" : {
+                                  "type" : "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "order" : {
+                          "type" : "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "refresh" : {
+              "type" : "object",
+              "properties" : {
+                "additional-property-sources-to-retain" : {
+                  "type" : "array",
+                  "description" : "Additional property sources to retain during a refresh. Typically only system property sources are retained. This property allows property sources, such as property sources created by EnvironmentPostProcessors to be retained as well.",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "extra-refreshable" : {
+                  "type" : "array",
+                  "description" : "Additional bean names or class names for beans to post process into refresh scope.",
+                  "default" : true,
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "never-refreshable" : {
+                  "type" : "string",
+                  "description" : "Comma separated list of bean names or class names for beans to never be refreshed or rebound.",
+                  "default" : true
+                },
+                "on-restart" : {
+                  "type" : "object",
+                  "properties" : {
+                    "enabled" : {
+                      "type" : "boolean",
+                      "description" : "Enable refreshing context on start.",
+                      "default" : true
+                    }
+                  }
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Enables autoconfiguration for the refresh scope and associated features.",
+                  "default" : "true"
+                }
+              }
+            },
+            "compatibility-verifier" : {
+              "type" : "object",
+              "properties" : {
+                "compatible-boot-versions" : {
+                  "type" : "array",
+                  "description" : "Default accepted versions for the Spring Boot dependency. You can set {@code x} for the patch version if you don't want to specify a concrete value. Example: {@code 3.5.x}",
+                  "default" : "3.5.x",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Enables creation of Spring Cloud compatibility verification.",
+                  "default" : false
+                }
+              }
+            },
+            "inetutils" : {
+              "type" : "object",
+              "properties" : {
+                "preferred-networks" : {
+                  "type" : "array",
+                  "description" : "List of Java regular expressions for network addresses that will be preferred.",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "use-only-site-local-interfaces" : {
+                  "type" : "boolean",
+                  "description" : "Whether to use only interfaces with site local addresses. See {@link InetAddress#isSiteLocalAddress()} for more details.",
+                  "default" : false
+                },
+                "timeout-seconds" : {
+                  "type" : "integer",
+                  "description" : "Timeout, in seconds, for calculating hostname.",
+                  "default" : 1
+                },
+                "ignored-interfaces" : {
+                  "type" : "array",
+                  "description" : "List of Java regular expressions for network interfaces that will be ignored.",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "default-hostname" : {
+                  "type" : "string",
+                  "description" : "The default hostname. Used in case of errors.",
+                  "default" : "localhost"
+                },
+                "default-ip-address" : {
+                  "type" : "string",
+                  "description" : "The default IP address. Used in case of errors.",
+                  "default" : "127.0.0.1"
+                }
+              }
+            },
+            "config" : {
+              "type" : "object",
+              "properties" : {
+                "request-connect-timeout" : {
+                  "type" : "integer",
+                  "description" : "timeout on waiting to connect to the Config Server.",
+                  "default" : 0
+                },
+                "send-all-labels" : {
+                  "type" : "boolean",
+                  "description" : "If set to true the client will send all labels to the server instead of sending one at a time. Support for this would require a config server version of 4.2.0 or higher.",
+                  "default" : false
+                },
+                "charset" : {
+                  "type" : "string",
+                  "description" : "The charset to read the resource from the config server.",
+                  "default" : "UTF-8"
+                },
+                "headers" : {
+                  "type" : "object",
+                  "description" : "Additional headers used to create the client request.",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                },
+                "override-system-properties" : {
+                  "type" : "boolean",
+                  "description" : "Flag to indicate that the external properties should override system properties. Default true.",
+                  "default" : true
+                },
+                "profile" : {
+                  "type" : "string",
+                  "description" : "The default profile to use when fetching remote configuration (comma-separated). Default is \"default\".",
+                  "default" : "default"
+                },
+                "label" : {
+                  "type" : "string",
+                  "description" : "The label name to use to pull remote configuration properties. The default is set on the server (generally \"main\" for a git based server)."
+                },
+                "uri" : {
+                  "type" : "array",
+                  "description" : "The URI of the remote server (default http://localhost:8888).",
+                  "default" : [ "http://localhost:8888" ],
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "send-state" : {
+                  "type" : "boolean",
+                  "description" : "Flag to indicate whether to send state. Default true.",
+                  "default" : true
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Flag to say that remote configuration is enabled. Default true;",
+                  "default" : true
+                },
+                "token" : {
+                  "type" : "string",
+                  "description" : "Security Token passed thru to underlying environment repository."
+                },
+                "fail-fast" : {
+                  "type" : "boolean",
+                  "description" : "Flag to indicate that failure to connect to the server is fatal (default false).",
+                  "default" : false
+                },
+                "password" : {
+                  "type" : "string",
+                  "description" : "The password to use (HTTP Basic) when contacting the remote server."
+                },
+                "override-none" : {
+                  "type" : "boolean",
+                  "description" : "Flag to indicate that when {@link #setAllowOverride(boolean) allowOverride} is true, external properties should take lowest priority and should not override any existing property sources (including local config files). Default false. This will only have an effect when using config first bootstrap.",
+                  "default" : false
+                },
+                "discovery" : {
+                  "type" : "object",
+                  "properties" : {
+                    "service-id" : {
+                      "type" : "string",
+                      "description" : "Service id to locate config server.",
+                      "default" : "configserver"
+                    },
+                    "enabled" : {
+                      "type" : "boolean",
+                      "description" : "Flag to indicate that config server discovery is enabled (config server URL will be looked up via discovery).",
+                      "default" : false
+                    }
+                  }
+                },
+                "request-read-timeout" : {
+                  "type" : "integer",
+                  "description" : "timeout on waiting to read data from the Config Server.",
+                  "default" : 0
+                },
+                "name" : {
+                  "type" : "string",
+                  "description" : "Name of application used to fetch remote properties."
+                },
+                "multiple-uri-strategy" : {
+                  "type" : "string",
+                  "description" : "The strategy to use when call to server fails and there are multiple URLs configured on the uri property (default {@link MultipleUriStrategy#ALWAYS}).",
+                  "default" : "always",
+                  "enum" : [ "ALWAYS", "always", "CONNECTION_TIMEOUT_ONLY", "connection_timeout_only" ]
+                },
+                "tls" : {
+                  "type" : "object",
+                  "description" : "TLS properties.",
+                  "properties" : {
+                    "default_store_type" : {
+                      "type" : "string"
+                    },
+                    "key-store-type" : {
+                      "type" : "string"
+                    },
+                    "trust-store" : {
+                      "type" : "object",
+                      "properties" : { }
+                    },
+                    "trust-store-type" : {
+                      "type" : "string"
+                    },
+                    "extension_store_types" : {
+                      "additionalProperties" : {
+                        "type" : "string"
+                      },
+                      "type" : "object"
+                    },
+                    "key-store" : {
+                      "type" : "object",
+                      "properties" : { }
+                    },
+                    "key-password" : {
+                      "type" : "string"
+                    },
+                    "enabled" : {
+                      "type" : "boolean"
+                    },
+                    "key-store-password" : {
+                      "type" : "string"
+                    },
+                    "trust-store-password" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "media-type" : {
+                  "type" : "string",
+                  "description" : "The Accept header media type to send to config server."
+                },
+                "allow-override" : {
+                  "type" : "boolean",
+                  "description" : "Flag to indicate that {@link #isOverrideSystemProperties() systemPropertiesOverride} can be used. Set to false to prevent users from changing the default accidentally. Default true.",
+                  "default" : true
+                },
+                "retry" : {
+                  "type" : "object",
+                  "properties" : {
+                    "use-random-policy" : {
+                      "type" : "boolean",
+                      "description" : "Use a random exponential backoff policy.",
+                      "default" : false
+                    },
+                    "max-interval" : {
+                      "type" : "integer",
+                      "description" : "Maximum interval for backoff.",
+                      "default" : 2000
+                    },
+                    "max-attempts" : {
+                      "type" : "integer",
+                      "description" : "Maximum number of attempts.",
+                      "default" : 6
+                    },
+                    "multiplier" : {
+                      "type" : "number",
+                      "description" : "Multiplier for next interval.",
+                      "default" : 1.1
+                    },
+                    "initial-interval" : {
+                      "type" : "integer",
+                      "description" : "Initial retry interval in milliseconds.",
+                      "default" : 1000
+                    }
+                  }
+                },
+                "initialize-on-context-refresh" : {
+                  "type" : "boolean",
+                  "description" : "Flag to initialize bootstrap configuration on context refresh event. Default false.",
+                  "default" : false
+                },
+                "username" : {
+                  "type" : "string",
+                  "description" : "The username to use (HTTP Basic) when contacting the remote server."
+                }
+              }
+            },
+            "service-registry" : {
+              "type" : "object",
+              "properties" : {
+                "auto-registration" : {
+                  "type" : "object",
+                  "properties" : {
+                    "fail-fast" : {
+                      "type" : "boolean",
+                      "description" : "Whether startup fails if there is no AutoServiceRegistration. Defaults to false.",
+                      "default" : false
+                    },
+                    "register-management" : {
+                      "type" : "boolean",
+                      "description" : "Whether to register the management as a service. Defaults to true.",
+                      "default" : true
+                    },
+                    "enabled" : {
+                      "type" : "boolean",
+                      "description" : "Whether service auto-registration is enabled. Defaults to true.",
+                      "default" : true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "jackson" : {
+          "type" : "object",
+          "properties" : {
+            "visibility" : {
+              "type" : "object",
+              "description" : "Jackson visibility thresholds that can be used to limit which methods (and fields) are auto-detected.",
+              "additionalProperties" : {
+                "type" : "string"
+              }
+            },
+            "generator" : {
+              "type" : "object",
+              "description" : "Jackson on/off features for generators.",
+              "additionalProperties" : {
+                "type" : "boolean"
+              }
+            },
+            "mapper" : {
+              "type" : "object",
+              "description" : "Jackson general purpose on/off features.",
+              "additionalProperties" : {
+                "type" : "boolean"
+              }
+            },
+            "locale" : {
+              "type" : "string",
+              "description" : "Locale used for formatting."
+            },
+            "date-format" : {
+              "type" : "string",
+              "description" : "Date format string or a fully-qualified date format class name. For instance, 'yyyy-MM-dd HH:mm:ss'."
+            },
+            "property-naming-strategy" : {
+              "type" : "string",
+              "description" : "One of the constants on Jackson's PropertyNamingStrategies. Can also be a fully-qualified class name of a PropertyNamingStrategy implementation."
+            },
+            "serialization" : {
+              "type" : "object",
+              "description" : "Jackson on/off features that affect the way Java objects are serialized.",
+              "additionalProperties" : {
+                "type" : "boolean"
+              }
+            },
+            "constructor-detector" : {
+              "type" : "string",
+              "description" : "Strategy to use to auto-detect constructor, and in particular behavior with single-argument constructors.",
+              "default" : "default",
+              "enum" : [ "DEFAULT", "default", "USE_PROPERTIES_BASED", "use_properties_based", "USE_DELEGATING", "use_delegating", "EXPLICIT_ONLY", "explicit_only" ]
+            },
+            "parser" : {
+              "type" : "object",
+              "description" : "Jackson on/off features for parsers.",
+              "additionalProperties" : {
+                "type" : "boolean"
+              }
+            },
+            "datatype" : {
+              "type" : "object",
+              "properties" : {
+                "json-node" : {
+                  "type" : "object",
+                  "description" : "Jackson on/off features for JsonNodes.",
+                  "additionalProperties" : {
+                    "type" : "boolean"
+                  }
+                },
+                "enum" : {
+                  "type" : "object",
+                  "description" : "Jackson on/off features for enums.",
+                  "additionalProperties" : {
+                    "type" : "boolean"
+                  }
+                }
+              }
+            },
+            "default-leniency" : {
+              "type" : "boolean",
+              "description" : "Global default setting (if any) for leniency."
+            },
+            "default-property-inclusion" : {
+              "type" : "string",
+              "description" : "Controls the inclusion of properties during serialization. Configured with one of the values in Jackson's JsonInclude.Include enumeration.",
+              "enum" : [ "ALWAYS", "always", "NON_NULL", "non_null", "NON_ABSENT", "non_absent", "NON_EMPTY", "non_empty", "NON_DEFAULT", "non_default", "CUSTOM", "custom", "USE_DEFAULTS", "use_defaults" ]
+            },
+            "deserialization" : {
+              "type" : "object",
+              "description" : "Jackson on/off features that affect the way Java objects are deserialized.",
+              "additionalProperties" : {
+                "type" : "boolean"
+              }
+            },
+            "time-zone" : {
+              "type" : "string",
+              "description" : "Time zone used when formatting dates. For instance, \"America/Los_Angeles\" or \"GMT+10\"."
+            }
+          }
+        },
+        "task" : {
+          "type" : "object",
+          "properties" : {
+            "execution" : {
+              "type" : "object",
+              "properties" : {
+                "mode" : {
+                  "type" : "string",
+                  "description" : "Determine when the task executor is to be created.",
+                  "default" : "auto",
+                  "enum" : [ "AUTO", "auto", "FORCE", "force" ]
+                },
+                "thread-name-prefix" : {
+                  "type" : "string",
+                  "description" : "Prefix to use for the names of newly created threads.",
+                  "default" : "task-"
+                },
+                "pool" : {
+                  "type" : "object",
+                  "properties" : {
+                    "keep-alive" : {
+                      "type" : "string",
+                      "description" : "Time limit for which threads may remain idle before being terminated. Doesn't have an effect if virtual threads are enabled.",
+                      "default" : "60s"
+                    },
+                    "core-size" : {
+                      "type" : "integer",
+                      "description" : "Core number of threads. Doesn't have an effect if virtual threads are enabled.",
+                      "default" : 8
+                    },
+                    "max-size" : {
+                      "type" : "integer",
+                      "description" : "Maximum allowed number of threads. If tasks are filling up the queue, the pool can expand up to that size to accommodate the load. Ignored if the queue is unbounded. Doesn't have an effect if virtual threads are enabled."
+                    },
+                    "queue-capacity" : {
+                      "type" : "integer",
+                      "description" : "Queue capacity. An unbounded capacity does not increase the pool and therefore ignores the \"max-size\" property. Doesn't have an effect if virtual threads are enabled."
+                    },
+                    "shutdown" : {
+                      "type" : "object",
+                      "properties" : {
+                        "accept-tasks-after-context-close" : {
+                          "type" : "boolean",
+                          "description" : "Whether to accept further tasks after the application context close phase has begun.",
+                          "default" : false
+                        }
+                      }
+                    },
+                    "allow-core-thread-timeout" : {
+                      "type" : "boolean",
+                      "description" : "Whether core threads are allowed to time out. This enables dynamic growing and shrinking of the pool. Doesn't have an effect if virtual threads are enabled.",
+                      "default" : true
+                    }
+                  }
+                },
+                "simple" : {
+                  "type" : "object",
+                  "properties" : {
+                    "concurrency-limit" : {
+                      "type" : "integer",
+                      "description" : "Set the maximum number of parallel accesses allowed. -1 indicates no concurrency limit at all."
+                    },
+                    "reject-tasks-when-limit-reached" : {
+                      "type" : "boolean",
+                      "description" : "Whether to reject tasks when the concurrency limit has been reached.",
+                      "default" : false
+                    }
+                  }
+                },
+                "shutdown" : {
+                  "type" : "object",
+                  "properties" : {
+                    "await-termination-period" : {
+                      "type" : "string",
+                      "description" : "Maximum time the executor should wait for remaining tasks to complete."
+                    },
+                    "await-termination" : {
+                      "type" : "boolean",
+                      "description" : "Whether the executor should wait for scheduled tasks to complete on shutdown.",
+                      "default" : false
+                    }
+                  }
+                }
+              }
+            },
+            "scheduling" : {
+              "type" : "object",
+              "properties" : {
+                "thread-name-prefix" : {
+                  "type" : "string",
+                  "description" : "Prefix to use for the names of newly created threads.",
+                  "default" : "scheduling-"
+                },
+                "pool" : {
+                  "type" : "object",
+                  "properties" : {
+                    "size" : {
+                      "type" : "integer",
+                      "description" : "Maximum allowed number of threads. Doesn't have an effect if virtual threads are enabled.",
+                      "default" : 1
+                    }
+                  }
+                },
+                "simple" : {
+                  "type" : "object",
+                  "properties" : {
+                    "concurrency-limit" : {
+                      "type" : "integer",
+                      "description" : "Set the maximum number of parallel accesses allowed. -1 indicates no concurrency limit at all."
+                    }
+                  }
+                },
+                "shutdown" : {
+                  "type" : "object",
+                  "properties" : {
+                    "await-termination-period" : {
+                      "type" : "string",
+                      "description" : "Maximum time the executor should wait for remaining tasks to complete."
+                    },
+                    "await-termination" : {
+                      "type" : "boolean",
+                      "description" : "Whether the executor should wait for scheduled tasks to complete on shutdown.",
+                      "default" : false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "jmx" : {
+          "type" : "object",
+          "properties" : {
+            "enabled" : {
+              "type" : "boolean",
+              "description" : "Expose Spring's management beans to the JMX domain.",
+              "default" : false
+            }
+          }
+        },
+        "web" : {
+          "type" : "object",
+          "properties" : {
+            "locale-resolver" : {
+              "type" : "string",
+              "description" : "Define how the locale should be resolved.",
+              "default" : "accept-header",
+              "enum" : [ "FIXED", "fixed", "ACCEPT_HEADER", "accept_header" ]
+            },
+            "resources" : {
+              "type" : "object",
+              "properties" : {
+                "cache" : {
+                  "type" : "object",
+                  "properties" : {
+                    "period" : {
+                      "type" : "string",
+                      "description" : "Cache period for the resources served by the resource handler. If a duration suffix is not specified, seconds will be used. Can be overridden by the 'spring.web.resources.cache.cachecontrol' properties."
+                    },
+                    "cachecontrol" : {
+                      "type" : "object",
+                      "properties" : {
+                        "cache-private" : {
+                          "type" : "boolean",
+                          "description" : "Indicate that the response message is intended for a single user and must not be stored by a shared cache."
+                        },
+                        "no-transform" : {
+                          "type" : "boolean",
+                          "description" : "Indicate intermediaries (caches and others) that they should not transform the response content."
+                        },
+                        "max-age" : {
+                          "type" : "string",
+                          "description" : "Maximum time the response should be cached, in seconds if no duration suffix is not specified."
+                        },
+                        "must-revalidate" : {
+                          "type" : "boolean",
+                          "description" : "Indicate that once it has become stale, a cache must not use the response without re-validating it with the server."
+                        },
+                        "no-cache" : {
+                          "type" : "boolean",
+                          "description" : "Indicate that the cached response can be reused only if re-validated with the server."
+                        },
+                        "proxy-revalidate" : {
+                          "type" : "boolean",
+                          "description" : "Same meaning as the \"must-revalidate\" directive, except that it does not apply to private caches."
+                        },
+                        "s-max-age" : {
+                          "type" : "string",
+                          "description" : "Maximum time the response should be cached by shared caches, in seconds if no duration suffix is not specified."
+                        },
+                        "stale-if-error" : {
+                          "type" : "string",
+                          "description" : "Maximum time the response may be used when errors are encountered, in seconds if no duration suffix is not specified."
+                        },
+                        "cache-public" : {
+                          "type" : "boolean",
+                          "description" : "Indicate that any cache may store the response."
+                        },
+                        "stale-while-revalidate" : {
+                          "type" : "string",
+                          "description" : "Maximum time the response can be served after it becomes stale, in seconds if no duration suffix is not specified."
+                        },
+                        "no-store" : {
+                          "type" : "boolean",
+                          "description" : "Indicate to not cache the response in any case."
+                        }
+                      }
+                    },
+                    "use-last-modified" : {
+                      "type" : "boolean",
+                      "description" : "Whether we should use the \"lastModified\" metadata of the files in HTTP caching headers.",
+                      "default" : true
+                    }
+                  }
+                },
+                "chain" : {
+                  "type" : "object",
+                  "properties" : {
+                    "cache" : {
+                      "type" : "boolean",
+                      "description" : "Whether to enable caching in the Resource chain.",
+                      "default" : true
+                    },
+                    "compressed" : {
+                      "type" : "boolean",
+                      "description" : "Whether to enable resolution of already compressed resources (gzip, brotli). Checks for a resource name with the '.gz' or '.br' file extensions.",
+                      "default" : false
+                    },
+                    "strategy" : {
+                      "type" : "object",
+                      "properties" : {
+                        "fixed" : {
+                          "type" : "object",
+                          "properties" : {
+                            "paths" : {
+                              "type" : "array",
+                              "description" : "List of patterns to apply to the fixed Version Strategy.",
+                              "default" : [ "/**" ],
+                              "items" : {
+                                "type" : "string"
+                              }
+                            },
+                            "version" : {
+                              "type" : "string",
+                              "description" : "Version string to use for the fixed Version Strategy."
+                            },
+                            "enabled" : {
+                              "type" : "boolean",
+                              "description" : "Whether to enable the fixed Version Strategy.",
+                              "default" : false
+                            }
+                          }
+                        },
+                        "content" : {
+                          "type" : "object",
+                          "properties" : {
+                            "paths" : {
+                              "type" : "array",
+                              "description" : "List of patterns to apply to the content Version Strategy.",
+                              "default" : [ "/**" ],
+                              "items" : {
+                                "type" : "string"
+                              }
+                            },
+                            "enabled" : {
+                              "type" : "boolean",
+                              "description" : "Whether to enable the content Version Strategy.",
+                              "default" : false
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "enabled" : {
+                      "type" : "boolean",
+                      "description" : "Whether to enable the Spring Resource Handling chain. By default, disabled unless at least one strategy has been enabled."
+                    }
+                  }
+                },
+                "add-mappings" : {
+                  "type" : "boolean",
+                  "description" : "Whether to enable default resource handling.",
+                  "default" : true
+                },
+                "static-locations" : {
+                  "type" : "array",
+                  "description" : "Locations of static resources. Defaults to classpath:[/META-INF/resources/, /resources/, /static/, /public/].",
+                  "default" : [ "classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/" ],
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "locale" : {
+              "type" : "string",
+              "description" : "Locale to use. By default, this locale is overridden by the \"Accept-Language\" header."
+            }
+          }
+        },
+        "datasource" : {
+          "type" : "object",
+          "properties" : {
+            "tomcat" : {
+              "type" : "object",
+              "properties" : {
+                "time-between-eviction-runs-millis" : {
+                  "type" : "integer"
+                },
+                "log-abandoned" : {
+                  "type" : "boolean"
+                },
+                "use-statement-facade" : {
+                  "type" : "boolean"
+                },
+                "jdbc-interceptors" : {
+                  "type" : "string"
+                },
+                "log-validation-errors" : {
+                  "type" : "boolean"
+                },
+                "max-idle" : {
+                  "type" : "integer"
+                },
+                "validator-class-name" : {
+                  "type" : "string"
+                },
+                "password" : {
+                  "type" : "string"
+                },
+                "test-on-connect" : {
+                  "type" : "boolean"
+                },
+                "commit-on-return" : {
+                  "type" : "boolean"
+                },
+                "abandon-when-percentage-full" : {
+                  "type" : "integer"
+                },
+                "rollback-on-return" : {
+                  "type" : "boolean"
+                },
+                "validation-interval" : {
+                  "type" : "integer"
+                },
+                "default-auto-commit" : {
+                  "type" : "boolean"
+                },
+                "use-equals" : {
+                  "type" : "boolean"
+                },
+                "use-disposable-connection-facade" : {
+                  "type" : "boolean"
+                },
+                "jmx-enabled" : {
+                  "type" : "boolean"
+                },
+                "max-age" : {
+                  "type" : "integer"
+                },
+                "validation-query" : {
+                  "type" : "string"
+                },
+                "max-wait" : {
+                  "type" : "integer"
+                },
+                "connection-properties" : {
+                  "type" : "string"
+                },
+                "name" : {
+                  "type" : "string"
+                },
+                "initial-size" : {
+                  "type" : "integer"
+                },
+                "min-evictable-idle-time-millis" : {
+                  "type" : "integer"
+                },
+                "num-tests-per-eviction-run" : {
+                  "type" : "integer"
+                },
+                "min-idle" : {
+                  "type" : "integer"
+                },
+                "validation-query-timeout" : {
+                  "type" : "integer"
+                },
+                "ignore-exception-on-pre-load" : {
+                  "type" : "boolean"
+                },
+                "remove-abandoned-timeout" : {
+                  "type" : "integer"
+                },
+                "test-on-borrow" : {
+                  "type" : "boolean"
+                },
+                "db-properties" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object"
+                  }
+                },
+                "init-s-q-l" : {
+                  "type" : "string"
+                },
+                "data-source-j-n-d-i" : {
+                  "type" : "string"
+                },
+                "remove-abandoned" : {
+                  "type" : "boolean"
+                },
+                "test-on-return" : {
+                  "type" : "boolean"
+                },
+                "login-timeout" : {
+                  "type" : "integer"
+                },
+                "suspect-timeout" : {
+                  "type" : "integer"
+                },
+                "fair-queue" : {
+                  "type" : "boolean"
+                },
+                "test-while-idle" : {
+                  "type" : "boolean"
+                },
+                "max-active" : {
+                  "type" : "integer"
+                },
+                "alternate-username-allowed" : {
+                  "type" : "boolean"
+                },
+                "default-read-only" : {
+                  "type" : "boolean"
+                },
+                "use-lock" : {
+                  "type" : "boolean"
+                },
+                "url" : {
+                  "type" : "string"
+                },
+                "propagate-interrupt-state" : {
+                  "type" : "boolean"
+                },
+                "access-to-underlying-connection-allowed" : {
+                  "type" : "boolean"
+                },
+                "driver-class-name" : {
+                  "type" : "string"
+                },
+                "default-catalog" : {
+                  "type" : "string"
+                },
+                "username" : {
+                  "type" : "string"
+                },
+                "default-transaction-isolation" : {
+                  "type" : "integer"
+                }
+              }
+            },
+            "dbcp2" : {
+              "type" : "object",
+              "properties" : {
+                "eviction-policy-class-name" : {
+                  "type" : "string"
+                },
+                "time-between-eviction-runs-millis" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                },
+                "log-abandoned" : {
+                  "type" : "boolean"
+                },
+                "connection-init-sqls" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "max-idle" : {
+                  "type" : "integer"
+                },
+                "password" : {
+                  "type" : "string"
+                },
+                "duration-between-eviction-runs" : {
+                  "type" : "string"
+                },
+                "pool-prepared-statements" : {
+                  "type" : "boolean"
+                },
+                "soft-min-evictable-idle-time-millis" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                },
+                "rollback-on-return" : {
+                  "type" : "boolean"
+                },
+                "remove-abandoned-on-maintenance" : {
+                  "type" : "boolean"
+                },
+                "default-auto-commit" : {
+                  "type" : "boolean"
+                },
+                "max-open-prepared-statements" : {
+                  "type" : "integer"
+                },
+                "clear-statement-pool-on-return" : {
+                  "type" : "boolean"
+                },
+                "enable-auto-commit-on-return" : {
+                  "type" : "boolean",
+                  "deprecated" : true
+                },
+                "validation-query" : {
+                  "type" : "string"
+                },
+                "log-expired-connections" : {
+                  "type" : "boolean"
+                },
+                "lifo" : {
+                  "type" : "boolean"
+                },
+                "default-schema" : {
+                  "type" : "string"
+                },
+                "default-query-timeout" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                },
+                "auto-commit-on-return" : {
+                  "type" : "boolean"
+                },
+                "initial-size" : {
+                  "type" : "integer"
+                },
+                "min-evictable-idle-time-millis" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                },
+                "max-conn-lifetime-millis" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                },
+                "num-tests-per-eviction-run" : {
+                  "type" : "integer"
+                },
+                "min-idle" : {
+                  "type" : "integer"
+                },
+                "disconnection-ignore-sql-codes" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "validation-query-timeout" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                },
+                "connection-factory-class-name" : {
+                  "type" : "string"
+                },
+                "remove-abandoned-timeout" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                },
+                "test-on-borrow" : {
+                  "type" : "boolean"
+                },
+                "disconnection-sql-codes" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "max-total" : {
+                  "type" : "integer"
+                },
+                "test-on-return" : {
+                  "type" : "boolean"
+                },
+                "login-timeout" : {
+                  "type" : "integer"
+                },
+                "abandoned-usage-tracking" : {
+                  "type" : "boolean"
+                },
+                "cache-state" : {
+                  "type" : "boolean"
+                },
+                "test-while-idle" : {
+                  "type" : "boolean"
+                },
+                "default-read-only" : {
+                  "type" : "boolean"
+                },
+                "url" : {
+                  "type" : "string"
+                },
+                "jmx-name" : {
+                  "type" : "string"
+                },
+                "remove-abandoned-on-borrow" : {
+                  "type" : "boolean"
+                },
+                "fast-fail-validation" : {
+                  "type" : "boolean"
+                },
+                "access-to-underlying-connection-allowed" : {
+                  "type" : "boolean"
+                },
+                "test-on-create" : {
+                  "type" : "boolean"
+                },
+                "driver-class-name" : {
+                  "type" : "string"
+                },
+                "default-catalog" : {
+                  "type" : "string"
+                },
+                "default-transaction-isolation" : {
+                  "type" : "integer"
+                },
+                "username" : {
+                  "type" : "string"
+                },
+                "max-wait-millis" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                }
+              }
+            },
+            "xa" : {
+              "type" : "object",
+              "properties" : {
+                "data-source-class-name" : {
+                  "type" : "string",
+                  "description" : "XA datasource fully qualified name."
+                },
+                "properties" : {
+                  "type" : "object",
+                  "description" : "Properties to pass to the XA data source.",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "type" : {
+              "type" : "string",
+              "description" : "Fully qualified name of the DataSource implementation to use. By default, a connection pool implementation is auto-detected from the classpath."
+            },
+            "url" : {
+              "type" : "string",
+              "description" : "JDBC URL of the database."
+            },
+            "jndi-name" : {
+              "type" : "string",
+              "description" : "JNDI location of the datasource. Class, url, username and password are ignored when set."
+            },
+            "password" : {
+              "type" : "string",
+              "description" : "Login password of the database."
+            },
+            "name" : {
+              "type" : "string",
+              "description" : "Datasource name to use if \"generate-unique-name\" is false. Defaults to \"testdb\" when using an embedded database, otherwise null."
+            },
+            "generate-unique-name" : {
+              "type" : "boolean",
+              "description" : "Whether to generate a random datasource name.",
+              "default" : true
+            },
+            "oracleucp" : {
+              "type" : "object",
+              "properties" : {
+                "connection-repurpose-threshold" : {
+                  "type" : "integer"
+                },
+                "min-idle" : {
+                  "type" : "integer"
+                },
+                "role-name" : {
+                  "type" : "string"
+                },
+                "description" : {
+                  "type" : "string"
+                },
+                "connection-harvest-max-count" : {
+                  "type" : "integer"
+                },
+                "connection-factory-class-name" : {
+                  "type" : "string"
+                },
+                "connection-harvest-trigger-count" : {
+                  "type" : "integer"
+                },
+                "query-timeout" : {
+                  "type" : "integer"
+                },
+                "max-connection-reuse-count" : {
+                  "type" : "integer"
+                },
+                "read-only-instance-allowed" : {
+                  "type" : "boolean"
+                },
+                "server-name" : {
+                  "type" : "string"
+                },
+                "timeout-check-interval" : {
+                  "type" : "integer"
+                },
+                "pdb-roles" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object"
+                  }
+                },
+                "max-connections-per-shard" : {
+                  "type" : "integer"
+                },
+                "validate-connection-on-borrow" : {
+                  "type" : "boolean"
+                },
+                "max-idle-time" : {
+                  "type" : "integer"
+                },
+                "s-q-l-for-validate-connection" : {
+                  "type" : "string"
+                },
+                "max-statements" : {
+                  "type" : "integer"
+                },
+                "property-cycle" : {
+                  "type" : "integer"
+                },
+                "connection-wait-duration" : {
+                  "type" : "string"
+                },
+                "high-cost-connection-reuse-threshold" : {
+                  "type" : "integer"
+                },
+                "connection-validation-timeout" : {
+                  "type" : "integer"
+                },
+                "fast-connection-failover-enabled" : {
+                  "type" : "boolean"
+                },
+                "sharding-mode" : {
+                  "type" : "boolean"
+                },
+                "connection-labeling-high-cost" : {
+                  "type" : "integer"
+                },
+                "network-protocol" : {
+                  "type" : "string"
+                },
+                "min-pool-size" : {
+                  "type" : "integer"
+                },
+                "commit-on-connection-return" : {
+                  "type" : "boolean"
+                },
+                "login-timeout" : {
+                  "type" : "integer"
+                },
+                "initial-pool-size" : {
+                  "type" : "integer"
+                },
+                "seconds-to-trust-idle-connection" : {
+                  "type" : "integer"
+                },
+                "abandoned-connection-timeout" : {
+                  "type" : "integer"
+                },
+                "port-number" : {
+                  "type" : "integer"
+                },
+                "connection-properties" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object"
+                  }
+                },
+                "connection-wait-timeout" : {
+                  "type" : "integer",
+                  "deprecated" : true
+                },
+                "time-to-live-connection-timeout" : {
+                  "type" : "integer"
+                },
+                "max-pool-size" : {
+                  "type" : "integer"
+                },
+                "connection-factory-properties" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object"
+                  }
+                },
+                "max-connection-reuse-time" : {
+                  "type" : "integer"
+                },
+                "database-name" : {
+                  "type" : "string"
+                },
+                "connection-pool-name" : {
+                  "type" : "string"
+                },
+                "data-source-name" : {
+                  "type" : "string"
+                },
+                "o-n-s-configuration" : {
+                  "type" : "string"
+                },
+                "inactive-connection-timeout" : {
+                  "type" : "integer"
+                },
+                "create-connection-in-borrow-thread" : {
+                  "type" : "boolean"
+                },
+                "user" : {
+                  "type" : "string"
+                },
+                "u-r-l" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "embedded-database-connection" : {
+              "type" : "string",
+              "description" : "Connection details for an embedded database. Defaults to the most suitable embedded database that is available on the classpath.",
+              "enum" : [ "NONE", "none", "H2", "h2", "DERBY", "derby", "HSQLDB", "hsqldb" ]
+            },
+            "driver-class-name" : {
+              "type" : "string",
+              "description" : "Fully qualified name of the JDBC driver. Auto-detected based on the URL by default."
+            },
+            "hikari" : {
+              "type" : "object",
+              "properties" : {
+                "schema" : {
+                  "type" : "string"
+                },
+                "register-mbeans" : {
+                  "type" : "boolean"
+                },
+                "auto-commit" : {
+                  "type" : "boolean"
+                },
+                "pool-name" : {
+                  "type" : "string"
+                },
+                "catalog" : {
+                  "type" : "string"
+                },
+                "connection-test-query" : {
+                  "type" : "string"
+                },
+                "keepalive-time" : {
+                  "type" : "integer"
+                },
+                "password" : {
+                  "type" : "string"
+                },
+                "max-lifetime" : {
+                  "type" : "integer"
+                },
+                "data-source-properties" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object"
+                  }
+                },
+                "data-source-j-n-d-i" : {
+                  "type" : "string"
+                },
+                "health-check-properties" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object"
+                  }
+                },
+                "isolate-internal-queries" : {
+                  "type" : "boolean"
+                },
+                "idle-timeout" : {
+                  "type" : "integer"
+                },
+                "read-only" : {
+                  "type" : "boolean"
+                },
+                "login-timeout" : {
+                  "type" : "integer"
+                },
+                "minimum-idle" : {
+                  "type" : "integer"
+                },
+                "maximum-pool-size" : {
+                  "type" : "integer"
+                },
+                "leak-detection-threshold" : {
+                  "type" : "integer"
+                },
+                "connection-init-sql" : {
+                  "type" : "string"
+                },
+                "connection-timeout" : {
+                  "type" : "integer"
+                },
+                "allow-pool-suspension" : {
+                  "type" : "boolean"
+                },
+                "jdbc-url" : {
+                  "type" : "string"
+                },
+                "validation-timeout" : {
+                  "type" : "integer"
+                },
+                "data-source-class-name" : {
+                  "type" : "string"
+                },
+                "exception-override-class-name" : {
+                  "type" : "string"
+                },
+                "transaction-isolation" : {
+                  "type" : "string"
+                },
+                "driver-class-name" : {
+                  "type" : "string"
+                },
+                "initialization-fail-timeout" : {
+                  "type" : "integer"
+                },
+                "username" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "username" : {
+              "type" : "string",
+              "description" : "Login username of the database."
+            }
+          }
+        },
+        "http" : {
+          "type" : "object",
+          "properties" : {
+            "client" : {
+              "type" : "object",
+              "properties" : {
+                "connect-timeout" : {
+                  "type" : "string",
+                  "description" : "Default connect timeout for a client HTTP request."
+                },
+                "factory" : {
+                  "type" : "string",
+                  "description" : "Default factory used for a client HTTP request.",
+                  "enum" : [ "HTTP_COMPONENTS", "http_components", "JETTY", "jetty", "REACTOR", "reactor", "JDK", "jdk", "SIMPLE", "simple" ]
+                },
+                "read-timeout" : {
+                  "type" : "string",
+                  "description" : "Default read timeout for a client HTTP request."
+                },
+                "redirects" : {
+                  "type" : "string",
+                  "description" : "Handling for HTTP redirects.",
+                  "enum" : [ "FOLLOW_WHEN_POSSIBLE", "follow_when_possible", "FOLLOW", "follow", "DONT_FOLLOW", "dont_follow" ]
+                },
+                "ssl" : {
+                  "type" : "object",
+                  "properties" : {
+                    "bundle" : {
+                      "type" : "string",
+                      "description" : "SSL bundle to use."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "jpa" : {
+          "type" : "object",
+          "properties" : {
+            "database" : {
+              "type" : "string",
+              "description" : "Target database to operate on, auto-detected by default. Can be alternatively set using the \"databasePlatform\" property.",
+              "enum" : [ "DEFAULT", "default", "DB2", "db2", "DERBY", "derby", "H2", "h2", "HANA", "hana", "HSQL", "hsql", "INFORMIX", "informix", "MYSQL", "mysql", "ORACLE", "oracle", "POSTGRESQL", "postgresql", "SQL_SERVER", "sql_server", "SYBASE", "sybase" ]
+            },
+            "show-sql" : {
+              "type" : "boolean",
+              "description" : "Whether to enable logging of SQL statements.",
+              "default" : false
+            },
+            "open-in-view" : {
+              "type" : "boolean",
+              "description" : "Register OpenEntityManagerInViewInterceptor. Binds a JPA EntityManager to the thread for the entire processing of the request.",
+              "default" : true
+            },
+            "generate-ddl" : {
+              "type" : "boolean",
+              "description" : "Whether to initialize the schema on startup.",
+              "default" : false
+            },
+            "hibernate" : {
+              "type" : "object",
+              "properties" : {
+                "naming" : {
+                  "type" : "object",
+                  "properties" : {
+                    "implicit-strategy" : {
+                      "type" : "string",
+                      "description" : "Fully qualified name of the implicit naming strategy."
+                    },
+                    "physical-strategy" : {
+                      "type" : "string",
+                      "description" : "Fully qualified name of the physical naming strategy."
+                    }
+                  }
+                },
+                "ddl-auto" : {
+                  "type" : "string",
+                  "description" : "DDL mode. This is actually a shortcut for the \"hibernate.hbm2ddl.auto\" property. Defaults to \"create-drop\" when using an embedded database and no schema manager was detected. Otherwise, defaults to \"none\".",
+                  "examples" : [ "create", "create-drop", "create-only", "drop", "none", "truncate", "update", "validate" ]
+                }
+              }
+            },
+            "mapping-resources" : {
+              "type" : "array",
+              "description" : "Mapping resources (equivalent to \"mapping-file\" entries in persistence.xml).",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "database-platform" : {
+              "type" : "string",
+              "description" : "Name of the target database to operate on, auto-detected by default. Can be alternatively set using the \"Database\" enum."
+            },
+            "properties" : {
+              "type" : "object",
+              "description" : "Additional native properties to set on the JPA provider.",
+              "additionalProperties" : {
+                "type" : "string"
+              }
+            },
+            "defer-datasource-initialization" : {
+              "type" : "boolean",
+              "description" : "Whether to defer DataSource initialization until after any EntityManagerFactory beans have been created and initialized.",
+              "default" : false
+            }
+          }
+        },
+        "mvc" : {
+          "type" : "object",
+          "properties" : {
+            "static-path-pattern" : {
+              "type" : "string",
+              "description" : "Path pattern used for static resources.",
+              "default" : "/**"
+            },
+            "webjars-path-pattern" : {
+              "type" : "string",
+              "description" : "Path pattern used for WebJar assets.",
+              "default" : "/webjars/**"
+            },
+            "dispatch-options-request" : {
+              "type" : "boolean",
+              "description" : "Whether to dispatch OPTIONS requests to the FrameworkServlet doService method.",
+              "default" : true
+            },
+            "favicon" : {
+              "type" : "object",
+              "properties" : { }
+            },
+            "hiddenmethod" : {
+              "type" : "object",
+              "properties" : {
+                "filter" : {
+                  "type" : "object",
+                  "properties" : {
+                    "enabled" : {
+                      "type" : "boolean",
+                      "description" : "Whether to enable Spring's HiddenHttpMethodFilter.",
+                      "default" : false
+                    }
+                  }
+                }
+              }
+            },
+            "contentnegotiation" : {
+              "type" : "object",
+              "properties" : {
+                "media-types" : {
+                  "type" : "object",
+                  "description" : "Map file extensions to media types for content negotiation. For instance, yml to text/yaml.",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                },
+                "parameter-name" : {
+                  "type" : "string",
+                  "description" : "Query parameter name to use when \"favor-parameter\" is enabled."
+                },
+                "default-content-types" : {
+                  "type" : "array",
+                  "description" : "List of default content types to be used when no specific content type is requested.",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "favor-parameter" : {
+                  "type" : "boolean",
+                  "description" : "Whether a request parameter (\"format\" by default) should be used to determine the requested media type.",
+                  "default" : false
+                }
+              }
+            },
+            "servlet" : {
+              "type" : "object",
+              "properties" : {
+                "path" : {
+                  "type" : "string",
+                  "description" : "Path of the dispatcher servlet. Setting a custom value for this property is not compatible with the PathPatternParser matching strategy.",
+                  "default" : "/"
+                },
+                "load-on-startup" : {
+                  "type" : "integer",
+                  "description" : "Load on startup priority of the dispatcher servlet.",
+                  "default" : -1
+                }
+              }
+            },
+            "message-codes-resolver-format" : {
+              "type" : "string",
+              "description" : "Formatting strategy for message codes. For instance, 'PREFIX_ERROR_CODE'.",
+              "enum" : [ "PREFIX_ERROR_CODE", "prefix_error_code", "POSTFIX_ERROR_CODE", "postfix_error_code" ]
+            },
+            "format" : {
+              "type" : "object",
+              "properties" : {
+                "date" : {
+                  "type" : "string",
+                  "description" : "Date format to use, for example 'dd/MM/yyyy'. Used for formatting of java.util.Date and java.time.LocalDate.",
+                  "examples" : [ "dd/MM/yyyy", "iso" ]
+                },
+                "date-time" : {
+                  "type" : "string",
+                  "description" : "Date-time format to use, for example 'yyyy-MM-dd HH:mm:ss'. Used for formatting of java.time's LocalDateTime, OffsetDateTime, and ZonedDateTime.",
+                  "examples" : [ "yyyy-MM-dd HH:mm:ss", "iso", "iso-offset" ]
+                },
+                "time" : {
+                  "type" : "string",
+                  "description" : "Time format to use, for example 'HH:mm:ss'. Used for formatting of java.time's LocalTime and OffsetTime.",
+                  "examples" : [ "HH:mm:ss", "iso", "iso-offset" ]
+                }
+              }
+            },
+            "problemdetails" : {
+              "type" : "object",
+              "properties" : {
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Whether RFC 9457 Problem Details support should be enabled.",
+                  "default" : false
+                }
+              }
+            },
+            "publish-request-handled-events" : {
+              "type" : "boolean",
+              "description" : "Whether to publish a ServletRequestHandledEvent at the end of each request.",
+              "default" : true
+            },
+            "log-resolved-exception" : {
+              "type" : "boolean",
+              "description" : "Whether to enable warn logging of exceptions resolved by a \"HandlerExceptionResolver\", except for \"DefaultHandlerExceptionResolver\".",
+              "default" : false
+            },
+            "async" : {
+              "type" : "object",
+              "properties" : {
+                "request-timeout" : {
+                  "type" : "string",
+                  "description" : "Amount of time before asynchronous request handling times out. If this value is not set, the default timeout of the underlying implementation is used."
+                }
+              }
+            },
+            "view" : {
+              "type" : "object",
+              "properties" : {
+                "prefix" : {
+                  "type" : "string",
+                  "description" : "Spring MVC view prefix."
+                },
+                "suffix" : {
+                  "type" : "string",
+                  "description" : "Spring MVC view suffix."
+                }
+              }
+            },
+            "log-request-details" : {
+              "type" : "boolean",
+              "description" : "Whether logging of (potentially sensitive) request details at DEBUG and TRACE level is allowed.",
+              "default" : false
+            },
+            "dispatch-trace-request" : {
+              "type" : "boolean",
+              "description" : "Whether to dispatch TRACE requests to the FrameworkServlet doService method.",
+              "default" : false
+            },
+            "converters" : {
+              "type" : "object",
+              "properties" : { }
+            },
+            "pathmatch" : {
+              "type" : "object",
+              "properties" : {
+                "matching-strategy" : {
+                  "type" : "string",
+                  "description" : "Choice of strategy for matching request paths against registered mappings.",
+                  "default" : "path-pattern-parser",
+                  "enum" : [ "ANT_PATH_MATCHER", "ant_path_matcher", "PATH_PATTERN_PARSER", "path_pattern_parser" ]
+                }
+              }
+            },
+            "formcontent" : {
+              "type" : "object",
+              "properties" : {
+                "filter" : {
+                  "type" : "object",
+                  "properties" : {
+                    "enabled" : {
+                      "type" : "boolean",
+                      "description" : "Whether to enable Spring's FormContentFilter.",
+                      "default" : true
+                    }
+                  }
+                },
+                "putfilter" : {
+                  "type" : "object",
+                  "properties" : { }
+                }
+              }
+            }
+          }
+        },
+        "transaction" : {
+          "type" : "object",
+          "properties" : {
+            "default-timeout" : {
+              "type" : "string",
+              "description" : "Default transaction timeout. If a duration suffix is not specified, seconds will be used."
+            },
+            "rollback-on-commit-failure" : {
+              "type" : "boolean",
+              "description" : "Whether to roll back on commit failures."
+            }
+          }
+        },
+        "info" : {
+          "type" : "object",
+          "properties" : {
+            "git" : {
+              "type" : "object",
+              "properties" : {
+                "location" : {
+                  "type" : "object",
+                  "description" : "Location of the generated git.properties file.",
+                  "default" : "classpath:git.properties",
+                  "properties" : { }
+                },
+                "encoding" : {
+                  "type" : "string",
+                  "description" : "File encoding.",
+                  "default" : "UTF-8"
+                }
+              }
+            },
+            "build" : {
+              "type" : "object",
+              "properties" : {
+                "location" : {
+                  "type" : "object",
+                  "description" : "Location of the generated build-info.properties file.",
+                  "default" : "classpath:META-INF/build-info.properties",
+                  "properties" : { }
+                },
+                "encoding" : {
+                  "type" : "string",
+                  "description" : "File encoding.",
+                  "default" : "UTF-8"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "server" : {
+      "type" : "object",
+      "properties" : {
+        "server-header" : {
+          "type" : "string",
+          "description" : "Value to use for the Server response header (if empty, no header is sent)."
+        },
+        "address" : {
+          "type" : "string",
+          "description" : "Network address to which the server should bind."
+        },
+        "undertow" : {
+          "type" : "object",
+          "properties" : {
+            "no-request-timeout" : {
+              "type" : "string",
+              "description" : "Amount of time a connection can sit idle without processing a request, before it is closed by the server."
+            },
+            "eager-filter-init" : {
+              "type" : "boolean",
+              "description" : "Whether servlet filters should be initialized on startup.",
+              "default" : true
+            },
+            "direct-buffers" : {
+              "type" : "boolean",
+              "description" : "Whether to allocate buffers outside the Java heap. The default is derived from the maximum amount of memory that is available to the JVM."
+            },
+            "preserve-path-on-forward" : {
+              "type" : "boolean",
+              "description" : "Whether to preserve the path of a request when it is forwarded.",
+              "default" : false
+            },
+            "threads" : {
+              "type" : "object",
+              "properties" : {
+                "io" : {
+                  "type" : "integer",
+                  "description" : "Number of I/O threads to create for the worker. The default is derived from the number of available processors."
+                },
+                "worker" : {
+                  "type" : "integer",
+                  "description" : "Number of worker threads. The default is 8 times the number of I/O threads."
+                }
+              }
+            },
+            "buffer-size" : {
+              "type" : "string",
+              "description" : "Size of each buffer. The default is derived from the maximum amount of memory that is available to the JVM."
+            },
+            "max-http-post-size" : {
+              "type" : "string",
+              "description" : "Maximum size of the HTTP post content. When the value is -1, the default, the size is unlimited.",
+              "default" : "-1B"
+            },
+            "accesslog" : {
+              "type" : "object",
+              "properties" : {
+                "rotate" : {
+                  "type" : "boolean",
+                  "description" : "Whether to enable access log rotation.",
+                  "default" : true
+                },
+                "prefix" : {
+                  "type" : "string",
+                  "description" : "Log file name prefix.",
+                  "default" : "access_log."
+                },
+                "pattern" : {
+                  "type" : "string",
+                  "description" : "Format pattern for access logs.",
+                  "default" : "common"
+                },
+                "suffix" : {
+                  "type" : "string",
+                  "description" : "Log file name suffix.",
+                  "default" : "log"
+                },
+                "dir" : {
+                  "type" : "string",
+                  "description" : "Undertow access log directory."
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Whether to enable the access log.",
+                  "default" : false
+                }
+              }
+            },
+            "decode-slash" : {
+              "type" : "boolean",
+              "description" : "Whether encoded slash characters (%2F) should be decoded. Decoding can cause security problems if a front-end proxy does not perform the same decoding. Only enable this if you have a legacy application that requires it. When set, server.undertow.allow-encoded-slash has no effect."
+            },
+            "decode-url" : {
+              "type" : "boolean",
+              "description" : "Whether the URL should be decoded. When disabled, percent-encoded characters in the URL will be left as-is.",
+              "default" : true
+            },
+            "url-charset" : {
+              "type" : "string",
+              "description" : "Charset used to decode URLs.",
+              "default" : "UTF-8"
+            },
+            "max-parameters" : {
+              "type" : "integer",
+              "description" : "Maximum number of query or path parameters that are allowed. This limit exists to prevent hash collision based DOS attacks."
+            },
+            "options" : {
+              "type" : "object",
+              "properties" : {
+                "server" : {
+                  "type" : "object",
+                  "description" : "Server options as defined in io.undertow.UndertowOptions.",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                },
+                "socket" : {
+                  "type" : "object",
+                  "description" : "Socket options as defined in org.xnio.Options.",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "max-cookies" : {
+              "type" : "integer",
+              "description" : "Maximum number of cookies that are allowed. This limit exists to prevent hash collision based DOS attacks.",
+              "default" : 200
+            },
+            "max-headers" : {
+              "type" : "integer",
+              "description" : "Maximum number of headers that are allowed. This limit exists to prevent hash collision based DOS attacks."
+            },
+            "allow-encoded-slash" : {
+              "type" : "boolean",
+              "description" : "Whether the server should decode percent encoded slash characters. Enabling encoded slashes can have security implications due to different servers interpreting the slash differently. Only enable this if you have a legacy application that requires it. Has no effect when server.undertow.decode-slash is set.",
+              "default" : false,
+              "deprecated" : true,
+              "deprecationReplacement" : "server.undertow.decode-slash"
+            },
+            "always-set-keep-alive" : {
+              "type" : "boolean",
+              "description" : "Whether the 'Connection: keep-alive' header should be added to all responses, even if not required by the HTTP specification.",
+              "default" : true
+            }
+          }
+        },
+        "tomcat" : {
+          "type" : "object",
+          "properties" : {
+            "remoteip" : {
+              "type" : "object",
+              "properties" : {
+                "remote-ip-header" : {
+                  "type" : "string",
+                  "description" : "Name of the HTTP header from which the remote IP is extracted. For instance, 'X-FORWARDED-FOR'."
+                },
+                "trusted-proxies" : {
+                  "type" : "string",
+                  "description" : "Regular expression defining proxies that are trusted when they appear in the \"remote-ip-header\" header."
+                },
+                "host-header" : {
+                  "type" : "string",
+                  "description" : "Name of the HTTP header from which the remote host is extracted.",
+                  "default" : "X-Forwarded-Host"
+                },
+                "internal-proxies" : {
+                  "type" : "string",
+                  "description" : "Regular expression that matches proxies that are to be trusted.",
+                  "default" : "10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|192\\.168\\.\\d{1,3}\\.\\d{1,3}|169\\.254\\.\\d{1,3}\\.\\d{1,3}|127\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|100\\.6[4-9]{1}\\.\\d{1,3}\\.\\d{1,3}|100\\.[7-9]{1}\\d{1}\\.\\d{1,3}\\.\\d{1,3}|100\\.1[0-1]{1}\\d{1}\\.\\d{1,3}\\.\\d{1,3}|100\\.12[0-7]{1}\\.\\d{1,3}\\.\\d{1,3}|172\\.1[6-9]{1}\\.\\d{1,3}\\.\\d{1,3}|172\\.2[0-9]{1}\\.\\d{1,3}\\.\\d{1,3}|172\\.3[0-1]{1}\\.\\d{1,3}\\.\\d{1,3}|0:0:0:0:0:0:0:1|::1|fe[89ab]\\p{XDigit}:.*|f[cd]\\p{XDigit}{2}+:.*"
+                },
+                "protocol-header" : {
+                  "type" : "string",
+                  "description" : "Header that holds the incoming protocol, usually named \"X-Forwarded-Proto\"."
+                },
+                "protocol-header-https-value" : {
+                  "type" : "string",
+                  "description" : "Value of the protocol header indicating whether the incoming request uses SSL.",
+                  "default" : "https"
+                },
+                "port-header" : {
+                  "type" : "string",
+                  "description" : "Name of the HTTP header used to override the original port value.",
+                  "default" : "X-Forwarded-Port"
+                }
+              }
+            },
+            "use-apr" : {
+              "type" : "string",
+              "description" : "Whether to use APR.",
+              "default" : "never",
+              "enum" : [ "ALWAYS", "always", "WHEN_AVAILABLE", "when_available", "NEVER", "never" ]
+            },
+            "mbeanregistry" : {
+              "type" : "object",
+              "properties" : {
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Whether Tomcat's MBean Registry should be enabled.",
+                  "default" : false
+                }
+              }
+            },
+            "processor-cache" : {
+              "type" : "integer",
+              "description" : "Maximum number of idle processors that will be retained in the cache and reused with a subsequent request. When set to -1 the cache will be unlimited with a theoretical maximum size equal to the maximum number of connections.",
+              "default" : 200
+            },
+            "max-connections" : {
+              "type" : "integer",
+              "description" : "Maximum number of connections that the server accepts and processes at any given time. Once the limit has been reached, the operating system may still accept connections based on the \"acceptCount\" property.",
+              "default" : 8192
+            },
+            "accesslog" : {
+              "type" : "object",
+              "properties" : {
+                "rotate" : {
+                  "type" : "boolean",
+                  "description" : "Whether to enable access log rotation.",
+                  "default" : true
+                },
+                "request-attributes-enabled" : {
+                  "type" : "boolean",
+                  "description" : "Set request attributes for the IP address, Hostname, protocol, and port used for the request.",
+                  "default" : false
+                },
+                "rename-on-rotate" : {
+                  "type" : "boolean",
+                  "description" : "Whether to defer inclusion of the date stamp in the file name until rotate time.",
+                  "default" : false
+                },
+                "prefix" : {
+                  "type" : "string",
+                  "description" : "Log file name prefix.",
+                  "default" : "access_log"
+                },
+                "pattern" : {
+                  "type" : "string",
+                  "description" : "Format pattern for access logs.",
+                  "default" : "common"
+                },
+                "check-exists" : {
+                  "type" : "boolean",
+                  "description" : "Whether to check for log file existence so it can be recreated if an external process has renamed it.",
+                  "default" : false
+                },
+                "max-days" : {
+                  "type" : "integer",
+                  "description" : "Number of days to retain the access log files before they are removed.",
+                  "default" : -1
+                },
+                "suffix" : {
+                  "type" : "string",
+                  "description" : "Log file name suffix.",
+                  "default" : ".log"
+                },
+                "locale" : {
+                  "type" : "string",
+                  "description" : "Locale used to format timestamps in log entries and in log file name suffix. Default to the default locale of the Java process."
+                },
+                "encoding" : {
+                  "type" : "string",
+                  "description" : "Character set used by the log file. Default to the system default character set."
+                },
+                "directory" : {
+                  "type" : "string",
+                  "description" : "Directory in which log files are created. Can be absolute or relative to the Tomcat base dir.",
+                  "default" : "logs"
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Enable access log.",
+                  "default" : false
+                },
+                "file-date-format" : {
+                  "type" : "string",
+                  "description" : "Date format to place in the log file name.",
+                  "default" : ".yyyy-MM-dd"
+                },
+                "condition-unless" : {
+                  "type" : "string",
+                  "description" : "Whether logging of the request will only be enabled if \"ServletRequest.getAttribute(conditionUnless)\" yield null."
+                },
+                "buffered" : {
+                  "type" : "boolean",
+                  "description" : "Whether to buffer output such that it is flushed only periodically.",
+                  "default" : true
+                },
+                "ipv6-canonical" : {
+                  "type" : "boolean",
+                  "description" : "Whether to use IPv6 canonical representation format as defined by RFC 5952.",
+                  "default" : false
+                },
+                "condition-if" : {
+                  "type" : "string",
+                  "description" : "Whether logging of the request will only be enabled if \"ServletRequest.getAttribute(conditionIf)\" does not yield null."
+                }
+              }
+            },
+            "max-http-form-post-size" : {
+              "type" : "string",
+              "description" : "Maximum size of the form content in any HTTP post request.",
+              "default" : "2MB"
+            },
+            "keep-alive-timeout" : {
+              "type" : "string",
+              "description" : "Time to wait for another HTTP request before the connection is closed. When not set the connectionTimeout is used. When set to -1 there will be no timeout."
+            },
+            "relaxed-query-chars" : {
+              "type" : "array",
+              "description" : "List of additional unencoded characters that should be allowed in URI query strings. Only \"< > [ \\ ] ^ ` { | }\" are allowed.",
+              "examples" : [ "<", ">", "[", "\\", "]", "^", "`", "{", "|", "}" ],
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "max-http-response-header-size" : {
+              "type" : "string",
+              "description" : "Maximum size of the HTTP response header.",
+              "default" : "8KB"
+            },
+            "max-part-count" : {
+              "type" : "integer",
+              "description" : "Maximum total number of parts permitted in a multipart/form-data request. Requests that exceed this limit will be rejected. A value of less than 0 means no limit.",
+              "default" : 10
+            },
+            "additional-tld-skip-patterns" : {
+              "type" : "array",
+              "description" : "List of additional patterns that match jars to ignore for TLD scanning. The special '?' and '*' characters can be used in the pattern to match one and only one character and zero or more characters respectively.",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "resource" : {
+              "type" : "object",
+              "properties" : {
+                "allow-caching" : {
+                  "type" : "boolean",
+                  "description" : "Whether static resource caching is permitted for this web application.",
+                  "default" : true
+                },
+                "cache-ttl" : {
+                  "type" : "string",
+                  "description" : "Time-to-live of the static resource cache."
+                }
+              }
+            },
+            "accept-count" : {
+              "type" : "integer",
+              "description" : "Maximum queue length for incoming connection requests when all possible request processing threads are in use.",
+              "default" : 100
+            },
+            "relaxed-path-chars" : {
+              "type" : "array",
+              "description" : "List of additional unencoded characters that should be allowed in URI paths. Only \"< > [ \\ ] ^ ` { | }\" are allowed.",
+              "examples" : [ "<", ">", "[", "\\", "]", "^", "`", "{", "|", "}" ],
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "max-keep-alive-requests" : {
+              "type" : "integer",
+              "description" : "Maximum number of HTTP requests that can be pipelined before the connection is closed. When set to 0 or 1, keep-alive and pipelining are disabled. When set to -1, an unlimited number of pipelined or keep-alive requests are allowed.",
+              "default" : 100
+            },
+            "threads" : {
+              "type" : "object",
+              "properties" : {
+                "min-spare" : {
+                  "type" : "integer",
+                  "description" : "Minimum amount of worker threads. Doesn't have an effect if virtual threads are enabled.",
+                  "default" : 10
+                },
+                "max" : {
+                  "type" : "integer",
+                  "description" : "Maximum amount of worker threads. Doesn't have an effect if virtual threads are enabled.",
+                  "default" : 200
+                },
+                "max-queue-capacity" : {
+                  "type" : "integer",
+                  "description" : "Maximum capacity of the thread pool's backing queue. This setting only has an effect if the value is greater than 0.",
+                  "default" : 2147483647
+                }
+              }
+            },
+            "max-part-header-size" : {
+              "type" : "string",
+              "description" : "Maximum per-part header size permitted in a multipart/form-data request. Requests that exceed this limit will be rejected. A value of less than 0 means no limit.",
+              "default" : "512B"
+            },
+            "max-swallow-size" : {
+              "type" : "string",
+              "description" : "Maximum amount of request body to swallow.",
+              "default" : "2MB"
+            },
+            "redirect-context-root" : {
+              "type" : "boolean",
+              "description" : "Whether requests to the context root should be redirected by appending a / to the path. When using SSL terminated at a proxy, this property should be set to false.",
+              "default" : true
+            },
+            "basedir" : {
+              "type" : "string",
+              "description" : "Tomcat base directory. If not specified, a temporary directory is used."
+            },
+            "connection-timeout" : {
+              "type" : "string",
+              "description" : "Amount of time the connector will wait, after accepting a connection, for the request URI line to be presented."
+            },
+            "use-relative-redirects" : {
+              "type" : "boolean",
+              "description" : "Whether HTTP 1.1 and later location headers generated by a call to sendRedirect will use relative or absolute redirects.",
+              "default" : false
+            },
+            "max-parameter-count" : {
+              "type" : "integer",
+              "description" : "Maximum number of parameters (GET plus POST) that will be automatically parsed by the container. A value of less than 0 means no limit.",
+              "default" : 10000
+            },
+            "uri-encoding" : {
+              "type" : "string",
+              "description" : "Character encoding to use to decode the URI.",
+              "default" : "UTF-8"
+            },
+            "background-processor-delay" : {
+              "type" : "string",
+              "description" : "Delay between the invocation of backgroundProcess methods. If a duration suffix is not specified, seconds will be used.",
+              "default" : "10s"
+            }
+          }
+        },
+        "servlet" : {
+          "type" : "object",
+          "properties" : {
+            "context-path" : {
+              "type" : "string",
+              "description" : "Context path of the application."
+            },
+            "application-display-name" : {
+              "type" : "string",
+              "description" : "Display name of the application.",
+              "default" : "application"
+            },
+            "jsp" : {
+              "type" : "object",
+              "properties" : {
+                "init-parameters" : {
+                  "type" : "object",
+                  "description" : "Init parameters used to configure the JSP servlet.",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                },
+                "registered" : {
+                  "type" : "boolean",
+                  "description" : "Whether the JSP servlet is registered.",
+                  "default" : true
+                },
+                "class-name" : {
+                  "type" : "string",
+                  "description" : "Class name of the servlet to use for JSPs. If registered is true and this class\n\t * is on the classpath then it will be registered.",
+                  "default" : "org.apache.jasper.servlet.JspServlet"
+                }
+              }
+            },
+            "session" : {
+              "type" : "object",
+              "properties" : {
+                "cookie" : {
+                  "type" : "object",
+                  "properties" : {
+                    "path" : {
+                      "type" : "string",
+                      "description" : "Path of the cookie."
+                    },
+                    "http-only" : {
+                      "type" : "boolean",
+                      "description" : "Whether to use \"HttpOnly\" cookies for the cookie."
+                    },
+                    "domain" : {
+                      "type" : "string",
+                      "description" : "Domain for the cookie."
+                    },
+                    "max-age" : {
+                      "type" : "string",
+                      "description" : "Maximum age of the cookie. If a duration suffix is not specified, seconds will be used. A positive value indicates when the cookie expires relative to the current time. A value of 0 means the cookie should expire immediately. A negative value means no \"Max-Age\"."
+                    },
+                    "name" : {
+                      "type" : "string",
+                      "description" : "Name of the cookie."
+                    },
+                    "partitioned" : {
+                      "type" : "boolean",
+                      "description" : "Whether the generated cookie carries the Partitioned attribute."
+                    },
+                    "secure" : {
+                      "type" : "boolean",
+                      "description" : "Whether to always mark the cookie as secure."
+                    },
+                    "same-site" : {
+                      "type" : "string",
+                      "description" : "SameSite setting for the cookie.",
+                      "enum" : [ "OMITTED", "omitted", "NONE", "none", "LAX", "lax", "STRICT", "strict" ]
+                    }
+                  }
+                },
+                "tracking-modes" : {
+                  "type" : "array",
+                  "description" : "Session tracking modes.",
+                  "items" : {
+                    "type" : "string",
+                    "enum" : [ "COOKIE", "cookie", "URL", "url", "SSL", "ssl" ]
+                  }
+                },
+                "store-dir" : {
+                  "type" : "string",
+                  "description" : "Directory used to store session data."
+                },
+                "persistent" : {
+                  "type" : "boolean",
+                  "description" : "Whether to persist session data between restarts.",
+                  "default" : false
+                },
+                "timeout" : {
+                  "type" : "string",
+                  "description" : "Session timeout. If a duration suffix is not specified, seconds will be used.",
+                  "default" : "30m"
+                }
+              }
+            },
+            "context-parameters" : {
+              "type" : "object",
+              "description" : "Servlet context init parameters.",
+              "additionalProperties" : {
+                "type" : "string"
+              }
+            },
+            "encoding" : {
+              "type" : "object",
+              "properties" : {
+                "force-response" : {
+                  "type" : "boolean",
+                  "description" : "Whether to force the encoding to the configured charset on HTTP responses."
+                },
+                "force-request" : {
+                  "type" : "boolean",
+                  "description" : "Whether to force the encoding to the configured charset on HTTP requests. Defaults to true when \"force\" has not been specified."
+                },
+                "charset" : {
+                  "type" : "string",
+                  "description" : "Charset of HTTP requests and responses. Added to the \"Content-Type\" header if not set explicitly.",
+                  "default" : "UTF-8"
+                },
+                "mapping" : {
+                  "type" : "object",
+                  "description" : "Mapping of locale to charset for response encoding.",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                },
+                "force" : {
+                  "type" : "boolean",
+                  "description" : "Whether to force the encoding to the configured charset on HTTP requests and responses."
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Whether to enable http encoding support.",
+                  "default" : true
+                }
+              }
+            },
+            "register-default-servlet" : {
+              "type" : "boolean",
+              "description" : "Whether to register the default Servlet with the container.",
+              "default" : false
+            }
+          }
+        },
+        "error" : {
+          "type" : "object",
+          "properties" : {
+            "path" : {
+              "type" : "string",
+              "description" : "Path of the error controller.",
+              "default" : "/error"
+            },
+            "include-exception" : {
+              "type" : "boolean",
+              "description" : "Include the \"exception\" attribute.",
+              "default" : false
+            },
+            "include-binding-errors" : {
+              "type" : "string",
+              "description" : "When to include \"errors\" attribute.",
+              "default" : "never",
+              "enum" : [ "NEVER", "never", "ALWAYS", "always", "ON_PARAM", "on_param" ]
+            },
+            "include-stacktrace" : {
+              "type" : "string",
+              "description" : "When to include the \"trace\" attribute.",
+              "default" : "never",
+              "enum" : [ "NEVER", "never", "ALWAYS", "always", "ON_PARAM", "on_param" ]
+            },
+            "whitelabel" : {
+              "type" : "object",
+              "properties" : {
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Whether to enable the default error page displayed in browsers in case of a server error.",
+                  "default" : true
+                }
+              }
+            },
+            "include-message" : {
+              "type" : "string",
+              "description" : "When to include \"message\" attribute.",
+              "default" : "never",
+              "enum" : [ "NEVER", "never", "ALWAYS", "always", "ON_PARAM", "on_param" ]
+            },
+            "include-path" : {
+              "type" : "string",
+              "description" : "When to include \"path\" attribute.",
+              "default" : "always",
+              "enum" : [ "NEVER", "never", "ALWAYS", "always", "ON_PARAM", "on_param" ]
+            }
+          }
+        },
+        "ssl" : {
+          "type" : "object",
+          "properties" : {
+            "certificate-private-key" : {
+              "type" : "string",
+              "description" : "Path to a PEM-encoded private key file for the SSL certificate."
+            },
+            "trust-store" : {
+              "type" : "string",
+              "description" : "Trust store that holds SSL certificates."
+            },
+            "certificate" : {
+              "type" : "string",
+              "description" : "Path to a PEM-encoded SSL certificate file."
+            },
+            "server-name-bundles" : {
+              "type" : "array",
+              "description" : "Mapping of host names to SSL bundles for SNI configuration.",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "server-name" : {
+                    "type" : "string"
+                  },
+                  "bundle" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "key-password" : {
+              "type" : "string",
+              "description" : "Password used to access the key in the key store."
+            },
+            "key-store" : {
+              "type" : "string",
+              "description" : "Path to the key store that holds the SSL certificate (typically a jks file)."
+            },
+            "trust-certificate" : {
+              "type" : "string",
+              "description" : "Path to a PEM-encoded SSL certificate authority file."
+            },
+            "enabled" : {
+              "type" : "boolean",
+              "description" : "Whether to enable SSL support.",
+              "default" : true
+            },
+            "key-store-provider" : {
+              "type" : "string",
+              "description" : "Provider for the key store."
+            },
+            "trust-store-provider" : {
+              "type" : "string",
+              "description" : "Provider for the trust store."
+            },
+            "enabled-protocols" : {
+              "type" : "array",
+              "description" : "Enabled SSL protocols.",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "trust-certificate-private-key" : {
+              "type" : "string",
+              "description" : "Path to a PEM-encoded private key file for the SSL certificate authority."
+            },
+            "protocol" : {
+              "type" : "string",
+              "description" : "SSL protocol to use.",
+              "default" : "TLS"
+            },
+            "key-alias" : {
+              "type" : "string",
+              "description" : "Alias that identifies the key in the key store."
+            },
+            "client-auth" : {
+              "type" : "string",
+              "description" : "Client authentication mode. Requires a trust store.",
+              "enum" : [ "NONE", "none", "WANT", "want", "NEED", "need" ]
+            },
+            "key-store-type" : {
+              "type" : "string",
+              "description" : "Type of the key store."
+            },
+            "trust-store-type" : {
+              "type" : "string",
+              "description" : "Type of the trust store."
+            },
+            "ciphers" : {
+              "type" : "array",
+              "description" : "Supported SSL ciphers.",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "bundle" : {
+              "type" : "string",
+              "description" : "Name of a configured SSL bundle."
+            },
+            "key-store-password" : {
+              "type" : "string",
+              "description" : "Password used to access the key store."
+            },
+            "trust-store-password" : {
+              "type" : "string",
+              "description" : "Password used to access the trust store."
+            }
+          }
+        },
+        "reactive" : {
+          "type" : "object",
+          "properties" : {
+            "session" : {
+              "type" : "object",
+              "properties" : {
+                "cookie" : {
+                  "type" : "object",
+                  "properties" : {
+                    "path" : {
+                      "type" : "string",
+                      "description" : "Path of the cookie."
+                    },
+                    "http-only" : {
+                      "type" : "boolean",
+                      "description" : "Whether to use \"HttpOnly\" cookies for the cookie."
+                    },
+                    "domain" : {
+                      "type" : "string",
+                      "description" : "Domain for the cookie."
+                    },
+                    "max-age" : {
+                      "type" : "string",
+                      "description" : "Maximum age of the cookie. If a duration suffix is not specified, seconds will be used. A positive value indicates when the cookie expires relative to the current time. A value of 0 means the cookie should expire immediately. A negative value means no \"Max-Age\"."
+                    },
+                    "name" : {
+                      "type" : "string",
+                      "description" : "Name for the cookie."
+                    },
+                    "partitioned" : {
+                      "type" : "boolean",
+                      "description" : "Whether the generated cookie carries the Partitioned attribute."
+                    },
+                    "secure" : {
+                      "type" : "boolean",
+                      "description" : "Whether to always mark the cookie as secure."
+                    },
+                    "same-site" : {
+                      "type" : "string",
+                      "description" : "SameSite setting for the cookie.",
+                      "enum" : [ "OMITTED", "omitted", "NONE", "none", "LAX", "lax", "STRICT", "strict" ]
+                    }
+                  }
+                },
+                "max-sessions" : {
+                  "type" : "integer",
+                  "description" : "Maximum number of sessions that can be stored.",
+                  "default" : 10000
+                },
+                "timeout" : {
+                  "type" : "string",
+                  "description" : "Session timeout. If a duration suffix is not specified, seconds will be used.",
+                  "default" : "30m"
+                }
+              }
+            }
+          }
+        },
+        "port" : {
+          "type" : "integer",
+          "description" : "Server HTTP port.",
+          "default" : 8080
+        },
+        "http2" : {
+          "type" : "object",
+          "properties" : {
+            "enabled" : {
+              "type" : "boolean",
+              "description" : "Whether to enable HTTP/2 support, if the current environment supports it.",
+              "default" : false
+            }
+          }
+        },
+        "jetty" : {
+          "type" : "object",
+          "properties" : {
+            "connection-idle-timeout" : {
+              "type" : "string",
+              "description" : "Time that the connection can be idle before it is closed."
+            },
+            "max-http-form-post-size" : {
+              "type" : "string",
+              "description" : "Maximum size of the form content in any HTTP post request.",
+              "default" : "200000B"
+            },
+            "max-http-response-header-size" : {
+              "type" : "string",
+              "description" : "Maximum size of the HTTP response header.",
+              "default" : "8KB"
+            },
+            "threads" : {
+              "type" : "object",
+              "properties" : {
+                "min" : {
+                  "type" : "integer",
+                  "description" : "Minimum number of threads. Doesn't have an effect if virtual threads are enabled.",
+                  "default" : 8
+                },
+                "max" : {
+                  "type" : "integer",
+                  "description" : "Maximum number of threads. Doesn't have an effect if virtual threads are enabled.",
+                  "default" : 200
+                },
+                "max-queue-capacity" : {
+                  "type" : "integer",
+                  "description" : "Maximum capacity of the thread pool's backing queue. A default is computed based on the threading configuration."
+                },
+                "idle-timeout" : {
+                  "type" : "string",
+                  "description" : "Maximum thread idle time.",
+                  "default" : "60000ms"
+                },
+                "selectors" : {
+                  "type" : "integer",
+                  "description" : "Number of selector threads to use. When the value is -1, the default, the number of selectors is derived from the operating environment.",
+                  "default" : -1
+                },
+                "acceptors" : {
+                  "type" : "integer",
+                  "description" : "Number of acceptor threads to use. When the value is -1, the default, the number of acceptors is derived from the operating environment.",
+                  "default" : -1
+                }
+              }
+            },
+            "max-connections" : {
+              "type" : "integer",
+              "description" : "Maximum number of connections that the server accepts and processes at any given time.",
+              "default" : -1
+            },
+            "max-form-keys" : {
+              "type" : "integer",
+              "description" : "Maximum number of form keys.",
+              "default" : 1000
+            },
+            "accesslog" : {
+              "type" : "object",
+              "properties" : {
+                "file-date-format" : {
+                  "type" : "string",
+                  "description" : "Date format to place in log file name."
+                },
+                "filename" : {
+                  "type" : "string",
+                  "description" : "Log filename. If not specified, logs redirect to \"System.err\"."
+                },
+                "retention-period" : {
+                  "type" : "integer",
+                  "description" : "Number of days before rotated log files are deleted.",
+                  "default" : 31
+                },
+                "custom-format" : {
+                  "type" : "string",
+                  "description" : "Custom log format, see org.eclipse.jetty.server.CustomRequestLog. If defined, overrides the \"format\" configuration key."
+                },
+                "format" : {
+                  "type" : "string",
+                  "description" : "Log format.",
+                  "default" : "ncsa",
+                  "enum" : [ "NCSA", "ncsa", "EXTENDED_NCSA", "extended_ncsa" ]
+                },
+                "ignore-paths" : {
+                  "type" : "array",
+                  "description" : "Request paths that should not be logged.",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "enabled" : {
+                  "type" : "boolean",
+                  "description" : "Enable access log.",
+                  "default" : false
+                },
+                "append" : {
+                  "type" : "boolean",
+                  "description" : "Append to log.",
+                  "default" : false
+                }
+              }
+            }
+          }
+        },
+        "compression" : {
+          "type" : "object",
+          "properties" : {
+            "mime-types" : {
+              "type" : "array",
+              "description" : "Comma-separated list of MIME types that should be compressed.",
+              "default" : [ "text/html", "text/xml", "text/plain", "text/css", "text/javascript", "application/javascript", "application/json", "application/xml" ],
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "excluded-user-agents" : {
+              "type" : "array",
+              "description" : "Comma-separated list of user agents for which responses should not be compressed.",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "min-response-size" : {
+              "type" : "string",
+              "description" : "Minimum \"Content-Length\" value that is required for compression to be performed.",
+              "default" : "2KB"
+            },
+            "enabled" : {
+              "type" : "boolean",
+              "description" : "Whether response compression is enabled.",
+              "default" : false
+            }
+          }
+        },
+        "forward-headers-strategy" : {
+          "type" : "string",
+          "description" : "Strategy for handling X-Forwarded-* headers.",
+          "enum" : [ "NATIVE", "native", "FRAMEWORK", "framework", "NONE", "none" ]
+        },
+        "shutdown" : {
+          "type" : "string",
+          "description" : "Type of shutdown that the server will support.",
+          "default" : "graceful",
+          "enum" : [ "GRACEFUL", "graceful", "IMMEDIATE", "immediate" ]
+        },
+        "netty" : {
+          "type" : "object",
+          "properties" : {
+            "connection-timeout" : {
+              "type" : "string",
+              "description" : "Connection timeout of the Netty channel."
+            },
+            "initial-buffer-size" : {
+              "type" : "string",
+              "description" : "Initial buffer size for HTTP request decoding.",
+              "default" : "128B"
+            },
+            "validate-headers" : {
+              "type" : "boolean",
+              "description" : "Whether to validate headers when decoding requests.",
+              "default" : true
+            },
+            "h2c-max-content-length" : {
+              "type" : "string",
+              "description" : "Maximum content length of an H2C upgrade request.",
+              "default" : "0B"
+            },
+            "max-initial-line-length" : {
+              "type" : "string",
+              "description" : "Maximum length that can be decoded for an HTTP request's initial line.",
+              "default" : "4KB"
+            },
+            "max-keep-alive-requests" : {
+              "type" : "integer",
+              "description" : "Maximum number of requests that can be made per connection. By default, a connection serves unlimited number of requests."
+            },
+            "idle-timeout" : {
+              "type" : "string",
+              "description" : "Idle timeout of the Netty channel. When not specified, an infinite timeout is used."
+            }
+          }
+        },
+        "max-http-request-header-size" : {
+          "type" : "string",
+          "description" : "Maximum size of the HTTP request header. Refer to the documentation for your chosen embedded server for details of exactly how this limit is applied. For example, Netty applies the limit separately to each individual header in the request whereas Tomcat applies the limit to the combined size of the request line and all of the header names and values in the request.",
+          "default" : "8KB"
+        }
+      }
+    },
+    "configschema" : {
+      "type" : "object",
+      "properties" : {
+        "schema-spec" : {
+          "type" : "string",
+          "default" : "https://json-schema.org/draft/2020-12/schema",
+          "description" : "JSON Schema specification URL"
+        },
+        "use-validation" : {
+          "type" : "boolean",
+          "default" : true,
+          "description" : "Enable validation annotations processing"
+        },
+        "schema-id" : {
+          "type" : "string",
+          "default" : "your-schema-id",
+          "description" : "Schema identifier"
+        },
+        "use-openapi" : {
+          "type" : "boolean",
+          "default" : true,
+          "description" : "Enable OpenAPI annotations processing"
+        },
+        "description" : {
+          "type" : "string",
+          "default" : "Auto-generated schema from configuration metadata",
+          "description" : "Schema description"
+        },
+        "title" : {
+          "type" : "string",
+          "default" : "Spring Boot Configuration Properties",
+          "description" : "Schema title"
+        },
+        "additional-properties" : {
+          "type" : "array",
+          "default" : "logging",
+          "description" : "List of additional property paths to include",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "sample" : {
+      "type" : "object",
+      "properties" : {
+        "string-array-example" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "enum-status-map" : {
+          "type" : "object",
+          "description" : "Sample status map",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "sample-int-array" : {
+          "type" : "array",
+          "items" : {
+            "type" : "integer"
+          }
+        },
+        "map-object-sample" : {
+          "type" : "object",
+          "description" : "Sample object map",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : {
+              "nested-config-list" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "config-map2" : {
+                "type" : "integer"
+              },
+              "config-map1" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "integer-sample" : {
+          "type" : "integer",
+          "description" : "Sample integer property",
+          "minimum" : 10,
+          "maximum" : 200
+        },
+        "config-sample-object-array" : {
+          "type" : "array",
+          "description" : "Sample nested configuration collection",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "nested-list-config-list" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "list-nested-config2" : {
+                "type" : "integer"
+              },
+              "list-nested-config1" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "properties-map-example" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "enum-type-set" : {
+          "type" : "array",
+          "description" : "Sample type set",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "TYPE1", "type1", "TYPE2", "type2", "TYPE3", "type3" ]
+          }
+        },
+        "map-sample" : {
+          "type" : "object",
+          "description" : "Sample string map",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "config-sample-nested" : {
+          "type" : "object",
+          "properties" : {
+            "url-test" : {
+              "type" : "string"
+            },
+            "email-valid-test" : {
+              "type" : "string"
+            },
+            "nested-config2" : {
+              "type" : "integer",
+              "required" : true,
+              "description" : "Second nested configuration property",
+              "example" : "123"
+            },
+            "nested-config1" : {
+              "type" : "string",
+              "minLength" : 1,
+              "required" : true,
+              "description" : "First nested configuration property",
+              "example" : "nestedConfig1"
+            }
+          }
+        },
+        "boolean-sample" : {
+          "type" : "boolean",
+          "description" : "Sample boolean property"
+        },
+        "string-sample" : {
+          "type" : "string",
+          "description" : "Sample string property",
+          "required" : true
+        },
+        "enum-sample" : {
+          "type" : "string",
+          "description" : "Sample enum property",
+          "enum" : [ "EN1", "en1", "EN2", "en2", "EN3", "en3" ]
+        },
+        "string-array-sample" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "properties-example" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object"
+          }
+        },
+        "collection-sample" : {
+          "type" : "array",
+          "description" : "Sample string collection",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
