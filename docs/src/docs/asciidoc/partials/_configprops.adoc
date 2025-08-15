@@ -1,0 +1,32 @@
+
+|===
+|Name |Default Value |Description
+
+|json-config-schema.additional-properties
+|logging
+|List of additional configuration property paths to include in the schema. By default includes the 'logging' configuration namespace.
+
+|json-config-schema.description
+|Auto-generated schema from configuration metadata
+|A detailed description of what this schema represents. Explains the purpose and content of the configuration properties.
+
+|json-config-schema.schema-id
+|your-schema-id
+|The unique identifier for this schema. Should be replaced with a meaningful ID for your configuration.
+
+|json-config-schema.schema-spec
+|https: //json-schema.org/draft/2020-12/schema
+|The URL of the JSON Schema specification to be used. Defaults to the 2020-12 draft version.
+
+|json-config-schema.title
+|Spring Boot Configuration Properties
+|The title of the schema document. Provides a human-readable name for the configuration schema.
+
+|json-config-schema.use-openapi
+|true
+|Controls whether OpenAPI annotations should be processed. When true, OpenAPI annotations will be used to enhance the schema.
+
+|json-config-schema.use-validation
+|true
+|Controls whether validation annotations should be processed. When true, validation constraints will be included in the schema.
+|===

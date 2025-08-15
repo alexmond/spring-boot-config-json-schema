@@ -13,6 +13,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -48,25 +51,32 @@ jobs:
           mkdir -p ~/.m2
           cp .github/settings.xml ~/.m2/settings.xml
 
-#      - name: Import GPG key
-#        run: |
-#          # Create a temporary file for the key
-#          echo "${{ secrets.GPG_PRIVATE_KEY }}" > private_key.asc
-#          # Import the key with proper permissions
-#          gpg --batch --import private_key.asc
-#          # Clean up
-#          rm private_key.asc
-#          # Trust the key
-#          echo -e "5\ny\n" | gpg --batch --command-fd 0 --expert --edit-key $(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2) trust
-#          # Verify the key is imported
-#          gpg --list-secret-keys --keyid-format LONG
-
       - name: Deploy to Maven Central
         run: mvn --batch-mode -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} clean deploy -Prelease
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Build with Docs
+        run: mvn -B package --file pom.xml -Pdocs
+
+      - name: Verify docs output exists
+        run: |
+          if [ ! -d "docs/target/docs/multipage" ]; then
+            echo "Expected directory 'docs/target/docs/multipage' not found."
+            echo "Please build your docs before deploying (ensure the build job populates this path)."
+            exit 1
+          fi
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/target/docs/multipage
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
       - name: Prepare for Next Development Version
         run: |

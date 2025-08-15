@@ -4,6 +4,8 @@ Alex Mondshain <alex.mondshaing@gmail.com>
 :revnumber: {project-version}
 :example-caption!:
 ifndef::imagesdir[:imagesdir: images]
+ifndef::pages[:pages: pages]
+ifndef::partials[:partials: partials]
 
 A Spring Boot starter library that automatically generates JSON Schema documentation for your application's configuration properties.
 It simplifies the process of documenting and validating configuration by generating JSON Schema from your Spring Boot configuration classes.
@@ -164,3 +166,10 @@ Examples:
 image::vcs1.png[scaledwidth=75%]
 [.thumb]
 image::vcs2.png[scaledwidth=75%]
+
+[configuration-properties]
+== Configuration Properties
+
+Below you can find a list of configuration properties.
+
+include::{partials}/_configprops.adoc[]
