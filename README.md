@@ -4,24 +4,10 @@ A Spring Boot starter library that automatically generates JSON Schema documenta
 configuration properties. It simplifies the process of documenting and validating configuration by generating JSON
 Schema from your Spring Boot configuration classes.
 
-## Key Features
+A full guide can be found in our [docs](https://alexmond.github.io/spring-boot-config-json-schema/).
 
-- Automatic JSON Schema generation from Spring Boot `@ConfigurationProperties` classes
-- Support for validation annotations and property constraints
-- Compatible with Spring Boot 3.x
-- Java 17+ runtime support
-- Built-in Jackson and JSON Simple integration
-- YAML format output support
-- REST API endpoint for schema access
-- Unit test integration for schema generation
 
-## Prerequisites
-
-- Java 17 or higher
-- Spring Boot 3.x
-- Maven or Gradle build system
-
-## Installation
+## Quick Start
 
 ### Maven
 ## to use as a part of unitest 
@@ -30,7 +16,7 @@ Add the following dependency to your `pom.xml`:
         <dependency>
             <groupId>org.alexmond</groupId>
             <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.5</version>
             <scope>test</scope>
         </dependency>
 ```
@@ -72,7 +58,7 @@ To expose the JSON schema via a REST endpoint (similar to Swagger API docs), fir
         <dependency>
             <groupId>org.alexmond</groupId>
             <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.5</version>
         </dependency>
 ```
 Then create a REST controller:

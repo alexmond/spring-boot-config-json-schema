@@ -40,7 +40,7 @@ jobs:
         run: |
           mvn versions:set -DnewVersion=${{ github.event.inputs.releaseVersion }} -Pdefault
           git commit -am "Prepare release ${{ github.event.inputs.releaseVersion }}"
-          git tag -a v${{ github.event.inputs.releaseVersion }} -m "Release v${{ github.event.inputs.releaseVersion }}"
+          git tag -a ${{ github.event.inputs.releaseVersion }} -m "Release ${{ github.event.inputs.releaseVersion }}"
 
       - name: Copy Maven settings.xml
         run: |
@@ -66,8 +66,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ github.event.inputs.releaseVersion }}
-          name: Release v${{ github.event.inputs.releaseVersion }}
+          tag_name: ${{ github.event.inputs.releaseVersion }}
+          name: Release ${{ github.event.inputs.releaseVersion }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
