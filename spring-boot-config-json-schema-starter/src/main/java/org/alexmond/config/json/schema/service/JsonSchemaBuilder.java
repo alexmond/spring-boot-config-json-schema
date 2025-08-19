@@ -55,6 +55,7 @@ public class JsonSchemaBuilder {
         String propType;
         String propMappedType;
         Class<?> clazz = null;
+        Class<?> propClazz = null;
         Field field = null;
 
         if (node == null) {
@@ -89,7 +90,15 @@ public class JsonSchemaBuilder {
                     clazz = Class.forName(prop.getSourceType());
                     field = ReflectionUtils.findField(clazz, classField);
                 } catch (ClassNotFoundException e) {
-                    log.debug("Unable to find OpenAPI schema for property: {}, class: {}", prop.getName(), prop.getSourceType());
+                    log.debug("Unable to find class for property sourceType: {}, class: {}", prop.getName(), prop.getSourceType());
+                }
+            }
+
+            if (prop.getType() != null) {
+                try {
+                    propClazz = Class.forName(prop.getType());
+                } catch (ClassNotFoundException e) {
+                    log.debug("Unable to find class for property type: {}, class: {}", prop.getName(), prop.getType());
                 }
             }
 
@@ -119,8 +128,11 @@ public class JsonSchemaBuilder {
             if (config.isUseOpenapi()  && field != null) {
                 processOpenapi(propDef, field, prop.getName());
             }
-            if (typeMappingService.isEnum(propType)){
-                processEnumValues(propDef, prop);
+            if (propClazz != null && propClazz.isEnum()) {
+                List<String> values = processEnumItem(propClazz);
+                if (values != null) {
+                    propDef.put("enum", values);
+                }
                 node.put(key, propDef);
                 return;
             }
@@ -158,114 +170,102 @@ public class JsonSchemaBuilder {
         }
     }
 
-    private void processMap(Property prop, String propType, Map<String, Object> propDef,Set<String> visited) {
-        if(propType.contains("java.util.Properties")) {
-            propDef.put("additionalProperties", Map.of(
-                    "type", "object"
-            ));
+    private void processMap(Property prop, String propType, Map<String, Object> propDef, Set<String> visited) {
+        if (propType.contains("java.util.Properties")) {
+            addSimpleAdditionalProperties(propDef);
             return;
         }
+
         String valueType = extractMapValueType(propType);
-        if( valueType.equals("java.lang.Object") ) {
-            propDef.put("additionalProperties", Map.of(
-                    "type", "object"));
+        if (valueType.equals("java.lang.Object")) {
+            addSimpleAdditionalProperties(propDef);
             return;
         }
+
         try {
-            if((Class.forName(valueType)).getTypeParameters().length > 0){
-                propDef.put("additionalProperties", Map.of(
-                        "type", "object"));
+            Class<?> valueClass = Class.forName(valueType);
+            if (valueClass.getTypeParameters().length > 0) {
+                addSimpleAdditionalProperties(propDef);
                 return;
+            }
+
+            if (typeMappingService.mapType(valueType).equals("object")) {
+                visited = visited == null ? new HashSet<>() : visited;
+                Map<String, Object> valueTypeProperties = processComplexType(valueType, prop, visited);
+                if (valueTypeProperties != null) {
+                    propDef.put("additionalProperties", Map.of(
+                            "type", "object",
+                            "properties", valueTypeProperties
+                    ));
+                }
+            } else {
+                propDef.put("additionalProperties", Map.of("type", typeMappingService.mapType(valueType)));
             }
         } catch (ClassNotFoundException e) {
             log.debug("Cannot find class for property type: {}, treating as object", valueType);
-            propDef.put("additionalProperties", Map.of(
-                    "type", "object"));
-            return;
-        }
-
-
-        if (typeMappingService.mapType(valueType).equals("object")) {
-            if( visited == null ) {
-                visited = new HashSet<>();
-            }
-            Map<String, Object> valueTypeProperties = processComplexType(valueType, prop,visited);
-            if (valueTypeProperties != null) {
-                propDef.put("additionalProperties", Map.of(
-                        "type", "object",
-                        "properties", valueTypeProperties
-                ));
-            }
-        } else {
-            propDef.put("additionalProperties", Map.of("type", typeMappingService.mapType(valueType)));
+            addSimpleAdditionalProperties(propDef);
         }
     }
 
-    private void processArray(Property prop,String propType ,Map<String, Object> propDef,Set<String> visited) {
-        Map<String, Object> items = new HashMap<>();
-        if( propType.equals("java.lang.String[]") ) {
+    private void addSimpleAdditionalProperties(Map<String, Object> propDef) {
+        propDef.put("additionalProperties", Map.of("type", "object"));
+    }
+
+    private void processArray(Property prop, String propType, Map<String, Object> propDef, Set<String> visited) {
+        if (propType.equals("java.lang.String[]")) {
             propDef.put("items", Map.of("type", "string"));
             return;
         }
+
         String itemType = extractListItemType(propType);
-        if( itemType.equals("java.lang.Object") || itemType.contains("<T>")) {
+        if (itemType.equals("java.lang.Object") || itemType.contains("<T>")) {
             propDef.put("items", Map.of("type", "object"));
             return;
         }
+
         try {
-            if((Class.forName(itemType)).getTypeParameters().length > 0){
+            Class<?> itemClass = Class.forName(itemType);
+            if (itemClass.getTypeParameters().length > 0) {
                 propDef.put("items", Map.of("type", "object"));
                 return;
             }
+
+            Map<String, Object> items = new HashMap<>();
+            items.put("type", typeMappingService.mapType(itemType));
+
+            if (typeMappingService.mapType(itemType).equals("object")) {
+                visited = visited == null ? new HashSet<>() : visited;
+                Map<String, Object> complexProperties = processComplexType(itemType, prop, visited);
+                if (complexProperties != null) {
+                    items.put("properties", complexProperties);
+                }
+            } else if (itemClass.isEnum()) {
+                List<String> values = processEnumItem(itemClass);
+                if (values != null) {
+                    items.put("enum", values);
+                }
+            }
+            propDef.put("items", items);
+
         } catch (ClassNotFoundException e) {
             log.debug("Cannot find class for property type: {}, treating as object", itemType);
             propDef.put("items", Map.of("type", "object"));
-            return;
         }
-        items.put("type", typeMappingService.mapType(itemType));
-        if (typeMappingService.mapType(itemType).equals("object")) {
-            if( visited == null ) {
-                visited = new HashSet<>();
-            }
-            Map<String, Object> complexProperties = processComplexType(itemType, prop,visited);
-            if (complexProperties != null) {
-                items.put("properties", complexProperties);
-            }
-        }else {
-            try {
-                if(Class.forName(itemType).isEnum()){
-                    List<String> values = processEnumItem(itemType);
-                    if (values != null) {
-                        items.put("enum", values);
-                    }
-                }
-            } catch (ClassNotFoundException e) {
-                log.info(e.getMessage());
-            }
-        }
-        propDef.put("items", items);
     }
 
 
-    private  List<String> processEnumItem(String enumType) {
-        log.debug("Processing enum values for property: {}", enumType);
-        if (enumType != null) {
-            try {
-                Class<?> type = Class.forName(enumType);
-                if (type.isEnum()) {
-                    Object[] enumConstants = type.getEnumConstants();
-                    if (enumConstants != null) {
-                        List<String> enumValues = Arrays.stream(enumConstants)
-                                .flatMap(enumConstant -> Arrays.stream(new String[]{
-                                        enumConstant.toString(),
-                                        enumConstant.toString().toLowerCase()
-                                }))
-                                .toList();
-                            return  enumValues;
-                    }
-                }
-            } catch (ClassNotFoundException e) {
-                return  null;
+    private  List<String> processEnumItem(Class<?> itemClass) {
+        log.debug("Processing enum values for property: {}", itemClass);
+        if (itemClass.isEnum()) {
+            Object[] enumConstants = itemClass.getEnumConstants();
+            if (enumConstants != null) {
+                List<String> enumValues = Arrays.stream(enumConstants)
+                        .flatMap(enumConstant -> Arrays.stream(new String[]{
+                                enumConstant.toString(),
+                                enumConstant.toString().toLowerCase()
+                        }))
+                        .toList();
+                    return  enumValues;
             }
         }
         return null;
@@ -356,40 +356,6 @@ public class JsonSchemaBuilder {
         }
     }
 
-    private void processEnumValues(Map<String, Object> propDef, Property prop) {
-        log.debug("Processing enum values for property: {}", prop.getName());
-        if (prop.getType() != null) {
-            try {
-                Class<?> type = Class.forName(prop.getType());
-                if (type.isEnum()) {
-                    Object[] enumConstants = type.getEnumConstants();
-                    if (enumConstants != null) {
-                        List<String> enumValues = Arrays.stream(enumConstants)
-                                .flatMap(enumConstant -> Arrays.stream(new String[]{
-                                        enumConstant.toString(),
-                                        enumConstant.toString().toLowerCase()
-                                }))
-                                .toList();
-                        propDef.put("enum", enumValues);
-                    }
-                }
-            } catch (ClassNotFoundException e) {
-                if (prop.getType().contains("Enum")) {
-                    if (prop.getHint() != null && prop.getHint().getValues() != null) {
-                        List<String> enumValues = prop.getHint().getValues().stream()
-                                .flatMap(hint -> Arrays.stream(new String[]{
-                                        hint.getValue().toString(),
-                                        hint.getValue().toString().toLowerCase()
-                                }))
-                                .toList();
-                        if (!enumValues.isEmpty()) {
-                            propDef.put("enum", enumValues);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private void processDeprecation(Map<String, Object> propDef, Property prop) {
         log.debug("Processing deprecation for property: {}", prop.getName());

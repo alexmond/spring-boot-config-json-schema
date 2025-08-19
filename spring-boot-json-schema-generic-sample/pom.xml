@@ -9,9 +9,6 @@
     </parent>
     <artifactId>spring-boot-json-schema-generic-sample</artifactId>
     <version>0.0.6-SNAPSHOT</version>
-    <properties>
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
-    </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -99,13 +96,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
                 </configuration>

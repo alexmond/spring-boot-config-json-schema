@@ -661,6 +661,7 @@
                   "type" : "object",
                   "description" : "Java keystore SSL trust material.",
                   "additionalProperties" : {
+                    "type" : "object",
                     "properties" : {
                       "keystore" : {
                         "type" : "object",
@@ -696,8 +697,7 @@
                           }
                         }
                       }
-                    },
-                    "type" : "object"
+                    }
                   }
                 },
                 "watch" : {
@@ -719,6 +719,7 @@
                   "type" : "object",
                   "description" : "PEM-encoded SSL trust material.",
                   "additionalProperties" : {
+                    "type" : "object",
                     "properties" : {
                       "keystore" : {
                         "type" : "object",
@@ -760,8 +761,7 @@
                           }
                         }
                       }
-                    },
-                    "type" : "object"
+                    }
                   }
                 }
               }
@@ -3808,193 +3808,36 @@
         }
       }
     },
-    "configschema" : {
+    "json-config-schema" : {
       "type" : "object",
       "properties" : {
         "schema-spec" : {
           "type" : "string",
-          "default" : "https://json-schema.org/draft/2020-12/schema",
           "description" : "JSON Schema specification URL"
         },
         "use-validation" : {
           "type" : "boolean",
-          "default" : true,
           "description" : "Enable validation annotations processing"
         },
         "schema-id" : {
           "type" : "string",
-          "default" : "your-schema-id",
           "description" : "Schema identifier"
         },
         "use-openapi" : {
           "type" : "boolean",
-          "default" : true,
           "description" : "Enable OpenAPI annotations processing"
         },
         "description" : {
           "type" : "string",
-          "default" : "Auto-generated schema from configuration metadata",
           "description" : "Schema description"
         },
         "title" : {
           "type" : "string",
-          "default" : "Spring Boot Configuration Properties",
           "description" : "Schema title"
         },
         "additional-properties" : {
           "type" : "array",
-          "default" : "logging",
           "description" : "List of additional property paths to include",
-          "items" : {
-            "type" : "string"
-          }
-        }
-      }
-    },
-    "sample" : {
-      "type" : "object",
-      "properties" : {
-        "string-array-example" : {
-          "type" : "array",
-          "items" : {
-            "type" : "string"
-          }
-        },
-        "enum-status-map" : {
-          "type" : "object",
-          "description" : "Sample status map",
-          "additionalProperties" : {
-            "type" : "string"
-          }
-        },
-        "sample-int-array" : {
-          "type" : "array",
-          "items" : {
-            "type" : "integer"
-          }
-        },
-        "map-object-sample" : {
-          "type" : "object",
-          "description" : "Sample object map",
-          "additionalProperties" : {
-            "properties" : {
-              "nested-config-list" : {
-                "type" : "array",
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "config-map2" : {
-                "type" : "integer"
-              },
-              "config-map1" : {
-                "type" : "string"
-              }
-            },
-            "type" : "object"
-          }
-        },
-        "integer-sample" : {
-          "type" : "integer",
-          "description" : "Sample integer property",
-          "minimum" : 10,
-          "maximum" : 200
-        },
-        "config-sample-object-array" : {
-          "type" : "array",
-          "description" : "Sample nested configuration collection",
-          "items" : {
-            "type" : "object",
-            "properties" : {
-              "nested-list-config-list" : {
-                "type" : "array",
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "list-nested-config2" : {
-                "type" : "integer"
-              },
-              "list-nested-config1" : {
-                "type" : "string"
-              }
-            }
-          }
-        },
-        "properties-map-example" : {
-          "type" : "object",
-          "additionalProperties" : {
-            "type" : "string"
-          }
-        },
-        "enum-type-set" : {
-          "type" : "array",
-          "description" : "Sample type set",
-          "items" : {
-            "type" : "string",
-            "enum" : [ "TYPE1", "type1", "TYPE2", "type2", "TYPE3", "type3" ]
-          }
-        },
-        "map-sample" : {
-          "type" : "object",
-          "description" : "Sample string map",
-          "additionalProperties" : {
-            "type" : "string"
-          }
-        },
-        "config-sample-nested" : {
-          "type" : "object",
-          "properties" : {
-            "url-test" : {
-              "type" : "string"
-            },
-            "email-valid-test" : {
-              "type" : "string"
-            },
-            "nested-config2" : {
-              "type" : "integer",
-              "required" : true,
-              "description" : "Second nested configuration property",
-              "example" : "123"
-            },
-            "nested-config1" : {
-              "type" : "string",
-              "minLength" : 1,
-              "required" : true,
-              "description" : "First nested configuration property",
-              "example" : "nestedConfig1"
-            }
-          }
-        },
-        "boolean-sample" : {
-          "type" : "boolean",
-          "description" : "Sample boolean property"
-        },
-        "string-sample" : {
-          "type" : "string",
-          "description" : "Sample string property",
-          "required" : true
-        },
-        "enum-sample" : {
-          "type" : "string",
-          "description" : "Sample enum property",
-          "enum" : [ "EN1", "en1", "EN2", "en2", "EN3", "en3" ]
-        },
-        "string-array-sample" : {
-          "type" : "array",
-          "items" : {
-            "type" : "string"
-          }
-        },
-        "properties-example" : {
-          "type" : "object",
-          "additionalProperties" : {
-            "type" : "object"
-          }
-        },
-        "collection-sample" : {
-          "type" : "array",
-          "description" : "Sample string collection",
           "items" : {
             "type" : "string"
           }
