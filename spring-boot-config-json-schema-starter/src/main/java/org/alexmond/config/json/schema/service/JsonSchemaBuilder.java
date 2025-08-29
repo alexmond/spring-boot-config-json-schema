@@ -338,9 +338,6 @@ public class JsonSchemaBuilder {
     }
 
     private void processHints(Map<String, Object> propDef, Property prop) {
-        if (prop.getName().contains("relaxed-query-chars")) {
-            log.debug("Processing relaxed-query-chars property: {}", prop.getName());
-        }
         log.debug("Processing hints for property: {}", prop.getName());
         if (prop.getHint() != null) {
             if (prop.getHint().getValues() != null && !prop.getHint().getValues().isEmpty()) {
@@ -367,6 +364,9 @@ public class JsonSchemaBuilder {
                 }
                 if (prop.getDeprecation().getReplacement() != null) {
                     propDef.put("deprecationReplacement", prop.getDeprecation().getReplacement());
+                }
+                if (prop.getDeprecation().getSince() != null) {
+                    propDef.put("deprecationSince", prop.getDeprecation().getSince());
                 }
             }
         }
