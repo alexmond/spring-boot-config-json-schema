@@ -9,9 +9,12 @@ A full guide can be found in our [docs](https://alexmond.github.io/spring-boot-c
 
 ## Quick Start
 
-### Maven
-## to use as a part of unitest 
-Add the following dependency to your `pom.xml`:
+### Maven Dependencies
+
+#### For Testing
+
+Add the following dependency to your `pom.xml` when using the generator in tests:
+
 ```xml
         <dependency>
             <groupId>org.alexmond</groupId>
@@ -52,7 +55,7 @@ class SampleJsonSchemaGeneratorTests {
 
 ### Using as REST API Endpoint
 
-To expose the JSON schema via a REST endpoint (similar to Swagger API docs), first add the following dependency to your
+To expose the JSON schema via a REST endpoint (similar to Swagger API docs), add the following dependency to your
 `pom.xml`:
 ```xml
         <dependency>
