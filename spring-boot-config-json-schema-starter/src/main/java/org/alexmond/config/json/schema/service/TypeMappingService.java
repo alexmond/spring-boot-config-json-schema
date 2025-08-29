@@ -2,7 +2,10 @@
 package org.alexmond.config.json.schema.service;
 
 import lombok.extern.slf4j.Slf4j;
-import java.util.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 @Slf4j
@@ -18,9 +21,6 @@ public class TypeMappingService {
     }
 
     public String mapTypeProp(String springType, String prop) {
-        if (springType.equals("T")) {
-            log.info("====================== T");
-        }
 //        log.debug("Mapping Spring type: {}", springType);
         switch (springType) {
             case "java.lang.String":

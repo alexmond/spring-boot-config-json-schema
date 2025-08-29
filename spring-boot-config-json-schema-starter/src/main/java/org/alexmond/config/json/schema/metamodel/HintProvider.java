@@ -1,6 +1,7 @@
 package org.alexmond.config.json.schema.metamodel;
 
 import lombok.Data;
+
 import java.util.Map;
 
 @Data

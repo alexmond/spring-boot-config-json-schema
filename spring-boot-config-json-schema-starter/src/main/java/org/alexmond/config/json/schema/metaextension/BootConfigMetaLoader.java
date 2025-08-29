@@ -9,7 +9,9 @@ import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @NoArgsConstructor
 @Slf4j

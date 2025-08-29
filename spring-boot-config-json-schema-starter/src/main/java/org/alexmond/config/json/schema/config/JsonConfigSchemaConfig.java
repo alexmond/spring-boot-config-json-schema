@@ -3,7 +3,6 @@ package org.alexmond.config.json.schema.config;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 

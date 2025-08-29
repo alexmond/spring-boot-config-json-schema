@@ -1,3 +1,4 @@
+
 = Spring Boot Config JSON Schema Generator
 Alex Mondshain <alex.mondshaing@gmail.com>
 2014-09-09
@@ -7,8 +8,8 @@ ifndef::imagesdir[:imagesdir: images]
 ifndef::pages[:pages: pages]
 ifndef::partials[:partials: partials]
 
-A Spring Boot starter library that automatically generates JSON Schema documentation for your application's configuration properties.
-It simplifies the process of documenting and validating configuration by generating JSON Schema from your Spring Boot configuration classes.
+A Spring Boot starter that generates JSON Schema documentation from your application's @ConfigurationProperties classes and Spring Boot configuration metadata.
+The generated schemas enable configuration validation and autocompletion in popular IDEs and CI/CD pipelines.
 
 [#introduction]
 == Introduction
@@ -16,17 +17,28 @@ It simplifies the process of documenting and validating configuration by generat
 A Spring Boot starter library uses Spring Context to process @ConfigurationProperties annotated classes and relevant properties from Spring Boot's configuration metadata (spring-configuration-metadata.json) to generate JSON Schema.
 The generated schema can be used by compatible editors for configuration validation and assistance outside of the Java project, as well as for configuration validation during CI/CD pipelines.
 
-== Key Features
+== Features
+
+=== Core Capabilities
 
 - Automatic JSON Schema generation from @ConfigurationProperties classes
-- Support for validation annotations and property constraints (JSR-380/Bean Validation)
-- Full compatibility with Spring Boot 3.x
+- Support for Jakarta Bean Validation (JSR-380) annotations
+- Full Spring Boot 3.x compatibility
 - Java 17+ runtime support
+
+=== Integration Support  
+
 - Built-in REST API endpoint for schema access
-- Unit test integration for schema generation
-- IDE integration support for configuration assistance
-- Support for nested properties and complex types
-- Custom validation rule support
+- IDE integration (IntelliJ IDEA, VS Code)
+- Unit test helpers for schema generation
+- CI/CD pipeline validation
+
+=== Schema Features
+
+- Nested property support
+- Complex type handling
+- Custom validation rules
+- Comprehensive property metadata
 
 == Prerequisites
 
@@ -47,7 +59,7 @@ The generated schema can be used by compatible editors for configuration validat
 [#usage]
 == Usage
 
-=== Maven (use in unit tests)
+=== Maven (using in unit tests)
 
 Add the following dependency to your `pom.xml`:
 
@@ -127,17 +139,23 @@ public class GenerateJsonSchema {
 [#editors]
 == Using in editors
 
-=== Usage in IntelliJ IDEA and other JetBrains IDEs
+=== IDE Integration
 
-Add schema reference to your YAML configuration file:
+==== IntelliJ IDEA and JetBrains IDEs
+
+Add schema reference to the top of your YAML configuration file:
 
 [source,yaml]
 ----
+# Schema reference for JetBrains IDEs
 $schema: "https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json"
 
+# Application properties
 spring:
   datasource:
-    url:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
 ----
 
 Examples:
@@ -157,7 +175,9 @@ Add schema reference using YAML language server directive (requires YAML Languag
 
 spring:
   datasource:
-    name:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
 ----
 
 Examples:

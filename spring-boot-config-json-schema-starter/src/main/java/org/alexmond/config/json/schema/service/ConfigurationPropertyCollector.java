@@ -28,7 +28,7 @@ public class ConfigurationPropertyCollector {
     }
 
     private void collectAnnotatedBeanProperties(List<String> included) {
-        // Inside the loop from the previous step]
+        // Inside the loop from the previous step
         Map<String, ConfigurationPropertiesBean> beans = ConfigurationPropertiesBean.getAll(context);
 
         beans.forEach((beanName, configBean) -> {
