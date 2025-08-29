@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-json-schema</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7-SNAPSHOT</version>
     <name>spring-boot-json-schema</name>
     <packaging>pom</packaging>
     <properties>
