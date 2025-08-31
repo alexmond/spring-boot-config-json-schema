@@ -21,7 +21,6 @@ public class TypeMappingService {
     }
 
     public String mapTypeProp(String springType, String prop) {
-//        log.debug("Mapping Spring type: {}", springType);
         switch (springType) {
             case "java.lang.String":
 //            case "java.lang.String[]":
@@ -37,6 +36,8 @@ public class TypeMappingService {
             case "java.io.File":
             case "org.springframework.http.MediaType":
             case "java.net.InetAddress":
+            case "java.net.URI":
+            case "org.springframework.core.io.Resource":
                 return "string";
             case "java.lang.Boolean":
             case "boolean":
@@ -63,7 +64,10 @@ public class TypeMappingService {
         if (isEnum(springType)) return "string";
         try {
             Class<?> type = Class.forName(springType);
-            if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) return "object";
+            if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
+                missingTypeCollector.addType(springType,prop);
+                return "object";
+            }
         } catch (ClassNotFoundException e) {
             if (springType.contains("Enum")) return "string";
         }

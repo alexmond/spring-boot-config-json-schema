@@ -8,15 +8,22 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.alexmond.config.json.schema.service.JsonSchemaBuilder;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.config.json.schema.service.MissingTypeCollector;
 import org.alexmond.sample.test.config.ConfigSample;
+import org.alexmond.sample.test.config.EnumSample;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 
 @SpringBootTest
 @Slf4j
@@ -28,29 +35,21 @@ class SanityJsonSchemaGeneratorTests {
     @Autowired
     private MissingTypeCollector missingTypeCollector;
 
+    @Autowired
+    private JsonSchemaBuilder jsonSchemaBuilder;
+
     @Test
     void contextLoads() {
     }
 
     @Test
-    void generateJsonSchema() throws Exception {
+    void processEnumItem() {
+        Class<?> clazz = EnumSample.class;
+        List<String> values = jsonSchemaBuilder.processEnumItem(clazz);
 
-            String jsonConfigSchema;
-            jsonConfigSchema = jsonSchemaService.generateFullSchema();
-
-            ObjectMapper jsonMapper = new ObjectMapper();
-            ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing json schema");
-            jsonWriter.writeValue(Paths.get("sample-schema.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
-
-
-            ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-            ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing yaml schema");
-            yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
-            log.info("==================================");
-            missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing type: {}",type));
-
+        assertNotNull(values, "Values list should not be null");
+        assertTrue(values.containsAll(List.of("EN1", "en1", "EN2", "en2", "EN3", "en3")), "Values list should contain all enum values");
+        assertEquals(6, values.size(), "Values list should contain exactly 3 items");
     }
 
     @Test

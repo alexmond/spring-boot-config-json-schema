@@ -2,10 +2,12 @@
 package org.alexmond.config.json.schema.service;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -34,6 +36,8 @@ public class JsonSchemaBuilder {
         schema.put("description", config.getDescription());
         schema.put("type", "object");
 
+        schema.put("definitions", getDefinitions());
+
         Map<String, Object> properties = new LinkedHashMap<>();
         HashMap<String,Property> filteredMeta = new HashMap<>();
         meta.forEach((key, value) -> {
@@ -50,13 +54,29 @@ public class JsonSchemaBuilder {
         return schema;
     }
 
+    private Map<String, Object> getDefinitions() {
+
+        Map<String, Object> definitions = new LinkedHashMap<>();
+        Map<String, Object> loggerLevel = Map.of(
+                "type", "object",
+                "additionalProperties", Map.of(
+                        "oneOf", List.of(
+                                Map.of(
+                                        "type", "string",
+                                        "enum", processEnumItem(LogLevel.class)
+                                ),
+                                Map.of(
+                                        "$ref", "#/definitions/loggerLevel"
+                                )
+                        )
+                )
+        );
+        definitions.put("loggerLevel", loggerLevel);
+        return definitions;
+    }
+
     private void addProperty(Map<String, Object> node, String[] path, int idx, Property prop) {
         log.debug("Processing property at path: {}, index: {}", String.join(".", path), idx);
-        String propType;
-        String propMappedType;
-        Class<?> clazz = null;
-        Class<?> propClazz = null;
-        Field field = null;
 
         if (node == null) {
             log.error("Null node encountered while adding property at path: {}, index: {}", String.join(".", path), idx);
@@ -64,110 +84,123 @@ public class JsonSchemaBuilder {
         }
         String key = path[idx];
         if (idx == path.length - 1) {
-
-            Map<String, Object> propDef = new LinkedHashMap<>();
-
-            // skip deprecated property with the error level
-            if(prop.getDeprecated() != null && prop.getDeprecated() && ( prop.getDeprecation().getLevel() == Deprecation.Level.ERROR || prop.getDeprecation().getLevel() == Deprecation.Level.error)){
-                log.debug("Skipping property is deprecated and removed: {}", prop.getName());
-                return;
-            }
-            if(prop.getType() == null) {
-                log.error("property {} prop.type is null", prop.getName());
-                return;
-            }else{
-                propType=prop.getType();
-                propMappedType = typeMappingService.mapType(propType);
-            }
-            propDef.put("type", propMappedType);
-
-            if (prop.getSourceType() != null) {
-                String propertyName = prop.getName();
-                String lastField = propertyName.substring(propertyName.lastIndexOf('.') + 1);
-                String classField = toCamelCase(lastField, false, '-');
-
-                try {
-                    clazz = Class.forName(prop.getSourceType());
-                    field = ReflectionUtils.findField(clazz, classField);
-                } catch (ClassNotFoundException e) {
-                    log.debug("Unable to find class for property sourceType: {}, class: {}", prop.getName(), prop.getSourceType());
+            processLeaf(node, prop, key);
+        } else {
+            Map<String, Object> propNode;
+            Map<String, Object> properties = new HashMap<>();;
+            if (node.containsKey(key)) {
+                propNode = (Map<String, Object>) node.get(key);
+                Object propsObj = propNode.get("properties");
+                if (propsObj instanceof Map) {
+                    properties = (Map<String, Object>) propsObj;
+                } else {
+                    properties = new HashMap<>();
+                    propNode.put("properties", properties);
                 }
+            } else {
+                propNode = new HashMap<>();
+                propNode.put("type", "object");
+                propNode.put("properties", properties);
+                node.put(key, propNode);
             }
 
-            if (prop.getType() != null) {
-                try {
-                    propClazz = Class.forName(prop.getType());
-                } catch (ClassNotFoundException e) {
-                    log.debug("Unable to find class for property type: {}, class: {}", prop.getName(), prop.getType());
-                }
-            }
+            addProperty(properties, path, idx + 1, prop);
+        }
+    }
 
 
+    private void processLeaf(Map<String, Object> node, Property prop, String key) {
+        String propMappedType;
+        String propType;
+        Class<?> clazz;
+        Class<?> propClazz = null;
+        Field field = null;
 
-//            if (prop.getShortDescription() != null) {
-//                propDef.put("title", prop.getShortDescription());
-//            }
-//            if (prop.getDescription() != null && !prop.getDescription().equals(prop.getShortDescription())) {
-//                propDef.put("description", prop.getDescription());
-//            }
-            if (prop.getDescription() != null ) {
-                propDef.put("description", prop.getDescription());
-            }
-//            }else if (prop.getShortDescription() != null) {
-//                propDef.put("description", prop.getShortDescription());
-//            }
-            if (prop.getDefaultValue() != null) {
-                propDef.put("default", prop.getDefaultValue());
-            }
-            processHints(propDef, prop);
-            processDeprecation(propDef, prop);
+        Map<String, Object> propDef = new LinkedHashMap<>();
 
-            if(config.isUseValidation() && field != null) {
-                processValidated(propDef, field, prop.getName());
+        // skip deprecated property with the error level
+        if(prop.getDeprecated() != null && prop.getDeprecated() && ( prop.getDeprecation().getLevel() == Deprecation.Level.ERROR || prop.getDeprecation().getLevel() == Deprecation.Level.error)){
+            log.debug("Skipping property is deprecated and removed: {}", prop.getName());
+            return;
+        }
+        if(prop.getType() == null) {
+            log.error("property {} prop.type is null", prop.getName());
+            return;
+        }else{
+            propType= prop.getType();
+            propMappedType = typeMappingService.mapTypeProp(propType,prop.getName());
+        }
+        propDef.put("type", propMappedType);
+
+        if (prop.getSourceType() != null) {
+            String propertyName = prop.getName();
+            String lastField = propertyName.substring(propertyName.lastIndexOf('.') + 1);
+            String classField = toCamelCase(lastField, false, '-');
+
+            try {
+                clazz = Class.forName(prop.getSourceType());
+                field = ReflectionUtils.findField(clazz, classField);
+            } catch (ClassNotFoundException e) {
+                log.debug("Unable to find class for property sourceType: {}, class: {}", prop.getName(), prop.getSourceType());
             }
-            if (config.isUseOpenapi()  && field != null) {
-                processOpenapi(propDef, field, prop.getName());
+        }
+
+        if (prop.getType() != null) {
+            try {
+                propClazz = Class.forName(prop.getType());
+            } catch (ClassNotFoundException e) {
+                log.debug("Unable to find class for property type: {}, class: {}", prop.getName(), prop.getType());
             }
-            if (propClazz != null && propClazz.isEnum()) {
-                List<String> values = processEnumItem(propClazz);
-                if (values != null) {
-                    propDef.put("enum", values);
-                }
-                node.put(key, propDef);
-                return;
-            }
-            if (propMappedType.equals("array")) {
-                processArray(prop, prop.getType(), propDef,null);
-                node.put(key, propDef);
-                return;
-            }
-            if (typeMappingService.isMap(propType)) {
-                processMap(prop, prop.getType(), propDef,null);
-                node.put(key, propDef);
-                return;
-            }
-            if (propMappedType.equals("object")) {
-                Map<String, Object> complexProperties = processComplexType(prop.getType(),prop);
-                if (complexProperties != null) {
-                    propDef.put("properties", complexProperties);
-                }
+        }
+
+        if (prop.getDescription() != null ) {
+            propDef.put("description", prop.getDescription());
+        }
+
+        if (prop.getName().equals("logging.level")) {
+            log.debug("Adding logging level property: {}", prop.getName());
+            propDef.remove("type");
+            propDef.put("$ref","#/definitions/loggerLevel");
+            node.put(key, propDef);
+            return;
+        }
+        if (prop.getDefaultValue() != null) {
+            propDef.put("default", prop.getDefaultValue());
+        }
+        processHints(propDef, prop);
+        processDeprecation(propDef, prop);
+
+        if(config.isUseValidation() && field != null) {
+            processValidated(propDef, field, prop.getName());
+        }
+        if (config.isUseOpenapi()  && field != null) {
+            processOpenapi(propDef, field, prop.getName());
+        }
+        if (propClazz != null && propClazz.isEnum()) {
+            List<String> values = processEnumItem(propClazz);
+            if (values != null) {
+                propDef.put("enum", values);
             }
             node.put(key, propDef);
-        } else {
-            Map<String, Object> obj = (Map<String, Object>) node.computeIfAbsent(key, k -> {
-                Map<String, Object> nm = new HashMap<>();
-                nm.put("type", "object");
-                nm.put("properties", new HashMap<String, Object>());
-                return nm;
-            });
-            Object propsObj = obj.get("properties");
-            if (!(propsObj instanceof Map)) {
-                propsObj = new HashMap<String, Object>();
-                obj.put("properties", propsObj);
-            }
-            Map<String, Object> child = (Map<String, Object>) propsObj;
-            addProperty(child, path, idx + 1, prop);
+            return;
         }
+        if (propMappedType.equals("array")) {
+            processArray(prop, prop.getType(), propDef,null);
+            node.put(key, propDef);
+            return;
+        }
+        if (typeMappingService.isMap(propType)) {
+            processMap(prop, prop.getType(), propDef,null);
+            node.put(key, propDef);
+            return;
+        }
+        if (propMappedType.equals("object")) {
+            Map<String, Object> complexProperties = processComplexType(prop.getType(), prop);
+            if (complexProperties != null) {
+                propDef.put("properties", complexProperties);
+            }
+        }
+        node.put(key, propDef);
     }
 
     private void processMap(Property prop, String propType, Map<String, Object> propDef, Set<String> visited) {
@@ -189,7 +222,7 @@ public class JsonSchemaBuilder {
                 return;
             }
 
-            if (typeMappingService.mapType(valueType).equals("object")) {
+            if (typeMappingService.mapTypeProp(valueType,prop.getName()).equals("object")) {
                 visited = visited == null ? new HashSet<>() : visited;
                 Map<String, Object> valueTypeProperties = processComplexType(valueType, prop, visited);
                 if (valueTypeProperties != null) {
@@ -254,7 +287,7 @@ public class JsonSchemaBuilder {
     }
 
 
-    private  List<String> processEnumItem(Class<?> itemClass) {
+    public  List<String> processEnumItem(Class<?> itemClass) {
         log.debug("Processing enum values for property: {}", itemClass);
         if (itemClass.isEnum()) {
             Object[] enumConstants = itemClass.getEnumConstants();
@@ -293,18 +326,18 @@ public class JsonSchemaBuilder {
     private void processValidated(Map<String, Object> propDef, Field field, String propName) {
         log.debug("Validation: Processing validation for property: {}", propName);
 
-        if (field.isAnnotationPresent(jakarta.validation.constraints.Min.class)) {
-            var value = field.getAnnotation(jakarta.validation.constraints.Min.class).value();
+        if (field.isAnnotationPresent(Min.class)) {
+            var value = field.getAnnotation(Min.class).value();
             propDef.put("minimum", value);
             log.debug("Validation: Added Min validation with value {} for field {}", value, field.getName());
         }
-        if (field.isAnnotationPresent(jakarta.validation.constraints.Max.class)) {
-            var value = field.getAnnotation(jakarta.validation.constraints.Max.class).value();
+        if (field.isAnnotationPresent(Max.class)) {
+            var value = field.getAnnotation(Max.class).value();
             propDef.put("maximum", value);
             log.debug("Validation: Added Max validation with value {} for field {}", value, field.getName());
         }
-        if (field.isAnnotationPresent(jakarta.validation.constraints.Size.class)) {
-            var size = field.getAnnotation(jakarta.validation.constraints.Size.class);
+        if (field.isAnnotationPresent(Size.class)) {
+            var size = field.getAnnotation(Size.class);
             if (size.min() > 0) {
                 propDef.put("minLength", size.min());
                 log.info("Validation: Added Size.min validation with value {} for field {}", size.min(), field.getName());
@@ -314,16 +347,16 @@ public class JsonSchemaBuilder {
                 log.info("Validation: Added Size.max validation with value {} for field {}", size.max(), field.getName());
             }
         }
-        if (field.isAnnotationPresent(jakarta.validation.constraints.Pattern.class)) {
-            var pattern = field.getAnnotation(jakarta.validation.constraints.Pattern.class).regexp();
+        if (field.isAnnotationPresent(Pattern.class)) {
+            var pattern = field.getAnnotation(Pattern.class).regexp();
             propDef.put("pattern", pattern);
             log.info("Validation: Added Pattern validation with regexp {} for field {}", pattern, field.getName());
         }
-        if (field.isAnnotationPresent(jakarta.validation.constraints.NotNull.class)) {
+        if (field.isAnnotationPresent(NotNull.class)) {
             propDef.put("required", true);
             log.debug("Validation: Added NotNull validation for field {}", field.getName());
         }
-        if (field.isAnnotationPresent(jakarta.validation.constraints.NotEmpty.class)) {
+        if (field.isAnnotationPresent(NotEmpty.class)) {
             propDef.put("minLength", 1);
             propDef.put("required", true);
             log.debug("Validation: Added NotEmpty validation for field {}", field.getName());

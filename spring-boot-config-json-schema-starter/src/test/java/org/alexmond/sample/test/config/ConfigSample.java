@@ -13,9 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import java.util.*;
 
 
-@Schema(description = "Sample enumeration values")
-enum EnumSample {EN1, EN2, EN3}
-
 @Schema(description = "Sample type values")
 enum SampleType {TYPE1, TYPE2, TYPE3}
 

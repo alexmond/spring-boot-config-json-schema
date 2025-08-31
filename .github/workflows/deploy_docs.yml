@@ -3,7 +3,7 @@ name: Deploy Docs to GitHub Pages
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - '*.*.*'
 #  workflow_dispatch:
 
 permissions:

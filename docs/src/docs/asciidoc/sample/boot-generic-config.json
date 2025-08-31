@@ -4,6 +4,19 @@
   "title" : "Spring Boot Configuration Properties",
   "description" : "Auto-generated schema from configuration metadata",
   "type" : "object",
+  "definitions" : {
+    "loggerLevel" : {
+      "additionalProperties" : {
+        "oneOf" : [ {
+          "enum" : [ "TRACE", "trace", "DEBUG", "debug", "INFO", "info", "WARN", "warn", "ERROR", "error", "FATAL", "fatal", "OFF", "off" ],
+          "type" : "string"
+        }, {
+          "$ref" : "#/definitions/loggerLevel"
+        } ]
+      },
+      "type" : "object"
+    }
+  },
   "properties" : {
     "logging" : {
       "type" : "object",
@@ -27,11 +40,8 @@
           "default" : true
         },
         "level" : {
-          "type" : "object",
           "description" : "Log levels severity mapping. For instance, `logging.level.org.springframework=DEBUG`.",
-          "additionalProperties" : {
-            "type" : "string"
-          }
+          "$ref" : "#/definitions/loggerLevel"
         },
         "include-application-group" : {
           "type" : "boolean",
@@ -661,7 +671,6 @@
                   "type" : "object",
                   "description" : "Java keystore SSL trust material.",
                   "additionalProperties" : {
-                    "type" : "object",
                     "properties" : {
                       "keystore" : {
                         "type" : "object",
@@ -697,7 +706,8 @@
                           }
                         }
                       }
-                    }
+                    },
+                    "type" : "object"
                   }
                 },
                 "watch" : {
@@ -719,7 +729,6 @@
                   "type" : "object",
                   "description" : "PEM-encoded SSL trust material.",
                   "additionalProperties" : {
-                    "type" : "object",
                     "properties" : {
                       "keystore" : {
                         "type" : "object",
@@ -761,7 +770,8 @@
                           }
                         }
                       }
-                    }
+                    },
+                    "type" : "object"
                   }
                 }
               }
@@ -887,196 +897,7 @@
                               "default" : false
                             },
                             "uri" : {
-                              "type" : "object",
-                              "properties" : {
-                                "l_upalpha" : {
-                                  "type" : "integer"
-                                },
-                                "l_alphanum" : {
-                                  "type" : "integer"
-                                },
-                                "user-info" : {
-                                  "type" : "string"
-                                },
-                                "h_uric" : {
-                                  "type" : "integer"
-                                },
-                                "l_server" : {
-                                  "type" : "integer"
-                                },
-                                "l_scheme" : {
-                                  "type" : "integer"
-                                },
-                                "serial-version-uid" : {
-                                  "type" : "integer"
-                                },
-                                "decoded-path" : {
-                                  "type" : "string"
-                                },
-                                "l_alpha" : {
-                                  "type" : "integer"
-                                },
-                                "l_scope_id" : {
-                                  "type" : "integer"
-                                },
-                                "decoded-authority" : {
-                                  "type" : "string"
-                                },
-                                "path" : {
-                                  "type" : "string"
-                                },
-                                "l_unreserved" : {
-                                  "type" : "integer"
-                                },
-                                "l_escaped" : {
-                                  "type" : "integer"
-                                },
-                                "h_userinfo" : {
-                                  "type" : "integer"
-                                },
-                                "h_server_percent" : {
-                                  "type" : "integer"
-                                },
-                                "h_dot" : {
-                                  "type" : "integer"
-                                },
-                                "scheme-specific-part" : {
-                                  "type" : "string"
-                                },
-                                "h_server" : {
-                                  "type" : "integer"
-                                },
-                                "h_scheme" : {
-                                  "type" : "integer"
-                                },
-                                "host" : {
-                                  "type" : "string"
-                                },
-                                "decoded-fragment" : {
-                                  "type" : "string"
-                                },
-                                "h_mark" : {
-                                  "type" : "integer"
-                                },
-                                "h_hex" : {
-                                  "type" : "integer"
-                                },
-                                "l_path" : {
-                                  "type" : "integer"
-                                },
-                                "l_pchar" : {
-                                  "type" : "integer"
-                                },
-                                "l_server_percent" : {
-                                  "type" : "integer"
-                                },
-                                "query" : {
-                                  "type" : "string"
-                                },
-                                "h_lowalpha" : {
-                                  "type" : "integer"
-                                },
-                                "hex-digits" : {
-                                  "type" : "object",
-                                  "properties" : { }
-                                },
-                                "l_lowalpha" : {
-                                  "type" : "integer"
-                                },
-                                "l_dash" : {
-                                  "type" : "integer"
-                                },
-                                "port" : {
-                                  "type" : "integer"
-                                },
-                                "authority" : {
-                                  "type" : "string"
-                                },
-                                "decoded-query" : {
-                                  "type" : "string"
-                                },
-                                "h_escaped" : {
-                                  "type" : "integer"
-                                },
-                                "decoded-scheme-specific-part" : {
-                                  "type" : "string"
-                                },
-                                "hash" : {
-                                  "type" : "integer"
-                                },
-                                "h_digit" : {
-                                  "type" : "integer"
-                                },
-                                "scheme" : {
-                                  "type" : "string"
-                                },
-                                "string" : {
-                                  "type" : "string"
-                                },
-                                "h_reserved" : {
-                                  "type" : "integer"
-                                },
-                                "h_reg_name" : {
-                                  "type" : "integer"
-                                },
-                                "h_pchar" : {
-                                  "type" : "integer"
-                                },
-                                "l_hex" : {
-                                  "type" : "integer"
-                                },
-                                "l_uric" : {
-                                  "type" : "integer"
-                                },
-                                "l_userinfo" : {
-                                  "type" : "integer"
-                                },
-                                "l_reg_name" : {
-                                  "type" : "integer"
-                                },
-                                "l_reserved" : {
-                                  "type" : "integer"
-                                },
-                                "h_unreserved" : {
-                                  "type" : "integer"
-                                },
-                                "h_dash" : {
-                                  "type" : "integer"
-                                },
-                                "l_dot" : {
-                                  "type" : "integer"
-                                },
-                                "h_alpha" : {
-                                  "type" : "integer"
-                                },
-                                "$assertions-disabled" : {
-                                  "type" : "boolean"
-                                },
-                                "h_alphanum" : {
-                                  "type" : "integer"
-                                },
-                                "fragment" : {
-                                  "type" : "string"
-                                },
-                                "h_upalpha" : {
-                                  "type" : "integer"
-                                },
-                                "h_scope_id" : {
-                                  "type" : "integer"
-                                },
-                                "l_digit" : {
-                                  "type" : "integer"
-                                },
-                                "l_mark" : {
-                                  "type" : "integer"
-                                },
-                                "h_path" : {
-                                  "type" : "integer"
-                                },
-                                "decoded-user-info" : {
-                                  "type" : "string"
-                                }
-                              }
+                              "type" : "string"
                             }
                           }
                         },
@@ -1302,8 +1123,7 @@
                       "type" : "string"
                     },
                     "trust-store" : {
-                      "type" : "object",
-                      "properties" : { }
+                      "type" : "string"
                     },
                     "trust-store-type" : {
                       "type" : "string"
@@ -1315,8 +1135,7 @@
                       "type" : "object"
                     },
                     "key-store" : {
-                      "type" : "object",
-                      "properties" : { }
+                      "type" : "string"
                     },
                     "key-password" : {
                       "type" : "string"
@@ -2774,10 +2593,9 @@
               "type" : "object",
               "properties" : {
                 "location" : {
-                  "type" : "object",
+                  "type" : "string",
                   "description" : "Location of the generated git.properties file.",
-                  "default" : "classpath:git.properties",
-                  "properties" : { }
+                  "default" : "classpath:git.properties"
                 },
                 "encoding" : {
                   "type" : "string",
@@ -2790,10 +2608,9 @@
               "type" : "object",
               "properties" : {
                 "location" : {
-                  "type" : "object",
+                  "type" : "string",
                   "description" : "Location of the generated build-info.properties file.",
-                  "default" : "classpath:META-INF/build-info.properties",
-                  "properties" : { }
+                  "default" : "classpath:META-INF/build-info.properties"
                 },
                 "encoding" : {
                   "type" : "string",
@@ -2945,7 +2762,8 @@
               "description" : "Whether the server should decode percent encoded slash characters. Enabling encoded slashes can have security implications due to different servers interpreting the slash differently. Only enable this if you have a legacy application that requires it. Has no effect when server.undertow.decode-slash is set.",
               "default" : false,
               "deprecated" : true,
-              "deprecationReplacement" : "server.undertow.decode-slash"
+              "deprecationReplacement" : "server.undertow.decode-slash",
+              "deprecationSince" : "3.0.3"
             },
             "always-set-keep-alive" : {
               "type" : "boolean",
@@ -3813,31 +3631,38 @@
       "properties" : {
         "schema-spec" : {
           "type" : "string",
-          "description" : "JSON Schema specification URL"
+          "description" : "JSON Schema specification URL",
+          "default" : "https://json-schema.org/draft/2020-12/schema"
         },
         "use-validation" : {
           "type" : "boolean",
-          "description" : "Enable validation annotations processing"
+          "description" : "Enable validation annotations processing",
+          "default" : true
         },
         "schema-id" : {
           "type" : "string",
-          "description" : "Schema identifier"
+          "description" : "Schema identifier",
+          "default" : "your-schema-id"
         },
         "use-openapi" : {
           "type" : "boolean",
-          "description" : "Enable OpenAPI annotations processing"
+          "description" : "Enable OpenAPI annotations processing",
+          "default" : true
         },
         "description" : {
           "type" : "string",
-          "description" : "Schema description"
+          "description" : "Schema description",
+          "default" : "Auto-generated schema from configuration metadata"
         },
         "title" : {
           "type" : "string",
-          "description" : "Schema title"
+          "description" : "Schema title",
+          "default" : "Spring Boot Configuration Properties"
         },
         "additional-properties" : {
           "type" : "array",
           "description" : "List of additional property paths to include",
+          "default" : "logging",
           "items" : {
             "type" : "string"
           }
