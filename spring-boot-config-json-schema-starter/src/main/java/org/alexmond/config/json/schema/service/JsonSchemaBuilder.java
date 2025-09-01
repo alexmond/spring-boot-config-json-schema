@@ -312,7 +312,7 @@ public class JsonSchemaBuilder {
                 propDef.put("description", schema.description());
             }
             if (!schema.example().isEmpty()) {
-                propDef.put("example", schema.example());
+                propDef.put("examples", schema.example());
             }
             if (schema.deprecated()) {
                 propDef.put("deprecated", true);
