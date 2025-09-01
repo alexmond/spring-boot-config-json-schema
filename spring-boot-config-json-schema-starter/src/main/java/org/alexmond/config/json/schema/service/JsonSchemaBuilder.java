@@ -392,18 +392,27 @@ public class JsonSchemaBuilder {
         if (prop.getDeprecated() != null && prop.getDeprecated()) {
             propDef.put("deprecated", true);
             if (prop.getDeprecation() != null) {
+                Map<String, Object> xDeprecation = new LinkedHashMap<>();
                 if (prop.getDeprecation().getReason() != null) {
-                    propDef.put("deprecationReason", prop.getDeprecation().getReason());
+                    xDeprecation.put("reason", prop.getDeprecation().getReason());
                 }
                 if (prop.getDeprecation().getReplacement() != null) {
-                    propDef.put("deprecationReplacement", prop.getDeprecation().getReplacement());
+                    xDeprecation.put("replacement", prop.getDeprecation().getReplacement());
                 }
                 if (prop.getDeprecation().getSince() != null) {
-                    propDef.put("deprecationSince", prop.getDeprecation().getSince());
+                    xDeprecation.put("since", prop.getDeprecation().getSince());
+                }
+                if (prop.getDeprecation().getLevel() != null) {
+                    // Normalize level to upper-case to avoid duplicating values like WARNING/warning
+                    xDeprecation.put("level", prop.getDeprecation().getLevel().name().toUpperCase());
+                }
+                if (!xDeprecation.isEmpty()) {
+                    propDef.put("x-deprecation", xDeprecation);
                 }
             }
         }
     }
+
 
     public Map<String, Object> processComplexType(String type, Property bootProp) {
         return processComplexType(type, bootProp,new HashSet<>());
