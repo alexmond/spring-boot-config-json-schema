@@ -3,8 +3,8 @@ logging:
     root: info
     org.alexmond: debug
 
-spring:
-  mvc:
-    format:
-      date:
+server:
+  tomcat:
+    accesslog:
+      locale:
 

@@ -11,6 +11,7 @@ import org.springframework.boot.logging.LogLevel;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.util.*;
 
 import static org.apache.commons.text.CaseUtils.toCamelCase;
@@ -36,7 +37,7 @@ public class JsonSchemaBuilder {
         schema.put("description", config.getDescription());
         schema.put("type", "object");
 
-        schema.put("definitions", getDefinitions());
+        schema.put("$defs", getDefinitions());
 
         Map<String, Object> properties = new LinkedHashMap<>();
         HashMap<String,Property> filteredMeta = new HashMap<>();
@@ -57,7 +58,28 @@ public class JsonSchemaBuilder {
     private Map<String, Object> getDefinitions() {
 
         Map<String, Object> definitions = new LinkedHashMap<>();
-        Map<String, Object> loggerLevel = Map.of(
+        definitions.put("loggerLevel", getLoggerLevelDef());
+        definitions.put("Locales", getLocalesDef());
+        definitions.put("Charsets", getCharsetsDef());
+        return definitions;
+    }
+
+    private Object getCharsetsDef() {
+        return Map.of(
+                "type", "string",
+                "enum", new ArrayList<>(Charset.availableCharsets().values())
+                );
+    }
+
+    private Object getLocalesDef() {
+        return Map.of(
+                "type", "string",
+                "enum", Locale.getAvailableLocales());
+
+    }
+
+    private Map<String, Object> getLoggerLevelDef() {
+        return Map.of(
                 "type", "object",
                 "additionalProperties", Map.of(
                         "oneOf", List.of(
@@ -66,13 +88,11 @@ public class JsonSchemaBuilder {
                                         "enum", processEnumItem(LogLevel.class)
                                 ),
                                 Map.of(
-                                        "$ref", "#/definitions/loggerLevel"
+                                        "$ref", "#/$defs/loggerLevel"
                                 )
                         )
                 )
         );
-        definitions.put("loggerLevel", loggerLevel);
-        return definitions;
     }
 
     private void addProperty(Map<String, Object> node, String[] path, int idx, Property prop) {
@@ -110,7 +130,7 @@ public class JsonSchemaBuilder {
 
 
     private void processLeaf(Map<String, Object> node, Property prop, String key) {
-        String propMappedType;
+        Map<String,String> propMappedType;
         String propType;
         Class<?> clazz;
         Class<?> propClazz = null;
@@ -128,9 +148,9 @@ public class JsonSchemaBuilder {
             return;
         }else{
             propType= prop.getType();
-            propMappedType = typeMappingService.mapTypeProp(propType,prop.getName());
+            propMappedType = typeMappingService.mapTypeProp(propType,prop);
         }
-        propDef.put("type", propMappedType);
+        propDef.putAll(propMappedType);
 
         if (prop.getSourceType() != null) {
             String propertyName = prop.getName();
@@ -157,13 +177,6 @@ public class JsonSchemaBuilder {
             propDef.put("description", prop.getDescription());
         }
 
-        if (prop.getName().equals("logging.level")) {
-            log.debug("Adding logging level property: {}", prop.getName());
-            propDef.remove("type");
-            propDef.put("$ref","#/definitions/loggerLevel");
-            node.put(key, propDef);
-            return;
-        }
         if (prop.getDefaultValue() != null) {
             propDef.put("default", prop.getDefaultValue());
         }
@@ -175,6 +188,10 @@ public class JsonSchemaBuilder {
         }
         if (config.isUseOpenapi()  && field != null) {
             processOpenapi(propDef, field, prop.getName());
+        }
+        if(propDef.containsKey("$ref")) {
+            node.put(key, propDef);
+            return;
         }
         if (propClazz != null && propClazz.isEnum()) {
             List<String> values = processEnumItem(propClazz);
@@ -222,7 +239,7 @@ public class JsonSchemaBuilder {
                 return;
             }
 
-            if (typeMappingService.mapTypeProp(valueType,prop.getName()).equals("object")) {
+            if (typeMappingService.mapTypeProp(valueType,prop).equals("object")) {
                 visited = visited == null ? new HashSet<>() : visited;
                 Map<String, Object> valueTypeProperties = processComplexType(valueType, prop, visited);
                 if (valueTypeProperties != null) {
@@ -232,7 +249,7 @@ public class JsonSchemaBuilder {
                     ));
                 }
             } else {
-                propDef.put("additionalProperties", Map.of("type", typeMappingService.mapType(valueType)));
+                propDef.put("additionalProperties",typeMappingService.mapType(valueType));
             }
         } catch (ClassNotFoundException e) {
             log.debug("Cannot find class for property type: {}, treating as object", valueType);
@@ -264,9 +281,9 @@ public class JsonSchemaBuilder {
             }
 
             Map<String, Object> items = new HashMap<>();
-            items.put("type", typeMappingService.mapType(itemType));
+            items.putAll(typeMappingService.mapType(itemType));
 
-            if (typeMappingService.mapType(itemType).equals("object")) {
+            if (typeMappingService.mapType(itemType).get("type").equals("object")) {
                 visited = visited == null ? new HashSet<>() : visited;
                 Map<String, Object> complexProperties = processComplexType(itemType, prop, visited);
                 if (complexProperties != null) {
@@ -431,11 +448,11 @@ public class JsonSchemaBuilder {
                 Map<String, Object> fieldDef = new HashMap<>();
                 String fieldType = field.getType().getName();
                 String fieldGenName = field.getGenericType().getTypeName();
-                fieldDef.put("type", typeMappingService.mapType(fieldType));
+                fieldDef.putAll(typeMappingService.mapType(fieldType));
 
-                if (typeMappingService.mapType(fieldType).equals("array")) {
+                if (typeMappingService.mapType(fieldType).get("type").equals("array")) {
                     processArray(bootProp,fieldGenName, fieldDef, visited);
-                } else if (typeMappingService.mapType(fieldType).equals("object")) {
+                } else if (typeMappingService.mapType(fieldType).get("type").equals("object")) {
                     if (typeMappingService.isMap(fieldType)) {
                         processMap(bootProp, fieldGenName, fieldDef, visited);
                     } else {

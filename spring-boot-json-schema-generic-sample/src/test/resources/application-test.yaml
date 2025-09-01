@@ -3,6 +3,8 @@ logging:
     root: info
 
 spring:
+  web:
+    locale:
   cloud:
     config:
       enabled: false

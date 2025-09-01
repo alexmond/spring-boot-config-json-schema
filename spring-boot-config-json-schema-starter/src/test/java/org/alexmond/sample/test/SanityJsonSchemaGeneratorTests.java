@@ -22,8 +22,11 @@ import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @Slf4j
@@ -63,6 +66,14 @@ class SanityJsonSchemaGeneratorTests {
         JsonSchema productSchema = schemaGen.generateSchema(ConfigSample.class);
         ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
         writer.writeValue(Paths.get("gen.json").toFile(), productSchema);
+
+    }
+
+    @Test
+    void useYAMLSchema() throws IOException {
+        Map<String, Charset> charsets = Charset.availableCharsets();
+        List<Charset> list = new ArrayList<>(Charset.availableCharsets().values());
+        log.info(charsets.toString());
 
     }
 

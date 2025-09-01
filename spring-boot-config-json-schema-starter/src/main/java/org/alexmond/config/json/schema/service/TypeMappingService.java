@@ -2,6 +2,7 @@
 package org.alexmond.config.json.schema.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.util.List;
 import java.util.Map;
@@ -16,17 +17,21 @@ public class TypeMappingService {
     public TypeMappingService(MissingTypeCollector missingTypeCollector) {
         this.missingTypeCollector = missingTypeCollector;
     }
-    public String mapType(String springType) {
-        return mapTypeProp(springType,"null");
+    public Map<String,String> mapType(String springType) {
+        return mapTypeProp(springType,null);
     }
 
-    public String mapTypeProp(String springType, String prop) {
+    public Map<String,String> mapTypeProp(String springType, Property prop) {
+        log.debug("mapTypeProp({}, {})", springType, prop);
+        if (prop != null) {
+            if (prop.getName().equals("logging.level")) return Map.of("$ref", "#/$defs/loggerLevel");
+        }
+        if (springType.equals("java.util.Locale")) return Map.of("$ref","#/$defs/Locales");
+        if (springType.equals("java.nio.charset.Charset")) return Map.of("$ref","#/$defs/Charsets");
         switch (springType) {
             case "java.lang.String":
 //            case "java.lang.String[]":
-            case "java.nio.charset.Charset":
             case "java.time.Duration": // can improve by introducing some regexp
-            case "java.util.Locale":
             case "java.util.Date":
             case "java.util.Calendar":
             case "java.util.TimeZone":
@@ -38,10 +43,10 @@ public class TypeMappingService {
             case "java.net.InetAddress":
             case "java.net.URI":
             case "org.springframework.core.io.Resource":
-                return "string";
+                return Map.of("type","string");
             case "java.lang.Boolean":
             case "boolean":
-                return "boolean";
+                return Map.of("type","boolean");
             case "java.lang.Integer":
             case "int":
             case "java.lang.Long":
@@ -49,31 +54,31 @@ public class TypeMappingService {
             case "java.lang.Short":
             case "short":
             case "java.math.BigInteger":
-                return "integer";
+                return Map.of("type","integer");
             case "java.lang.Float":
             case "float":
             case "double":
             case "java.lang.Double":
             case "java.math.BigDecimal":
-                return "number";
+                return Map.of("type","number");
             case "java.lang.Object":
-                return "object";
+                return Map.of("type","object");
         }
-        if (isArray(springType)) return "array";
-        if (isMap(springType)) return "object";
-        if (isEnum(springType)) return "string";
+        if (isArray(springType)) return Map.of("type","array");
+        if (isMap(springType)) return Map.of("type","object");
+        if (isEnum(springType)) return Map.of("type","string");
         try {
             Class<?> type = Class.forName(springType);
             if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
                 missingTypeCollector.addType(springType,prop);
-                return "object";
+                return Map.of("type","object");
             }
         } catch (ClassNotFoundException e) {
-            if (springType.contains("Enum")) return "string";
+            if (springType.contains("Enum")) return Map.of("type","string");
         }
         missingTypeCollector.addType(springType,prop);
         log.debug("Mapping Spring type: {}  for Property {}", springType,prop);
-        return "string";
+        return Map.of("type","string");
     }
 
     public boolean isArray(String springType) {
