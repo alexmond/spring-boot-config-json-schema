@@ -1,6 +1,6 @@
-[<image-card alt="Maven Central" src="https://img.shields.io/maven-central/v/org.alexmond/spring-boot-config-json-schema-starter.svg?label=Maven%20Central" ></image-card>](https://search.maven.org/artifact/org.alexmond/spring-boot-config-json-schema-starter)
-[<image-card alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" ></image-card>](LICENSE)  <!-- Replace with your license -->
-[<image-card alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/alexmond/spring-boot-config-json-schema/ci.yml" ></image-card>](https://github.com/alexmond/spring-boot-config-json-schema/actions)
+[![Maven Central](https://img.shields.io/maven-central/v/org.alexmond/spring-boot-config-json-schema-starter.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.alexmond/spring-boot-config-json-schema-starter)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/alexmond/spring-boot-config-json-schema/ci.yml)](https://github.com/alexmond/spring-boot-config-json-schema/actions)
 
 # Spring Boot Config JSON Schema Generator
 
