@@ -6,6 +6,8 @@ Schema from your Spring Boot configuration classes.
 
 A full guide can be found in our [docs](https://alexmond.github.io/spring-boot-config-json-schema/).
 
+A good article on this
+subject: [Springboot Config Documentation, Two Ways With IntelliJ IDEA](https://themightyprogrammer.dev/article/2ways-spring-configuration)
 
 ## Quick Start
 
@@ -19,7 +21,7 @@ Add the following dependency to your `pom.xml` when using the generator in tests
         <dependency>
             <groupId>org.alexmond</groupId>
             <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.8</version>
             <scope>test</scope>
         </dependency>
 ```
@@ -61,7 +63,7 @@ To expose the JSON schema via a REST endpoint (similar to Swagger API docs), add
         <dependency>
             <groupId>org.alexmond</groupId>
             <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.8</version>
         </dependency>
 ```
 Then create a REST controller:
