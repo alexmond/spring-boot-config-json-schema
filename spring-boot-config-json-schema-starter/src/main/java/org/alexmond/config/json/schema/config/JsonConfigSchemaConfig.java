@@ -2,9 +2,12 @@ package org.alexmond.config.json.schema.config;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.alexmond.config.json.schema.jsonschemamodel.TypeProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -51,9 +54,17 @@ public class JsonConfigSchemaConfig {
 
     /**
      * List of additional configuration property paths to include in the schema.
-     * By default includes the 'logging' configuration namespace.
+     * By default, it includes the 'logging' configuration namespace.
      */
-    @Schema(description = "List of additional property paths to include")
+    @Schema(description = "List of additional property paths to include",defaultValue = "logging")
     private List<String> additionalProperties = List.of("logging");
+
+
+    /**
+     * Map of property names or java objects to their type definitions.
+     * Used to store custom type mappings and property configurations
+     * that override or extend the default schema generation behavior.
+     */
+    private Map<String, TypeProperties> properties = new HashMap<>();
 
 }

@@ -328,9 +328,9 @@ public class JsonSchemaBuilder {
             if (!schema.description().isEmpty()) {
                 propDef.put("description", schema.description());
             }
-            if (!schema.example().isEmpty()) {
-                propDef.put("examples", schema.example());
-            }
+//            if (!schema.example().isEmpty()) {
+//                propDef.put("examples", schema.example());
+//            }
             if (schema.deprecated()) {
                 propDef.put("deprecated", true);
             }
@@ -369,13 +369,13 @@ public class JsonSchemaBuilder {
             propDef.put("pattern", pattern);
             log.info("Validation: Added Pattern validation with regexp {} for field {}", pattern, field.getName());
         }
-        if (field.isAnnotationPresent(NotNull.class)) {
-            propDef.put("required", true);
-            log.debug("Validation: Added NotNull validation for field {}", field.getName());
-        }
+//        if (field.isAnnotationPresent(NotNull.class)) {
+//            propDef.put("required", true);
+//            log.debug("Validation: Added NotNull validation for field {}", field.getName());
+//        }
         if (field.isAnnotationPresent(NotEmpty.class)) {
             propDef.put("minLength", 1);
-            propDef.put("required", true);
+//            propDef.put("required", true);
             log.debug("Validation: Added NotEmpty validation for field {}", field.getName());
         }
     }

@@ -1,4 +1,5 @@
-$schema: "https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json"
+#$schema: "https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json"
+$schema: boot-generic-config.json
 
 logging:
   level:
@@ -9,7 +10,15 @@ logging:
       test: DEBUG
       test2: DEBUG
       testing:
-        test3: INFO
+        test3:
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto:
+
+
+
 
 
 

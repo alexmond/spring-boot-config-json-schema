@@ -30,7 +30,7 @@ public class ConfigSchemaStarter {
 
     @Bean
     public TypeMappingService typeMappingService(MissingTypeCollector missingTypeCollector) {
-        return new TypeMappingService(missingTypeCollector);
+        return new TypeMappingService(missingTypeCollector, jsonConfigSchemaConfig());
     }
 
     @Bean

@@ -31,7 +31,7 @@ public class ConfigSample {
     @NotNull
     String stringSample = "stringSample";
     /**
-     * Boolean sample
+     * Boolean sample Default: true
      **/
     @Schema(description = "Sample boolean property", defaultValue = "true")
     Boolean booleanSample = true;

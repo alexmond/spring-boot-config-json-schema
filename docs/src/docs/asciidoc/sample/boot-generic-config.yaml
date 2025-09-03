@@ -6,9 +6,11 @@ description: "Auto-generated schema from configuration metadata"
 type: "object"
 $defs:
   loggerLevel:
+    type: "object"
     additionalProperties:
       oneOf:
-      - enum:
+      - type: "string"
+        enum:
         - "TRACE"
         - "trace"
         - "DEBUG"
@@ -23,10 +25,9 @@ $defs:
         - "fatal"
         - "OFF"
         - "off"
-        type: "string"
       - $ref: "#/$defs/loggerLevel"
-    type: "object"
   Locales:
+    type: "string"
     enum:
     - ""
     - "he"
@@ -1045,8 +1046,8 @@ $defs:
     - "ms_BN"
     - "ccp_IN"
     - "br_FR"
-    type: "string"
   Charsets:
+    type: "string"
     enum:
     - "Big5"
     - "Big5-HKSCS"
@@ -1221,7 +1222,6 @@ $defs:
     - "x-windows-949"
     - "x-windows-950"
     - "x-windows-iso2022jp"
-    type: "string"
 properties:
   logging:
     type: "object"
@@ -4244,21 +4244,35 @@ properties:
       schema-spec:
         type: "string"
         description: "JSON Schema specification URL"
+        default: "https://json-schema.org/draft/2020-12/schema"
       use-validation:
         type: "boolean"
         description: "Enable validation annotations processing"
+        default: true
       schema-id:
         type: "string"
         description: "Schema identifier"
+        default: "urn:example"
       use-openapi:
         type: "boolean"
         description: "Enable OpenAPI annotations processing"
+        default: true
       description:
         type: "string"
         description: "Schema description"
+        default: "Auto-generated schema from configuration metadata"
       title:
         type: "string"
         description: "Schema title"
+        default: "Spring Boot Configuration Properties"
       additional-properties:
         type: "array"
         description: "List of additional property paths to include"
+        default: "logging"
+      properties:
+        type: "object"
+        description: "Map of property names or java objects to their type definitions.\
+          \ Used to store custom type mappings and property configurations that override\
+          \ or extend the default schema generation behavior."
+        additionalProperties:
+          type: "object"
