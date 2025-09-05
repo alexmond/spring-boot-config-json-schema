@@ -1,5 +1,6 @@
 package org.alexmond.config.json.schema.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +25,24 @@ public class JsonSchemaService {
     private final ObjectMapper mapper;
     private final BootConfigMetaLoader bootConfigMetaLoader = new BootConfigMetaLoader();
 
-    public String generateFullSchema() throws Exception {
+    public String generateFullSchema() {
         HashMap<String,Property> meta = collectMetadata();
         List<String> included = propertyCollector.collectIncludedPropertyNames();
         
         Map<String, Object> schema = schemaBuilder.buildSchema(meta, included);
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
+        SvetaSchema svetaSchema = schemaBuilder.buildSvetaSchema(meta, included);
+        try {
+            String s1 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
+            String s2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(svetaSchema);
+
+            if (s1.equals(s2)) log.debug("===== EQUALS");
+            else log.debug("===== DIFF");
+
+            return s1;
+        } catch (JsonProcessingException e) {
+            log.error("Can't generate full schema", e);
+            return null;
+        }
     }
 
     private HashMap<String,Property> collectMetadata() {

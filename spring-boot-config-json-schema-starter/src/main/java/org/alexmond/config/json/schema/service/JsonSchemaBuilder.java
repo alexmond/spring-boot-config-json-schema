@@ -55,6 +55,26 @@ public class JsonSchemaBuilder {
         return schema;
     }
 
+    public SvetaSchema buildSvetaSchema(HashMap<String, Property> meta, List<String> included) {
+        SvetaSchema svetaSchema = new SvetaSchema(config);
+        svetaSchema.setDefinitions(getDefinitions());
+
+        Map<String, Object> properties = new LinkedHashMap<>();
+        HashMap<String,Property> filteredMeta = new HashMap<>();
+        meta.forEach((key, value) -> {
+            if (matchesIncluded(key,included)) {
+                filteredMeta.put(key,value);
+            }
+        });
+
+        filteredMeta.forEach((key, value) -> {
+            addProperty(properties, key.split("\\."), 0, value);
+        });
+
+        svetaSchema.setProperties(properties);
+        return svetaSchema;
+    }
+
     private Map<String, Object> getDefinitions() {
 
         Map<String, Object> definitions = new LinkedHashMap<>();
