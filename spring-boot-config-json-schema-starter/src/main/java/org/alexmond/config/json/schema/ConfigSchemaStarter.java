@@ -39,10 +39,12 @@ public class ConfigSchemaStarter {
     }
 
     @Bean
-    public JsonSchemaService jsonSchemaService(ConfigurationPropertyCollector propertyCollector,
-                                               JsonSchemaBuilder schemaBuilder,
-                                               ObjectMapper mapper) {
-        return new JsonSchemaService(propertyCollector, schemaBuilder, mapper);
+    public JsonSchemaService jsonSchemaService( JsonConfigSchemaConfig config,
+                                                ConfigurationPropertyCollector propertyCollector,
+                                                JsonSchemaBuilder schemaBuilder,
+                                                ObjectMapper mapper,
+                                                MissingTypeCollector missingTypeCollector) {
+        return new JsonSchemaService(config, propertyCollector, schemaBuilder, mapper,missingTypeCollector);
     }
     
 }

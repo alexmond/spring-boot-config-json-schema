@@ -54,9 +54,6 @@ SimpleBootJsonSchemaGeneratorTests {
             ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
             log.info("Writing yaml schema");
             yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
-            log.info("==================================");
-            missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing type: {}",type));
-
     }
 
 //    @Test

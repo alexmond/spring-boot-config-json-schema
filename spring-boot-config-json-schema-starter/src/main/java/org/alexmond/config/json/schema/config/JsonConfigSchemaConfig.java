@@ -65,6 +65,13 @@ public class JsonConfigSchemaConfig {
      * Used to store custom type mappings and property configurations
      * that override or extend the default schema generation behavior.
      */
-    private Map<String, TypeProperties> properties = new HashMap<>();
+    private Map<String, TypeProperties> typePropertiesMap = new HashMap<>();
+
+    /**
+     * Controls whether missing type information should be logged.
+     * When true, logs will be generated for types that couldn't be mapped during schema generation.
+     * This is useful for debugging and identifying unmapped types.
+     */
+    private Boolean missingTypeLog = false;
 
 }

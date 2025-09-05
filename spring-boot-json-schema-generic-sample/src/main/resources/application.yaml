@@ -11,11 +11,12 @@ management:
 
 logging:
   level:
-    root: debug
+    root: info
     sun:
       rmi: error
     javax:
       management: error
+
 
 
 

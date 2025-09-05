@@ -1,7 +1,19 @@
 # yaml-language-server: $schema=https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json
 
+logging:
+  level:
+    root: DEBUG
+    com.spring: DEBUG
+    com.java: DEBUG
+    com:
+      test: DEBUG
+      test2: DEBUG
+      testing:
+        test3: INFO
+
 spring:
   datasource:
+    name: test
 
 
 

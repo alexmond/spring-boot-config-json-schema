@@ -2,3 +2,6 @@ logging:
   level:
     root: info
     web: info
+
+json-config-schema:
+  missing-type-log: true

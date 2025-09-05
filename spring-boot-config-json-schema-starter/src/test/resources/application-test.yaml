@@ -3,8 +3,8 @@ logging:
     root: info
     org.alexmond: debug
 
-server:
-  tomcat:
-    accesslog:
-      locale:
+json-config-schema:
+  missing-type-log: true
+
+
 

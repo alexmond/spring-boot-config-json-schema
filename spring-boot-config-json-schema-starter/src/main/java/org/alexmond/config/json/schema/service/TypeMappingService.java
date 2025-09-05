@@ -92,16 +92,19 @@ public class TypeMappingService {
         Map<String, TypeProperties> extendedTypeProps = new HashMap<>() {{
             put("java.util.Locale",TypeProperties.builder().reference("#/$defs/Locales").build());
             put("java.nio.charset.Charset", TypeProperties.builder().reference("#/$defs/Charsets").build());
-            put("logging.level", TypeProperties.builder().reference("#/$defs/loggerLevel").build());
+            put("logging.level", TypeProperties.builder().reference("#/$defs/loggerLevelProp").build());
+            put("logging.threshold.console", TypeProperties.builder().reference("#/$defs/loggerLevel").build());
+            put("logging.threshold.file", TypeProperties.builder().reference("#/$defs/loggerLevel").build());
         }};
+
 
         TypeProperties typeProperties = null;
         if (prop != null) {
-            typeProperties = jsonConfigSchemaConfig.getProperties().get(prop.getName());
+            typeProperties = jsonConfigSchemaConfig.getTypePropertiesMap().get(prop.getName());
             if (typeProperties != null) return typeProperties;
         };
         if (springType != null) {
-            typeProperties = jsonConfigSchemaConfig.getProperties().get(springType);
+            typeProperties = jsonConfigSchemaConfig.getTypePropertiesMap().get(springType);
             if (typeProperties != null) return typeProperties;
         };
         if (prop != null){

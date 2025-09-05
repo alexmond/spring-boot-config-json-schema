@@ -22,6 +22,8 @@ public class JsonSchemaBuilder {
     private final JsonConfigSchemaConfig config;
     private final TypeMappingService typeMappingService;
 
+    Map<String, Object> definitions = new LinkedHashMap<>();
+
     public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
         this.config = config;
         this.typeMappingService = typeMappingService;
@@ -38,6 +40,7 @@ public class JsonSchemaBuilder {
         schema.put("type", "object");
 
         schema.put("$defs", getDefinitions());
+
 
         Map<String, Object> properties = new LinkedHashMap<>();
         HashMap<String,Property> filteredMeta = new HashMap<>();
@@ -57,10 +60,11 @@ public class JsonSchemaBuilder {
 
     private Map<String, Object> getDefinitions() {
 
-        Map<String, Object> definitions = new LinkedHashMap<>();
         definitions.put("loggerLevel", getLoggerLevelDef());
+        definitions.put("loggerLevelProp", getLoggerLevelDef());
         definitions.put("Locales", getLocalesDef());
         definitions.put("Charsets", getCharsetsDef());
+
         return definitions;
     }
 
@@ -77,23 +81,28 @@ public class JsonSchemaBuilder {
                 "enum", Locale.getAvailableLocales());
 
     }
-
     private Map<String, Object> getLoggerLevelDef() {
+        return Map.of(
+                "type", "string",
+                "enum", processEnumItem(LogLevel.class));
+    }
+
+    private Map<String, Object> getLoggerLevelPropDef() {
         return Map.of(
                 "type", "object",
                 "additionalProperties", Map.of(
                         "oneOf", List.of(
                                 Map.of(
-                                        "type", "string",
-                                        "enum", processEnumItem(LogLevel.class)
+                                        "$ref", "#/$defs/loggerLevel"
                                 ),
                                 Map.of(
-                                        "$ref", "#/$defs/loggerLevel"
+                                        "$ref", "#/$defs/loggerLevelProp"
                                 )
                         )
                 )
         );
     }
+
 
     private void addProperty(Map<String, Object> node, String[] path, int idx, Property prop) {
         log.debug("Processing property at path: {}, index: {}", String.join(".", path), idx);
@@ -375,7 +384,6 @@ public class JsonSchemaBuilder {
 //        }
         if (field.isAnnotationPresent(NotEmpty.class)) {
             propDef.put("minLength", 1);
-//            propDef.put("required", true);
             log.debug("Validation: Added NotEmpty validation for field {}", field.getName());
         }
     }

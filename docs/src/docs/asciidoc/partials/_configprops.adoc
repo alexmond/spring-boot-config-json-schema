@@ -1,32 +1,42 @@
+= Configuration Properties
+Description of all available configuration properties for JSON Schema generation.
 
 |===
 |Name |Default Value |Description
 
 |json-config-schema.additional-properties
 |logging
-|List of additional configuration property paths to include in the schema. By default includes the 'logging' configuration namespace.
+|Additional property paths to include in the schema generation. Default includes 'logging' namespace.
 
 |json-config-schema.description
 |Auto-generated schema from configuration metadata
-|A detailed description of what this schema represents. Explains the purpose and content of the configuration properties.
+|Description text for the generated schema document.
+
+|json-config-schema.missing-type-log
+|false
+|When true, logs any property types that couldn't be resolved during schema generation.
 
 |json-config-schema.schema-id
 |your-schema-id
-|The unique identifier for this schema. Should be replaced with a meaningful ID for your configuration.
+|Unique identifier for the generated schema.
 
 |json-config-schema.schema-spec
-|https: //json-schema.org/draft/2020-12/schema
-|The URL of the JSON Schema specification to be used. Defaults to the 2020-12 draft version.
+|https://json-schema.org/draft/2020-12/schema
+|JSON Schema specification URL to use. Defaults to 2020-12 draft.
 
 |json-config-schema.title
 |Spring Boot Configuration Properties
-|The title of the schema document. Provides a human-readable name for the configuration schema.
+|Title for the schema document.
 
 |json-config-schema.use-openapi
 |true
-|Controls whether OpenAPI annotations should be processed. When true, OpenAPI annotations will be used to enhance the schema.
+|Enable/disable OpenAPI annotation processing for schema enhancement.
 
 |json-config-schema.use-validation
 |true
-|Controls whether validation annotations should be processed. When true, validation constraints will be included in the schema.
+|Enable/disable validation annotation processing for constraint inclusion.
+
+|json-config-schema.type-properties-map
+|{}
+|Map of property type overrides for schema generation. Allows customizing type mappings.
 |===
