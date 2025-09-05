@@ -38,7 +38,7 @@ jobs:
 
       - name: Prepare Release
         run: |
-          mvn versions:set -DnewVersion=${{ github.event.inputs.releaseVersion }} -Pdefault
+          mvn versions:set -DnewVersion=${{ github.event.inputs.releaseVersion }} -Pdefault --no-transfer-progress
           git commit -am "Prepare release ${{ github.event.inputs.releaseVersion }}"
           git tag -a ${{ github.event.inputs.releaseVersion }} -m "Release ${{ github.event.inputs.releaseVersion }}"
 
@@ -57,7 +57,7 @@ jobs:
 
       - name: Prepare for Next Development Version
         run: |
-          mvn versions:set -DnewVersion=${{ github.event.inputs.nextVersion }} -Pdefault
+          mvn versions:set -DnewVersion=${{ github.event.inputs.nextVersion }} -Pdefault --no-transfer-progress
           git commit -am "Prepare for next development iteration: ${{ github.event.inputs.nextVersion }}"
 
       - name: Push Changes

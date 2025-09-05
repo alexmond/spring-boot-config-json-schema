@@ -10,6 +10,18 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * Configuration properties for JSON Schema generation.
+ * This class defines the settings used to customize the generation of JSON Schema
+ * for Spring Boot configuration properties. It allows control over schema metadata,
+ * processing options, and additional property inclusions.
+ *
+ * <p>All properties are configured under the 'json-config-schema' prefix in your
+ * application.properties or application.yml file.
+ *
+ * @see org.springframework.boot.context.properties.ConfigurationProperties
+ * @see io.swagger.v3.oas.annotations.media.Schema
+ */
 @Data
 @Schema(description = "JSON Schema configuration properties")
 @ConfigurationProperties(prefix = "json-config-schema")
