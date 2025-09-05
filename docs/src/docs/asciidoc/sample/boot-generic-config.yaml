@@ -6,7 +6,6 @@ description: "Auto-generated schema from configuration metadata"
 type: "object"
 $defs:
   loggerLevel:
-    type: "string"
     enum:
     - "TRACE"
     - "trace"
@@ -22,8 +21,8 @@ $defs:
     - "fatal"
     - "OFF"
     - "off"
+    type: "string"
   loggerLevelProp:
-    type: "string"
     enum:
     - "TRACE"
     - "trace"
@@ -39,8 +38,8 @@ $defs:
     - "fatal"
     - "OFF"
     - "off"
-  Locales:
     type: "string"
+  Locales:
     enum:
     - ""
     - "he"
@@ -1059,8 +1058,8 @@ $defs:
     - "ms_BN"
     - "ccp_IN"
     - "br_FR"
-  Charsets:
     type: "string"
+  Charsets:
     enum:
     - "Big5"
     - "Big5-HKSCS"
@@ -1235,6 +1234,7 @@ $defs:
     - "x-windows-949"
     - "x-windows-950"
     - "x-windows-iso2022jp"
+    type: "string"
 properties:
   spring:
     type: "object"
@@ -4798,7 +4798,7 @@ properties:
         description: "Whether to include the application name in the logs."
         default: true
       level:
-        $ref: "#/$defs/loggerLevel"
+        $ref: "#/$defs/loggerLevelProp"
         description: "Log levels severity mapping. For instance, `logging.level.org.springframework=DEBUG`."
       include-application-group:
         type: "boolean"
@@ -4839,11 +4839,11 @@ properties:
         type: "object"
         properties:
           console:
-            type: "string"
+            $ref: "#/$defs/loggerLevel"
             description: "Log level threshold for console output."
             default: "TRACE"
           file:
-            type: "string"
+            $ref: "#/$defs/loggerLevel"
             description: "Log level threshold for file output."
             default: "TRACE"
       register-shutdown-hook:
@@ -5065,31 +5065,39 @@ properties:
       schema-spec:
         type: "string"
         description: "JSON Schema specification URL"
+        default: "https://json-schema.org/draft/2020-12/schema"
       missing-type-log:
         type: "boolean"
         description: "Controls whether missing type information should be logged.\
           \ When true, logs will be generated for types that couldn't be mapped during\
           \ schema generation. This is useful for debugging and identifying unmapped\
           \ types."
+        default: false
       use-validation:
         type: "boolean"
         description: "Enable validation annotations processing"
+        default: true
       schema-id:
         type: "string"
         description: "Schema identifier"
+        default: "urn:example"
       use-openapi:
         type: "boolean"
         description: "Enable OpenAPI annotations processing"
+        default: true
       description:
         type: "string"
         description: "Schema description"
+        default: "Auto-generated schema from configuration metadata"
       title:
         type: "string"
         description: "Schema title"
+        default: "Spring Boot Configuration Properties"
       additional-properties:
         type: "array"
         description: "List of additional property paths to include"
-      properties:
+        default: "logging"
+      type-properties-map:
         type: "object"
         description: "Map of property names or java objects to their type definitions.\
           \ Used to store custom type mappings and property configurations that override\

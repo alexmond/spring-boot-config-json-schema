@@ -38,20 +38,6 @@ public class JsonSchemaService {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
     }
 
-    private HashMap<String,Property> oldcollectMetadata() {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        List<BootConfigMeta> configs = new ArrayList<>();
-        classLoader.resources("META-INF/spring-configuration-metadata.json")
-                .forEach(url -> {
-                    try (InputStream inputStream = url.openStream()) {
-                        configs.add(bootConfigMetaLoader.loadFromStream(inputStream));
-                    } catch (IOException e) {
-                        log.error("Failed to open stream for {} with error {}", url, e.getMessage());
-                    }
-                });
-        return bootConfigMetaLoader.mergeConfig(configs);
-    }
-
     private HashMap<String,Property> collectMetadata() {
 
         List<BootConfigMeta> configs = new ArrayList<>();
