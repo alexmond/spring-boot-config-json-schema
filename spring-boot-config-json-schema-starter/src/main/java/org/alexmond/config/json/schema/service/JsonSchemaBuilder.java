@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
+import org.alexmond.config.json.schema.jsonschemamodel.TypeProperties;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.springframework.boot.logging.LogLevel;
@@ -61,7 +63,7 @@ public class JsonSchemaBuilder {
     private Map<String, Object> getDefinitions() {
 
         definitions.put("loggerLevel", getLoggerLevelDef());
-        definitions.put("loggerLevelProp", getLoggerLevelDef());
+        definitions.put("loggerLevelProp", getLoggerLevelPropDef());
         definitions.put("Locales", getLocalesDef());
         definitions.put("Charsets", getCharsetsDef());
 
@@ -113,7 +115,14 @@ public class JsonSchemaBuilder {
         }
         String key = path[idx];
         if (idx == path.length - 1) {
-            processLeaf(node, prop, key);
+            if(node.get(key) == null) {
+                processLeaf(node, prop, key);
+            } else {
+                log.info("Duplicate leaf {}",key);
+                if(prop.getDescription() != null) {
+                    processLeaf(node, prop, key);
+                }
+            }
         } else {
             Map<String, Object> propNode;
             Map<String, Object> properties = new HashMap<>();;
@@ -139,7 +148,7 @@ public class JsonSchemaBuilder {
 
 
     private void processLeaf(Map<String, Object> node, Property prop, String key) {
-        Map<String,String> propMappedType;
+        TypeProperties typeProperties;
         String propType;
         Class<?> clazz;
         Class<?> propClazz = null;
@@ -157,9 +166,9 @@ public class JsonSchemaBuilder {
             return;
         }else{
             propType= prop.getType();
-            propMappedType = typeMappingService.mapTypeProp(propType,prop);
+            typeProperties = typeMappingService.typeProp(propType,prop);
         }
-        propDef.putAll(propMappedType);
+        propDef.putAll(typeProperties.toMap());
 
         if (prop.getSourceType() != null) {
             String propertyName = prop.getName();
@@ -210,7 +219,7 @@ public class JsonSchemaBuilder {
             node.put(key, propDef);
             return;
         }
-        if (propMappedType.equals("array")) {
+        if (typeProperties.getType().equals(JsonSchemaType.ARRAY)) {
             processArray(prop, prop.getType(), propDef,null);
             node.put(key, propDef);
             return;
@@ -220,7 +229,7 @@ public class JsonSchemaBuilder {
             node.put(key, propDef);
             return;
         }
-        if (propMappedType.equals("object")) {
+        if (typeProperties.getType().equals(JsonSchemaType.OBJECT)) {
             Map<String, Object> complexProperties = processComplexType(prop.getType(), prop);
             if (complexProperties != null) {
                 propDef.put("properties", complexProperties);
@@ -230,6 +239,7 @@ public class JsonSchemaBuilder {
     }
 
     private void processMap(Property prop, String propType, Map<String, Object> propDef, Set<String> visited) {
+
         if (propType.contains("java.util.Properties")) {
             addSimpleAdditionalProperties(propDef);
             return;
@@ -240,15 +250,18 @@ public class JsonSchemaBuilder {
             addSimpleAdditionalProperties(propDef);
             return;
         }
-
+        TypeProperties typeProperties = typeMappingService.typeProp(valueType, prop);
+        if (typeProperties.getType() == null) {
+            propDef.putAll(typeProperties.toMap());
+            return;
+        }
         try {
             Class<?> valueClass = Class.forName(valueType);
             if (valueClass.getTypeParameters().length > 0) {
                 addSimpleAdditionalProperties(propDef);
                 return;
             }
-
-            if (typeMappingService.mapTypeProp(valueType,prop).equals("object")) {
+            if (typeProperties.getType().equals(JsonSchemaType.OBJECT)) {
                 visited = visited == null ? new HashSet<>() : visited;
                 Map<String, Object> valueTypeProperties = processComplexType(valueType, prop, visited);
                 if (valueTypeProperties != null) {
@@ -258,7 +271,7 @@ public class JsonSchemaBuilder {
                     ));
                 }
             } else {
-                propDef.put("additionalProperties",typeMappingService.mapType(valueType));
+                propDef.put("additionalProperties",typeProperties.toMap());
             }
         } catch (ClassNotFoundException e) {
             log.debug("Cannot find class for property type: {}, treating as object", valueType);
@@ -271,8 +284,8 @@ public class JsonSchemaBuilder {
     }
 
     private void processArray(Property prop, String propType, Map<String, Object> propDef, Set<String> visited) {
-        if (propType.equals("java.lang.String[]")) {
-            propDef.put("items", Map.of("type", "string"));
+        if (propType.contains("[]")) {
+            propDef.put("items", typeMappingService.typeProp(propType.replace("[]",""),null).toMap());
             return;
         }
 
@@ -288,11 +301,11 @@ public class JsonSchemaBuilder {
                 propDef.put("items", Map.of("type", "object"));
                 return;
             }
-
+            TypeProperties typeProperties = typeMappingService.typeProp(itemType, prop);
             Map<String, Object> items = new HashMap<>();
-            items.putAll(typeMappingService.mapType(itemType));
+            items.putAll(typeProperties.toMap());
 
-            if (typeMappingService.mapType(itemType).get("type").equals("object")) {
+            if (typeProperties.getType().equals(JsonSchemaType.OBJECT)) {
                 visited = visited == null ? new HashSet<>() : visited;
                 Map<String, Object> complexProperties = processComplexType(itemType, prop, visited);
                 if (complexProperties != null) {
@@ -456,11 +469,14 @@ public class JsonSchemaBuilder {
                 Map<String, Object> fieldDef = new HashMap<>();
                 String fieldType = field.getType().getName();
                 String fieldGenName = field.getGenericType().getTypeName();
-                fieldDef.putAll(typeMappingService.mapType(fieldType));
+                var typeProperties = typeMappingService.typeProp(fieldGenName,null);
+                fieldDef.putAll(typeProperties.toMap()); // TODO: check logic
 
-                if (typeMappingService.mapType(fieldType).get("type").equals("array")) {
+                if (typeProperties.getReference() != null) {
+                    fieldDef.put("properties",typeProperties.toMap());
+                } else if (typeProperties.getType().equals(JsonSchemaType.ARRAY)) {
                     processArray(bootProp,fieldGenName, fieldDef, visited);
-                } else if (typeMappingService.mapType(fieldType).get("type").equals("object")) {
+                } else if (typeProperties.getType().equals(JsonSchemaType.OBJECT)) {
                     if (typeMappingService.isMap(fieldType)) {
                         processMap(bootProp, fieldGenName, fieldDef, visited);
                     } else {

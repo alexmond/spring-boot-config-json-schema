@@ -2,6 +2,7 @@ logging:
   level:
     root: info
     web: info
+    org.alexmond: debug
 
 json-config-schema:
   missing-type-log: true

@@ -88,6 +88,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.erosb</groupId>
+            <artifactId>json-sKema</artifactId>
+            <version>0.25.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <profiles>

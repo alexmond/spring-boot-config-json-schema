@@ -2,66 +2,10 @@ package org.alexmond.config.json.schema.jsonschemamodel;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-/**
- * JSON Schema type definitions
- *
- * @see <a href="https://json-schema.org/understanding-json-schema/reference/type.html">JSON Schema Types</a>
- */
-@Getter
-enum JsonSchemaTypes {
-    STRING("string"),
-    BOOLEAN("boolean"),
-    INTEGER("integer"),
-    NUMBER("number"),
-    OBJECT("object"),
-    ARRAY("array");
-
-    private final String value;
-
-    JsonSchemaTypes(String value) {
-        this.value = value;
-    }
-
-}
-
-/**
- * JSON Schema string formats
- *
- * @see <a href="https://json-schema.org/understanding-json-schema/reference/string.html#format">JSON Schema String Formats</a>
- */
-@Getter
-enum JsonSchemaFormats {
-    DATE("date"),
-    DATE_TIME("date-time"),
-    TIME("time"),
-    DURATION("duration"),
-    EMAIL("email"),
-    IDN_EMAIL("idn-email"),
-    HOSTNAME("hostname"),
-    IDN_HOSTNAME("idn-hostname"),
-    IPV4("ipv4"),
-    IPV6("ipv6"),
-    URI("uri"),
-    URI_REFERENCE("uri-reference"),
-    UUID("uuid"),
-    REGEX("regex");
-
-    private final String value;
-
-    JsonSchemaFormats(String value) {
-        this.value = value;
-    }
-
-}
-
-
 
 
 @Builder
@@ -72,7 +16,7 @@ public class TypeProperties {
      *
      * @see <a href="https://json-schema.org/understanding-json-schema/reference/type.html">Type</a>
      */
-    JsonSchemaTypes type;
+    JsonSchemaType type;
 
     /**
      * Regular expression pattern for string validation
@@ -93,7 +37,7 @@ public class TypeProperties {
      *
      * @see <a href="https://json-schema.org/understanding-json-schema/reference/string.html#format">Format</a>
      */
-    JsonSchemaFormats format;
+    JsonSchemaFormat format;
 
     /**
      * Enumeration of allowed values

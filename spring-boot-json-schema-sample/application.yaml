@@ -1,7 +1,8 @@
-$schema: ./sample-schema.yaml
+$schema: ./sample-schema.json
 spring:
   profiles:
-    active: test
+    active:
+      - test
 
 sample:
   boolean-sample: false
@@ -15,9 +16,17 @@ sample:
   map-sample:
     test1: test1value
     test2: test2value
-
   config-sample-nested:
     nested-config1: nestedConfig
+  deep-level1:
+    deep-level2:
+      idp:
+        - id: abc
+          prop1: bbb
+          prop2: 123
+
+
+
 logging:
   level:
     root: info
@@ -38,7 +47,8 @@ server:
 spring:
   config:
     activate:
-      on-profile: test
+      on-profile:
+          - test
 
 
 

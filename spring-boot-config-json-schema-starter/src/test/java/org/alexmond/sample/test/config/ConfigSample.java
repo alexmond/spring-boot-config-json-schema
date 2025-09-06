@@ -36,6 +36,9 @@ public class ConfigSample {
     @Schema(description = "Sample boolean property", defaultValue = "true")
     Boolean booleanSample = true;
 
+    /**
+     * String array sample
+     **/
     String[] stringArraySample;
     /**
      * Integer sample
@@ -45,19 +48,37 @@ public class ConfigSample {
     @Schema(description = "Sample integer property", minimum = "10", maximum = "200", defaultValue = "100")
     Integer integerSample = 100;
 
+    /**
+     * Sample enum property
+     **/
     @Schema(description = "Sample enum property", defaultValue = "EN1")
     EnumSample enumSample = EnumSample.EN1;
 
+    /**
+     * Sample string collection
+     **/
     @Schema(description = "Sample string collection")
     List<String> collectionSample = new ArrayList<>();
+    /**
+     * Sample nested configuration collection
+     **/
     @Schema(description = "Sample nested configuration collection")
     List<ConfigSampleNested2> configSampleObjectArray = new ArrayList<>();
 
+    /**
+     * Sample integer collection
+     **/
     List<Integer> sampleIntArray = new ArrayList<>();
 
+    /**
+     * Sample string map
+     **/
     @Schema(description = "Sample string map")
     Map<String, String> mapSample = new HashMap<>();
 
+    /**
+     * Sample object map
+     **/
     @Schema(description = "Sample object map")
     Map<String, ConfigMapObject> mapObjectSample = new HashMap<>();
 
@@ -68,14 +89,33 @@ public class ConfigSample {
     @Schema(description = "Nested configuration sample")
     ConfigSampleNested configSampleNested = new ConfigSampleNested();
 
+    /**
+     * Sample type set
+     **/
     @Schema(description = "Sample type set")
     EnumSet<SampleType> enumTypeSet = EnumSet.noneOf(SampleType.class);
 
+    /**
+     * Sample status map
+     **/
     @Schema(description = "Sample status map")
     EnumMap<SampleStatus, String> enumStatusMap = new EnumMap<>(SampleStatus.class);
 
+    /**
+     * Properties example
+     **/
     Properties propertiesExample = new Properties();
 
+    /**
+     * Properties map example
+     **/
     Map<String,String> propertiesMapExample = new HashMap<>();
+
+
+    /**
+     * Deep level 1 nested configuration
+     **/
+    @NestedConfigurationProperty
+    DeepLevel1 deepLevel1 = new DeepLevel1();
     
 }

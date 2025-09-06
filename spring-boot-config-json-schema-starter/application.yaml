@@ -1,11 +1,16 @@
-$schema: ./sample-schema.yaml
+$schema: ./sample-schema.json
 spring:
   profiles:
     active:
       - test
 
 sample:
-  string-array-sample: aaa,bbb,ccc
+#  properties-example:
+#    abc : "test123"
+  string-array-sample:
+    - aaa
+    - bbb
+    - ccc
   boolean-sample: false
   string-sample: "config string"
   integer-sample: 10
@@ -20,6 +25,14 @@ sample:
 
   config-sample-nested:
     nested-config1: nestedConfig
+  deep-level1:
+    keys:
+      idp:
+        - id: "1234"
+          param1: "1234"
+          param2: "1234"
+
+
 logging:
   level:
     root: info

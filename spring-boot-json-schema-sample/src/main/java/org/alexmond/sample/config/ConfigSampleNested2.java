@@ -3,9 +3,6 @@ package org.alexmond.sample.config;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @Schema(description = "Configuration class containing nested configuration properties")
 public class ConfigSampleNested2 {
@@ -15,7 +12,5 @@ public class ConfigSampleNested2 {
 
     @Schema(description = "Second nested configuration property", example = "123")
     private Integer listNestedConfig2 = 123 ;
-
-    private List<String> nestedListConfigList = new ArrayList<>();
 
 }

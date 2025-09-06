@@ -22,9 +22,11 @@ import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,12 +71,6 @@ class SanityJsonSchemaGeneratorTests {
 
     }
 
-    @Test
-    void useYAMLSchema() throws IOException {
-        Map<String, Charset> charsets = Charset.availableCharsets();
-        List<Charset> list = new ArrayList<>(Charset.availableCharsets().values());
-        log.info(charsets.toString());
 
-    }
 
 }

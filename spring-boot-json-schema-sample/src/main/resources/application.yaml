@@ -2,21 +2,21 @@ spring:
   profiles:
     active: test
 
-sample:
-  boolean-sample: false
-  string-sample: "config string"
-  integer-sample: 10
-  enum-sample: en2
-  collection-sample:
-    - test1
-    - test2
-    - test3
-  map-sample:
-    test1: test1value
-    test2: test2value
-
-  config-sample-nested:
-    nested-config1: nestedConfig
+#sample:
+#  boolean-sample: false
+#  string-sample: "config string"
+#  integer-sample: 10
+#  enum-sample: en2
+#  collection-sample:
+#    - test1
+#    - test2
+#    - test3
+#  map-sample:
+#    test1: test1value
+#    test2: test2value
+#
+#  config-sample-nested:
+#    nested-config1: nestedConfig
 logging:
   level:
     root: debug
@@ -24,6 +24,8 @@ logging:
       rmi: error
     javax:
       management: error
+  file:
+    name: test.log
 
 
 

@@ -3,6 +3,7 @@ package org.alexmond.config.json.schema.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.jsonschemamodel.TypeProperties;
 import org.alexmond.config.json.schema.metamodel.Property;
 
@@ -22,36 +23,37 @@ public class TypeMappingService {
         this.missingTypeCollector = missingTypeCollector;
         this.jsonConfigSchemaConfig = jsonConfigSchemaConfig;
     }
-    public Map<String,String> mapType(String springType) {
-        return mapTypeProp(springType,null);
-    }
-    
-    public Map<String,String> mapTypeProp(String springType, Property prop) {
+
+    public TypeProperties typeProp(String springType, Property prop) {
         log.debug("mapTypeProp({}, {})", springType, prop);
         TypeProperties typeProperties;
         typeProperties = extendedTypeProp(springType, prop);
         if (typeProperties != null) {
-            return typeProperties.toMap();
+            return typeProperties;
         }
+
         switch (springType) {
             case "java.lang.String":
-//            case "java.lang.String[]":
-            case "java.time.Duration": // can improve by introducing some regexp
+            case "java.time.Duration":
             case "java.util.Date":
             case "java.util.Calendar":
             case "java.util.TimeZone":
             case "org.springframework.util.unit.DataSize":
             case "java.lang.Character":
+            case "java.lang.CharSequence":
             case "char":
+            case "char[]":
             case "java.io.File":
             case "org.springframework.http.MediaType":
             case "java.net.InetAddress":
             case "java.net.URI":
             case "org.springframework.core.io.Resource":
-                return Map.of("type","string");
+                return TypeProperties.builder().type(JsonSchemaType.STRING).build();
+
             case "java.lang.Boolean":
             case "boolean":
-                return Map.of("type","boolean");
+                return TypeProperties.builder().type(JsonSchemaType.BOOLEAN).build();
+
             case "java.lang.Integer":
             case "int":
             case "java.lang.Long":
@@ -59,36 +61,48 @@ public class TypeMappingService {
             case "java.lang.Short":
             case "short":
             case "java.math.BigInteger":
-                return Map.of("type","integer");
+                return TypeProperties.builder().type(JsonSchemaType.INTEGER).build();
+
             case "java.lang.Float":
             case "float":
             case "double":
             case "java.lang.Double":
             case "java.math.BigDecimal":
-                return Map.of("type","number");
+                return TypeProperties.builder().type(JsonSchemaType.NUMBER).build();
+
             case "java.lang.Object":
-                return Map.of("type","object");
+                return TypeProperties.builder().type(JsonSchemaType.OBJECT).build();
         }
-        if (isArray(springType)) return Map.of("type","array");
-        if (isMap(springType)) return Map.of("type","object");
-        if (isEnum(springType)) return Map.of("type","string");
+
+        if (isArray(springType)) {
+            return TypeProperties.builder().type(JsonSchemaType.ARRAY).build();
+        }
+        if (isMap(springType)) {
+            return TypeProperties.builder().type(JsonSchemaType.OBJECT).build();
+        }
+        if (isEnum(springType)) {
+            return TypeProperties.builder().type(JsonSchemaType.STRING).build();
+        }
+
         try {
             Class<?> type = Class.forName(springType);
             if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
-                missingTypeCollector.addType(springType,prop);
-                return Map.of("type","object");
+                missingTypeCollector.addType(springType, prop);
+                return TypeProperties.builder().type(JsonSchemaType.OBJECT).build();
             }
         } catch (ClassNotFoundException e) {
-            if (springType.contains("Enum")) return Map.of("type","string");
+            if (springType.contains("Enum")) {
+                return TypeProperties.builder().type(JsonSchemaType.STRING).build();
+            }
         }
-        missingTypeCollector.addType(springType,prop);
-        log.debug("Mapping Spring type: {}  for Property {}", springType,prop);
-        return Map.of("type","string");
+
+        missingTypeCollector.addType(springType, prop);
+        log.debug("Mapping Spring type: {}  for Property {}", springType, prop);
+        return TypeProperties.builder().type(JsonSchemaType.STRING).build();
     }
     
     private TypeProperties extendedTypeProp(String springType, Property prop) {
-
-
+        
         Map<String, TypeProperties> extendedTypeProps = new HashMap<>() {{
             put("java.util.Locale",TypeProperties.builder().reference("#/$defs/Locales").build());
             put("java.nio.charset.Charset", TypeProperties.builder().reference("#/$defs/Charsets").build());
@@ -122,7 +136,7 @@ public class TypeMappingService {
     public boolean isArray(String springType) {
         Class<?> clazz;
         try{
-            if(springType.contains("java.lang.String[]")){return true;}
+            if(springType.contains("[]")){return true;}
             if(springType.contains("<")){
                 springType=springType.split("<")[0];
             }

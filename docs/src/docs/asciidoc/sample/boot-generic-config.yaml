@@ -23,22 +23,11 @@ $defs:
     - "off"
     type: "string"
   loggerLevelProp:
-    enum:
-    - "TRACE"
-    - "trace"
-    - "DEBUG"
-    - "debug"
-    - "INFO"
-    - "info"
-    - "WARN"
-    - "warn"
-    - "ERROR"
-    - "error"
-    - "FATAL"
-    - "fatal"
-    - "OFF"
-    - "off"
-    type: "string"
+    type: "object"
+    additionalProperties:
+      oneOf:
+      - $ref: "#/$defs/loggerLevel"
+      - $ref: "#/$defs/loggerLevelProp"
   Locales:
     enum:
     - ""
@@ -1250,6 +1239,8 @@ properties:
             type: "array"
             description: "Comma-separated list of locations of WSDLs and accompanying\
               \ XSDs to be exposed as beans."
+            items:
+              type: "string"
           servlet:
             type: "object"
             properties:
@@ -1274,8 +1265,6 @@ properties:
                 properties:
                   page-parameter:
                     type: "string"
-                    description: "Page index parameter name."
-                    default: "page"
                   serialization-mode:
                     type: "string"
                     description: "Configures how to render Spring Data Pageable instances."
@@ -1318,8 +1307,6 @@ properties:
                 properties:
                   sort-parameter:
                     type: "string"
-                    description: "Sort parameter name."
-                    default: "sort"
       servlet:
         type: "object"
         properties:
@@ -1332,25 +1319,15 @@ properties:
                 default: "10MB"
               max-file-size:
                 type: "string"
-                description: "Max file size."
-                default: "1MB"
-              strict-servlet-compliance:
-                type: "boolean"
-                description: "Whether to resolve the multipart request strictly complying\
-                  \ with the Servlet specification, only to be used for \"multipart/form-data\"\
-                  \ requests."
-                default: false
               location:
                 type: "string"
                 description: "Intermediate location of uploaded files."
+              strict-servlet-compliance:
+                type: "boolean"
               file-size-threshold:
                 type: "string"
-                description: "Threshold after which files are written to disk."
-                default: "0B"
               enabled:
                 type: "boolean"
-                description: "Whether to enable support of multipart uploads."
-                default: true
               resolve-lazily:
                 type: "boolean"
                 description: "Whether to resolve the multipart request lazily at the\
@@ -1382,34 +1359,21 @@ properties:
             properties:
               file-storage-directory:
                 type: "string"
-                description: "Directory used to store file parts larger than 'maxInMemorySize'.\
-                  \ Default is a directory named 'spring-multipart' created under\
-                  \ the system temporary directory. Ignored when using the PartEvent\
-                  \ streaming support."
               max-in-memory-size:
                 type: "string"
-                description: "Maximum amount of memory allowed per part before it's\
-                  \ written to disk. Set to -1 to store all contents in memory."
-                default: "256KB"
               max-parts:
                 type: "integer"
-                description: "Maximum number of parts allowed in a given multipart\
-                  \ request. Default is -1 which enforces no limits."
-                default: -1
               headers-charset:
                 $ref: "#/$defs/Charsets"
-                description: "Character set used to decode headers."
-                default: "UTF-8"
+                properties:
+                  $ref: "#/$defs/Charsets"
               max-headers-size:
                 type: "string"
-                description: "Maximum amount of memory allowed per headers section\
-                  \ of each part. Set to -1 to enforce no limits."
-                default: "10KB"
               max-disk-usage-per-part:
                 type: "string"
-                description: "Maximum amount of disk space allowed per part. Default\
-                  \ is -1 which enforces no limits."
-                default: "-1B"
+          base-path:
+            type: "string"
+            description: "Base path for all web handlers."
           format:
             type: "object"
             properties:
@@ -1422,24 +1386,8 @@ properties:
                 - "iso"
               date-time:
                 type: "string"
-                description: "Date-time format to use, for example 'yyyy-MM-dd HH:mm:ss'.\
-                  \ Used for formatting of java.time's LocalDateTime, OffsetDateTime,\
-                  \ and ZonedDateTime."
-                examples:
-                - "yyyy-MM-dd HH:mm:ss"
-                - "iso"
-                - "iso-offset"
               time:
                 type: "string"
-                description: "Time format to use, for example 'HH:mm:ss'. Used for\
-                  \ formatting of java.time's LocalTime and OffsetTime."
-                examples:
-                - "HH:mm:ss"
-                - "iso"
-                - "iso-offset"
-          base-path:
-            type: "string"
-            description: "Base path for all web handlers."
           problemdetails:
             type: "object"
             properties:
@@ -1455,9 +1403,6 @@ properties:
             properties:
               max-rows:
                 type: "integer"
-                description: "Maximum number of rows. Use -1 to use the JDBC driver's\
-                  \ default configuration."
-                default: -1
               ignore-warnings:
                 type: "boolean"
                 description: "Whether to ignore JDBC statement warnings (SQLWarning).\
@@ -1469,27 +1414,16 @@ properties:
                   \ used to optimize callable statement processing when we know that\
                   \ no results are being passed back."
                 default: false
-              results-map-case-insensitive:
-                type: "boolean"
-                description: "Whether execution of a CallableStatement will return\
-                  \ the results in a Map that uses case-insensitive names for the\
-                  \ parameters."
-                default: false
               fetch-size:
                 type: "integer"
-                description: "Number of rows that should be fetched from the database\
-                  \ when more rows are needed. Use -1 to use the JDBC driver's default\
-                  \ configuration."
-                default: -1
+              results-map-case-insensitive:
+                type: "boolean"
               skip-undeclared-results:
                 type: "boolean"
                 description: "Whether undeclared results should be skipped."
                 default: false
               query-timeout:
                 type: "string"
-                description: "Query timeout. Default is to use the JDBC driver's default\
-                  \ configuration. If a duration suffix is not specified, seconds\
-                  \ will be used."
       ssl:
         type: "object"
         properties:
@@ -1498,9 +1432,31 @@ properties:
             properties:
               jks:
                 type: "object"
-                description: "Java keystore SSL trust material."
                 additionalProperties:
                   type: "object"
+                  properties:
+                    keystore:
+                      type: "object"
+                      properties:
+                        password:
+                          type: "string"
+                        provider:
+                          type: "string"
+                        location:
+                          type: "string"
+                        type:
+                          type: "string"
+                    truststore:
+                      type: "object"
+                      properties:
+                        password:
+                          type: "string"
+                        provider:
+                          type: "string"
+                        location:
+                          type: "string"
+                        type:
+                          type: "string"
               watch:
                 type: "object"
                 properties:
@@ -1509,13 +1465,37 @@ properties:
                     properties:
                       quiet-period:
                         type: "string"
-                        description: "Quiet period, after which changes are detected."
-                        default: "10s"
               pem:
                 type: "object"
-                description: "PEM-encoded SSL trust material."
                 additionalProperties:
                   type: "object"
+                  properties:
+                    keystore:
+                      type: "object"
+                      properties:
+                        verify-keys:
+                          type: "boolean"
+                        private-key:
+                          type: "string"
+                        certificate:
+                          type: "string"
+                        private-key-password:
+                          type: "string"
+                        type:
+                          type: "string"
+                    truststore:
+                      type: "object"
+                      properties:
+                        verify-keys:
+                          type: "boolean"
+                        private-key:
+                          type: "string"
+                        certificate:
+                          type: "string"
+                        private-key-password:
+                          type: "string"
+                        type:
+                          type: "string"
       sql:
         type: "object"
         properties:
@@ -1542,35 +1522,21 @@ properties:
                 type: "array"
                 description: "Locations of the schema (DDL) scripts to apply to the\
                   \ database."
+                items:
+                  type: "string"
               data-locations:
                 type: "array"
-                description: "Locations of the data (DML) scripts to apply to the\
-                  \ database."
+                items:
+                  type: "string"
               encoding:
                 $ref: "#/$defs/Charsets"
                 description: "Encoding of the schema and data scripts."
               separator:
                 type: "string"
-                description: "Statement separator in the schema and data scripts."
-                default: ";"
               platform:
                 type: "string"
-                description: "Platform to use in the default schema or data script\
-                  \ locations, schema-${platform}.sql and data-${platform}.sql."
-                default: "all"
-              enabled:
-                type: "boolean"
-                description: "Whether basic script-based initialization of an SQL\
-                  \ database is enabled."
-                default: true
-                deprecated: true
-                x-deprecation:
-                  replacement: "spring.sql.init.mode"
-                  level: "WARNING"
               username:
                 type: "string"
-                description: "Username of the database to use when applying initialization\
-                  \ scripts (if different)."
               continue-on-error:
                 type: "boolean"
                 description: "Whether initialization should continue when an error\
@@ -1603,7 +1569,6 @@ properties:
                               type: "string"
                           port:
                             type: "integer"
-                            default: 0
                           instance-id:
                             type: "string"
                           host:
@@ -1642,6 +1607,8 @@ properties:
                   \ Typically only system property sources are retained. This property\
                   \ allows property sources, such as property sources created by EnvironmentPostProcessors\
                   \ to be retained as well."
+                items:
+                  type: "string"
               never-refreshable:
                 type: "string"
                 description: "Comma separated list of bean names or class names for\
@@ -1652,13 +1619,8 @@ properties:
                 description: "Additional bean names or class names for beans to post\
                   \ process into refresh scope."
                 default: true
-              on-restart:
-                type: "object"
-                properties:
-                  enabled:
-                    type: "boolean"
-                    description: "Enable refreshing context on start."
-                    default: true
+                items:
+                  type: "string"
               enabled:
                 type: "boolean"
                 description: "Enables autoconfiguration for the refresh scope and\
@@ -1673,6 +1635,8 @@ properties:
                   \ You can set {@code x} for the patch version if you don't want\
                   \ to specify a concrete value. Example: {@code 3.5.x}"
                 default: "3.5.x"
+                items:
+                  type: "string"
               enabled:
                 type: "boolean"
                 description: "Enables creation of Spring Cloud compatibility verification."
@@ -1680,15 +1644,17 @@ properties:
           inetutils:
             type: "object"
             properties:
-              preferred-networks:
-                type: "array"
-                description: "List of Java regular expressions for network addresses\
-                  \ that will be preferred."
               use-only-site-local-interfaces:
                 type: "boolean"
                 description: "Whether to use only interfaces with site local addresses.\
                   \ See {@link InetAddress#isSiteLocalAddress()} for more details."
                 default: false
+              preferred-networks:
+                type: "array"
+                description: "List of Java regular expressions for network addresses\
+                  \ that will be preferred."
+                items:
+                  type: "string"
               timeout-seconds:
                 type: "integer"
                 description: "Timeout, in seconds, for calculating hostname."
@@ -1697,10 +1663,14 @@ properties:
                 type: "array"
                 description: "List of Java regular expressions for network interfaces\
                   \ that will be ignored."
+                items:
+                  type: "string"
               default-hostname:
                 type: "string"
                 description: "The default hostname. Used in case of errors."
                 default: "localhost"
+              prefix:
+                type: "string"
               default-ip-address:
                 type: "string"
                 description: "The default IP address. Used in case of errors."
@@ -1708,12 +1678,6 @@ properties:
           config:
             type: "object"
             properties:
-              send-all-labels:
-                type: "boolean"
-                description: "If set to true the client will send all labels to the\
-                  \ server instead of sending one at a time. Support for this would\
-                  \ require a config server version of 4.2.0 or higher."
-                default: false
               request-connect-timeout:
                 type: "integer"
                 description: "timeout on waiting to connect to the Config Server."
@@ -1722,16 +1686,66 @@ properties:
                 $ref: "#/$defs/Charsets"
                 description: "The charset to read the resource from the config server."
                 default: "UTF-8"
+              config_discovery_enabled:
+                type: "string"
+              default_application:
+                type: "string"
+              prefix:
+                type: "string"
+              enabled:
+                type: "boolean"
+                description: "Flag to say that remote configuration is enabled. Default\
+                  \ true;"
+                default: true
+              send-state:
+                type: "boolean"
+                description: "Flag to indicate whether to send state. Default true."
+                default: true
+              authorization:
+                type: "string"
+              password:
+                type: "string"
+                description: "The password to use (HTTP Basic) when contacting the\
+                  \ remote server."
+              fail-fast:
+                type: "boolean"
+                description: "Flag to indicate that failure to connect to the server\
+                  \ is fatal (default false)."
+                default: false
+              token_header:
+                type: "string"
+              media-type:
+                type: "string"
+              retry:
+                type: "object"
+                properties:
+                  use-random-policy:
+                    type: "boolean"
+                  max-interval:
+                    type: "integer"
+                    description: "Maximum interval for backoff."
+                    default: 2000
+                  prefix:
+                    type: "string"
+                  multiplier:
+                    type: "number"
+                  max-attempts:
+                    type: "integer"
+                  initial-interval:
+                    type: "integer"
+                    description: "Initial retry interval in milliseconds."
+                    default: 1000
+              send-all-labels:
+                type: "boolean"
+                description: "If set to true the client will send all labels to the\
+                  \ server instead of sending one at a time. Support for this would\
+                  \ require a config server version of 4.2.0 or higher."
+                default: false
               headers:
                 type: "object"
                 description: "Additional headers used to create the client request."
                 additionalProperties:
                   type: "string"
-              override-system-properties:
-                type: "boolean"
-                description: "Flag to indicate that the external properties should\
-                  \ override system properties. Default true."
-                default: true
               profile:
                 type: "string"
                 description: "The default profile to use when fetching remote configuration\
@@ -1744,31 +1758,12 @@ properties:
                   \ based server)."
               uri:
                 type: "array"
-                description: "The URI of the remote server (default http://localhost:8888)."
-                default:
-                - "http://localhost:8888"
-              enabled:
-                type: "boolean"
-                description: "Flag to say that remote configuration is enabled. Default\
-                  \ true;"
-                default: true
-              send-state:
-                type: "boolean"
-                description: "Flag to indicate whether to send state. Default true."
-                default: true
+                items:
+                  type: "string"
               token:
                 type: "string"
                 description: "Security Token passed thru to underlying environment\
                   \ repository."
-              fail-fast:
-                type: "boolean"
-                description: "Flag to indicate that failure to connect to the server\
-                  \ is fatal (default false)."
-                default: false
-              password:
-                type: "string"
-                description: "The password to use (HTTP Basic) when contacting the\
-                  \ remote server."
               override-none:
                 type: "boolean"
                 description: "Flag to indicate that when {@link #setAllowOverride(boolean)\
@@ -1784,11 +1779,12 @@ properties:
                     type: "string"
                     description: "Service id to locate config server."
                     default: "configserver"
+                  default_config_server:
+                    type: "string"
                   enabled:
                     type: "boolean"
-                    description: "Flag to indicate that config server discovery is\
-                      \ enabled (config server URL will be looked up via discovery)."
-                    default: false
+              default_profile:
+                type: "string"
               request-read-timeout:
                 type: "integer"
                 description: "timeout on waiting to read data from the Config Server."
@@ -1807,41 +1803,36 @@ properties:
                 - "always"
                 - "CONNECTION_TIMEOUT_ONLY"
                 - "connection_timeout_only"
+              name_placeholder:
+                type: "string"
               tls:
                 type: "object"
                 description: "TLS properties."
-              media-type:
-                type: "string"
-                description: "The Accept header media type to send to config server."
-              allow-override:
-                type: "boolean"
-                description: "Flag to indicate that {@link #isOverrideSystemProperties()\
-                  \ systemPropertiesOverride} can be used. Set to false to prevent\
-                  \ users from changing the default accidentally. Default true."
-                default: true
-              retry:
-                type: "object"
                 properties:
-                  use-random-policy:
+                  default_store_type:
+                    type: "string"
+                  key-store-type:
+                    type: "string"
+                  trust-store:
+                    type: "string"
+                  trust-store-type:
+                    type: "string"
+                  extension_store_types:
+                    type: "object"
+                    additionalProperties:
+                      type: "string"
+                  key-store:
+                    type: "string"
+                  key-password:
+                    type: "string"
+                  enabled:
                     type: "boolean"
-                    description: "Use a random exponential backoff policy."
-                    default: false
-                  max-interval:
-                    type: "integer"
-                    description: "Maximum interval for backoff."
-                    default: 2000
-                  max-attempts:
-                    type: "integer"
-                    description: "Maximum number of attempts."
-                    default: 6
-                  multiplier:
-                    type: "number"
-                    description: "Multiplier for next interval."
-                    default: 1.1
-                  initial-interval:
-                    type: "integer"
-                    description: "Initial retry interval in milliseconds."
-                    default: 1000
+                  key-store-password:
+                    type: "string"
+                  trust-store-password:
+                    type: "string"
+              state_header:
+                type: "string"
               initialize-on-context-refresh:
                 type: "boolean"
                 description: "Flag to initialize bootstrap configuration on context\
@@ -1864,9 +1855,6 @@ properties:
                     default: false
                   register-management:
                     type: "boolean"
-                    description: "Whether to register the management as a service.\
-                      \ Defaults to true."
-                    default: true
                   enabled:
                     type: "boolean"
                     description: "Whether service auto-registration is enabled. Defaults\
@@ -1877,9 +1865,106 @@ properties:
         properties:
           timeout-per-shutdown-phase:
             type: "string"
-            description: "Timeout for the shutdown of any phase (group of SmartLifecycle\
-              \ beans with the same 'phase' value)."
-            default: "30s"
+      jackson:
+        type: "object"
+        properties:
+          visibility:
+            type: "object"
+            description: "Jackson visibility thresholds that can be used to limit\
+              \ which methods (and fields) are auto-detected."
+            additionalProperties:
+              type: "string"
+          generator:
+            type: "object"
+            description: "Jackson on/off features for generators."
+            additionalProperties:
+              type: "boolean"
+          mapper:
+            type: "object"
+            description: "Jackson general purpose on/off features."
+            additionalProperties:
+              type: "boolean"
+          locale:
+            $ref: "#/$defs/Locales"
+            description: "Locale used for formatting."
+          date-format:
+            type: "string"
+            description: "Date format string or a fully-qualified date format class\
+              \ name. For instance, 'yyyy-MM-dd HH:mm:ss'."
+          property-naming-strategy:
+            type: "string"
+            description: "One of the constants on Jackson's PropertyNamingStrategies.\
+              \ Can also be a fully-qualified class name of a PropertyNamingStrategy\
+              \ implementation."
+          serialization:
+            type: "object"
+            description: "Jackson on/off features that affect the way Java objects\
+              \ are serialized."
+            additionalProperties:
+              type: "boolean"
+          constructor-detector:
+            type: "string"
+            description: "Strategy to use to auto-detect constructor, and in particular\
+              \ behavior with single-argument constructors."
+            default: "default"
+            enum:
+            - "DEFAULT"
+            - "default"
+            - "USE_PROPERTIES_BASED"
+            - "use_properties_based"
+            - "USE_DELEGATING"
+            - "use_delegating"
+            - "EXPLICIT_ONLY"
+            - "explicit_only"
+          parser:
+            type: "object"
+            description: "Jackson on/off features for parsers."
+            additionalProperties:
+              type: "boolean"
+          default-leniency:
+            type: "boolean"
+            description: "Global default setting (if any) for leniency."
+          datatype:
+            type: "object"
+            properties:
+              json-node:
+                type: "object"
+                additionalProperties:
+                  type: "boolean"
+              enum-features:
+                type: "object"
+                additionalProperties:
+                  type: "boolean"
+          default-property-inclusion:
+            type: "string"
+            description: "Controls the inclusion of properties during serialization.\
+              \ Configured with one of the values in Jackson's JsonInclude.Include\
+              \ enumeration."
+            enum:
+            - "ALWAYS"
+            - "always"
+            - "NON_NULL"
+            - "non_null"
+            - "NON_ABSENT"
+            - "non_absent"
+            - "NON_EMPTY"
+            - "non_empty"
+            - "NON_DEFAULT"
+            - "non_default"
+            - "CUSTOM"
+            - "custom"
+            - "USE_DEFAULTS"
+            - "use_defaults"
+          deserialization:
+            type: "object"
+            description: "Jackson on/off features that affect the way Java objects\
+              \ are deserialized."
+            additionalProperties:
+              type: "boolean"
+          time-zone:
+            type: "string"
+            description: "Time zone used when formatting dates. For instance, \"America/Los_Angeles\"\
+              \ or \"GMT+10\"."
       task:
         type: "object"
         properties:
@@ -1915,41 +2000,29 @@ properties:
                     default: 8
                   max-size:
                     type: "integer"
-                    description: "Maximum allowed number of threads. If tasks are\
-                      \ filling up the queue, the pool can expand up to that size\
-                      \ to accommodate the load. Ignored if the queue is unbounded.\
-                      \ Doesn't have an effect if virtual threads are enabled."
                   queue-capacity:
                     type: "integer"
                     description: "Queue capacity. An unbounded capacity does not increase\
                       \ the pool and therefore ignores the \"max-size\" property.\
                       \ Doesn't have an effect if virtual threads are enabled."
-                  shutdown:
-                    type: "object"
-                    properties:
-                      accept-tasks-after-context-close:
-                        type: "boolean"
-                        description: "Whether to accept further tasks after the application\
-                          \ context close phase has begun."
-                        default: false
                   allow-core-thread-timeout:
                     type: "boolean"
                     description: "Whether core threads are allowed to time out. This\
                       \ enables dynamic growing and shrinking of the pool. Doesn't\
                       \ have an effect if virtual threads are enabled."
                     default: true
+                  shutdown:
+                    type: "object"
+                    properties:
+                      accept-tasks-after-context-close:
+                        type: "boolean"
               simple:
                 type: "object"
                 properties:
                   concurrency-limit:
                     type: "integer"
-                    description: "Set the maximum number of parallel accesses allowed.\
-                      \ -1 indicates no concurrency limit at all."
                   reject-tasks-when-limit-reached:
                     type: "boolean"
-                    description: "Whether to reject tasks when the concurrency limit\
-                      \ has been reached."
-                    default: false
               shutdown:
                 type: "object"
                 properties:
@@ -1959,16 +2032,11 @@ properties:
                       \ tasks to complete."
                   await-termination:
                     type: "boolean"
-                    description: "Whether the executor should wait for scheduled tasks\
-                      \ to complete on shutdown."
-                    default: false
           scheduling:
             type: "object"
             properties:
               thread-name-prefix:
                 type: "string"
-                description: "Prefix to use for the names of newly created threads."
-                default: "scheduling-"
               pool:
                 type: "object"
                 properties:
@@ -1982,122 +2050,13 @@ properties:
                 properties:
                   concurrency-limit:
                     type: "integer"
-                    description: "Set the maximum number of parallel accesses allowed.\
-                      \ -1 indicates no concurrency limit at all."
               shutdown:
                 type: "object"
                 properties:
                   await-termination-period:
                     type: "string"
-                    description: "Maximum time the executor should wait for remaining\
-                      \ tasks to complete."
                   await-termination:
                     type: "boolean"
-                    description: "Whether the executor should wait for scheduled tasks\
-                      \ to complete on shutdown."
-                    default: false
-      jackson:
-        type: "object"
-        properties:
-          visibility:
-            type: "object"
-            description: "Jackson visibility thresholds that can be used to limit\
-              \ which methods (and fields) are auto-detected."
-            additionalProperties:
-              type: "string"
-          generator:
-            type: "object"
-            description: "Jackson on/off features for generators."
-            additionalProperties:
-              type: "boolean"
-          mapper:
-            type: "object"
-            description: "Jackson general purpose on/off features."
-            additionalProperties:
-              type: "boolean"
-          locale:
-            $ref: "#/$defs/Locales"
-            description: "Locale used for formatting."
-          property-naming-strategy:
-            type: "string"
-            description: "One of the constants on Jackson's PropertyNamingStrategies.\
-              \ Can also be a fully-qualified class name of a PropertyNamingStrategy\
-              \ implementation."
-          date-format:
-            type: "string"
-            description: "Date format string or a fully-qualified date format class\
-              \ name. For instance, 'yyyy-MM-dd HH:mm:ss'."
-          serialization:
-            type: "object"
-            description: "Jackson on/off features that affect the way Java objects\
-              \ are serialized."
-            additionalProperties:
-              type: "boolean"
-          constructor-detector:
-            type: "string"
-            description: "Strategy to use to auto-detect constructor, and in particular\
-              \ behavior with single-argument constructors."
-            default: "default"
-            enum:
-            - "DEFAULT"
-            - "default"
-            - "USE_PROPERTIES_BASED"
-            - "use_properties_based"
-            - "USE_DELEGATING"
-            - "use_delegating"
-            - "EXPLICIT_ONLY"
-            - "explicit_only"
-          parser:
-            type: "object"
-            description: "Jackson on/off features for parsers."
-            additionalProperties:
-              type: "boolean"
-          default-leniency:
-            type: "boolean"
-            description: "Global default setting (if any) for leniency."
-          datatype:
-            type: "object"
-            properties:
-              json-node:
-                type: "object"
-                description: "Jackson on/off features for JsonNodes."
-                additionalProperties:
-                  type: "boolean"
-              enum:
-                type: "object"
-                description: "Jackson on/off features for enums."
-                additionalProperties:
-                  type: "boolean"
-          default-property-inclusion:
-            type: "string"
-            description: "Controls the inclusion of properties during serialization.\
-              \ Configured with one of the values in Jackson's JsonInclude.Include\
-              \ enumeration."
-            enum:
-            - "ALWAYS"
-            - "always"
-            - "NON_NULL"
-            - "non_null"
-            - "NON_ABSENT"
-            - "non_absent"
-            - "NON_EMPTY"
-            - "non_empty"
-            - "NON_DEFAULT"
-            - "non_default"
-            - "CUSTOM"
-            - "custom"
-            - "USE_DEFAULTS"
-            - "use_defaults"
-          deserialization:
-            type: "object"
-            description: "Jackson on/off features that affect the way Java objects\
-              \ are deserialized."
-            additionalProperties:
-              type: "boolean"
-          time-zone:
-            type: "string"
-            description: "Time zone used when formatting dates. For instance, \"America/Los_Angeles\"\
-              \ or \"GMT+10\"."
       jmx:
         type: "object"
         properties:
@@ -2110,13 +2069,6 @@ properties:
         properties:
           locale-resolver:
             type: "string"
-            description: "Define how the locale should be resolved."
-            default: "accept-header"
-            enum:
-            - "FIXED"
-            - "fixed"
-            - "ACCEPT_HEADER"
-            - "accept_header"
           resources:
             type: "object"
             properties:
@@ -2125,8 +2077,8 @@ properties:
                 properties:
                   cache:
                     type: "boolean"
-                    description: "Whether to enable caching in the Resource chain."
-                    default: true
+                  customized:
+                    type: "boolean"
                   compressed:
                     type: "boolean"
                     description: "Whether to enable resolution of already compressed\
@@ -2139,29 +2091,25 @@ properties:
                       fixed:
                         type: "object"
                         properties:
+                          customized:
+                            type: "boolean"
                           paths:
                             type: "array"
-                            description: "List of patterns to apply to the fixed Version\
-                              \ Strategy."
-                            default:
-                            - "/**"
+                            items:
+                              type: "string"
                           version:
                             type: "string"
-                            description: "Version string to use for the fixed Version\
-                              \ Strategy."
                           enabled:
                             type: "boolean"
-                            description: "Whether to enable the fixed Version Strategy."
-                            default: false
                       content:
                         type: "object"
                         properties:
+                          customized:
+                            type: "boolean"
                           paths:
                             type: "array"
-                            description: "List of patterns to apply to the content\
-                              \ Version Strategy."
-                            default:
-                            - "/**"
+                            items:
+                              type: "string"
                           enabled:
                             type: "boolean"
                             description: "Whether to enable the content Version Strategy."
@@ -2176,17 +2124,15 @@ properties:
                 properties:
                   period:
                     type: "string"
-                    description: "Cache period for the resources served by the resource\
-                      \ handler. If a duration suffix is not specified, seconds will\
-                      \ be used. Can be overridden by the 'spring.web.resources.cache.cachecontrol'\
-                      \ properties."
+                  customized:
+                    type: "boolean"
                   cachecontrol:
                     type: "object"
                     properties:
                       cache-private:
                         type: "boolean"
-                        description: "Indicate that the response message is intended\
-                          \ for a single user and must not be stored by a shared cache."
+                      customized:
+                        type: "boolean"
                       no-transform:
                         type: "boolean"
                         description: "Indicate intermediaries (caches and others)\
@@ -2197,277 +2143,63 @@ properties:
                           \ in seconds if no duration suffix is not specified."
                       no-cache:
                         type: "boolean"
-                        description: "Indicate that the cached response can be reused\
-                          \ only if re-validated with the server."
                       must-revalidate:
                         type: "boolean"
-                        description: "Indicate that once it has become stale, a cache\
-                          \ must not use the response without re-validating it with\
-                          \ the server."
                       proxy-revalidate:
                         type: "boolean"
                         description: "Same meaning as the \"must-revalidate\" directive,\
                           \ except that it does not apply to private caches."
                       s-max-age:
                         type: "string"
-                        description: "Maximum time the response should be cached by\
-                          \ shared caches, in seconds if no duration suffix is not\
-                          \ specified."
                       stale-if-error:
                         type: "string"
-                        description: "Maximum time the response may be used when errors\
-                          \ are encountered, in seconds if no duration suffix is not\
-                          \ specified."
+                      no-store:
+                        type: "boolean"
+                        description: "Indicate to not cache the response in any case."
                       cache-public:
                         type: "boolean"
-                        description: "Indicate that any cache may store the response."
                       stale-while-revalidate:
                         type: "string"
                         description: "Maximum time the response can be served after\
                           \ it becomes stale, in seconds if no duration suffix is\
                           \ not specified."
-                      no-store:
-                        type: "boolean"
-                        description: "Indicate to not cache the response in any case."
                   use-last-modified:
                     type: "boolean"
-                    description: "Whether we should use the \"lastModified\" metadata\
-                      \ of the files in HTTP caching headers."
-                    default: true
+              classpath_resource_locations:
+                type: "array"
+                items:
+                  type: "string"
+              customized:
+                type: "boolean"
               add-mappings:
                 type: "boolean"
-                description: "Whether to enable default resource handling."
-                default: true
               static-locations:
                 type: "array"
-                description: "Locations of static resources. Defaults to classpath:[/META-INF/resources/,\
-                  \ /resources/, /static/, /public/]."
-                default:
-                - "classpath:/META-INF/resources/"
-                - "classpath:/resources/"
-                - "classpath:/static/"
-                - "classpath:/public/"
+                items:
+                  type: "string"
           locale:
             $ref: "#/$defs/Locales"
-            description: "Locale to use. By default, this locale is overridden by\
-              \ the \"Accept-Language\" header."
+            properties:
+              $ref: "#/$defs/Locales"
       datasource:
         type: "object"
         properties:
           tomcat:
             type: "object"
             properties:
-              time-between-eviction-runs-millis:
-                type: "integer"
-              log-abandoned:
-                type: "boolean"
-              use-statement-facade:
-                type: "boolean"
-              jdbc-interceptors:
-                type: "string"
-              log-validation-errors:
-                type: "boolean"
-              max-idle:
-                type: "integer"
-              validator-class-name:
-                type: "string"
-              password:
-                type: "string"
-              test-on-connect:
-                type: "boolean"
-              commit-on-return:
-                type: "boolean"
-              abandon-when-percentage-full:
-                type: "integer"
-              rollback-on-return:
-                type: "boolean"
-              validation-interval:
-                type: "integer"
-              default-auto-commit:
-                type: "boolean"
-              use-equals:
-                type: "boolean"
-              use-disposable-connection-facade:
-                type: "boolean"
-              jmx-enabled:
-                type: "boolean"
-              max-age:
-                type: "integer"
-              validation-query:
-                type: "string"
-              max-wait:
-                type: "integer"
-              connection-properties:
-                type: "string"
-              name:
-                type: "string"
-              min-evictable-idle-time-millis:
-                type: "integer"
-              initial-size:
-                type: "integer"
-              num-tests-per-eviction-run:
-                type: "integer"
-              min-idle:
-                type: "integer"
-              validation-query-timeout:
-                type: "integer"
-              ignore-exception-on-pre-load:
-                type: "boolean"
-              remove-abandoned-timeout:
-                type: "integer"
-              test-on-borrow:
-                type: "boolean"
               db-properties:
                 type: "object"
                 additionalProperties:
                   type: "object"
-              init-s-q-l:
-                type: "string"
-              data-source-j-n-d-i:
-                type: "string"
-              remove-abandoned:
+              use-equals:
                 type: "boolean"
-              test-on-return:
-                type: "boolean"
-              login-timeout:
-                type: "integer"
-              suspect-timeout:
-                type: "integer"
-              fair-queue:
-                type: "boolean"
-              test-while-idle:
-                type: "boolean"
-              max-active:
-                type: "integer"
-              alternate-username-allowed:
-                type: "boolean"
-              default-read-only:
-                type: "boolean"
-              use-lock:
-                type: "boolean"
-              url:
-                type: "string"
-              propagate-interrupt-state:
-                type: "boolean"
-              access-to-underlying-connection-allowed:
-                type: "boolean"
-              driver-class-name:
-                type: "string"
-              username:
-                type: "string"
-              default-catalog:
-                type: "string"
-              default-transaction-isolation:
-                type: "integer"
-          dbcp2:
-            type: "object"
-            properties:
-              eviction-policy-class-name:
-                type: "string"
               time-between-eviction-runs-millis:
                 type: "integer"
-                deprecated: true
-              log-abandoned:
+              ignore-exception-on-pre-load:
                 type: "boolean"
-              connection-init-sqls:
-                type: "array"
-              max-idle:
-                type: "integer"
-              password:
-                type: "string"
-              duration-between-eviction-runs:
-                type: "string"
-              pool-prepared-statements:
-                type: "boolean"
-              soft-min-evictable-idle-time-millis:
-                type: "integer"
-                deprecated: true
-              rollback-on-return:
-                type: "boolean"
-              remove-abandoned-on-maintenance:
-                type: "boolean"
-              default-auto-commit:
-                type: "boolean"
-              max-open-prepared-statements:
-                type: "integer"
-              clear-statement-pool-on-return:
-                type: "boolean"
-              enable-auto-commit-on-return:
-                type: "boolean"
-                deprecated: true
-              validation-query:
-                type: "string"
-              log-expired-connections:
-                type: "boolean"
-              lifo:
-                type: "boolean"
-              default-schema:
-                type: "string"
-              default-query-timeout:
-                type: "integer"
-                deprecated: true
-              auto-commit-on-return:
-                type: "boolean"
-              initial-size:
-                type: "integer"
-              min-evictable-idle-time-millis:
-                type: "integer"
-                deprecated: true
-              max-conn-lifetime-millis:
-                type: "integer"
-                deprecated: true
-              num-tests-per-eviction-run:
-                type: "integer"
-              min-idle:
-                type: "integer"
-              disconnection-ignore-sql-codes:
-                type: "array"
-              validation-query-timeout:
-                type: "integer"
-                deprecated: true
-              connection-factory-class-name:
-                type: "string"
-              remove-abandoned-timeout:
-                type: "integer"
-                deprecated: true
-              test-on-borrow:
-                type: "boolean"
-              disconnection-sql-codes:
-                type: "array"
-              max-total:
-                type: "integer"
-              test-on-return:
-                type: "boolean"
-              login-timeout:
-                type: "integer"
-              abandoned-usage-tracking:
-                type: "boolean"
-              cache-state:
-                type: "boolean"
-              test-while-idle:
-                type: "boolean"
-              default-read-only:
-                type: "boolean"
-              url:
-                type: "string"
-              jmx-name:
-                type: "string"
-              remove-abandoned-on-borrow:
-                type: "boolean"
-              fast-fail-validation:
-                type: "boolean"
-              access-to-underlying-connection-allowed:
-                type: "boolean"
-              test-on-create:
-                type: "boolean"
-              driver-class-name:
-                type: "string"
-              default-catalog:
-                type: "string"
-              default-transaction-isolation:
-                type: "integer"
-              username:
-                type: "string"
+          dbcp2:
+            type: "string"
+            properties:
               max-wait-millis:
                 type: "integer"
                 deprecated: true
@@ -2476,269 +2208,74 @@ properties:
             properties:
               data-source-class-name:
                 type: "string"
-                description: "XA datasource fully qualified name."
               properties:
                 type: "object"
-                description: "Properties to pass to the XA data source."
                 additionalProperties:
                   type: "string"
           type:
             type: "string"
-            description: "Fully qualified name of the DataSource implementation to\
-              \ use. By default, a connection pool implementation is auto-detected\
-              \ from the classpath."
+          unique-name:
+            type: "string"
           url:
             type: "string"
-            description: "JDBC URL of the database."
           jndi-name:
             type: "string"
-            description: "JNDI location of the datasource. Class, url, username and\
-              \ password are ignored when set."
           password:
             type: "string"
-            description: "Login password of the database."
-          name:
-            type: "string"
-            description: "Datasource name to use if \"generate-unique-name\" is false.\
-              \ Defaults to \"testdb\" when using an embedded database, otherwise\
-              \ null."
           generate-unique-name:
             type: "boolean"
             description: "Whether to generate a random datasource name."
             default: true
+          name:
+            type: "string"
           oracleucp:
             type: "object"
             properties:
-              connection-repurpose-threshold:
-                type: "integer"
               min-idle:
+                type: "integer"
+              login-timeout:
                 type: "integer"
               role-name:
                 type: "string"
-              description:
-                type: "string"
-              connection-harvest-max-count:
-                type: "integer"
-              connection-factory-class-name:
-                type: "string"
-              query-timeout:
-                type: "integer"
-              connection-harvest-trigger-count:
-                type: "integer"
-              max-connection-reuse-count:
-                type: "integer"
-              read-only-instance-allowed:
-                type: "boolean"
-              server-name:
-                type: "string"
-              timeout-check-interval:
-                type: "integer"
               pdb-roles:
                 type: "object"
                 additionalProperties:
                   type: "object"
-              max-connections-per-shard:
-                type: "integer"
               validate-connection-on-borrow:
-                type: "boolean"
-              max-idle-time:
-                type: "integer"
-              s-q-l-for-validate-connection:
-                type: "string"
-              max-statements:
-                type: "integer"
-              property-cycle:
-                type: "integer"
-              connection-wait-duration:
-                type: "string"
-              connection-validation-timeout:
-                type: "integer"
-              high-cost-connection-reuse-threshold:
-                type: "integer"
-              fast-connection-failover-enabled:
-                type: "boolean"
-              sharding-mode:
                 type: "boolean"
               connection-labeling-high-cost:
                 type: "integer"
-              network-protocol:
-                type: "string"
-              commit-on-connection-return:
-                type: "boolean"
-              min-pool-size:
-                type: "integer"
-              login-timeout:
-                type: "integer"
-              initial-pool-size:
-                type: "integer"
-              abandoned-connection-timeout:
-                type: "integer"
-              seconds-to-trust-idle-connection:
-                type: "integer"
-              port-number:
-                type: "integer"
-              connection-properties:
-                type: "object"
-                additionalProperties:
-                  type: "object"
-              connection-wait-timeout:
-                type: "integer"
-                deprecated: true
-              time-to-live-connection-timeout:
-                type: "integer"
-              max-pool-size:
-                type: "integer"
-              connection-factory-properties:
-                type: "object"
-                additionalProperties:
-                  type: "object"
-              max-connection-reuse-time:
-                type: "integer"
-              database-name:
-                type: "string"
-              connection-pool-name:
-                type: "string"
-              data-source-name:
-                type: "string"
-              o-n-s-configuration:
-                type: "string"
-              inactive-connection-timeout:
-                type: "integer"
-              create-connection-in-borrow-thread:
-                type: "boolean"
-              user:
-                type: "string"
-              u-r-l:
-                type: "string"
+          class-loader:
+            type: "string"
           embedded-database-connection:
             type: "string"
-            description: "Connection details for an embedded database. Defaults to\
-              \ the most suitable embedded database that is available on the classpath."
-            enum:
-            - "NONE"
-            - "none"
-            - "H2"
-            - "h2"
-            - "DERBY"
-            - "derby"
-            - "HSQLDB"
-            - "hsqldb"
           driver-class-name:
             type: "string"
             description: "Fully qualified name of the JDBC driver. Auto-detected based\
               \ on the URL by default."
+          username:
+            type: "string"
           hikari:
             type: "object"
             properties:
-              register-mbeans:
-                type: "boolean"
-              schema:
-                type: "string"
-              auto-commit:
-                type: "boolean"
-              pool-name:
-                type: "string"
-              catalog:
-                type: "string"
-              connection-test-query:
-                type: "string"
-              password:
-                type: "string"
-              keepalive-time:
-                type: "integer"
               max-lifetime:
                 type: "integer"
-              data-source-properties:
-                type: "object"
-                additionalProperties:
-                  type: "object"
-              data-source-j-n-d-i:
+              pool-name:
                 type: "string"
-              isolate-internal-queries:
-                type: "boolean"
-              health-check-properties:
-                type: "object"
-                additionalProperties:
-                  type: "object"
-              idle-timeout:
-                type: "integer"
-              read-only:
-                type: "boolean"
-              login-timeout:
-                type: "integer"
               minimum-idle:
                 type: "integer"
-              maximum-pool-size:
-                type: "integer"
-              leak-detection-threshold:
-                type: "integer"
-              connection-init-sql:
-                type: "string"
-              connection-timeout:
-                type: "integer"
-              allow-pool-suspension:
-                type: "boolean"
-              jdbc-url:
-                type: "string"
-              validation-timeout:
-                type: "integer"
-              data-source-class-name:
-                type: "string"
               exception-override-class-name:
-                type: "string"
-              transaction-isolation:
-                type: "string"
-              driver-class-name:
                 type: "string"
               initialization-fail-timeout:
                 type: "integer"
-              username:
+              connection-init-sql:
                 type: "string"
-          username:
-            type: "string"
-            description: "Login username of the database."
       http:
         type: "object"
         properties:
           client:
             type: "object"
-            properties:
-              connect-timeout:
-                type: "string"
-                description: "Default connect timeout for a client HTTP request."
-              factory:
-                type: "string"
-                description: "Default factory used for a client HTTP request."
-                enum:
-                - "HTTP_COMPONENTS"
-                - "http_components"
-                - "JETTY"
-                - "jetty"
-                - "REACTOR"
-                - "reactor"
-                - "JDK"
-                - "jdk"
-                - "SIMPLE"
-                - "simple"
-              read-timeout:
-                type: "string"
-                description: "Default read timeout for a client HTTP request."
-              redirects:
-                type: "string"
-                description: "Handling for HTTP redirects."
-                enum:
-                - "FOLLOW_WHEN_POSSIBLE"
-                - "follow_when_possible"
-                - "FOLLOW"
-                - "follow"
-                - "DONT_FOLLOW"
-                - "dont_follow"
-              ssl:
-                type: "object"
-                properties:
-                  bundle:
-                    type: "string"
-                    description: "SSL bundle to use."
+            properties: {}
       jpa:
         type: "object"
         properties:
@@ -2795,26 +2332,16 @@ properties:
                     description: "Fully qualified name of the implicit naming strategy."
                   physical-strategy:
                     type: "string"
-                    description: "Fully qualified name of the physical naming strategy."
               ddl-auto:
                 type: "string"
-                description: "DDL mode. This is actually a shortcut for the \"hibernate.hbm2ddl.auto\"\
-                  \ property. Defaults to \"create-drop\" when using an embedded database\
-                  \ and no schema manager was detected. Otherwise, defaults to \"\
-                  none\"."
-                examples:
-                - "create"
-                - "create-drop"
-                - "create-only"
-                - "drop"
-                - "none"
-                - "truncate"
-                - "update"
-                - "validate"
+              disabled_scanner_class:
+                type: "string"
           mapping-resources:
             type: "array"
             description: "Mapping resources (equivalent to \"mapping-file\" entries\
               \ in persistence.xml)."
+            items:
+              type: "string"
           database-platform:
             type: "string"
             description: "Name of the target database to operate on, auto-detected\
@@ -2824,11 +2351,6 @@ properties:
             description: "Additional native properties to set on the JPA provider."
             additionalProperties:
               type: "string"
-          defer-datasource-initialization:
-            type: "boolean"
-            description: "Whether to defer DataSource initialization until after any\
-              \ EntityManagerFactory beans have been created and initialized."
-            default: false
       mvc:
         type: "object"
         properties:
@@ -2838,38 +2360,26 @@ properties:
             default: "/**"
           webjars-path-pattern:
             type: "string"
-            description: "Path pattern used for WebJar assets."
-            default: "/webjars/**"
           dispatch-options-request:
             type: "boolean"
-            description: "Whether to dispatch OPTIONS requests to the FrameworkServlet\
-              \ doService method."
-            default: true
           contentnegotiation:
             type: "object"
             properties:
               media-types:
                 type: "object"
-                description: "Map file extensions to media types for content negotiation.\
-                  \ For instance, yml to text/yaml."
                 additionalProperties:
                   type: "string"
               parameter-name:
                 type: "string"
-                description: "Query parameter name to use when \"favor-parameter\"\
-                  \ is enabled."
               default-content-types:
                 type: "array"
-                description: "List of default content types to be used when no specific\
-                  \ content type is requested."
+                items:
+                  type: "string"
               favor-parameter:
                 type: "boolean"
                 description: "Whether a request parameter (\"format\" by default)\
                   \ should be used to determine the requested media type."
                 default: false
-          favicon:
-            type: "object"
-            properties: {}
           hiddenmethod:
             type: "object"
             properties:
@@ -2885,14 +2395,8 @@ properties:
             properties:
               path:
                 type: "string"
-                description: "Path of the dispatcher servlet. Setting a custom value\
-                  \ for this property is not compatible with the PathPatternParser\
-                  \ matching strategy."
-                default: "/"
               load-on-startup:
                 type: "integer"
-                description: "Load on startup priority of the dispatcher servlet."
-                default: -1
           message-codes-resolver-format:
             type: "string"
             description: "Formatting strategy for message codes. For instance, 'PREFIX_ERROR_CODE'."
@@ -2922,86 +2426,39 @@ properties:
                 - "iso-offset"
               time:
                 type: "string"
-                description: "Time format to use, for example 'HH:mm:ss'. Used for\
-                  \ formatting of java.time's LocalTime and OffsetTime."
-                examples:
-                - "HH:mm:ss"
-                - "iso"
-                - "iso-offset"
+          publish-request-handled-events:
+            type: "boolean"
           problemdetails:
             type: "object"
             properties:
               enabled:
                 type: "boolean"
-                description: "Whether RFC 9457 Problem Details support should be enabled."
-                default: false
-          publish-request-handled-events:
-            type: "boolean"
-            description: "Whether to publish a ServletRequestHandledEvent at the end\
-              \ of each request."
-            default: true
           log-resolved-exception:
             type: "boolean"
-            description: "Whether to enable warn logging of exceptions resolved by\
-              \ a \"HandlerExceptionResolver\", except for \"DefaultHandlerExceptionResolver\"\
-              ."
-            default: false
           async:
             type: "object"
             properties:
               request-timeout:
                 type: "string"
-                description: "Amount of time before asynchronous request handling\
-                  \ times out. If this value is not set, the default timeout of the\
-                  \ underlying implementation is used."
           view:
             type: "object"
             properties:
               prefix:
                 type: "string"
-                description: "Spring MVC view prefix."
               suffix:
                 type: "string"
-                description: "Spring MVC view suffix."
           dispatch-trace-request:
             type: "boolean"
-            description: "Whether to dispatch TRACE requests to the FrameworkServlet\
-              \ doService method."
-            default: false
           log-request-details:
             type: "boolean"
             description: "Whether logging of (potentially sensitive) request details\
               \ at DEBUG and TRACE level is allowed."
             default: false
-          converters:
-            type: "object"
-            properties: {}
           pathmatch:
             type: "object"
             properties:
               matching-strategy:
                 type: "string"
-                description: "Choice of strategy for matching request paths against\
-                  \ registered mappings."
-                default: "path-pattern-parser"
-                enum:
-                - "ANT_PATH_MATCHER"
-                - "ant_path_matcher"
-                - "PATH_PATTERN_PARSER"
-                - "path_pattern_parser"
-          formcontent:
-            type: "object"
-            properties:
-              filter:
-                type: "object"
-                properties:
-                  enabled:
-                    type: "boolean"
-                    description: "Whether to enable Spring's FormContentFilter."
-                    default: true
-              putfilter:
-                type: "object"
-                properties: {}
       transaction:
         type: "object"
         properties:
@@ -3020,33 +2477,43 @@ properties:
             properties:
               location:
                 type: "string"
-                description: "Location of the generated git.properties file."
-                default: "classpath:git.properties"
               encoding:
                 $ref: "#/$defs/Charsets"
-                description: "File encoding."
-                default: "UTF-8"
+                properties:
+                  $ref: "#/$defs/Charsets"
           build:
             type: "object"
             properties:
               location:
                 type: "string"
-                description: "Location of the generated build-info.properties file."
-                default: "classpath:META-INF/build-info.properties"
               encoding:
                 $ref: "#/$defs/Charsets"
-                description: "File encoding."
-                default: "UTF-8"
+                properties:
+                  $ref: "#/$defs/Charsets"
   server:
     type: "object"
     properties:
+      mime-mappings:
+        type: "object"
+        properties:
+          default:
+            type: "object"
+            properties: {}
+          map:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties:
+                extension:
+                  type: "string"
+                mime-type:
+                  type: "string"
       server-header:
         type: "string"
         description: "Value to use for the Server response header (if empty, no header\
           \ is sent)."
       address:
         type: "string"
-        description: "Network address to which the server should bind."
       undertow:
         type: "object"
         properties:
@@ -3054,65 +2521,43 @@ properties:
             type: "string"
             description: "Amount of time a connection can sit idle without processing\
               \ a request, before it is closed by the server."
-          eager-filter-init:
-            type: "boolean"
-            description: "Whether servlet filters should be initialized on startup."
-            default: true
           direct-buffers:
             type: "boolean"
             description: "Whether to allocate buffers outside the Java heap. The default\
               \ is derived from the maximum amount of memory that is available to\
               \ the JVM."
+          eager-filter-init:
+            type: "boolean"
           preserve-path-on-forward:
             type: "boolean"
-            description: "Whether to preserve the path of a request when it is forwarded."
-            default: false
           buffer-size:
             type: "string"
-            description: "Size of each buffer. The default is derived from the maximum\
-              \ amount of memory that is available to the JVM."
           threads:
             type: "object"
             properties:
               io:
                 type: "integer"
-                description: "Number of I/O threads to create for the worker. The\
-                  \ default is derived from the number of available processors."
               worker:
                 type: "integer"
                 description: "Number of worker threads. The default is 8 times the\
                   \ number of I/O threads."
           max-http-post-size:
             type: "string"
-            description: "Maximum size of the HTTP post content. When the value is\
-              \ -1, the default, the size is unlimited."
-            default: "-1B"
           accesslog:
             type: "object"
             properties:
               rotate:
                 type: "boolean"
-                description: "Whether to enable access log rotation."
-                default: true
               prefix:
                 type: "string"
-                description: "Log file name prefix."
-                default: "access_log."
               pattern:
                 type: "string"
-                description: "Format pattern for access logs."
-                default: "common"
               suffix:
                 type: "string"
-                description: "Log file name suffix."
-                default: "log"
               dir:
                 type: "string"
-                description: "Undertow access log directory."
               enabled:
                 type: "boolean"
-                description: "Whether to enable the access log."
-                default: false
           decode-slash:
             type: "boolean"
             description: "Whether encoded slash characters (%2F) should be decoded.\
@@ -3122,22 +2567,14 @@ properties:
               \ no effect."
           decode-url:
             type: "boolean"
-            description: "Whether the URL should be decoded. When disabled, percent-encoded\
-              \ characters in the URL will be left as-is."
-            default: true
           url-charset:
             $ref: "#/$defs/Charsets"
-            description: "Charset used to decode URLs."
-            default: "UTF-8"
+            properties:
+              $ref: "#/$defs/Charsets"
           max-parameters:
             type: "integer"
-            description: "Maximum number of query or path parameters that are allowed.\
-              \ This limit exists to prevent hash collision based DOS attacks."
           max-cookies:
             type: "integer"
-            description: "Maximum number of cookies that are allowed. This limit exists\
-              \ to prevent hash collision based DOS attacks."
-            default: 200
           options:
             type: "object"
             properties:
@@ -3153,20 +2590,8 @@ properties:
                   type: "string"
           max-headers:
             type: "integer"
-            description: "Maximum number of headers that are allowed. This limit exists\
-              \ to prevent hash collision based DOS attacks."
           allow-encoded-slash:
             type: "boolean"
-            description: "Whether the server should decode percent encoded slash characters.\
-              \ Enabling encoded slashes can have security implications due to different\
-              \ servers interpreting the slash differently. Only enable this if you\
-              \ have a legacy application that requires it. Has no effect when server.undertow.decode-slash\
-              \ is set."
-            default: false
-            deprecated: true
-            x-deprecation:
-              replacement: "server.undertow.decode-slash"
-              since: "3.0.3"
           always-set-keep-alive:
             type: "boolean"
             description: "Whether the 'Connection: keep-alive' header should be added\
@@ -3180,164 +2605,77 @@ properties:
             properties:
               remote-ip-header:
                 type: "string"
-                description: "Name of the HTTP header from which the remote IP is\
-                  \ extracted. For instance, 'X-FORWARDED-FOR'."
-              trusted-proxies:
-                type: "string"
-                description: "Regular expression defining proxies that are trusted\
-                  \ when they appear in the \"remote-ip-header\" header."
               host-header:
                 type: "string"
                 description: "Name of the HTTP header from which the remote host is\
                   \ extracted."
                 default: "X-Forwarded-Host"
+              trusted-proxies:
+                type: "string"
               internal-proxies:
                 type: "string"
-                description: "Regular expression that matches proxies that are to\
-                  \ be trusted."
-                default: "10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|192\\.168\\.\\d{1,3}\\\
-                  .\\d{1,3}|169\\.254\\.\\d{1,3}\\.\\d{1,3}|127\\.\\d{1,3}\\.\\d{1,3}\\\
-                  .\\d{1,3}|100\\.6[4-9]{1}\\.\\d{1,3}\\.\\d{1,3}|100\\.[7-9]{1}\\\
-                  d{1}\\.\\d{1,3}\\.\\d{1,3}|100\\.1[0-1]{1}\\d{1}\\.\\d{1,3}\\.\\\
-                  d{1,3}|100\\.12[0-7]{1}\\.\\d{1,3}\\.\\d{1,3}|172\\.1[6-9]{1}\\\
-                  .\\d{1,3}\\.\\d{1,3}|172\\.2[0-9]{1}\\.\\d{1,3}\\.\\d{1,3}|172\\\
-                  .3[0-1]{1}\\.\\d{1,3}\\.\\d{1,3}|0:0:0:0:0:0:0:1|::1|fe[89ab]\\\
-                  p{XDigit}:.*|f[cd]\\p{XDigit}{2}+:.*"
               protocol-header:
                 type: "string"
-                description: "Header that holds the incoming protocol, usually named\
-                  \ \"X-Forwarded-Proto\"."
               protocol-header-https-value:
                 type: "string"
-                description: "Value of the protocol header indicating whether the\
-                  \ incoming request uses SSL."
-                default: "https"
               port-header:
                 type: "string"
-                description: "Name of the HTTP header used to override the original\
-                  \ port value."
-                default: "X-Forwarded-Port"
           use-apr:
             type: "string"
-            description: "Whether to use APR."
-            default: "never"
-            enum:
-            - "ALWAYS"
-            - "always"
-            - "WHEN_AVAILABLE"
-            - "when_available"
-            - "NEVER"
-            - "never"
           mbeanregistry:
             type: "object"
             properties:
               enabled:
                 type: "boolean"
-                description: "Whether Tomcat's MBean Registry should be enabled."
-                default: false
           processor-cache:
             type: "integer"
-            description: "Maximum number of idle processors that will be retained\
-              \ in the cache and reused with a subsequent request. When set to -1\
-              \ the cache will be unlimited with a theoretical maximum size equal\
-              \ to the maximum number of connections."
-            default: 200
           max-connections:
             type: "integer"
-            description: "Maximum number of connections that the server accepts and\
-              \ processes at any given time. Once the limit has been reached, the\
-              \ operating system may still accept connections based on the \"acceptCount\"\
-              \ property."
-            default: 8192
           accesslog:
             type: "object"
             properties:
               rotate:
                 type: "boolean"
-                description: "Whether to enable access log rotation."
-                default: true
               rename-on-rotate:
                 type: "boolean"
-                description: "Whether to defer inclusion of the date stamp in the\
-                  \ file name until rotate time."
-                default: false
               request-attributes-enabled:
                 type: "boolean"
-                description: "Set request attributes for the IP address, Hostname,\
-                  \ protocol, and port used for the request."
-                default: false
               prefix:
                 type: "string"
-                description: "Log file name prefix."
-                default: "access_log"
               pattern:
                 type: "string"
                 description: "Format pattern for access logs."
                 default: "common"
               check-exists:
                 type: "boolean"
-                description: "Whether to check for log file existence so it can be\
-                  \ recreated if an external process has renamed it."
-                default: false
               max-days:
                 type: "integer"
-                description: "Number of days to retain the access log files before\
-                  \ they are removed."
-                default: -1
               suffix:
                 type: "string"
-                description: "Log file name suffix."
-                default: ".log"
-              locale:
-                type: "string"
-                description: "Locale used to format timestamps in log entries and\
-                  \ in log file name suffix. Default to the default locale of the\
-                  \ Java process."
               encoding:
                 type: "string"
-                description: "Character set used by the log file. Default to the system\
-                  \ default character set."
+              locale:
+                type: "string"
               directory:
                 type: "string"
-                description: "Directory in which log files are created. Can be absolute\
-                  \ or relative to the Tomcat base dir."
-                default: "logs"
               enabled:
                 type: "boolean"
-                description: "Enable access log."
-                default: false
+              ipv6canonical:
+                type: "boolean"
               file-date-format:
                 type: "string"
                 description: "Date format to place in the log file name."
                 default: ".yyyy-MM-dd"
               condition-unless:
                 type: "string"
-                description: "Whether logging of the request will only be enabled\
-                  \ if \"ServletRequest.getAttribute(conditionUnless)\" yield null."
               buffered:
                 type: "boolean"
-                description: "Whether to buffer output such that it is flushed only\
-                  \ periodically."
-                default: true
-              ipv6-canonical:
-                type: "boolean"
-                description: "Whether to use IPv6 canonical representation format\
-                  \ as defined by RFC 5952."
-                default: false
               condition-if:
                 type: "string"
-                description: "Whether logging of the request will only be enabled\
-                  \ if \"ServletRequest.getAttribute(conditionIf)\" does not yield\
-                  \ null."
           max-http-form-post-size:
             type: "string"
-            description: "Maximum size of the form content in any HTTP post request."
-            default: "2MB"
           keep-alive-timeout:
             type: "string"
-            description: "Time to wait for another HTTP request before the connection\
-              \ is closed. When not set the connectionTimeout is used. When set to\
-              \ -1 there will be no timeout."
           relaxed-query-chars:
             type: "array"
             description: "List of additional unencoded characters that should be allowed\
@@ -3353,53 +2691,29 @@ properties:
             - "{"
             - "|"
             - "}"
+            items:
+              type: "string"
           max-http-response-header-size:
             type: "string"
-            description: "Maximum size of the HTTP response header."
-            default: "8KB"
           max-part-count:
             type: "integer"
-            description: "Maximum total number of parts permitted in a multipart/form-data\
-              \ request. Requests that exceed this limit will be rejected. A value\
-              \ of less than 0 means no limit."
-            default: 50
           additional-tld-skip-patterns:
             type: "array"
-            description: "List of additional patterns that match jars to ignore for\
-              \ TLD scanning. The special '?' and '*' characters can be used in the\
-              \ pattern to match one and only one character and zero or more characters\
-              \ respectively."
+            items:
+              type: "string"
+          accept-count:
+            type: "integer"
           relaxed-path-chars:
             type: "array"
-            description: "List of additional unencoded characters that should be allowed\
-              \ in URI paths. Only \"< > [ \\ ] ^ ` { | }\" are allowed."
-            examples:
-            - "<"
-            - ">"
-            - "["
-            - "\\"
-            - "]"
-            - "^"
-            - "`"
-            - "{"
-            - "|"
-            - "}"
+            items:
+              type: "string"
           resource:
             type: "object"
             properties:
               allow-caching:
                 type: "boolean"
-                description: "Whether static resource caching is permitted for this\
-                  \ web application."
-                default: true
               cache-ttl:
                 type: "string"
-                description: "Time-to-live of the static resource cache."
-          accept-count:
-            type: "integer"
-            description: "Maximum queue length for incoming connection requests when\
-              \ all possible request processing threads are in use."
-            default: 100
           max-keep-alive-requests:
             type: "integer"
             description: "Maximum number of HTTP requests that can be pipelined before\
@@ -3412,63 +2726,30 @@ properties:
             properties:
               min-spare:
                 type: "integer"
-                description: "Minimum amount of worker threads. Doesn't have an effect\
-                  \ if virtual threads are enabled."
-                default: 10
               max:
                 type: "integer"
-                description: "Maximum amount of worker threads. Doesn't have an effect\
-                  \ if virtual threads are enabled."
-                default: 200
               max-queue-capacity:
                 type: "integer"
-                description: "Maximum capacity of the thread pool's backing queue.\
-                  \ This setting only has an effect if the value is greater than 0."
-                default: 2147483647
           max-part-header-size:
             type: "string"
-            description: "Maximum per-part header size permitted in a multipart/form-data\
-              \ request. Requests that exceed this limit will be rejected. A value\
-              \ of less than 0 means no limit."
-            default: "512B"
           max-swallow-size:
             type: "string"
-            description: "Maximum amount of request body to swallow."
-            default: "2MB"
           redirect-context-root:
             type: "boolean"
-            description: "Whether requests to the context root should be redirected\
-              \ by appending a / to the path. When using SSL terminated at a proxy,\
-              \ this property should be set to false."
-            default: true
           basedir:
             type: "string"
-            description: "Tomcat base directory. If not specified, a temporary directory\
-              \ is used."
           connection-timeout:
             type: "string"
-            description: "Amount of time the connector will wait, after accepting\
-              \ a connection, for the request URI line to be presented."
           use-relative-redirects:
             type: "boolean"
-            description: "Whether HTTP 1.1 and later location headers generated by\
-              \ a call to sendRedirect will use relative or absolute redirects."
-            default: false
           max-parameter-count:
             type: "integer"
-            description: "Maximum number of parameters (GET plus POST) that will be\
-              \ automatically parsed by the container. A value of less than 0 means\
-              \ no limit."
-            default: 10000
           uri-encoding:
             $ref: "#/$defs/Charsets"
-            description: "Character encoding to use to decode the URI."
-            default: "UTF-8"
+            properties:
+              $ref: "#/$defs/Charsets"
           background-processor-delay:
             type: "string"
-            description: "Delay between the invocation of backgroundProcess methods.\
-              \ If a duration suffix is not specified, seconds will be used."
-            default: "10s"
       servlet:
         type: "object"
         properties:
@@ -3479,24 +2760,41 @@ properties:
             type: "string"
             description: "Display name of the application."
             default: "application"
+          jsp:
+            type: "object"
+            properties:
+              init-parameters:
+                type: "object"
+                additionalProperties:
+                  type: "string"
+              registered:
+                type: "boolean"
+              class-name:
+                type: "string"
+                description: "Class name of the servlet to use for JSPs. If registered\
+                  \ is true and this class\n\t * is on the classpath then it will\
+                  \ be registered."
+                default: "org.apache.jasper.servlet.JspServlet"
           session:
             type: "object"
             properties:
+              tracking-modes:
+                type: "array"
+                items:
+                  type: "string"
+                  enum:
+                  - "COOKIE"
+                  - "cookie"
+                  - "URL"
+                  - "url"
+                  - "SSL"
+                  - "ssl"
               cookie:
                 type: "object"
                 properties:
-                  path:
-                    type: "string"
-                    description: "Path of the cookie."
                   http-only:
                     type: "boolean"
                     description: "Whether to use \"HttpOnly\" cookies for the cookie."
-                  domain:
-                    type: "string"
-                    description: "Domain for the cookie."
-                  name:
-                    type: "string"
-                    description: "Name of the cookie."
                   max-age:
                     type: "string"
                     description: "Maximum age of the cookie. If a duration suffix\
@@ -3504,58 +2802,23 @@ properties:
                       \ when the cookie expires relative to the current time. A value\
                       \ of 0 means the cookie should expire immediately. A negative\
                       \ value means no \"Max-Age\"."
-                  partitioned:
-                    type: "boolean"
-                    description: "Whether the generated cookie carries the Partitioned\
-                      \ attribute."
                   secure:
                     type: "boolean"
                     description: "Whether to always mark the cookie as secure."
-                  same-site:
-                    type: "string"
-                    description: "SameSite setting for the cookie."
-                    enum:
-                    - "OMITTED"
-                    - "omitted"
-                    - "NONE"
-                    - "none"
-                    - "LAX"
-                    - "lax"
-                    - "STRICT"
-                    - "strict"
-              tracking-modes:
-                type: "array"
-                description: "Session tracking modes."
               store-dir:
                 type: "string"
-                description: "Directory used to store session data."
               persistent:
                 type: "boolean"
-                description: "Whether to persist session data between restarts."
-                default: false
+              session-store-directory:
+                type: "object"
+                properties:
+                  directory:
+                    type: "string"
               timeout:
                 type: "string"
                 description: "Session timeout. If a duration suffix is not specified,\
                   \ seconds will be used."
                 default: "30m"
-          jsp:
-            type: "object"
-            properties:
-              init-parameters:
-                type: "object"
-                description: "Init parameters used to configure the JSP servlet."
-                additionalProperties:
-                  type: "string"
-              registered:
-                type: "boolean"
-                description: "Whether the JSP servlet is registered."
-                default: true
-              class-name:
-                type: "string"
-                description: "Class name of the servlet to use for JSPs. If registered\
-                  \ is true and this class\n\t * is on the classpath then it will\
-                  \ be registered."
-                default: "org.apache.jasper.servlet.JspServlet"
           context-parameters:
             type: "object"
             description: "Servlet context init parameters."
@@ -3563,178 +2826,102 @@ properties:
               type: "string"
           register-default-servlet:
             type: "boolean"
-            description: "Whether to register the default Servlet with the container."
-            default: false
           encoding:
             type: "object"
             properties:
-              force-response:
-                type: "boolean"
-                description: "Whether to force the encoding to the configured charset\
-                  \ on HTTP responses."
               force-request:
                 type: "boolean"
-                description: "Whether to force the encoding to the configured charset\
-                  \ on HTTP requests. Defaults to true when \"force\" has not been\
-                  \ specified."
+              force-response:
+                type: "boolean"
               charset:
                 $ref: "#/$defs/Charsets"
-                description: "Charset of HTTP requests and responses. Added to the\
-                  \ \"Content-Type\" header if not set explicitly."
-                default: "UTF-8"
+                properties:
+                  $ref: "#/$defs/Charsets"
               mapping:
                 type: "object"
-                description: "Mapping of locale to charset for response encoding."
-                additionalProperties:
+                $ref: "#/$defs/Charsets"
+              default_charset:
+                $ref: "#/$defs/Charsets"
+                properties:
                   $ref: "#/$defs/Charsets"
               force:
                 type: "boolean"
-                description: "Whether to force the encoding to the configured charset\
-                  \ on HTTP requests and responses."
-              enabled:
-                type: "boolean"
-                description: "Whether to enable http encoding support."
-                default: true
       error:
         type: "object"
         properties:
           path:
             type: "string"
-            description: "Path of the error controller."
-            default: "/error"
           include-exception:
             type: "boolean"
-            description: "Include the \"exception\" attribute."
-            default: false
           include-binding-errors:
             type: "string"
-            description: "When to include \"errors\" attribute."
-            default: "never"
-            enum:
-            - "NEVER"
-            - "never"
-            - "ALWAYS"
-            - "always"
-            - "ON_PARAM"
-            - "on_param"
           include-stacktrace:
             type: "string"
-            description: "When to include the \"trace\" attribute."
-            default: "never"
-            enum:
-            - "NEVER"
-            - "never"
-            - "ALWAYS"
-            - "always"
-            - "ON_PARAM"
-            - "on_param"
           include-message:
             type: "string"
-            description: "When to include \"message\" attribute."
-            default: "never"
-            enum:
-            - "NEVER"
-            - "never"
-            - "ALWAYS"
-            - "always"
-            - "ON_PARAM"
-            - "on_param"
           whitelabel:
             type: "object"
             properties:
               enabled:
                 type: "boolean"
-                description: "Whether to enable the default error page displayed in\
-                  \ browsers in case of a server error."
-                default: true
           include-path:
             type: "string"
-            description: "When to include \"path\" attribute."
-            default: "always"
-            enum:
-            - "NEVER"
-            - "never"
-            - "ALWAYS"
-            - "always"
-            - "ON_PARAM"
-            - "on_param"
       ssl:
         type: "object"
         properties:
           certificate-private-key:
             type: "string"
-            description: "Path to a PEM-encoded private key file for the SSL certificate."
           trust-store:
             type: "string"
-            description: "Trust store that holds SSL certificates."
           certificate:
             type: "string"
-            description: "Path to a PEM-encoded SSL certificate file."
           server-name-bundles:
             type: "array"
-            description: "Mapping of host names to SSL bundles for SNI configuration."
+            items:
+              type: "object"
+              properties:
+                server-name:
+                  type: "string"
+                bundle:
+                  type: "string"
           key-password:
             type: "string"
-            description: "Password used to access the key in the key store."
           key-store:
             type: "string"
-            description: "Path to the key store that holds the SSL certificate (typically\
-              \ a jks file)."
           trust-certificate:
             type: "string"
-            description: "Path to a PEM-encoded SSL certificate authority file."
-          key-store-provider:
-            type: "string"
-            description: "Provider for the key store."
           enabled:
             type: "boolean"
-            description: "Whether to enable SSL support."
-            default: true
+          key-store-provider:
+            type: "string"
           trust-store-provider:
             type: "string"
-            description: "Provider for the trust store."
           enabled-protocols:
             type: "array"
-            description: "Enabled SSL protocols."
+            items:
+              type: "string"
           trust-certificate-private-key:
             type: "string"
-            description: "Path to a PEM-encoded private key file for the SSL certificate\
-              \ authority."
           protocol:
             type: "string"
-            description: "SSL protocol to use."
-            default: "TLS"
           key-alias:
             type: "string"
-            description: "Alias that identifies the key in the key store."
           client-auth:
             type: "string"
-            description: "Client authentication mode. Requires a trust store."
-            enum:
-            - "NONE"
-            - "none"
-            - "WANT"
-            - "want"
-            - "NEED"
-            - "need"
           key-store-type:
             type: "string"
-            description: "Type of the key store."
           trust-store-type:
             type: "string"
-            description: "Type of the trust store."
           ciphers:
             type: "array"
-            description: "Supported SSL ciphers."
+            items:
+              type: "string"
           bundle:
             type: "string"
-            description: "Name of a configured SSL bundle."
           key-store-password:
             type: "string"
-            description: "Password used to access the key store."
           trust-store-password:
             type: "string"
-            description: "Password used to access the trust store."
       reactive:
         type: "object"
         properties:
@@ -3746,46 +2933,24 @@ properties:
                 properties:
                   path:
                     type: "string"
-                    description: "Path of the cookie."
                   http-only:
                     type: "boolean"
                     description: "Whether to use \"HttpOnly\" cookies for the cookie."
                   domain:
                     type: "string"
                     description: "Domain for the cookie."
-                  max-age:
-                    type: "string"
-                    description: "Maximum age of the cookie. If a duration suffix\
-                      \ is not specified, seconds will be used. A positive value indicates\
-                      \ when the cookie expires relative to the current time. A value\
-                      \ of 0 means the cookie should expire immediately. A negative\
-                      \ value means no \"Max-Age\"."
                   name:
                     type: "string"
-                    description: "Name for the cookie."
+                  max-age:
+                    type: "string"
                   partitioned:
                     type: "boolean"
-                    description: "Whether the generated cookie carries the Partitioned\
-                      \ attribute."
                   secure:
                     type: "boolean"
-                    description: "Whether to always mark the cookie as secure."
                   same-site:
                     type: "string"
-                    description: "SameSite setting for the cookie."
-                    enum:
-                    - "OMITTED"
-                    - "omitted"
-                    - "NONE"
-                    - "none"
-                    - "LAX"
-                    - "lax"
-                    - "STRICT"
-                    - "strict"
               max-sessions:
                 type: "integer"
-                description: "Maximum number of sessions that can be stored."
-                default: 10000
               timeout:
                 type: "string"
                 description: "Session timeout. If a duration suffix is not specified,\
@@ -3793,57 +2958,35 @@ properties:
                 default: "30m"
       port:
         type: "integer"
-        description: "Server HTTP port."
-        default: 8080
       http2:
         type: "object"
         properties:
           enabled:
             type: "boolean"
-            description: "Whether to enable HTTP/2 support, if the current environment\
-              \ supports it."
-            default: false
       jetty:
         type: "object"
         properties:
-          connection-idle-timeout:
-            type: "string"
-            description: "Time that the connection can be idle before it is closed."
           max-http-form-post-size:
             type: "string"
-            description: "Maximum size of the form content in any HTTP post request."
-            default: "200000B"
+          connection-idle-timeout:
+            type: "string"
           max-http-response-header-size:
             type: "string"
-            description: "Maximum size of the HTTP response header."
-            default: "8KB"
           threads:
             type: "object"
             properties:
               min:
                 type: "integer"
-                description: "Minimum number of threads. Doesn't have an effect if\
-                  \ virtual threads are enabled."
-                default: 8
               max:
                 type: "integer"
-                description: "Maximum number of threads. Doesn't have an effect if\
-                  \ virtual threads are enabled."
-                default: 200
               max-queue-capacity:
                 type: "integer"
                 description: "Maximum capacity of the thread pool's backing queue.\
                   \ A default is computed based on the threading configuration."
               idle-timeout:
                 type: "string"
-                description: "Maximum thread idle time."
-                default: "60000ms"
               selectors:
                 type: "integer"
-                description: "Number of selector threads to use. When the value is\
-                  \ -1, the default, the number of selectors is derived from the operating\
-                  \ environment."
-                default: -1
               acceptors:
                 type: "integer"
                 description: "Number of acceptor threads to use. When the value is\
@@ -3852,104 +2995,55 @@ properties:
                 default: -1
           max-connections:
             type: "integer"
-            description: "Maximum number of connections that the server accepts and\
-              \ processes at any given time."
-            default: -1
           max-form-keys:
             type: "integer"
-            description: "Maximum number of form keys."
-            default: 1000
           accesslog:
             type: "object"
             properties:
               file-date-format:
                 type: "string"
-                description: "Date format to place in log file name."
               filename:
                 type: "string"
-                description: "Log filename. If not specified, logs redirect to \"\
-                  System.err\"."
               retention-period:
                 type: "integer"
-                description: "Number of days before rotated log files are deleted."
-                default: 31
               custom-format:
                 type: "string"
-                description: "Custom log format, see org.eclipse.jetty.server.CustomRequestLog.\
-                  \ If defined, overrides the \"format\" configuration key."
               format:
                 type: "string"
-                description: "Log format."
-                default: "ncsa"
-                enum:
-                - "NCSA"
-                - "ncsa"
-                - "EXTENDED_NCSA"
-                - "extended_ncsa"
               ignore-paths:
                 type: "array"
-                description: "Request paths that should not be logged."
-              append:
-                type: "boolean"
-                description: "Append to log."
-                default: false
+                items:
+                  type: "string"
               enabled:
                 type: "boolean"
-                description: "Enable access log."
-                default: false
+              append:
+                type: "boolean"
       compression:
         type: "object"
         properties:
           mime-types:
             type: "array"
-            description: "Comma-separated list of MIME types that should be compressed."
-            default:
-            - "text/html"
-            - "text/xml"
-            - "text/plain"
-            - "text/css"
-            - "text/javascript"
-            - "application/javascript"
-            - "application/json"
-            - "application/xml"
+            items:
+              type: "string"
           excluded-user-agents:
             type: "array"
-            description: "Comma-separated list of user agents for which responses\
-              \ should not be compressed."
-          min-response-size:
-            type: "string"
-            description: "Minimum \"Content-Length\" value that is required for compression\
-              \ to be performed."
-            default: "2KB"
+            items:
+              type: "string"
           enabled:
             type: "boolean"
-            description: "Whether response compression is enabled."
-            default: false
+          min-response-size:
+            type: "string"
       forward-headers-strategy:
         type: "string"
-        description: "Strategy for handling X-Forwarded-* headers."
-        enum:
-        - "NATIVE"
-        - "native"
-        - "FRAMEWORK"
-        - "framework"
-        - "NONE"
-        - "none"
       shutdown:
         type: "string"
-        description: "Type of shutdown that the server will support."
-        default: "graceful"
-        enum:
-        - "GRACEFUL"
-        - "graceful"
-        - "IMMEDIATE"
-        - "immediate"
+      max-http-request-header-size:
+        type: "string"
       netty:
         type: "object"
         properties:
           connection-timeout:
             type: "string"
-            description: "Connection timeout of the Netty channel."
           initial-buffer-size:
             type: "string"
             description: "Initial buffer size for HTTP request decoding."
@@ -3960,30 +3054,14 @@ properties:
             default: true
           h2c-max-content-length:
             type: "string"
-            description: "Maximum content length of an H2C upgrade request."
-            default: "0B"
           max-initial-line-length:
             type: "string"
-            description: "Maximum length that can be decoded for an HTTP request's\
-              \ initial line."
-            default: "4KB"
           max-keep-alive-requests:
             type: "integer"
             description: "Maximum number of requests that can be made per connection.\
               \ By default, a connection serves unlimited number of requests."
           idle-timeout:
             type: "string"
-            description: "Idle timeout of the Netty channel. When not specified, an\
-              \ infinite timeout is used."
-      max-http-request-header-size:
-        type: "string"
-        description: "Maximum size of the HTTP request header. Refer to the documentation\
-          \ for your chosen embedded server for details of exactly how this limit\
-          \ is applied. For example, Netty applies the limit separately to each individual\
-          \ header in the request whereas Tomcat applies the limit to the combined\
-          \ size of the request line and all of the header names and values in the\
-          \ request."
-        default: "8KB"
   management:
     type: "object"
     properties:
@@ -4056,29 +3134,37 @@ properties:
               server-name-bundles:
                 type: "array"
                 description: "Mapping of host names to SSL bundles for SNI configuration."
+                items:
+                  type: "object"
+                  properties:
+                    server-name:
+                      type: "string"
+                    bundle:
+                      type: "string"
+              key-password:
+                type: "string"
+                description: "Password used to access the key in the key store."
               key-store:
                 type: "string"
                 description: "Path to the key store that holds the SSL certificate\
                   \ (typically a jks file)."
-              key-password:
-                type: "string"
-                description: "Password used to access the key in the key store."
               trust-certificate:
                 type: "string"
-                description: "Path to a PEM-encoded SSL certificate authority file."
-              key-store-provider:
-                type: "string"
-                description: "Provider for the key store."
               enabled:
                 type: "boolean"
                 description: "Whether to enable SSL support."
                 default: true
+              key-store-provider:
+                type: "string"
+                description: "Provider for the key store."
               trust-store-provider:
                 type: "string"
                 description: "Provider for the trust store."
               enabled-protocols:
                 type: "array"
                 description: "Enabled SSL protocols."
+                items:
+                  type: "string"
               trust-certificate-private-key:
                 type: "string"
                 description: "Path to a PEM-encoded private key file for the SSL certificate\
@@ -4090,9 +3176,6 @@ properties:
               key-alias:
                 type: "string"
                 description: "Alias that identifies the key in the key store."
-              key-store-type:
-                type: "string"
-                description: "Type of the key store."
               client-auth:
                 type: "string"
                 description: "Client authentication mode. Requires a trust store."
@@ -4103,12 +3186,17 @@ properties:
                 - "want"
                 - "NEED"
                 - "need"
+              key-store-type:
+                type: "string"
+                description: "Type of the key store."
               trust-store-type:
                 type: "string"
                 description: "Type of the trust store."
               ciphers:
                 type: "array"
                 description: "Supported SSL ciphers."
+                items:
+                  type: "string"
               bundle:
                 type: "string"
                 description: "Name of a configured SSL bundle."
@@ -4135,24 +3223,6 @@ properties:
                 - "when_authorized"
                 - "ALWAYS"
                 - "always"
-              cache:
-                type: "object"
-                properties:
-                  time-to-live:
-                    type: "string"
-                    description: "Maximum time that a response can be cached."
-                    default: "0ms"
-              access:
-                type: "string"
-                description: "Permitted level of access for the health endpoint."
-                default: "unrestricted"
-                enum:
-                - "NONE"
-                - "none"
-                - "READ_ONLY"
-                - "read_only"
-                - "UNRESTRICTED"
-                - "unrestricted"
               validate-group-membership:
                 type: "boolean"
                 description: "Whether to validate health group membership on startup.\
@@ -4163,17 +3233,8 @@ properties:
                 type: "array"
                 description: "Roles used to determine whether a user is authorized\
                   \ to be shown details. When empty, all authenticated users are authorized."
-              show-details:
-                type: "string"
-                description: "When to show full health details."
-                default: "never"
-                enum:
-                - "NEVER"
-                - "never"
-                - "WHEN_AUTHORIZED"
-                - "when_authorized"
-                - "ALWAYS"
-                - "always"
+                items:
+                  type: "string"
               logging:
                 type: "object"
                 properties:
@@ -4194,6 +3255,236 @@ properties:
                     type: "boolean"
                     description: "Whether to enable liveness and readiness probes."
                     default: false
+              id:
+                type: "object"
+                properties:
+                  lower-case-alpha-numeric:
+                    type: "string"
+                  migrate_legacy_names_property:
+                    type: "string"
+                  logger:
+                    type: "object"
+                    properties: {}
+                  logged-warnings:
+                    type: "array"
+                    items:
+                      type: "string"
+                  value:
+                    type: "string"
+                  valid_pattern:
+                    type: "object"
+                    properties:
+                      cursor:
+                        type: "integer"
+                      top-closure-nodes:
+                        type: "array"
+                        items:
+                          type: "object"
+                          properties:
+                            next:
+                              type: "object"
+                              properties: {}
+                      local-count:
+                        type: "integer"
+                      named-groups:
+                        type: "object"
+                        additionalProperties:
+                          type: "integer"
+                      match-root:
+                        type: "object"
+                        properties:
+                          next:
+                            type: "object"
+                            properties: {}
+                      pattern:
+                        type: "string"
+                      flags:
+                        type: "integer"
+                      serial-version-uid:
+                        type: "integer"
+                      pattern-length:
+                        type: "integer"
+                      unicode_case:
+                        type: "integer"
+                      literal:
+                        type: "integer"
+                      dotall:
+                        type: "integer"
+                      predicate:
+                        type: "object"
+                        properties: {}
+                      compiled:
+                        type: "boolean"
+                      all_flags:
+                        type: "integer"
+                      root:
+                        type: "object"
+                        properties:
+                          next:
+                            type: "object"
+                            properties: {}
+                      unicode_character_class:
+                        type: "integer"
+                      buffer:
+                        type: "array"
+                        items:
+                          type: "integer"
+                      capturing-group-count:
+                        type: "integer"
+                      local-tcncount:
+                        type: "integer"
+                      temp:
+                        type: "array"
+                        items:
+                          type: "integer"
+                      comments:
+                        type: "integer"
+                      max_reps:
+                        type: "integer"
+                      flags0:
+                        type: "integer"
+                      case_insensitive:
+                        type: "integer"
+                      canon_eq:
+                        type: "integer"
+                      last-accept:
+                        type: "object"
+                        properties:
+                          next:
+                            type: "object"
+                            properties: {}
+                      $assertions-disabled:
+                        type: "boolean"
+                      has-group-ref:
+                        type: "boolean"
+                      accept:
+                        type: "object"
+                        properties:
+                          next:
+                            type: "object"
+                            properties: {}
+                      unix_lines:
+                        type: "integer"
+                      multiline:
+                        type: "integer"
+                      group-nodes:
+                        type: "array"
+                        items:
+                          type: "object"
+                      has-supplementary:
+                        type: "boolean"
+                      normalized-pattern:
+                        type: "string"
+                  lower-case-value:
+                    type: "string"
+                  warning_pattern:
+                    type: "object"
+                    properties:
+                      cursor:
+                        type: "integer"
+                      top-closure-nodes:
+                        type: "array"
+                        items:
+                          type: "object"
+                          properties:
+                            next:
+                              type: "object"
+                              properties: {}
+                      local-count:
+                        type: "integer"
+                      named-groups:
+                        type: "object"
+                        additionalProperties:
+                          type: "integer"
+                      match-root:
+                        type: "object"
+                        properties:
+                          next:
+                            type: "object"
+                            properties: {}
+                      pattern:
+                        type: "string"
+                      flags:
+                        type: "integer"
+                      serial-version-uid:
+                        type: "integer"
+                      pattern-length:
+                        type: "integer"
+                      unicode_case:
+                        type: "integer"
+                      literal:
+                        type: "integer"
+                      dotall:
+                        type: "integer"
+                      predicate:
+                        type: "object"
+                        properties: {}
+                      compiled:
+                        type: "boolean"
+                      all_flags:
+                        type: "integer"
+                      root:
+                        type: "object"
+                        properties:
+                          next:
+                            type: "object"
+                            properties: {}
+                      unicode_character_class:
+                        type: "integer"
+                      buffer:
+                        type: "array"
+                        items:
+                          type: "integer"
+                      capturing-group-count:
+                        type: "integer"
+                      local-tcncount:
+                        type: "integer"
+                      temp:
+                        type: "array"
+                        items:
+                          type: "integer"
+                      comments:
+                        type: "integer"
+                      max_reps:
+                        type: "integer"
+                      flags0:
+                        type: "integer"
+                      case_insensitive:
+                        type: "integer"
+                      canon_eq:
+                        type: "integer"
+                      last-accept:
+                        type: "object"
+                        properties:
+                          next:
+                            type: "object"
+                            properties: {}
+                      $assertions-disabled:
+                        type: "boolean"
+                      has-group-ref:
+                        type: "boolean"
+                      accept:
+                        type: "object"
+                        properties:
+                          next:
+                            type: "object"
+                            properties: {}
+                      unix_lines:
+                        type: "integer"
+                      multiline:
+                        type: "integer"
+                      group-nodes:
+                        type: "array"
+                        items:
+                          type: "object"
+                      has-supplementary:
+                        type: "boolean"
+                      normalized-pattern:
+                        type: "string"
+              empty_path:
+                type: "array"
+                items:
+                  type: "string"
               enabled:
                 type: "boolean"
                 description: "Whether to enable the health endpoint."
@@ -4207,49 +3498,55 @@ properties:
                 properties:
                   http-mapping:
                     type: "object"
-                    description: "Mapping of health statuses to HTTP status codes.\
-                      \ By default, registered health statuses map to sensible defaults\
-                      \ (for example, UP maps to 200)."
                     additionalProperties:
                       type: "integer"
                   order:
                     type: "array"
-                    description: "List of health statuses in order of severity."
-                    default:
-                    - "DOWN"
-                    - "OUT_OF_SERVICE"
-                    - "UP"
-                    - "UNKNOWN"
+                    items:
+                      type: "string"
               group:
                 type: "object"
                 description: "Health endpoint groups."
                 additionalProperties:
                   type: "object"
+                  properties:
+                    server_prefix:
+                      type: "string"
+                    include:
+                      type: "array"
+                      items:
+                        type: "string"
+                    show-details:
+                      type: "string"
+                    exclude:
+                      type: "array"
+                      items:
+                        type: "string"
+                    management_prefix:
+                      type: "string"
+                    additional-path:
+                      type: "string"
       endpoints:
         type: "object"
         properties:
           web:
             type: "object"
             properties:
+              path-mapping:
+                type: "object"
+                additionalProperties:
+                  type: "string"
               cors:
                 type: "object"
                 properties:
-                  allowed-methods:
-                    type: "array"
-                    description: "List of methods to allow. '*' allows all methods.\
-                      \ When not set, defaults to GET."
-                    examples:
-                    - "*"
                   allowed-headers:
                     type: "array"
                     description: "List of headers to allow in a request. '*' allows\
                       \ all headers."
                     examples:
                     - "*"
-                  allow-credentials:
-                    type: "boolean"
-                    description: "Whether credentials are supported. When not set,\
-                      \ credentials are not supported."
+                    items:
+                      type: "string"
                   allowed-origins:
                     type: "array"
                     description: "List of origins to allow. '*' allows all origins.\
@@ -4258,15 +3555,13 @@ properties:
                       \ or allowed origin patterns are set, CORS support is disabled."
                     examples:
                     - "*"
+                    items:
+                      type: "string"
                   exposed-headers:
                     type: "array"
                     description: "List of headers to include in a response."
-                  max-age:
-                    type: "string"
-                    description: "How long the response from a pre-flight request\
-                      \ can be cached by clients. If a duration suffix is not specified,\
-                      \ seconds will be used."
-                    default: "1800s"
+                    items:
+                      type: "string"
                   allowed-origin-patterns:
                     type: "array"
                     description: "List of origin patterns to allow. Unlike allowed\
@@ -4274,25 +3569,19 @@ properties:
                       \ flexible (for example 'https://*.example.com') and can be\
                       \ used when credentials are allowed. When no allowed origin\
                       \ patterns or allowed origins are set, CORS support is disabled."
-              path-mapping:
-                type: "object"
-                description: "Mapping between endpoint IDs and the path that should\
-                  \ expose them."
-                additionalProperties:
-                  type: "string"
+                    items:
+                      type: "string"
               exposure:
                 type: "object"
                 properties:
                   include:
                     type: "array"
-                    description: "Endpoint IDs that should be included or '*' for\
-                      \ all."
-                    default:
-                    - "health"
+                    items:
+                      type: "string"
                   exclude:
                     type: "array"
-                    description: "Endpoint IDs that should be excluded or '*' for\
-                      \ all."
+                    items:
+                      type: "string"
               discovery:
                 type: "object"
                 properties:
@@ -4302,13 +3591,6 @@ properties:
                     default: true
               base-path:
                 type: "string"
-                description: "Base path for Web endpoints. Relative to the servlet\
-                  \ context path (server.servlet.context-path) or WebFlux base path\
-                  \ (spring.webflux.base-path) when the management server is sharing\
-                  \ the main server port. Relative to the management server base path\
-                  \ (management.server.base-path) when a separate management server\
-                  \ port (management.server.port) is configured."
-                default: "/actuator"
       tracing:
         type: "object"
         properties:
@@ -4338,8 +3620,6 @@ properties:
             properties:
               enabled:
                 type: "boolean"
-                description: "Whether to create a LongTaskTimer for every observation."
-                default: true
           enable:
             type: "object"
             description: "Whether observations starting with the specified name should\
@@ -4347,14 +3627,6 @@ properties:
               \ to configure all observations."
             additionalProperties:
               type: "boolean"
-          annotations:
-            type: "object"
-            properties:
-              enabled:
-                type: "boolean"
-                description: "Whether auto-configuration of Micrometer annotations\
-                  \ is enabled."
-                default: false
           http:
             type: "object"
             properties:
@@ -4366,8 +3638,6 @@ properties:
                     properties:
                       name:
                         type: "string"
-                        description: "Name of the observation for server requests."
-                        default: "http.server.requests"
               client:
                 type: "object"
                 properties:
@@ -4383,8 +3653,6 @@ properties:
             properties:
               include-parameter-values:
                 type: "boolean"
-                description: "Whether to tag actual query parameter values."
-                default: false
           key-values:
             type: "object"
             description: "Common key-values that are applied to every observation."
@@ -4398,39 +3666,20 @@ properties:
             properties:
               path:
                 type: "string"
-                description: "Path used to compute the available disk space."
               threshold:
                 type: "string"
                 description: "Minimum disk space that should be available."
                 default: "10MB"
-              enabled:
-                type: "boolean"
-                description: "Whether to enable disk space health check."
-                default: true
           ssl:
             type: "object"
             properties:
               certificate-validity-warning-threshold:
                 type: "string"
-                description: "If an SSL Certificate will be invalid within the time\
-                  \ span defined by this threshold, it should trigger a warning."
-                default: "14d"
-              enabled:
-                type: "boolean"
-                description: "Whether to enable SSL certificate health check."
-                default: true
           db:
             type: "object"
             properties:
               ignore-routing-data-sources:
                 type: "boolean"
-                description: "Whether to ignore AbstractRoutingDataSources when creating\
-                  \ database health indicators."
-                default: false
-              enabled:
-                type: "boolean"
-                description: "Whether to enable database health check."
-                default: true
       simple:
         type: "object"
         properties:
@@ -4451,13 +3700,8 @@ properties:
                     - "step"
                   step:
                     type: "string"
-                    description: "Step size (i.e. reporting frequency) to use."
-                    default: "1m"
                   enabled:
                     type: "boolean"
-                    description: "Whether exporting of metrics to this backend is\
-                      \ enabled."
-                    default: true
       metrics:
         type: "object"
         properties:
@@ -4484,9 +3728,8 @@ properties:
                 properties:
                   paths:
                     type: "array"
-                    description: "List of paths to report disk metrics for."
-                    default:
-                    - "."
+                    items:
+                      type: "string"
           data:
             type: "object"
             properties:
@@ -4497,21 +3740,15 @@ properties:
                     type: "object"
                     properties:
                       percentiles:
-                        type: "string"
-                        description: "Percentiles for which additional time series\
-                          \ should be published."
+                        type: "array"
+                        items:
+                          type: "number"
                       percentiles-histogram:
                         type: "boolean"
-                        description: "Whether to publish percentile histograms."
-                        default: false
                       enabled:
                         type: "boolean"
-                        description: "Whether to enable auto-timing."
-                        default: true
                   metric-name:
                     type: "string"
-                    description: "Name of the metric for sent requests."
-                    default: "spring.data.repository.invocations"
           web:
             type: "object"
             properties:
@@ -4554,9 +3791,6 @@ properties:
               files:
                 type: "object"
                 properties: {}
-              processor:
-                type: "object"
-                properties: {}
               uptime:
                 type: "object"
                 properties: {}
@@ -4570,30 +3804,20 @@ properties:
               \ to configure all meters."
             additionalProperties:
               type: "boolean"
-          graphql:
-            type: "object"
-            properties:
-              autotime:
-                type: "object"
-                properties: {}
           distribution:
             type: "object"
             properties:
               minimum-expected-value:
                 type: "object"
-                description: "Minimum value that meter IDs starting with the specified\
-                  \ name are expected to observe. The longest match wins. Values can\
-                  \ be specified as a double or as a Duration value (for timer meters,\
-                  \ defaulting to ms if no unit specified)."
                 additionalProperties:
                   type: "string"
               percentiles:
-                type: "object"
+                type: "array"
                 description: "Specific computed non-aggregable percentiles to ship\
                   \ to the backend for meter IDs starting-with the specified name.\
                   \ The longest match wins, the key 'all' can also be used to configure\
                   \ all meters."
-                additionalProperties:
+                items:
                   type: "object"
               buffer-length:
                 type: "object"
@@ -4602,15 +3826,6 @@ properties:
                   \ the key `all` can also be used to configure all meters."
                 additionalProperties:
                   type: "integer"
-              slo:
-                type: "object"
-                description: "Specific service-level objective boundaries for meter\
-                  \ IDs starting with the specified name. The longest match wins.\
-                  \ Counters will be published for each specified boundary. Values\
-                  \ can be specified as a double or as a Duration value (for timer\
-                  \ meters, defaulting to ms if no unit specified)."
-                additionalProperties:
-                  type: "object"
               percentiles-histogram:
                 type: "object"
                 description: "Whether meter IDs starting with the specified name should\
@@ -4620,6 +3835,15 @@ properties:
                   \ match wins, the key 'all' can also be used to configure all meters."
                 additionalProperties:
                   type: "boolean"
+              slo:
+                type: "array"
+                description: "Specific service-level objective boundaries for meter\
+                  \ IDs starting with the specified name. The longest match wins.\
+                  \ Counters will be published for each specified boundary. Values\
+                  \ can be specified as a double or as a Duration value (for timer\
+                  \ meters, defaulting to ms if no unit specified)."
+                items:
+                  type: "object"
               expiry:
                 type: "object"
                 description: "Maximum amount of time that samples for meter IDs starting\
@@ -4636,6 +3860,12 @@ properties:
                   \ defaulting to ms if no unit specified)."
                 additionalProperties:
                   type: "string"
+          graphql:
+            type: "object"
+            properties:
+              autotime:
+                type: "object"
+                properties: {}
           export:
             type: "object"
             properties:
@@ -4643,6 +3873,9 @@ properties:
                 type: "object"
                 properties: {}
               atlas:
+                type: "object"
+                properties: {}
+              statsd:
                 type: "object"
                 properties: {}
               dynatrace:
@@ -4654,9 +3887,6 @@ properties:
                   v2:
                     type: "object"
                     properties: {}
-              statsd:
-                type: "object"
-                properties: {}
               simple:
                 type: "object"
                 properties: {}
@@ -4675,10 +3905,10 @@ properties:
               appoptics:
                 type: "object"
                 properties: {}
-              jmx:
+              defaults:
                 type: "object"
                 properties: {}
-              defaults:
+              jmx:
                 type: "object"
                 properties: {}
               humio:
@@ -4710,7 +3940,6 @@ properties:
                     properties: {}
           tags:
             type: "object"
-            description: "Common tags that are applied to every meter."
             additionalProperties:
               type: "string"
       info:
@@ -4784,45 +4013,16 @@ properties:
   logging:
     type: "object"
     properties:
-      charset:
+      logging_lifecycle_bean_name:
+        type: "string"
+      logger_groups_bean_name:
+        type: "string"
+      logger:
         type: "object"
-        properties:
-          console:
-            $ref: "#/$defs/Charsets"
-            description: "Charset to use for console output."
-          file:
-            $ref: "#/$defs/Charsets"
-            description: "Charset to use for file output."
-      include-application-name:
-        type: "boolean"
-        description: "Whether to include the application name in the logs."
-        default: true
-      level:
-        $ref: "#/$defs/loggerLevelProp"
-        description: "Log levels severity mapping. For instance, `logging.level.org.springframework=DEBUG`."
-      include-application-group:
-        type: "boolean"
-        description: "Whether to include the application group in the logs."
-        default: true
+        properties: {}
       pattern:
         type: "object"
         properties:
-          console:
-            type: "string"
-            description: "Appender pattern for output to the console. Its default\
-              \ value varies according to the logging system."
-          file:
-            type: "string"
-            description: "Appender pattern for output to a file. Its default value\
-              \ varies according to the logging system."
-          correlation:
-            type: "string"
-            description: "Appender pattern for log correlation. Its default value\
-              \ varies according to the logging system."
-          level:
-            type: "string"
-            description: "Appender pattern for log level."
-            default: "%5p"
           rolling-file-name:
             type: "string"
             description: "Pattern for rolled-over log file names. Supported only with\
@@ -4831,241 +4031,221 @@ properties:
             deprecated: true
             x-deprecation:
               replacement: "logging.logback.rollingpolicy.file-name-pattern"
-          dateformat:
+      register_shutdown_hook_property:
+        type: "string"
+      logging-system:
+        type: "object"
+        properties:
+          root_logger_name:
             type: "string"
-            description: "Appender pattern for log date format."
-            default: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-      threshold:
+          system_property:
+            type: "string"
+          none:
+            type: "string"
+          system_factory:
+            type: "object"
+            properties: {}
+          expect_correlation_id_property:
+            type: "string"
+      logging_group:
         type: "object"
         properties:
-          console:
-            $ref: "#/$defs/loggerLevel"
-            description: "Log level threshold for console output."
-            default: "TRACE"
-          file:
-            $ref: "#/$defs/loggerLevel"
-            description: "Log level threshold for file output."
-            default: "TRACE"
-      register-shutdown-hook:
-        type: "boolean"
-        description: "Register a shutdown hook for the logging system when it is initialized.\
-          \ Disabled automatically when deployed as a war file."
-        default: true
-      logback:
-        type: "object"
-        properties:
-          rollingpolicy:
+          hash-code:
+            type: "integer"
+          system-environment-legacy-name:
+            type: "object"
+            properties: {}
+          string:
+            type: "array"
+            items:
+              type: "string"
+          elements:
             type: "object"
             properties:
-              file-name-pattern:
-                type: "string"
-                description: "Pattern for rolled-over log file names."
-                default: "${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz"
-              clean-history-on-start:
-                type: "boolean"
-                description: "Whether to clean the archive log files on startup."
-                default: false
-              max-history:
-                type: "integer"
-                description: "Maximum number of archive log files to keep."
-                default: 7
-              max-file-size:
-                type: "string"
-                description: "Maximum log file size."
-                default: "10MB"
-              total-size-cap:
-                type: "string"
-                description: "Total size of log backups to be kept."
-                default: "0B"
-      log4j2:
-        type: "object"
-        properties:
-          config:
-            type: "object"
-            properties:
-              override:
+              no_type:
                 type: "array"
-                description: "Overriding configuration files used to create a composite\
-                  \ configuration. Can be prefixed with 'optional:' to only load the\
-                  \ override if it exists."
-      file:
+                items:
+                  type: "string"
+              hash-code:
+                type: "array"
+                items:
+                  type: "integer"
+              no_position:
+                type: "array"
+                items:
+                  type: "integer"
+              size:
+                type: "integer"
+              start:
+                type: "array"
+                items:
+                  type: "integer"
+              end:
+                type: "array"
+                items:
+                  type: "integer"
+              source:
+                type: "string"
+              type:
+                type: "array"
+                items:
+                  type: "string"
+              empty:
+                type: "object"
+                properties: {}
+              resolved:
+                type: "array"
+                items:
+                  type: "string"
+          has-dashed-element:
+            type: "boolean"
+          uniform-elements:
+            type: "array"
+            items:
+              type: "string"
+          empty_string:
+            type: "string"
+          empty:
+            type: "object"
+            properties: {}
+      log_file_bean_name:
+        type: "string"
+      config_property:
+        type: "string"
+      spring_boot_logging_loggers:
+        type: "object"
+        additionalProperties:
+          type: "object"
+      shutdown-hook-registered:
+        type: "object"
+        properties:
+          serial-version-uid:
+            type: "integer"
+          value:
+            type: "integer"
+      log-file:
         type: "object"
         properties:
           path:
             type: "string"
-            description: "Location of the log file. For instance, `/var/log`."
-          clean-history-on-start:
-            type: "boolean"
-            description: "Whether to clean the archive log files on startup. Only\
-              \ supported with the default logback setup."
-            default: false
-            deprecated: true
-            x-deprecation:
-              replacement: "logging.logback.rollingpolicy.clean-history-on-start"
-          max-history:
-            type: "integer"
-            description: "Maximum number of archive log files to keep. Only supported\
-              \ with the default logback setup."
-            default: 7
-            deprecated: true
-            x-deprecation:
-              replacement: "logging.logback.rollingpolicy.max-history"
-          name:
+          file:
             type: "string"
-            description: "Log file name (for instance, `myapp.log`). Names can be\
-              \ an exact location or relative to the current directory."
-          max-size:
+          file_name_property:
             type: "string"
-            description: "Maximum log file size. Only supported with the default logback\
-              \ setup."
-            default: "10MB"
-            deprecated: true
-            x-deprecation:
-              replacement: "logging.logback.rollingpolicy.max-file-size"
-          total-size-cap:
+          file_path_property:
             type: "string"
-            description: "Total size of log backups to be kept. Only supported with\
-              \ the default logback setup."
-            default: "0B"
-            deprecated: true
-            x-deprecation:
-              replacement: "logging.logback.rollingpolicy.total-size-cap"
-      exception-conversion-word:
+      string_strings_map:
         type: "string"
-        description: "Conversion word used when logging exceptions."
-        default: "%wEx"
-      structured:
+      order:
+        type: "integer"
+      spring-boot-logging:
+        type: "string"
+      include-application-group:
+        type: "boolean"
+        description: "Whether to include the application group in the logs."
+        default: true
+      logger-groups:
         type: "object"
         properties:
-          ecs:
+          groups:
             type: "object"
-            properties:
-              service:
-                type: "object"
-                properties:
-                  environment:
+            additionalProperties:
+              type: "object"
+              properties:
+                members:
+                  type: "array"
+                  items:
                     type: "string"
-                    description: "Structured ECS service environment."
-                  node-name:
-                    type: "string"
-                    description: "Structured ECS service node name."
-                  name:
-                    type: "string"
-                    description: "Structured ECS service name (defaults to 'spring.application.name')."
-                  version:
-                    type: "string"
-                    description: "Structured ECS service version (defaults to 'spring.application.version')."
-          format:
-            type: "object"
-            properties:
-              console:
-                type: "string"
-                description: "Structured logging format for output to the console.\
-                  \ Must be either a format id or a fully qualified class name."
-                examples:
-                - "ecs"
-                - "gelf"
-                - "logstash"
-              file:
-                type: "string"
-                description: "Structured logging format for output to a file. Must\
-                  \ be either a format id or a fully qualified class name."
-                examples:
-                - "ecs"
-                - "gelf"
-                - "logstash"
-          gelf:
-            type: "object"
-            properties:
-              service:
-                type: "object"
-                properties:
-                  version:
-                    type: "string"
-                    description: "Structured GELF service version (defaults to 'spring.application.version')."
-              host:
-                type: "string"
-                description: "Structured GELF host (defaults to 'spring.application.name')."
-          json:
-            type: "object"
-            properties:
-              add:
-                type: "object"
-                description: "Additional members that should be added to structured\
-                  \ logging JSON"
-                additionalProperties:
+                name:
                   type: "string"
-              include:
-                type: "array"
-                description: "Member paths that should be included in structured logging\
-                  \ JSON"
-              stacktrace:
-                type: "object"
-                properties:
-                  include-common-frames:
-                    type: "boolean"
-                    description: "Whether common frames should be included."
-                  include-hashes:
-                    type: "boolean"
-                    description: "Whether stack trace hashes should be included."
-                  printer:
-                    type: "string"
-                    description: "Name of the printer to use. Can be 'standard', 'logging-system',\
-                      \ or the fully-qualified class name of a StackTracePrinter.\
-                      \ When not specified 'logging-system' or 'standard' will be\
-                      \ used depending if other properties are set."
-                    examples:
-                    - "standard"
-                    - "logging-system"
-                  root:
-                    type: "string"
-                    description: "Root ordering (root first or root last)."
-                  max-length:
-                    type: "integer"
-                    description: "Maximum length to print."
-                  max-throwable-depth:
-                    type: "integer"
-                    description: "Maximum throwable depth to print."
-              rename:
-                type: "object"
-                description: "Mapping between member paths and an alternative name\
-                  \ that should be used in structured logging JSON"
-                additionalProperties:
+                configured-level:
                   type: "string"
-              context:
-                type: "object"
-                properties:
-                  include:
-                    type: "boolean"
-                    description: "Whether context data should be included in the JSON."
-                  prefix:
-                    type: "string"
-                    description: "The prefix to use when inserting context data."
-              exclude:
-                type: "array"
-                description: "Member paths that should be excluded from structured\
-                  \ logging JSON"
-              customizer:
-                type: "array"
-                description: "Fully qualified class names of StructuredLoggingJsonMembersCustomizer\
-                  \ implementations"
-      config:
-        type: "string"
-        description: "Location of the logging configuration file. For instance, `classpath:logback.xml`\
-          \ for Logback."
-      group:
+      default_order:
+        type: "integer"
+      logging_level:
         type: "object"
-        description: "Log groups to quickly change multiple loggers at the same time.\
-          \ For instance, `logging.group.db=org.hibernate,org.springframework.jdbc`."
+        properties:
+          hash-code:
+            type: "integer"
+          system-environment-legacy-name:
+            type: "object"
+            properties: {}
+          string:
+            type: "array"
+            items:
+              type: "string"
+          elements:
+            type: "object"
+            properties:
+              no_type:
+                type: "array"
+                items:
+                  type: "string"
+              hash-code:
+                type: "array"
+                items:
+                  type: "integer"
+              no_position:
+                type: "array"
+                items:
+                  type: "integer"
+              size:
+                type: "integer"
+              start:
+                type: "array"
+                items:
+                  type: "integer"
+              end:
+                type: "array"
+                items:
+                  type: "integer"
+              source:
+                type: "string"
+              type:
+                type: "array"
+                items:
+                  type: "string"
+              empty:
+                type: "object"
+                properties: {}
+              resolved:
+                type: "array"
+                items:
+                  type: "string"
+          has-dashed-element:
+            type: "boolean"
+          uniform-elements:
+            type: "array"
+            items:
+              type: "string"
+          empty_string:
+            type: "string"
+          empty:
+            type: "object"
+            properties: {}
+      event_types:
+        type: "array"
+        items:
+          type: "string"
+      parse-args:
+        type: "boolean"
+      source_types:
+        type: "array"
+        items:
+          type: "string"
+      default_group_loggers:
+        type: "object"
         additionalProperties:
           type: "object"
+      logging_system_bean_name:
+        type: "string"
+      string_loglevel_map:
+        type: "string"
   json-config-schema:
     type: "object"
     properties:
       schema-spec:
         type: "string"
-        description: "JSON Schema specification URL"
-        default: "https://json-schema.org/draft/2020-12/schema"
       missing-type-log:
         type: "boolean"
         description: "Controls whether missing type information should be logged.\
@@ -5075,12 +4255,8 @@ properties:
         default: false
       use-validation:
         type: "boolean"
-        description: "Enable validation annotations processing"
-        default: true
       schema-id:
         type: "string"
-        description: "Schema identifier"
-        default: "urn:example"
       use-openapi:
         type: "boolean"
         description: "Enable OpenAPI annotations processing"
@@ -5091,12 +4267,12 @@ properties:
         default: "Auto-generated schema from configuration metadata"
       title:
         type: "string"
-        description: "Schema title"
-        default: "Spring Boot Configuration Properties"
       additional-properties:
         type: "array"
         description: "List of additional property paths to include"
         default: "logging"
+        items:
+          type: "string"
       type-properties-map:
         type: "object"
         description: "Map of property names or java objects to their type definitions.\
@@ -5104,6 +4280,19 @@ properties:
           \ or extend the default schema generation behavior."
         additionalProperties:
           type: "object"
+          properties:
+            reference:
+              type: "string"
+            enums:
+              type: "array"
+              items:
+                type: "string"
+            pattern:
+              type: "string"
+            format:
+              type: "string"
+            type:
+              type: "string"
   health:
     type: "object"
     properties:
