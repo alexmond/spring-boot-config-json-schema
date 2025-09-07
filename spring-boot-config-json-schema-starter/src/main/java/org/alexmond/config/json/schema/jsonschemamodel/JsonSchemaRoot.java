@@ -1,5 +1,7 @@
 package org.alexmond.config.json.schema.jsonschemamodel;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +14,16 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"schema", "id", "title", "description", "type", "definitions", "properties"})
 public class JsonSchemaRoot {
-    private String $schema = "https://json-schema.org/draft/2020-12/schema";
-    private String type = "object";
-    private String title;
+    @JsonProperty("$schema")
+    private String schema = "https://json-schema.org/draft/2020-12/schema";
+    @JsonProperty("$id")
     private String id;
-    private Map<String, Object> properties = new HashMap<>();
+    private String title;
+    private String description;
+    private JsonSchemaType type = JsonSchemaType.OBJECT;
+    @JsonProperty("$defs")
     private Map<String, Object> definitions = new HashMap<>();
+    private Map<String, Object> properties = new HashMap<>();
 }

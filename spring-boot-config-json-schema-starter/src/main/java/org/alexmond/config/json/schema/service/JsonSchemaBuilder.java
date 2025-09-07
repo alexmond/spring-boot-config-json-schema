@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaRoot;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.jsonschemamodel.TypeProperties;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
@@ -34,7 +35,14 @@ public class JsonSchemaBuilder {
     public Map<String, Object> buildSchema(HashMap<String, Property> meta, List<String> included) {
         log.info("Starting JSON schema generation");
         Map<String, Object> schema = new LinkedHashMap<>();
-
+        JsonSchemaRoot root = JsonSchemaRoot.builder()
+                .schema(config.getSchemaSpec())
+                .id(config.getSchemaId())
+                .title(config.getTitle())
+                .description(config.getDescription())
+                .build();
+        
+        
         schema.put("$schema", config.getSchemaSpec());
         schema.put("$id", config.getSchemaId());
         schema.put("title", config.getTitle());
