@@ -2,9 +2,10 @@ package org.alexmond.config.json.schema.config;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.alexmond.config.json.schema.jsonschemamodel.TypeProperties;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class JsonConfigSchemaConfig {
      * Used to store custom type mappings and property configurations
      * that override or extend the default schema generation behavior.
      */
-    private Map<String, TypeProperties> typePropertiesMap = new HashMap<>();
+    private Map<String, JsonSchemaProperties> JsonSchemaPropertiesMap = new HashMap<>();
 
     /**
      * Controls whether missing type information should be logged.
@@ -85,5 +86,32 @@ public class JsonConfigSchemaConfig {
      * This is useful for debugging and identifying unmapped types.
      */
     private Boolean missingTypeLog = false;
+    /**
+     * A list of fully qualified class names that should be excluded from schema generation.
+     * By default, includes ObjectMapper and ClassLoader classes to prevent processing of
+     * system-level classes that aren't relevant to configuration.
+     */
+    private List<String> excludeClasses = new ArrayList<>(List.of("com.fasterxml.jackson.databind.ObjectMapper", "java.lang.ClassLoader"));
+
+    /**
+     * Additional class names to be excluded from schema generation.
+     * This list can be used to specify custom classes that should be excluded
+     * beyond the default exclusions. Classes specified here will be combined
+     * with the default excludeClasses list.
+     */
+    private List<String> additionalExcludeClasses = new ArrayList<>();
+
+    /**
+     * Returns a combined list of all excluded classes.
+     * This includes both the default excludeClasses and any additional excluded classes.
+     *
+     * @return List of all class names that should be excluded from schema generation
+     */
+    public List<String> getAllExcludedClasses() {
+        List<String> allExcludes = new ArrayList<>(excludeClasses);
+        allExcludes.addAll(additionalExcludeClasses);
+        return allExcludes;
+    }
+
 
 }

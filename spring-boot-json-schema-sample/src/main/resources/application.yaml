@@ -2,7 +2,12 @@ spring:
   profiles:
     active: test
 
-#sample:
+sample:
+  deep-level1:
+    deep-level2:
+      list1:
+        - id: 123
+
 #  boolean-sample: false
 #  string-sample: "config string"
 #  integer-sample: 10
@@ -27,6 +32,9 @@ logging:
   file:
     name: test.log
 
+json-config-schema:
+  additional-exclude-classes:
+    - "io.swagger.v3.oas.models.OpenAPI"
 
 
 

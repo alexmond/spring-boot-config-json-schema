@@ -44,6 +44,11 @@ SimpleBootJsonSchemaGeneratorTests {
             JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
             JsonSchema schema = factory.getSchema(jsonConfigSchema);
             Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchema));
+            if (!errors.isEmpty()) {
+                errors.forEach(error -> log.error("Schema validation error: {}", error));
+                throw new AssertionError("Schema validation failed");
+            }
+            log.info("Schema validation passed successfully");
 
             ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
             log.info("Writing json schema");

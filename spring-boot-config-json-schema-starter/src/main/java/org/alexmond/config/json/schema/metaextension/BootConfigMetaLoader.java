@@ -52,7 +52,7 @@ public class BootConfigMetaLoader {
                 Property existing = propertyMap.get(property.getName());
                 if (existing != null) {
                     log.warn("Duplicate property name: {}, merging", property.getName());
-                    existing.mergeGroup(property);
+                    existing.mergemergeProperties(property);
                     propertyMap.put(property.getName(), existing);
                 }
             }

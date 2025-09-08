@@ -1,5 +1,6 @@
 package org.alexmond.config.json.schema.jsonschemamodel;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
@@ -16,5 +17,10 @@ public enum JsonSchemaType {
 
     JsonSchemaType(String value) {
         this.value = value;
+    }
+
+    @JsonValue
+    public String getJsonValue() {
+        return value;
     }
 }

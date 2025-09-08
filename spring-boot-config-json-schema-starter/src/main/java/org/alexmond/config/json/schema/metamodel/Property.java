@@ -21,7 +21,7 @@ public class Property {
         if (group.getSourceType() != null && !group.getSourceType().isEmpty()) this.sourceType = group.getSourceType();
     }
 
-    public void mergeGroup(Property other) {
+    public void mergemergeProperties(Property other) {
         if (other.getType() != null && !other.getType().isEmpty()) this.type = other.getType();
         if (other.getDescription() != null && !other.getDescription().isEmpty())
             this.description = other.getDescription();

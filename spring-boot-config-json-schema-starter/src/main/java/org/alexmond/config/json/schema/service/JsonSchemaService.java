@@ -38,7 +38,7 @@ public class JsonSchemaService {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
     }
 
-    private HashMap<String,Property> collectMetadata() {
+    public HashMap<String,Property> collectMetadata() {
 
         List<BootConfigMeta> configs = new ArrayList<>();
         var resolver = new org.springframework.core.io.support.PathMatchingResourcePatternResolver();

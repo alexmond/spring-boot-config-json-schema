@@ -8,6 +8,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.alexmond.config.json.schema.metamodel.Ignored;
+import org.alexmond.config.json.schema.metamodel.Property;
 import org.alexmond.config.json.schema.service.JsonSchemaBuilder;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.config.json.schema.service.MissingTypeCollector;
@@ -55,6 +57,13 @@ class SanityJsonSchemaGeneratorTests {
         assertNotNull(values, "Values list should not be null");
         assertTrue(values.containsAll(List.of("EN1", "en1", "EN2", "en2", "EN3", "en3")), "Values list should contain all enum values");
         assertEquals(6, values.size(), "Values list should contain exactly 3 items");
+    }
+
+    @Test
+    void testCollectMetadata() {
+        HashMap<String, Property> meta = jsonSchemaService.collectMetadata();
+        assertNotNull(meta, "Collected metadata should not be null");
+        assertFalse(meta.isEmpty(), "Collected metadata should not be empty");
     }
 
     @Test
