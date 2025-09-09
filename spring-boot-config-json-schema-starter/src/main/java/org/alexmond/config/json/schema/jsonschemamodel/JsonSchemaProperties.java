@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -122,7 +123,7 @@ public class JsonSchemaProperties {
 
     // Extensions
     @JsonProperty("x-deprecation")
-    private XDeprication xDeprication;
+    private XDeprecation xDeprecation;
     @JsonProperty("x-intellij-html-description")
     private String htmlDescription;
     
@@ -138,9 +139,11 @@ public class JsonSchemaProperties {
     private <T> List<T> mergeLists(List<T> list1, List<T> list2) {
         if (list1 == null) return list2;
         if (list2 == null) return list1;
-        list1.removeAll(list2);
-        list1.addAll(list2);
-        return list1;
+        if (list2.isEmpty()) return list1;
+        List<T> result = new ArrayList<>(list1);
+        result.removeAll(list2);
+        result.addAll(list2);
+        return result;
     }
 
     private <K, V> Map<K, V> mergeMaps(Map<K, V> map1, Map<K, V> map2) {
@@ -224,8 +227,8 @@ public class JsonSchemaProperties {
         if (other.getContentSchema() != null) {
             this.contentSchema = this.contentSchema != null ? this.contentSchema.merge(other.getContentSchema()) : other.getContentSchema();
         }
-        if (other.getXDeprication() != null) {
-            this.xDeprication = other.getXDeprication();
+        if (other.getXDeprecation() != null) {
+            this.xDeprecation = other.getXDeprecation();
         }
         if (other.getAdditionalProperties() != null) {
             this.additionalProperties = other.getAdditionalProperties();

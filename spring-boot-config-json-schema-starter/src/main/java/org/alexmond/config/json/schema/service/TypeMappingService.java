@@ -90,21 +90,20 @@ public class TypeMappingService {
             return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
         }
 
-        try {
-            Class<?> type = Class.forName(springType);
-            if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
-                missingTypeCollector.addType(springType, prop);
-                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
-            }
-        } catch (ClassNotFoundException e) {
-            if (springType.contains("Enum")) {
-                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-            }
-        }
 
         missingTypeCollector.addType(springType, prop);
         log.debug("Mapping Spring type: {}  for Property {}", springType, prop);
-        return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+        try {
+            Class<?> type = Class.forName(springType);
+            if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
+                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
+            } else {
+                log.error("Missing primitive type {} for Property {}", springType,prop);
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+            }
+        } catch (ClassNotFoundException e) {
+            return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+        }
     }
 
     public JsonSchemaProperties typeAdvProp(String springType, Property prop) {
@@ -286,23 +285,23 @@ public class TypeMappingService {
         }};
 
 
-        JsonSchemaProperties JsonSchemaProperties = null;
+        JsonSchemaProperties JsonSchemaProperties;
         if (prop != null) {
             JsonSchemaProperties = jsonConfigSchemaConfig.getJsonSchemaPropertiesMap().get(prop.getName());
             if (JsonSchemaProperties != null) return JsonSchemaProperties;
-        };
+        }
         if (springType != null) {
             JsonSchemaProperties = jsonConfigSchemaConfig.getJsonSchemaPropertiesMap().get(springType);
             if (JsonSchemaProperties != null) return JsonSchemaProperties;
-        };
+        }
         if (prop != null){
             JsonSchemaProperties = extendedTypeProps.get(prop.getName());
             if (JsonSchemaProperties != null) return JsonSchemaProperties;
-        };
+        }
         if (springType != null){
             JsonSchemaProperties = extendedTypeProps.get(springType);
-            if (JsonSchemaProperties != null) return JsonSchemaProperties;
-        };
+            return JsonSchemaProperties;
+        }
 
         return null;
     }

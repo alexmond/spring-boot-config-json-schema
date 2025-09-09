@@ -126,41 +126,48 @@ public class JsonSchemaBuilder {
         }
         String key = path[idx];
         if (idx == path.length - 1) {
-            if (node.get(key) == null) {
-                processLeaf(node, prop, key);
-            } else {
-                log.info("Duplicate leaf {}", key);
-                if (prop.getDescription() != null) {
-                    processLeaf(node, prop, key);
-                }
-            }
+            JsonSchemaProperties jsonSchemaProperties = new JsonSchemaProperties();
+//            if (node.get(key) == null) {
+                processLeaf(jsonSchemaProperties, prop);
+//            } else {
+//                log.info("Duplicate leaf {}", key);
+//                if (prop.getDescription() != null) {
+//                    processLeaf(jsonSchemaProperties, prop);
+//                }
+//            }
+            node.put(key, jsonSchemaProperties);
         } else {
-            JsonSchemaProperties propNode;
-            Map<String, JsonSchemaProperties> properties = new TreeMap<>();
-
-            if (node.containsKey(key)) {
-                propNode = node.get(key);
-                Map<String, JsonSchemaProperties> propsObj = propNode.getProperties();
-                if (propsObj != null) {
-                    properties = propsObj;
-                } else {
-                    propNode.setProperties(properties);
-                }
-            } else {
-                propNode = JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.OBJECT)
-                        .properties(properties)
-                        .build();
-                node.put(key, propNode);
-            }
-
+            Map<String, JsonSchemaProperties> properties = ensureObjectNode(node, key);
             addProperty(properties, path, idx + 1, prop);
         }
     }
 
+    /**
+     * Ensures that `node` contains an OBJECT-typed JsonSchemaProperties under `key`
+     * with a non-null, mutable `properties` map, and returns that map.
+     */
+    private Map<String, JsonSchemaProperties> ensureObjectNode(Map<String, JsonSchemaProperties> node, String key) {
+        JsonSchemaProperties propNode = node.get(key);
+        if (propNode == null) {
+            Map<String, JsonSchemaProperties> properties = new java.util.TreeMap<>();
+            propNode = JsonSchemaProperties.builder()
+                    .type(JsonSchemaType.OBJECT)
+                    .properties(properties)
+                    .build();
+            node.put(key, propNode);
+            return properties;
+        }
 
-    private void processLeaf(Map<String, JsonSchemaProperties> node, Property prop, String key) {
-        JsonSchemaProperties jsonSchemaProperties;
+        Map<String, JsonSchemaProperties> properties = propNode.getProperties();
+        if (properties == null) {
+            properties = new java.util.TreeMap<>();
+            propNode.setProperties(properties);
+        }
+        return properties;
+    }
+
+
+    private void processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop) {
         String propType;
         Class<?> clazz;
         Class<?> propClazz = null;
@@ -176,7 +183,7 @@ public class JsonSchemaBuilder {
             return;
         } else {
             propType = prop.getType();
-            jsonSchemaProperties = typeMappingService.typeProp(propType, prop);
+            jsonSchemaProperties.merge(typeMappingService.typeProp(propType, prop));
         }
 
         if (prop.getSourceType() != null) {
@@ -217,7 +224,6 @@ public class JsonSchemaBuilder {
             processOpenapi(jsonSchemaProperties, field, prop.getName());
         }
         if (jsonSchemaProperties.getReference() != null) {
-            node.put(key, jsonSchemaProperties);
             return;
         }
         if (propClazz != null && propClazz.isEnum()) {
@@ -225,17 +231,14 @@ public class JsonSchemaBuilder {
             if (values != null) {
                 jsonSchemaProperties.setEnumValues(values);
             }
-            node.put(key, jsonSchemaProperties);
             return;
         }
         if (jsonSchemaProperties.getType().equals(JsonSchemaType.ARRAY)) {
             processArray(prop, prop.getType(), jsonSchemaProperties, null);
-            node.put(key, jsonSchemaProperties);
             return;
         }
         if (typeMappingService.isMap(propType)) {
             processMap(prop, prop.getType(), jsonSchemaProperties, null);
-            node.put(key, jsonSchemaProperties);
             return;
         }
         if (jsonSchemaProperties.getType().equals(JsonSchemaType.OBJECT)) {
@@ -244,7 +247,6 @@ public class JsonSchemaBuilder {
                 jsonSchemaProperties.setProperties(complexProperties);
             }
         }
-        node.put(key, jsonSchemaProperties);
     }
 
     private void processMap(Property prop, String propType, JsonSchemaProperties propDef, Set<String> visited) {
@@ -273,10 +275,9 @@ public class JsonSchemaBuilder {
                 return;
             }
             if (JsonSchemaProperties.getType().equals(JsonSchemaType.OBJECT)) {
-                visited = visited == null ? new HashSet<>() : visited;
                 Map<String, JsonSchemaProperties> valueJsonSchemaProperties = processComplexType(valueType, prop, visited);
                 if (valueJsonSchemaProperties != null) {
-                    var newProp = JsonSchemaProperties.builder()
+                    var newProp = org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties.builder()
                             .type(JsonSchemaType.OBJECT)
                             .properties(valueJsonSchemaProperties)
                             .build();
@@ -452,7 +453,6 @@ public class JsonSchemaBuilder {
             Class<?> clazz = Class.forName(type);
             for (Field field : clazz.getDeclaredFields()) {
                 JsonSchemaProperties fieldProperty;
-                Map<String, Object> fieldDef = new HashMap<>();
                 String fieldType = field.getType().getName();
                 String fieldGenName = field.getGenericType().getTypeName();
                 if (config.getExcludeClasses().contains(fieldGenName)) {

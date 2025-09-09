@@ -47,7 +47,7 @@ public class JsonSchemaService {
         try {
             resources = resolver.getResources("classpath*:/META-INF/spring-configuration-metadata.json");
         } catch (IOException e) {
-            log.error("Failed to open resources for {} with error {}", resources, e.getMessage());
+            log.error("Failed to open resources with error {}", e.getMessage());
             throw new RuntimeException(e);
         }
 

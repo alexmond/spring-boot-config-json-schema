@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class XDeprication {
+public class XDeprecation {
     private String reason;
     private String replacement;
     private String since;

@@ -47,7 +47,7 @@ class SampleJsonSchemaGeneratorTests {
         }
         log.info("Schema validation passed successfully");
 
-        String timestamp = String.valueOf(System.currentTimeMillis());
+        String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new java.util.Date());
 
         ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
         log.info("Writing json schema");
