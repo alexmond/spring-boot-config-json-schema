@@ -126,16 +126,20 @@ public class JsonSchemaBuilder {
         }
         String key = path[idx];
         if (idx == path.length - 1) {
-            JsonSchemaProperties jsonSchemaProperties = new JsonSchemaProperties();
+            if (config.getExcludeClasses().contains(prop.getType())) {
+                log.warn("Excluding type {}. Skipping nested properties. for Property {}", prop.getName(),prop.getType());
+            }else {
+                JsonSchemaProperties jsonSchemaProperties = new JsonSchemaProperties();
 //            if (node.get(key) == null) {
-                processLeaf(jsonSchemaProperties, prop);
+                processLeaf(jsonSchemaProperties, prop,null);
 //            } else {
 //                log.info("Duplicate leaf {}", key);
 //                if (prop.getDescription() != null) {
-//                    processLeaf(jsonSchemaProperties, prop);
+//                    processLeaf(jsonSchemaProperties, prop, null);
 //                }
 //            }
-            node.put(key, jsonSchemaProperties);
+                node.put(key, jsonSchemaProperties);
+            }
         } else {
             Map<String, JsonSchemaProperties> properties = ensureObjectNode(node, key);
             addProperty(properties, path, idx + 1, prop);
@@ -167,12 +171,14 @@ public class JsonSchemaBuilder {
     }
 
 
-    private void processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop) {
+    private void processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop,Set<String> visited) {
         String propType;
         Class<?> clazz;
         Class<?> propClazz = null;
         Field field = null;
-
+        if (visited == null) {
+            visited = new HashSet<>();
+        }
         // skip deprecated property with the error level
         if (prop.getDeprecated() != null && prop.getDeprecated() && (prop.getDeprecation().getLevel() == Deprecation.Level.ERROR || prop.getDeprecation().getLevel() == Deprecation.Level.error)) {
             log.debug("Skipping property is deprecated and removed: {}", prop.getName());
@@ -183,7 +189,6 @@ public class JsonSchemaBuilder {
             return;
         } else {
             propType = prop.getType();
-            jsonSchemaProperties.merge(typeMappingService.typeProp(propType, prop));
         }
 
         if (prop.getSourceType() != null) {
@@ -194,11 +199,17 @@ public class JsonSchemaBuilder {
             try {
                 clazz = Class.forName(prop.getSourceType());
                 field = ReflectionUtils.findField(clazz, classField);
+                if (field != null) {
+                    if (!propType.equals(field.getGenericType().getTypeName())) {
+                        log.warn("Property type mismatch with real one");
+                        propType = field.getGenericType().getTypeName();
+                    }
+                }
             } catch (ClassNotFoundException e) {
                 log.debug("Unable to find class for property sourceType: {}, class: {}", prop.getName(), prop.getSourceType());
             }
         }
-
+        jsonSchemaProperties.merge(typeMappingService.typeProp(propType, prop));
         if (prop.getType() != null) {
             try {
                 propClazz = Class.forName(prop.getType());
@@ -234,15 +245,15 @@ public class JsonSchemaBuilder {
             return;
         }
         if (jsonSchemaProperties.getType().equals(JsonSchemaType.ARRAY)) {
-            processArray(prop, prop.getType(), jsonSchemaProperties, null);
+            processArray(prop, propType, jsonSchemaProperties, visited);
             return;
         }
         if (typeMappingService.isMap(propType)) {
-            processMap(prop, prop.getType(), jsonSchemaProperties, null);
+            processMap(prop, propType, jsonSchemaProperties, visited);
             return;
         }
         if (jsonSchemaProperties.getType().equals(JsonSchemaType.OBJECT)) {
-            var complexProperties = processComplexType(prop.getType(), prop,null);
+            var complexProperties = processComplexType(propType, prop,visited);
             if (complexProperties != null) {
                 jsonSchemaProperties.setProperties(complexProperties);
             }
@@ -452,38 +463,21 @@ public class JsonSchemaBuilder {
         try {
             Class<?> clazz = Class.forName(type);
             for (Field field : clazz.getDeclaredFields()) {
-                JsonSchemaProperties fieldProperty;
                 String fieldType = field.getType().getName();
                 String fieldGenName = field.getGenericType().getTypeName();
                 if (config.getExcludeClasses().contains(fieldGenName)) {
                     log.warn("Excluding type {}. Skipping nested properties. for Property {}", fieldGenName, bootProp.getName());
+                }else{
+                    JsonSchemaProperties fieldProperty = new JsonSchemaProperties();
+                    String propName = toKebabCase(field.getName());
+                    Property filedProp = Property.builder()
+                            .name(bootProp.getName() + "." + propName)
+                            .type(fieldGenName)
+                            .sourceType(type)
+                            .build();
+                    processLeaf(fieldProperty, filedProp,visited);
+                    properties.put(propName, fieldProperty);
                 }
-                fieldProperty = typeMappingService.typeProp(fieldGenName, null);
-                if (fieldProperty.getReference() != null) {
-                    log.warn("Skipping further processing, $ref is defined");
-                } else if (fieldProperty.getType().equals(JsonSchemaType.ARRAY)) {
-                    processArray(bootProp, fieldGenName, fieldProperty, visited);
-                } else if (fieldProperty.getType().equals(JsonSchemaType.OBJECT)) {
-                    if (typeMappingService.isMap(fieldType)) {
-                        processMap(bootProp, fieldGenName, fieldProperty, visited);
-                    } else {
-                        try {
-                            if ((Class.forName(fieldType)).getTypeParameters().length > 0) {
-                                fieldProperty.setType(JsonSchemaType.OBJECT);
-                            } else {
-                                Map<String, JsonSchemaProperties> nestedProperties = processComplexType(fieldType, bootProp, visited);
-                                if (nestedProperties != null) {
-                                    fieldProperty.setType(JsonSchemaType.OBJECT);
-                                    fieldProperty.setProperties(nestedProperties);
-                                }
-                            }
-                        } catch (ClassNotFoundException e) {
-                            log.debug("Cannot find class for property type: {}, treating as object", fieldType);
-                            fieldProperty.setType(JsonSchemaType.OBJECT);
-                        }
-                    }
-                }
-                properties.put(toKebabCase(field.getName()), fieldProperty);
             }
         } catch (ClassNotFoundException e) {
             log.debug("Type not found: {}", type);

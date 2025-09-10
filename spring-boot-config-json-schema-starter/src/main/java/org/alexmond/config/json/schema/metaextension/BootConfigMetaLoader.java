@@ -19,7 +19,7 @@ import java.util.List;
 public class BootConfigMetaLoader {
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public BootConfigMeta loadFromStream(InputStream stream){
+    public BootConfigMeta loadFromStream(InputStream stream) {
         log.debug("Loading configuration from input stream");
         BootConfigMeta config = null;
         try {
@@ -58,35 +58,38 @@ public class BootConfigMetaLoader {
             }
         }
 
-            for (Group group : mergedConfig.getGroups()) {
-                    if (!propertyMap.containsKey(group.getName()) && !ignorelist.contains(group.getName())) {
-                        var groupProperty = new Property();
-                        groupProperty.mergeGroup(group);
-                        propertyMap.put(group.getName(), groupProperty);
-                        log.debug("Adding property {} to config {}", group.getName(), group.getName());
-                    } else if (ignorelist.contains(group.getName())) {
-                        log.warn("Ignored property name: {}", group.getName());
-                    } else {
-                        Property existing = propertyMap.get(group.getName());
-                        if (existing != null) {
-                            log.warn("Duplicate property name: {}, merging", group.getName());
-                            existing.mergeGroup(group);
-                            propertyMap.put(group.getName(), existing);
-                        }
-                    }
+        for (Group group : mergedConfig.getGroups()) {
+            if (ignorelist.contains(group.getName())) {
+                log.warn("Ignored property name: {}, skipping", group.getName());
+            } else if (group.getSourceMethod() != null) {
+                log.warn("Ignored group name: {}, group has SourceMethod", group.getName());
+            } else if (!propertyMap.containsKey(group.getName())) {
+                var groupProperty = new Property();
+                groupProperty.mergeGroup(group);
+                propertyMap.put(group.getName(), groupProperty);
+                log.debug("Adding property {} to config {}", group.getName(), group.getName());
+            } else {
+                Property existing = propertyMap.get(group.getName());
+                if (existing != null) {
+                    log.warn("Duplicate property name: {}, merging", group.getName());
+                    existing.mergeGroup(group);
+                    propertyMap.put(group.getName(), existing);
                 }
-
-                for (Hint hint : mergedConfig.getHints()) {
-                    if (propertyMap.containsKey(hint.getName())) {
-                        Property existing = propertyMap.get(hint.getName());
-                        existing.setHint(hint);
-                        propertyMap.put(hint.getName(), existing);
-                    } else {
-                        log.debug("Missing property name for a hint: {}", hint.getName());
-                    }
-                }
-                return propertyMap;
             }
-
-
         }
+
+
+        for (Hint hint : mergedConfig.getHints()) {
+            if (propertyMap.containsKey(hint.getName())) {
+                Property existing = propertyMap.get(hint.getName());
+                existing.setHint(hint);
+                propertyMap.put(hint.getName(), existing);
+            } else {
+                log.debug("Missing property name for a hint: {}", hint.getName());
+            }
+        }
+        return propertyMap;
+    }
+
+
+}

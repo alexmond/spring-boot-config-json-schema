@@ -91,7 +91,10 @@ public class JsonConfigSchemaConfig {
      * By default, includes ObjectMapper and ClassLoader classes to prevent processing of
      * system-level classes that aren't relevant to configuration.
      */
-    private List<String> excludeClasses = new ArrayList<>(List.of("com.fasterxml.jackson.databind.ObjectMapper", "java.lang.ClassLoader"));
+    private List<String> excludeClasses = new ArrayList<>(List.of(
+            "com.fasterxml.jackson.databind.ObjectMapper",
+            "java.lang.ClassLoader",
+            "org.springframework.boot.context.logging.LoggingApplicationListener"));
 
     /**
      * Additional class names to be excluded from schema generation.

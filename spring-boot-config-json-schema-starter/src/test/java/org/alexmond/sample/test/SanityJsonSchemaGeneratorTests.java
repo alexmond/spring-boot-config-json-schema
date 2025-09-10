@@ -79,7 +79,13 @@ class SanityJsonSchemaGeneratorTests {
         writer.writeValue(Paths.get("gen.json").toFile(), productSchema);
 
     }
-
-
-
+    @Test
+    void testFieldTypes() throws IOException {
+        Class<?> clazz = ConfigSample.class;
+        for (Field field : clazz.getDeclaredFields()) {
+            String fieldType = field.getType().getName();
+            String fieldGenName = field.getGenericType().getTypeName();
+            log.info("fieldType: {}, fieldGenName: {}", fieldType, fieldGenName);
+        }
+    }
 }

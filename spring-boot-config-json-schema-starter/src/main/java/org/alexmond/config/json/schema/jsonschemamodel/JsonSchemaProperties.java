@@ -22,6 +22,8 @@ import java.util.Map;
         "type", "format", "$ref",
         // Core metadata
         "title", "description", "$comment", "deprecated",
+        // Defaults
+        "default", "examples",
         // Validation constraints
         "const", "enum", "pattern",
         // Numeric constraints
@@ -36,9 +38,7 @@ import java.util.Map;
         // Conditional logic
         "if", "then", "else", "allOf", "anyOf", "oneOf", "not",
         // Content
-        "contentEncoding", "contentMediaType", "contentSchema",
-        // Miscellaneous
-        "default", "examples"
+        "contentEncoding", "contentMediaType", "contentSchema"
 })
 
 public class JsonSchemaProperties {

@@ -55,6 +55,7 @@ public class TypeMappingService {
 
             case "java.lang.Boolean":
             case "boolean":
+            case "java.util.concurrent.atomic.AtomicBoolean":
                 return JsonSchemaProperties.builder().type(JsonSchemaType.BOOLEAN).build();
 
             case "java.lang.Integer":
@@ -66,6 +67,8 @@ public class TypeMappingService {
             case "java.math.BigInteger":
             case "byte":
             case "java.lang.Byte":
+            case "java.util.concurrent.atomic.AtomicInteger":
+            case "java.util.concurrent.atomic.AtomicLong":
                 return JsonSchemaProperties.builder().type(JsonSchemaType.INTEGER).build();
 
             case "java.lang.Float":
