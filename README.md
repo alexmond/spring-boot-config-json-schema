@@ -22,15 +22,17 @@ subject: [Springboot Config Documentation, Two Ways With IntelliJ IDEA](https://
 Add the following dependency to your `pom.xml` when using the generator in tests:
 
 ```xml
-        <dependency>
-            <groupId>org.alexmond</groupId>
-            <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.8</version>
-            <scope>test</scope>
-        </dependency>
+
+<dependency>
+    <groupId>org.alexmond</groupId>
+    <artifactId>spring-boot-config-json-schema-starter</artifactId>
+    <version>0.0.8</version>
+    <scope>test</scope>
+</dependency>
 ```
 
 ```java title=SampleJsonSchemaGeneratorTests.java
+
 @SpringBootTest
 @Slf4j
 class SampleJsonSchemaGeneratorTests {
@@ -57,15 +59,20 @@ class SampleJsonSchemaGeneratorTests {
 
 To expose the JSON schema via a REST endpoint (similar to Swagger API docs), add the following dependency to your
 `pom.xml`:
+
 ```xml
-        <dependency>
-            <groupId>org.alexmond</groupId>
-            <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.8</version>
-        </dependency>
+
+<dependency>
+    <groupId>org.alexmond</groupId>
+    <artifactId>spring-boot-config-json-schema-starter</artifactId>
+    <version>0.0.8</version>
+</dependency>
 ```
+
 Then create a REST controller:
+
 ```java title=GenerateJsonSchema.java
+
 @RestController
 @Slf4j
 public class GenerateJsonSchema {
@@ -85,19 +92,25 @@ public class GenerateJsonSchema {
 
 }
 ```
+
 ### Using as Actuator Endpoint
 
 To expose the JSON schema via an Actuator endpoint, add the following dependency to your
 `pom.xml`:
+
 ```xml
-        <dependency>
-            <groupId>org.alexmond</groupId>
-            <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.8</version>
-        </dependency>
+
+<dependency>
+    <groupId>org.alexmond</groupId>
+    <artifactId>spring-boot-config-json-schema-starter</artifactId>
+    <version>0.0.8</version>
+</dependency>
 ```
+
 Then create Actuator endpoint:
+
 ```java title=ConfigSchemaEndpoint.java
+
 @Component
 @Endpoint(id = "config-schema")
 @RequiredArgsConstructor
@@ -111,7 +124,9 @@ public class ConfigSchemaEndpoint {
     }
 }
 ```
+
 ```java title=ConfigSchemaYamlEndpoint.java
+
 @Component
 @Endpoint(id = "config-schema.yaml")
 @RequiredArgsConstructor
@@ -126,8 +141,8 @@ public class ConfigSchemaYamlEndpoint {
 }
 ```
 
+enable it in application.yaml
 
-enable it in application.yaml 
 ```yaml
 management:
   endpoints:

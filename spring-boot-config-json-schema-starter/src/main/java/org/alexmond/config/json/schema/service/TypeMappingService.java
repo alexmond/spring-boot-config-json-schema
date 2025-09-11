@@ -1,11 +1,10 @@
-
 package org.alexmond.config.json.schema.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaFormat;
-import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.util.HashMap;
@@ -14,6 +13,11 @@ import java.util.Map;
 import java.util.Set;
 
 
+/**
+ * Service responsible for mapping Spring configuration property types to JSON Schema types.
+ * This service provides functionality to convert Java/Spring types into their corresponding
+ * JSON Schema property definitions, including type information and format specifications.
+ */
 @Slf4j
 public class TypeMappingService {
 
@@ -25,6 +29,13 @@ public class TypeMappingService {
         this.jsonConfigSchemaConfig = jsonConfigSchemaConfig;
     }
 
+    /**
+     * Maps a Spring configuration property type to a basic JSON Schema property definition.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @param prop       the configuration property metadata
+     * @return JsonSchemaProperties containing the basic type mapping
+     */
     public JsonSchemaProperties typeProp(String springType, Property prop) {
         log.debug("mapTypeProp({}, {})", springType, prop);
         JsonSchemaProperties jsonSchemaProperties;
@@ -74,7 +85,7 @@ public class TypeMappingService {
             case "java.lang.Float":
             case "float":
             case "double":
-            case "java.lang.Double": 
+            case "java.lang.Double":
             case "java.lang.Number":
             case "java.math.BigDecimal":
                 return JsonSchemaProperties.builder().type(JsonSchemaType.NUMBER).build();
@@ -101,7 +112,7 @@ public class TypeMappingService {
             if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
                 return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
             } else {
-                log.error("Missing primitive type {} for Property {}", springType,prop);
+                log.error("Missing primitive type {} for Property {}", springType, prop);
                 return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
             }
         } catch (ClassNotFoundException e) {
@@ -109,6 +120,14 @@ public class TypeMappingService {
         }
     }
 
+    /**
+     * Maps a Spring configuration property type to an advanced JSON Schema property definition.
+     * This method provides more detailed type mappings including formats and encodings.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @param prop       the configuration property metadata
+     * @return JsonSchemaProperties containing the advanced type mapping
+     */
     public JsonSchemaProperties typeAdvProp(String springType, Property prop) {
         log.debug("mapTypeProp({}, {})", springType, prop);
         JsonSchemaProperties jsonSchemaProperties;
@@ -278,9 +297,9 @@ public class TypeMappingService {
 
 
     private JsonSchemaProperties extendedTypeProp(String springType, Property prop) {
-        
+
         Map<String, JsonSchemaProperties> extendedTypeProps = new HashMap<>() {{
-            put("java.util.Locale",JsonSchemaProperties.builder().reference("#/$defs/Locales").build());
+            put("java.util.Locale", JsonSchemaProperties.builder().reference("#/$defs/Locales").build());
             put("java.nio.charset.Charset", JsonSchemaProperties.builder().reference("#/$defs/Charsets").build());
             put("logging.level", JsonSchemaProperties.builder().reference("#/$defs/loggerLevelProp").build());
             put("logging.threshold.console", JsonSchemaProperties.builder().reference("#/$defs/loggerLevel").build());
@@ -297,11 +316,11 @@ public class TypeMappingService {
             JsonSchemaProperties = jsonConfigSchemaConfig.getJsonSchemaPropertiesMap().get(springType);
             if (JsonSchemaProperties != null) return JsonSchemaProperties;
         }
-        if (prop != null){
+        if (prop != null) {
             JsonSchemaProperties = extendedTypeProps.get(prop.getName());
             if (JsonSchemaProperties != null) return JsonSchemaProperties;
         }
-        if (springType != null){
+        if (springType != null) {
             JsonSchemaProperties = extendedTypeProps.get(springType);
             return JsonSchemaProperties;
         }
@@ -309,12 +328,20 @@ public class TypeMappingService {
         return null;
     }
 
+    /**
+     * Checks if the given Spring type represents an array or collection.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @return true if the type is an array or collection, false otherwise
+     */
     public boolean isArray(String springType) {
         Class<?> clazz;
-        try{
-            if(springType.contains("[]")){return true;}
-            if(springType.contains("<")){
-                springType=springType.split("<")[0];
+        try {
+            if (springType.contains("[]")) {
+                return true;
+            }
+            if (springType.contains("<")) {
+                springType = springType.split("<")[0];
             }
             clazz = Class.forName(springType);
             if (List.class.isAssignableFrom(clazz)) {
@@ -329,10 +356,17 @@ public class TypeMappingService {
         }
         return false;
     }
+
+    /**
+     * Checks if the given Spring type represents a Map.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @return true if the type is a Map, false otherwise
+     */
     public boolean isMap(String springType) {
         try {
-            if(springType.contains("<")){
-                springType=springType.split("<")[0];
+            if (springType.contains("<")) {
+                springType = springType.split("<")[0];
             }
             Class<?> clazz = Class.forName(springType);
             if (Map.class.isAssignableFrom(clazz)) {
@@ -344,6 +378,12 @@ public class TypeMappingService {
         return false;
     }
 
+    /**
+     * Checks if the given Spring type represents an Enum.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @return true if the type is an Enum, false otherwise
+     */
     public boolean isEnum(String springType) {
         try {
             Class<?> clazz = Class.forName(springType);

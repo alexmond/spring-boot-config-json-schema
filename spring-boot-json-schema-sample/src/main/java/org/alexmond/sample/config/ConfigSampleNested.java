@@ -26,7 +26,7 @@ public class ConfigSampleNested {
 
     @Email
     private String emailValidTest = "abc@abc.com";
-    
+
     @URL
     private String urlTest = "http://localhost:8080";
 

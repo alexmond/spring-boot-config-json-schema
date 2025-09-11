@@ -1,20 +1,16 @@
 package org.alexmond.sample.test;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.config.json.schema.service.MissingTypeCollector;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.ValidationMessage;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -42,15 +38,15 @@ SimpleBootJsonSchemaGeneratorTests {
         var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
         var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
 
-            ObjectMapper jsonMapper = new ObjectMapper();
-            JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
-            JsonSchema schema = factory.getSchema(jsonConfigSchemaJson);
-            Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
-            if (!errors.isEmpty()) {
-                errors.forEach(error -> log.error("Schema validation error: {}", error));
-                throw new AssertionError("Schema validation failed");
-            }
-            log.info("Schema validation passed successfully");
+        ObjectMapper jsonMapper = new ObjectMapper();
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
+        JsonSchema schema = factory.getSchema(jsonConfigSchemaJson);
+        Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
+        if (!errors.isEmpty()) {
+            errors.forEach(error -> log.error("Schema validation error: {}", error));
+            throw new AssertionError("Schema validation failed");
+        }
+        log.info("Schema validation passed successfully");
 
         log.info("Writing json schema");
         Files.writeString(Paths.get("sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);

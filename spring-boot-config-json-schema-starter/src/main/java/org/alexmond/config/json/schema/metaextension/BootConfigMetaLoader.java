@@ -10,7 +10,10 @@ import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @NoArgsConstructor
 @Slf4j
@@ -61,7 +64,7 @@ public class BootConfigMetaLoader {
                 log.warn("Ignored property name: {}, skipping", group.getName());
 //            } else if (group.getSourceMethod() != null) {
 //                log.warn("Ignored group name: {}, group has SourceMethod", group.getName());
-            } else{
+            } else {
                 log.debug("Adding group property {} to config {}", group.getName(), group.getName());
                 Property groupProperty = propertyMap.get(group.getName());
                 if (groupProperty == null) {

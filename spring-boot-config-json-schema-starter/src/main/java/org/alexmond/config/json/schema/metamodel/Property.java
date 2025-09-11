@@ -37,7 +37,6 @@ public class Property {
         if (other.getDeprecation() != null) this.deprecation = other.getDeprecation();
         if (other.getHint() != null) this.hint = other.getHint();
     }
-    
-    
+
 
 }

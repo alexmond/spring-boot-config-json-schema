@@ -1,4 +1,3 @@
-
 [#_spring_boot_config_json_schema_generator]
 = Spring Boot Config JSON Schema Generator
 Alex Mondshain <alex.mondshaing@gmail.com>
@@ -147,7 +146,9 @@ To expose the JSON schema via an Actuator endpoint, first add the following depe
     <version>{project-version}</version>
 </dependency>
 ----
+
 ==== In JSON format
+
 .ConfigSchemaEndpoint.java
 [source,java]
 ----
@@ -166,6 +167,7 @@ public class ConfigSchemaEndpoint {
 ----
 
 ==== In YAML format
+
 .ConfigSchemaYamlEndpoint.java
 [source,java]
 ----
@@ -182,7 +184,6 @@ public class ConfigSchemaYamlEndpoint {
     }
 }
 ----
-
 
 [#editors]
 == Using in editors

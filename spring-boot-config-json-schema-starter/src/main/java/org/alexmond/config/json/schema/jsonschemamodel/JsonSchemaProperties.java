@@ -1,6 +1,9 @@
 package org.alexmond.config.json.schema.jsonschemamodel;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -34,7 +37,7 @@ import java.util.Map;
         "minItems", "maxItems", "uniqueItems", "prefixItems", "contains", "minContains", "maxContains",
         // Object constraints
         "properties", "patternProperties", "propertyNames", "required", "minProperties", "maxProperties",
-        "dependentRequired", "dependentSchemas","additionalProperties",
+        "dependentRequired", "dependentSchemas", "additionalProperties",
         // Conditional logic
         "if", "then", "else", "allOf", "anyOf", "oneOf", "not",
         // Content
@@ -42,6 +45,8 @@ import java.util.Map;
 })
 
 public class JsonSchemaProperties {
+    @JsonIgnore
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     private JsonSchemaType type;
     private String description;
     private String pattern;
@@ -65,7 +70,6 @@ public class JsonSchemaProperties {
     private List<String> examples;
     @Valid
     private Map<String, JsonSchemaProperties> properties;
-
     // NEW: Core properties
     private String title;
     @JsonProperty("$comment")
@@ -73,10 +77,8 @@ public class JsonSchemaProperties {
     private Object constValue; // Single allowed value
     private Boolean readOnly;
     private Boolean writeOnly;
-
     // NEW: Numeric properties
     private Number multipleOf;
-
     // NEW: Array properties
     private Integer minItems;
     private Integer maxItems;
@@ -86,7 +88,6 @@ public class JsonSchemaProperties {
     private JsonSchemaProperties contains;
     private Integer minContains;
     private Integer maxContains;
-
     // NEW: Object properties
     private Integer minProperties;
     private Integer maxProperties;
@@ -99,8 +100,6 @@ public class JsonSchemaProperties {
     private JsonSchemaProperties propertyNames;
     @JsonProperty("additionalProperties")
     private Object additionalProperties;
-
-
     // NEW: Conditional logic
     @JsonProperty("if")
     @Valid
@@ -115,22 +114,15 @@ public class JsonSchemaProperties {
     private List<JsonSchemaProperties> anyOf;
     private List<JsonSchemaProperties> oneOf;
     private JsonSchemaProperties not;
-
     // NEW: String content
     private String contentEncoding;
     private String contentMediaType;
     private JsonSchemaProperties contentSchema;
-
     // Extensions
     @JsonProperty("x-deprecation")
     private XDeprecation xDeprecation;
     @JsonProperty("x-intellij-html-description")
     private String htmlDescription;
-    
-    
-
-    @JsonIgnore
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public Map<String, Object> toMap() {
         return objectMapper.convertValue(this, Map.class);

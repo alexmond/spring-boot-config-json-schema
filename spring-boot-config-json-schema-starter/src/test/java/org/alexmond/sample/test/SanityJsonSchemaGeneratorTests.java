@@ -1,35 +1,29 @@
 package org.alexmond.sample.test;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
 import lombok.extern.slf4j.Slf4j;
-import org.alexmond.config.json.schema.metamodel.Ignored;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.alexmond.config.json.schema.service.JsonSchemaBuilder;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.config.json.schema.service.MissingTypeCollector;
 import org.alexmond.sample.test.config.ConfigSample;
 import org.alexmond.sample.test.config.EnumSample;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.charset.Charset;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -87,7 +81,7 @@ class SanityJsonSchemaGeneratorTests {
 //            log.info("fieldType: {}, fieldGenName: {}", fieldType, fieldGenName);
 //        }
 //    }
-    
+
     @Test
     void generateSchema() throws Exception {
         String jsonConfigSchema;

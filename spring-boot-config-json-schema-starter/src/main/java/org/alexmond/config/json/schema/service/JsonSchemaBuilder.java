@@ -1,4 +1,3 @@
-
 package org.alexmond.config.json.schema.service;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,8 +9,6 @@ import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaRoot;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.util.ReflectionUtils;
 
@@ -22,6 +19,10 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.text.CaseUtils.toCamelCase;
 
+/**
+ * Builder class responsible for generating JSON Schema definitions from Spring configuration metadata.
+ * Handles type mapping, property validation, and schema structure generation according to configured rules.
+ */
 @Slf4j
 public class JsonSchemaBuilder {
 
@@ -38,6 +39,13 @@ public class JsonSchemaBuilder {
         helper = new JsonSchemaBuilderHelper(config, typeMappingService);
     }
 
+    /**
+     * Builds a complete JSON Schema from the provided configuration metadata.
+     *
+     * @param meta     Map of property metadata keyed by property path
+     * @param included List of property paths to include in the schema
+     * @return Map representing the complete JSON Schema structure
+     */
     public Map<String, Object> buildSchema(Map<String, Property> meta, List<String> included) {
         log.info("Starting JSON schema generation");
         JsonSchemaRoot schemaRoot = JsonSchemaRoot.builder()
@@ -68,6 +76,11 @@ public class JsonSchemaBuilder {
         return schemaRoot.toMap();
     }
 
+    /**
+     * Creates standard schema definitions for common types like logger levels, locales, and charsets.
+     *
+     * @return Map of named schema definitions
+     */
     private Map<String, JsonSchemaProperties> getDefinitions() {
 
         Map<String, JsonSchemaProperties> definitions = new LinkedHashMap<>();
@@ -121,6 +134,14 @@ public class JsonSchemaBuilder {
     }
 
 
+    /**
+     * Recursively adds a property to the schema tree following the property path.
+     *
+     * @param node Current node in the schema tree
+     * @param path Array of path segments to the property
+     * @param idx  Current index in the path array
+     * @param prop Property metadata to add
+     */
     private void addProperty(Map<String, JsonSchemaProperties> node, String[] path, int idx, Property prop) {
         log.debug("Processing property at path: {}, index: {}", String.join(".", path), idx);
 
@@ -157,6 +178,13 @@ public class JsonSchemaBuilder {
      * Ensures that `node` contains an OBJECT-typed JsonSchemaProperties under `key`
      * with a non-null, mutable `properties` map, and returns that map.
      */
+    /**
+     * Ensures that a node exists at the given key and has the correct structure for an object type.
+     *
+     * @param node Parent node to check/update
+     * @param key  Key where the object node should exist
+     * @return Properties map of the ensured object node
+     */
     private Map<String, JsonSchemaProperties> ensureObjectNode(Map<String, JsonSchemaProperties> node, String key) {
         JsonSchemaProperties propNode = node.get(key);
         if (propNode == null) {
@@ -178,6 +206,14 @@ public class JsonSchemaBuilder {
     }
 
 
+    /**
+     * Processes a leaf property, handling type mapping, validation rules, and nested type definitions.
+     *
+     * @param jsonSchemaProperties Schema properties to update
+     * @param prop                 Property metadata to process
+     * @param visited              Set of already processed types to prevent cycles
+     * @return True if property was processed successfully, false otherwise
+     */
     private Boolean processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop, Set<String> visited) {
         String propType;
         Class<?> clazz;
@@ -530,7 +566,7 @@ public class JsonSchemaBuilder {
 //        return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
 //    }
 
-    public  String toKebabCase(String input) {
+    public String toKebabCase(String input) {
         if (input == null) return null;
 
         // Split on underscores, process each segment separately, then join back with "_"

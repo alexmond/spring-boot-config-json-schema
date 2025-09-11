@@ -3,14 +3,12 @@ package org.alexmond.config.json.schema.jsonschemamodel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -20,6 +18,8 @@ import java.util.TreeMap;
 @AllArgsConstructor
 @JsonPropertyOrder({"schema", "id", "title", "description", "type", "definitions", "properties"})
 public class JsonSchemaRoot {
+    @JsonIgnore
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     @JsonProperty("$schema")
     private String schema = "https://json-schema.org/draft/2020-12/schema";
     @JsonProperty("$id")
@@ -32,9 +32,6 @@ public class JsonSchemaRoot {
     private Map<String, JsonSchemaProperties> properties = new TreeMap<>();
     @JsonProperty("additionalProperties")
     private Object additionalProperties;
-
-    @JsonIgnore
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public Map<String, Object> toMap() {
         return objectMapper.convertValue(this, Map.class);

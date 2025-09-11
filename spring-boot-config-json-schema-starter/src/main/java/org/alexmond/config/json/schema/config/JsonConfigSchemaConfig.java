@@ -56,7 +56,7 @@ public class JsonConfigSchemaConfig {
      * Controls whether OpenAPI annotations should be processed.
      * When true, OpenAPI annotations will be used to enhance the schema.
      */
-    @Schema(description = "Enable OpenAPI annotations processing", defaultValue = "true" )
+    @Schema(description = "Enable OpenAPI annotations processing", defaultValue = "true")
     private boolean useOpenapi = true;
     /**
      * Controls whether validation annotations should be processed.
@@ -77,7 +77,7 @@ public class JsonConfigSchemaConfig {
      * List of additional configuration property paths to include in the schema.
      * By default, it includes the 'logging' configuration namespace.
      */
-    @Schema(description = "List of additional property paths to include",defaultValue = "logging")
+    @Schema(description = "List of additional property paths to include", defaultValue = "logging")
     private List<String> additionalProperties = List.of("logging");
 
 

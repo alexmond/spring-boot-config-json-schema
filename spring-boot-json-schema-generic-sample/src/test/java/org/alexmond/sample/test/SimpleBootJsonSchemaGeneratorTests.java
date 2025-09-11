@@ -1,9 +1,5 @@
 package org.alexmond.sample.test;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.config.json.schema.service.MissingTypeCollector;
@@ -37,8 +33,6 @@ SimpleBootJsonSchemaGeneratorTests {
         log.info("Writing yaml schema");
         Files.writeString(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
     }
-    
-    
 
 
 }
