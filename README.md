@@ -41,19 +41,13 @@ class SampleJsonSchemaGeneratorTests {
     @Test
     void generateJsonSchema() throws Exception {
 
-            String jsonConfigSchema;
-            jsonConfigSchema = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
+        log.info("Writing json schema");
+        Files.writeString(Paths.get("config-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
-            ObjectMapper jsonMapper = new ObjectMapper();
-            ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing json schema");
-            jsonWriter.writeValue(Paths.get("sample-schema.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
-
-
-            ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-            ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing yaml schema");
-            yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
+        log.info("Writing yaml schema");
+        Files.writeString(Paths.get("config-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
     }
 
 }
@@ -84,6 +78,11 @@ public class GenerateJsonSchema {
         return jsonSchemaService.generateFullSchema();
     }
 
+    @GetMapping("/config-schema.yaml")
+    public String getConfigSchemaYaml() throws Exception {
+        return jsonSchemaService.generateFullSchemaYaml();
+    }
+
 }
 ```
 ### Using as Actuator Endpoint
@@ -112,6 +111,21 @@ public class ConfigSchemaEndpoint {
     }
 }
 ```
+```java title=ConfigSchemaYamlEndpoint.java
+@Component
+@Endpoint(id = "config-schema.yaml")
+@RequiredArgsConstructor
+public class ConfigSchemaYamlEndpoint {
+
+    private final JsonSchemaService jsonSchemaService;
+
+    @ReadOperation
+    public String schema() throws Exception {
+        return jsonSchemaService.generateFullSchemaYaml();
+    }
+}
+```
+
 
 enable it in application.yaml 
 ```yaml
