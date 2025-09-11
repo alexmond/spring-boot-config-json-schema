@@ -1252,6 +1252,9 @@ properties:
         type: "array"
         items:
           type: "string"
+      allow-additional-properties:
+        type: "boolean"
+        description: "Allow additional properties not defined in schema"
       description:
         type: "string"
         description: "Schema description"
@@ -1269,49 +1272,40 @@ properties:
         properties:
           additional-properties:
             type: "object"
-            properties: {}
           all-of:
             type: "array"
             items:
               type: "object"
-              properties: {}
           any-of:
             type: "array"
             items:
               type: "object"
-              properties: {}
           comment:
             type: "string"
           const-value:
             type: "object"
-            properties: {}
           contains:
             type: "object"
-            properties: {}
           content-encoding:
             type: "string"
           content-media-type:
             type: "string"
           content-schema:
             type: "object"
-            properties: {}
           default-value:
             type: "object"
-            properties: {}
           dependent-required:
             type: "object"
             additionalProperties:
               type: "object"
           dependent-schemas:
             type: "object"
-            properties: {}
           deprecated:
             type: "boolean"
           description:
             type: "string"
           else-schema:
             type: "object"
-            properties: {}
           enum-values:
             type: "array"
             items:
@@ -1365,10 +1359,8 @@ properties:
             type: "string"
           if-schema:
             type: "object"
-            properties: {}
           items:
             type: "object"
-            properties: {}
           max-contains:
             type: "integer"
           max-items:
@@ -1393,28 +1385,22 @@ properties:
             type: "number"
           not:
             type: "object"
-            properties: {}
           one-of:
             type: "array"
             items:
               type: "object"
-              properties: {}
           pattern:
             type: "string"
           pattern-properties:
             type: "object"
-            properties: {}
           prefix-items:
             type: "array"
             items:
               type: "object"
-              properties: {}
           properties:
             type: "object"
-            properties: {}
           property-names:
             type: "object"
-            properties: {}
           read-only:
             type: "boolean"
           reference:
@@ -1425,7 +1411,6 @@ properties:
               type: "string"
           then-schema:
             type: "object"
-            properties: {}
           title:
             type: "string"
           type:
@@ -1504,6 +1489,7 @@ properties:
         description: "Conversion word used when logging exceptions."
         default: "%wEx"
       file:
+        type: "object"
         properties:
           clean-history-on-start:
             type: "boolean"
@@ -1600,7 +1586,6 @@ properties:
                 type: "string"
                 description: "Total size of log backups to be kept."
                 default: "0B"
-      path: {}
       pattern:
         type: "object"
         properties:
@@ -1791,7 +1776,7 @@ properties:
           health:
             type: "object"
             properties:
-              empty_path:
+              e-m-p-t-y_p-a-t-h:
                 type: "array"
                 items:
                   type: "string"
@@ -1817,9 +1802,9 @@ properties:
                     type: "array"
                     items:
                       type: "string"
-                  management_prefix:
+                  m-a-n-a-g-e-m-e-n-t_p-r-e-f-i-x:
                     type: "string"
-                  server_prefix:
+                  s-e-r-v-e-r_p-r-e-f-i-x:
                     type: "string"
                   show-details:
                     type: "string"
@@ -1830,7 +1815,7 @@ properties:
                     - "when_authorized"
                     - "ALWAYS"
                     - "always"
-              id:
+              i-d:
                 type: "object"
                 properties:
                   logged-warnings:
@@ -1839,47 +1824,45 @@ properties:
                       type: "string"
                   logger:
                     type: "object"
-                    properties: {}
                   lower-case-alpha-numeric:
                     type: "string"
                   lower-case-value:
                     type: "string"
-                  migrate_legacy_names_property:
+                  m-i-g-r-a-t-e_l-e-g-a-c-y_n-a-m-e-s_p-r-o-p-e-r-t-y:
                     type: "string"
-                  valid_pattern:
+                  v-a-l-i-d_p-a-t-t-e-r-n:
                     type: "object"
                     properties:
                       $assertions-disabled:
                         type: "boolean"
+                      a-l-l_f-l-a-g-s:
+                        type: "integer"
                       accept:
                         type: "object"
                         properties:
                           next:
                             type: "object"
-                            properties: {}
-                      all_flags:
-                        type: "integer"
                       buffer:
                         type: "array"
                         items:
                           type: "object"
-                      canon_eq:
+                      c-a-n-o-n_e-q:
+                        type: "integer"
+                      c-a-s-e_i-n-s-e-n-s-i-t-i-v-e:
+                        type: "integer"
+                      c-o-m-m-e-n-t-s:
                         type: "integer"
                       capturing-group-count:
-                        type: "integer"
-                      case_insensitive:
-                        type: "integer"
-                      comments:
                         type: "integer"
                       compiled:
                         type: "boolean"
                       cursor:
                         type: "integer"
-                      dotall:
+                      d-o-t-a-l-l:
                         type: "integer"
                       flags:
                         type: "integer"
-                      flags0:
+                      flags-0:
                         type: "integer"
                       group-nodes:
                         type: "array"
@@ -1889,28 +1872,26 @@ properties:
                         type: "boolean"
                       has-supplementary:
                         type: "boolean"
+                      l-i-t-e-r-a-l:
+                        type: "integer"
                       last-accept:
                         type: "object"
                         properties:
                           next:
                             type: "object"
-                            properties: {}
-                      literal:
-                        type: "integer"
                       local-count:
                         type: "integer"
-                      local-tcncount:
+                      local-t-c-n-count:
+                        type: "integer"
+                      m-a-x_r-e-p-s:
+                        type: "integer"
+                      m-u-l-t-i-l-i-n-e:
                         type: "integer"
                       match-root:
                         type: "object"
                         properties:
                           next:
                             type: "object"
-                            properties: {}
-                      max_reps:
-                        type: "integer"
-                      multiline:
-                        type: "integer"
                       named-groups:
                         type: "object"
                         additionalProperties:
@@ -1923,14 +1904,12 @@ properties:
                         type: "integer"
                       predicate:
                         type: "object"
-                        properties: {}
                       root:
                         type: "object"
                         properties:
                           next:
                             type: "object"
-                            properties: {}
-                      serial-version-uid:
+                      serial-version-u-i-d:
                         type: "integer"
                       temp:
                         type: "array"
@@ -1943,49 +1922,47 @@ properties:
                           properties:
                             next:
                               type: "object"
-                              properties: {}
-                      unicode_case:
+                      u-n-i-c-o-d-e_c-a-s-e:
                         type: "integer"
-                      unicode_character_class:
+                      u-n-i-c-o-d-e_c-h-a-r-a-c-t-e-r_c-l-a-s-s:
                         type: "integer"
-                      unix_lines:
+                      u-n-i-x_l-i-n-e-s:
                         type: "integer"
                   value:
                     type: "string"
-                  warning_pattern:
+                  w-a-r-n-i-n-g_p-a-t-t-e-r-n:
                     type: "object"
                     properties:
                       $assertions-disabled:
                         type: "boolean"
+                      a-l-l_f-l-a-g-s:
+                        type: "integer"
                       accept:
                         type: "object"
                         properties:
                           next:
                             type: "object"
-                            properties: {}
-                      all_flags:
-                        type: "integer"
                       buffer:
                         type: "array"
                         items:
                           type: "object"
-                      canon_eq:
+                      c-a-n-o-n_e-q:
+                        type: "integer"
+                      c-a-s-e_i-n-s-e-n-s-i-t-i-v-e:
+                        type: "integer"
+                      c-o-m-m-e-n-t-s:
                         type: "integer"
                       capturing-group-count:
-                        type: "integer"
-                      case_insensitive:
-                        type: "integer"
-                      comments:
                         type: "integer"
                       compiled:
                         type: "boolean"
                       cursor:
                         type: "integer"
-                      dotall:
+                      d-o-t-a-l-l:
                         type: "integer"
                       flags:
                         type: "integer"
-                      flags0:
+                      flags-0:
                         type: "integer"
                       group-nodes:
                         type: "array"
@@ -1995,28 +1972,26 @@ properties:
                         type: "boolean"
                       has-supplementary:
                         type: "boolean"
+                      l-i-t-e-r-a-l:
+                        type: "integer"
                       last-accept:
                         type: "object"
                         properties:
                           next:
                             type: "object"
-                            properties: {}
-                      literal:
-                        type: "integer"
                       local-count:
                         type: "integer"
-                      local-tcncount:
+                      local-t-c-n-count:
+                        type: "integer"
+                      m-a-x_r-e-p-s:
+                        type: "integer"
+                      m-u-l-t-i-l-i-n-e:
                         type: "integer"
                       match-root:
                         type: "object"
                         properties:
                           next:
                             type: "object"
-                            properties: {}
-                      max_reps:
-                        type: "integer"
-                      multiline:
-                        type: "integer"
                       named-groups:
                         type: "object"
                         additionalProperties:
@@ -2029,14 +2004,12 @@ properties:
                         type: "integer"
                       predicate:
                         type: "object"
-                        properties: {}
                       root:
                         type: "object"
                         properties:
                           next:
                             type: "object"
-                            properties: {}
-                      serial-version-uid:
+                      serial-version-u-i-d:
                         type: "integer"
                       temp:
                         type: "array"
@@ -2049,12 +2022,11 @@ properties:
                           properties:
                             next:
                               type: "object"
-                              properties: {}
-                      unicode_case:
+                      u-n-i-c-o-d-e_c-a-s-e:
                         type: "integer"
-                      unicode_character_class:
+                      u-n-i-c-o-d-e_c-h-a-r-a-c-t-e-r_c-l-a-s-s:
                         type: "integer"
-                      unix_lines:
+                      u-n-i-x_l-i-n-e-s:
                         type: "integer"
               logging:
                 type: "object"
@@ -2231,12 +2203,12 @@ properties:
               mode:
                 type: "string"
                 description: "Mode to use to expose git information."
+                default: "simple"
                 enum:
                 - "FULL"
                 - "full"
                 - "SIMPLE"
                 - "simple"
-                default: "simple"
           java:
             type: "object"
             properties:
@@ -2268,25 +2240,6 @@ properties:
       metrics:
         type: "object"
         properties:
-          binders:
-            type: "object"
-            properties:
-              files:
-                type: "object"
-                properties:
-                  enabled: {}
-              jvm:
-                type: "object"
-                properties:
-                  enabled: {}
-              logback:
-                type: "object"
-                properties:
-                  enabled: {}
-              uptime:
-                type: "object"
-                properties:
-                  enabled: {}
           data:
             type: "object"
             properties:
@@ -2369,232 +2322,15 @@ properties:
               \ to configure all meters."
             additionalProperties:
               type: "boolean"
-          export:
-            type: "object"
-            properties:
-              appoptics:
-                type: "object"
-                properties:
-                  api-token: {}
-                  batch-size: {}
-                  enabled: {}
-                  floor-times: {}
-                  num-threads: {}
-                  step: {}
-                  uri: {}
-              atlas:
-                type: "object"
-                properties:
-                  batch-size: {}
-                  config-time-to-live: {}
-                  config-uri: {}
-                  enabled: {}
-                  eval-uri: {}
-                  meter-time-to-live: {}
-                  num-threads: {}
-                  read-timeout: {}
-                  step: {}
-                  uri: {}
-              datadog:
-                type: "object"
-                properties:
-                  api-key: {}
-                  batch-size: {}
-                  descriptions: {}
-                  enabled: {}
-                  host-tag: {}
-                  num-threads: {}
-                  step: {}
-                  uri: {}
-              defaults:
-                type: "object"
-                properties:
-                  enabled: {}
-              dynatrace:
-                type: "object"
-                properties:
-                  batch-size: {}
-                  device-id: {}
-                  enabled: {}
-                  group: {}
-                  read-timeout: {}
-                  uri: {}
-                  v1:
-                    type: "object"
-                    properties:
-                      device-id: {}
-                      group: {}
-                      technology-type: {}
-                  v2:
-                    type: "object"
-                    properties:
-                      default-dimensions: {}
-                      enrich-with-dynatrace-metadata: {}
-                      metric-key-prefix: {}
-              elastic:
-                type: "object"
-                properties:
-                  api-key-credentials: {}
-                  enabled: {}
-                  host: {}
-                  index: {}
-                  index-date-separator: {}
-                  num-threads: {}
-                  read-timeout: {}
-                  step: {}
-                  timestamp-field-name: {}
-              ganglia:
-                type: "object"
-                properties:
-                  duration-units: {}
-                  host: {}
-                  rate-units: {}
-                  time-to-live: {}
-              graphite:
-                type: "object"
-                properties:
-                  duration-units: {}
-                  enabled: {}
-                  graphite-tags-enabled: {}
-                  port: {}
-                  protocol: {}
-                  step: {}
-              humio:
-                type: "object"
-                properties:
-                  api-token: {}
-                  batch-size: {}
-                  connect-timeout: {}
-                  enabled: {}
-                  num-threads: {}
-                  read-timeout: {}
-                  step: {}
-                  tags: {}
-                  uri: {}
-              influx:
-                type: "object"
-                properties:
-                  api-version: {}
-                  auto-create-db: {}
-                  batch-size: {}
-                  bucket: {}
-                  compressed: {}
-                  connect-timeout: {}
-                  org: {}
-                  password: {}
-                  read-timeout: {}
-                  retention-duration: {}
-                  step: {}
-                  token: {}
-                  uri: {}
-                  user-name: {}
-              jmx:
-                type: "object"
-                properties:
-                  domain: {}
-              kairos:
-                type: "object"
-                properties:
-                  batch-size: {}
-                  connect-timeout: {}
-                  num-threads: {}
-                  password: {}
-                  step: {}
-                  uri: {}
-              newrelic:
-                type: "object"
-                properties:
-                  account-id: {}
-                  api-key: {}
-                  batch-size: {}
-                  client-provider-type: {}
-                  connect-timeout: {}
-                  event-type: {}
-                  num-threads: {}
-                  read-timeout: {}
-                  step: {}
-              prometheus:
-                type: "object"
-                properties:
-                  descriptions: {}
-                  enabled: {}
-                  histogram-flavor: {}
-                  pushgateway:
-                    type: "object"
-                    properties:
-                      base-url: {}
-                      grouping-key: {}
-                      push-rate: {}
-                      shutdown-operation: {}
-                      username: {}
-                  step: {}
-              signalfx:
-                type: "object"
-                properties:
-                  access-token: {}
-                  batch-size: {}
-                  enabled: {}
-                  published-histogram-type: {}
-                  read-timeout: {}
-                  source: {}
-                  step: {}
-                  uri: {}
-              simple:
-                type: "object"
-                properties:
-                  enabled: {}
-                  mode: {}
-              stackdriver:
-                type: "object"
-                properties:
-                  batch-size: {}
-                  connect-timeout: {}
-                  num-threads: {}
-                  project-id: {}
-                  resource-type: {}
-                  use-semantic-metric-types: {}
-              statsd:
-                type: "object"
-                properties:
-                  flavor: {}
-                  host: {}
-                  polling-frequency: {}
-                  port: {}
-                  publish-unchanged-meters: {}
-                  queue-size: {}
-              wavefront:
-                type: "object"
-                properties:
-                  api-token: {}
-                  connect-timeout: {}
-                  enabled: {}
-                  num-threads: {}
-                  sender:
-                    type: "object"
-                    properties:
-                      max-queue-size: {}
-                      message-size: {}
-                  source: {}
-                  uri: {}
-          graphql:
-            type: "object"
-            properties:
-              autotime:
-                type: "object"
-                properties:
-                  enabled: {}
-                  percentiles-histogram: {}
           mongo:
             type: "object"
             properties:
               command:
                 type: "object"
-                properties:
-                  enabled: {}
+                properties: {}
               connectionpool:
                 type: "object"
-                properties:
-                  enabled: {}
+                properties: {}
           system:
             type: "object"
             properties:
@@ -2627,38 +2363,15 @@ properties:
                       \ After the max number of tag values is reached, metrics with\
                       \ additional tag values are denied by filter."
                     default: 100
-                  request:
-                    type: "object"
-                    properties:
-                      autotime:
-                        type: "object"
-                        properties:
-                          enabled: {}
-                          percentiles: {}
-                          percentiles-histogram: {}
-                      metric-name: {}
-                  requests-metric-name: {}
               server:
                 type: "object"
                 properties:
-                  auto-time-requests: {}
                   max-uri-tags:
                     type: "integer"
                     description: "Maximum number of unique URI tag values allowed.\
                       \ After the max number of tag values is reached, metrics with\
                       \ additional tag values are denied by filter."
                     default: 100
-                  request:
-                    type: "object"
-                    properties:
-                      autotime:
-                        type: "object"
-                        properties:
-                          enabled: {}
-                          percentiles: {}
-                      ignore-trailing-slash: {}
-                      metric-name: {}
-                  requests-metric-name: {}
       observations:
         type: "object"
         properties:
@@ -2736,10 +2449,6 @@ properties:
             description: "Management endpoint HTTP port (uses the same port as the\
               \ application by default). Configure a different port to use management-specific\
               \ SSL."
-          servlet:
-            type: "object"
-            properties:
-              context-path: {}
           ssl:
             type: "object"
             properties:
@@ -2861,12 +2570,12 @@ properties:
                   mode:
                     type: "string"
                     description: "Counting mode."
+                    default: "cumulative"
                     enum:
                     - "CUMULATIVE"
                     - "cumulative"
                     - "STEP"
                     - "step"
-                    default: "cumulative"
                   step:
                     type: "string"
       tracing:
@@ -2954,7 +2663,7 @@ properties:
         - "framework"
         - "NONE"
         - "none"
-      http2:
+      http-2:
         type: "object"
         properties:
           enabled:
@@ -2971,7 +2680,6 @@ properties:
                 type: "string"
               enabled:
                 type: "boolean"
-              extended-format: {}
               file-date-format:
                 type: "string"
               filename:
@@ -2987,7 +2695,6 @@ properties:
                 type: "array"
                 items:
                   type: "string"
-              locale: {}
               retention-period:
                 type: "integer"
           connection-idle-timeout:
@@ -2998,7 +2705,6 @@ properties:
             type: "integer"
           max-http-form-post-size:
             type: "string"
-          max-http-post-size: {}
           max-http-response-header-size:
             type: "string"
           threads:
@@ -3027,9 +2733,8 @@ properties:
       mime-mappings:
         type: "object"
         properties:
-          default:
+          d-e-f-a-u-l-t:
             type: "object"
-            properties: {}
           map:
             type: "object"
             properties:
@@ -3042,7 +2747,7 @@ properties:
         properties:
           connection-timeout:
             type: "string"
-          h2c-max-content-length:
+          h-2-c-max-content-length:
             type: "string"
           idle-timeout:
             type: "string"
@@ -3050,7 +2755,6 @@ properties:
             type: "string"
             description: "Initial buffer size for HTTP request decoding."
             default: "128B"
-          max-chunk-size: {}
           max-initial-line-length:
             type: "string"
           max-keep-alive-requests:
@@ -3130,7 +2834,7 @@ properties:
             properties:
               charset:
                 $ref: "#/$defs/Charsets"
-              default_charset:
+              d-e-f-a-u-l-t_c-h-a-r-s-e-t:
                 $ref: "#/$defs/Charsets"
               force:
                 type: "boolean"
@@ -3298,7 +3002,7 @@ properties:
                 type: "string"
                 description: "Date format to place in the log file name."
                 default: ".yyyy-MM-dd"
-              ipv6canonical:
+              ipv-6-canonical:
                 type: "boolean"
               locale:
                 type: "string"
@@ -3334,7 +3038,6 @@ properties:
             type: "integer"
           max-http-form-post-size:
             type: "string"
-          max-http-post-size: {}
           max-http-response-header-size:
             type: "string"
           max-keep-alive-requests:
@@ -3361,7 +3064,6 @@ properties:
             type: "integer"
           redirect-context-root:
             type: "boolean"
-          reject-illegal-header: {}
           relaxed-path-chars:
             type: "array"
             items:
@@ -3537,22 +3239,22 @@ properties:
           config:
             type: "object"
             properties:
-              authorization:
+              a-u-t-h-o-r-i-z-a-t-i-o-n:
+                type: "string"
+              c-o-n-f-i-g_d-i-s-c-o-v-e-r-y_e-n-a-b-l-e-d:
                 type: "string"
               charset:
                 $ref: "#/$defs/Charsets"
                 description: "The charset to read the resource from the config server."
                 default: "UTF-8"
-              config_discovery_enabled:
+              d-e-f-a-u-l-t_a-p-p-l-i-c-a-t-i-o-n:
                 type: "string"
-              default_application:
-                type: "string"
-              default_profile:
+              d-e-f-a-u-l-t_p-r-o-f-i-l-e:
                 type: "string"
               discovery:
                 type: "object"
                 properties:
-                  default_config_server:
+                  d-e-f-a-u-l-t_c-o-n-f-i-g_s-e-r-v-e-r:
                     type: "string"
                   enabled:
                     type: "boolean"
@@ -3592,17 +3294,17 @@ properties:
                 description: "The strategy to use when call to server fails and there\
                   \ are multiple URLs configured on the uri property (default {@link\
                   \ MultipleUriStrategy#ALWAYS})."
+                default: "always"
                 enum:
                 - "ALWAYS"
                 - "always"
                 - "CONNECTION_TIMEOUT_ONLY"
                 - "connection_timeout_only"
-                default: "always"
+              n-a-m-e_p-l-a-c-e-h-o-l-d-e-r:
+                type: "string"
               name:
                 type: "string"
                 description: "Name of application used to fetch remote properties."
-              name_placeholder:
-                type: "string"
               override-none:
                 type: "boolean"
                 description: "Flag to indicate that when {@link #setAllowOverride(boolean)\
@@ -3611,12 +3313,12 @@ properties:
                   \ (including local config files). Default false. This will only\
                   \ have an effect when using config first bootstrap."
                 default: false
+              p-r-e-f-i-x:
+                type: "string"
               password:
                 type: "string"
                 description: "The password to use (HTTP Basic) when contacting the\
                   \ remote server."
-              prefix:
-                type: "string"
               profile:
                 type: "string"
                 description: "The default profile to use when fetching remote configuration\
@@ -3645,10 +3347,12 @@ properties:
                     default: 2000
                   multiplier:
                     type: "number"
-                  prefix:
+                  p-r-e-f-i-x:
                     type: "string"
                   use-random-policy:
                     type: "boolean"
+              s-t-a-t-e_h-e-a-d-e-r:
+                type: "string"
               send-all-labels:
                 type: "boolean"
                 description: "If set to true the client will send all labels to the\
@@ -3659,20 +3363,20 @@ properties:
                 type: "boolean"
                 description: "Flag to indicate whether to send state. Default true."
                 default: true
-              state_header:
+              t-o-k-e-n_h-e-a-d-e-r:
                 type: "string"
               tls:
                 type: "object"
                 description: "TLS properties."
                 properties:
-                  default_store_type:
+                  d-e-f-a-u-l-t_s-t-o-r-e_t-y-p-e:
                     type: "string"
-                  enabled:
-                    type: "boolean"
-                  extension_store_types:
+                  e-x-t-e-n-s-i-o-n_s-t-o-r-e_t-y-p-e-s:
                     type: "object"
                     additionalProperties:
                       type: "string"
+                  enabled:
+                    type: "boolean"
                   key-password:
                     type: "string"
                   key-store:
@@ -3691,8 +3395,6 @@ properties:
                 type: "string"
                 description: "Security Token passed thru to underlying environment\
                   \ repository."
-              token_header:
-                type: "string"
               uri:
                 type: "array"
                 items:
@@ -3771,14 +3473,14 @@ properties:
                   \ that will be ignored."
                 items:
                   type: "string"
+              p-r-e-f-i-x:
+                type: "string"
               preferred-networks:
                 type: "array"
                 description: "List of Java regular expressions for network addresses\
                   \ that will be preferred."
                 items:
                   type: "string"
-              prefix:
-                type: "string"
               timeout-seconds:
                 type: "integer"
                 description: "Timeout, in seconds, for calculating hostname."
@@ -3872,12 +3574,12 @@ properties:
                   serialization-mode:
                     type: "string"
                     description: "Configures how to render Spring Data Pageable instances."
+                    default: "direct"
                     enum:
                     - "DIRECT"
                     - "direct"
                     - "VIA_DTO"
                     - "via_dto"
-                    default: "direct"
                   size-parameter:
                     type: "string"
                     description: "Page size parameter name."
@@ -3953,7 +3655,6 @@ properties:
                 type: "boolean"
           password:
             type: "string"
-          schema: {}
           tomcat:
             type: "object"
             properties:
@@ -3989,7 +3690,6 @@ properties:
         properties:
           client:
             type: "object"
-            properties: {}
       info:
         type: "object"
         properties:
@@ -4014,6 +3714,7 @@ properties:
             type: "string"
             description: "Strategy to use to auto-detect constructor, and in particular\
               \ behavior with single-argument constructors."
+            default: "default"
             enum:
             - "DEFAULT"
             - "default"
@@ -4023,7 +3724,6 @@ properties:
             - "use_delegating"
             - "EXPLICIT_ONLY"
             - "explicit_only"
-            default: "default"
           datatype:
             type: "object"
             properties:
@@ -4073,7 +3773,6 @@ properties:
             description: "Jackson on/off features for generators."
             additionalProperties:
               type: "boolean"
-          joda-date-time-format: {}
           locale:
             $ref: "#/$defs/Locales"
             description: "Locale used for formatting."
@@ -4187,9 +3886,9 @@ properties:
           hibernate:
             type: "object"
             properties:
-              ddl-auto:
+              d-i-s-a-b-l-e-d_s-c-a-n-n-e-r_c-l-a-s-s:
                 type: "string"
-              disabled_scanner_class:
+              ddl-auto:
                 type: "string"
               naming:
                 type: "object"
@@ -4199,7 +3898,6 @@ properties:
                     description: "Fully qualified name of the implicit naming strategy."
                   physical-strategy:
                     type: "string"
-              use-new-id-generator-mappings: {}
           mapping-resources:
             type: "array"
             description: "Mapping resources (equivalent to \"mapping-file\" entries\
@@ -4251,7 +3949,6 @@ properties:
                   type: "string"
               parameter-name:
                 type: "string"
-          date-format: {}
           dispatch-options-request:
             type: "boolean"
           dispatch-trace-request:
@@ -4287,8 +3984,6 @@ properties:
                     type: "boolean"
                     description: "Whether to enable Spring's HiddenHttpMethodFilter."
                     default: false
-          locale: {}
-          locale-resolver: {}
           log-request-details:
             type: "boolean"
             description: "Whether logging of (potentially sensitive) request details\
@@ -4389,6 +4084,7 @@ properties:
                 type: "string"
                 description: "Mode to apply when determining whether initialization\
                   \ should be performed."
+                default: "embedded"
                 enum:
                 - "ALWAYS"
                 - "always"
@@ -4396,7 +4092,6 @@ properties:
                 - "embedded"
                 - "NEVER"
                 - "never"
-                default: "embedded"
               password:
                 type: "string"
                 description: "Password of the database to use when applying initialization\
@@ -4490,12 +4185,12 @@ properties:
               mode:
                 type: "string"
                 description: "Determine when the task executor is to be created."
+                default: "auto"
                 enum:
                 - "AUTO"
                 - "auto"
                 - "FORCE"
                 - "force"
-                default: "auto"
               pool:
                 type: "object"
                 properties:
@@ -4600,6 +4295,10 @@ properties:
             properties:
               add-mappings:
                 type: "boolean"
+              c-l-a-s-s-p-a-t-h_r-e-s-o-u-r-c-e_l-o-c-a-t-i-o-n-s:
+                type: "array"
+                items:
+                  type: "string"
               cache:
                 type: "object"
                 properties:
@@ -4693,10 +4392,6 @@ properties:
                               type: "string"
                           version:
                             type: "string"
-              classpath_resource_locations:
-                type: "array"
-                items:
-                  type: "string"
               customized:
                 type: "boolean"
               static-locations:
@@ -4789,3 +4484,4 @@ properties:
               \ XSDs to be exposed as beans."
             items:
               type: "string"
+additionalProperties: true

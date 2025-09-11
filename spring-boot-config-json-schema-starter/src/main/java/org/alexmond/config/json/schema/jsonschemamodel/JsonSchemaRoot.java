@@ -30,6 +30,8 @@ public class JsonSchemaRoot {
     @JsonProperty("$defs")
     private Map<String, JsonSchemaProperties> definitions = new TreeMap<>();
     private Map<String, JsonSchemaProperties> properties = new TreeMap<>();
+    @JsonProperty("additionalProperties")
+    private Object additionalProperties;
 
     @JsonIgnore
     private static final ObjectMapper objectMapper = new ObjectMapper();

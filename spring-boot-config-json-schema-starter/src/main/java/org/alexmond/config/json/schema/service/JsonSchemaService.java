@@ -29,7 +29,7 @@ public class JsonSchemaService {
     private final BootConfigMetaLoader bootConfigMetaLoader = new BootConfigMetaLoader();
 
     public String generateFullSchema() throws Exception {
-        HashMap<String,Property> meta = collectMetadata();
+        Map<String,Property> meta = collectMetadata();
         List<String> included = propertyCollector.collectIncludedPropertyNames();
         
         Map<String, Object> schema = schemaBuilder.buildSchema(meta, included);
@@ -38,7 +38,7 @@ public class JsonSchemaService {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
     }
 
-    public HashMap<String,Property> collectMetadata() {
+    public Map<String,Property> collectMetadata() {
 
         List<BootConfigMeta> configs = new ArrayList<>();
         var resolver = new org.springframework.core.io.support.PathMatchingResourcePatternResolver();

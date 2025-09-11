@@ -10,6 +10,8 @@ import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaRoot;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.util.ReflectionUtils;
 
@@ -33,10 +35,10 @@ public class JsonSchemaBuilder {
     public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
         this.config = config;
         this.typeMappingService = typeMappingService;
-        helper =  new JsonSchemaBuilderHelper(config, typeMappingService);
+        helper = new JsonSchemaBuilderHelper(config, typeMappingService);
     }
 
-    public Map<String, Object> buildSchema(HashMap<String, Property> meta, List<String> included) {
+    public Map<String, Object> buildSchema(Map<String, Property> meta, List<String> included) {
         log.info("Starting JSON schema generation");
         JsonSchemaRoot schemaRoot = JsonSchemaRoot.builder()
                 .schema(config.getSchemaSpec())
@@ -44,6 +46,7 @@ public class JsonSchemaBuilder {
                 .title(config.getTitle())
                 .description(config.getDescription())
                 .type(JsonSchemaType.OBJECT)
+                .additionalProperties(config.isAllowAdditionalProperties())
                 .build();
 
         schemaRoot.setDefinitions(getDefinitions());
@@ -51,9 +54,10 @@ public class JsonSchemaBuilder {
         Map<String, JsonSchemaProperties> properties = new TreeMap<>();
         HashMap<String, Property> filteredMeta = new HashMap<>();
         meta.forEach((key, value) -> {
-            if (matchesIncluded(key, included)) {
+            if (matchesIncluded(key, included) && !isDeprecatedError(value)) {
                 filteredMeta.put(key, value);
             }
+
         });
 
         filteredMeta.forEach((key, value) -> {
@@ -127,18 +131,21 @@ public class JsonSchemaBuilder {
         String key = path[idx];
         if (idx == path.length - 1) {
             if (config.getExcludeClasses().contains(prop.getType())) {
-                log.warn("Excluding type {}. Skipping nested properties. for Property {}", prop.getName(),prop.getType());
-            }else {
+                log.warn("Excluding type {}. Skipping nested properties. for Property {}", prop.getName(), prop.getType());
+            } else {
                 JsonSchemaProperties jsonSchemaProperties = new JsonSchemaProperties();
 //            if (node.get(key) == null) {
-                processLeaf(jsonSchemaProperties, prop,null);
+                var processed = processLeaf(jsonSchemaProperties, prop, null);
 //            } else {
 //                log.info("Duplicate leaf {}", key);
 //                if (prop.getDescription() != null) {
 //                    processLeaf(jsonSchemaProperties, prop, null);
 //                }
 //            }
-                node.put(key, jsonSchemaProperties);
+                if (processed) {
+                    node.put(key, jsonSchemaProperties);
+                }
+
             }
         } else {
             Map<String, JsonSchemaProperties> properties = ensureObjectNode(node, key);
@@ -171,7 +178,7 @@ public class JsonSchemaBuilder {
     }
 
 
-    private void processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop,Set<String> visited) {
+    private Boolean processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop, Set<String> visited) {
         String propType;
         Class<?> clazz;
         Class<?> propClazz = null;
@@ -179,14 +186,9 @@ public class JsonSchemaBuilder {
         if (visited == null) {
             visited = new HashSet<>();
         }
-        // skip deprecated property with the error level
-        if (prop.getDeprecated() != null && prop.getDeprecated() && (prop.getDeprecation().getLevel() == Deprecation.Level.ERROR || prop.getDeprecation().getLevel() == Deprecation.Level.error)) {
-            log.debug("Skipping property is deprecated and removed: {}", prop.getName());
-            return;
-        }
         if (prop.getType() == null) {
             log.error("property {} prop.type is null", prop.getName());
-            return;
+            return false;
         } else {
             propType = prop.getType();
         }
@@ -235,29 +237,30 @@ public class JsonSchemaBuilder {
             processOpenapi(jsonSchemaProperties, field, prop.getName());
         }
         if (jsonSchemaProperties.getReference() != null) {
-            return;
+            return true;
         }
         if (propClazz != null && propClazz.isEnum()) {
             List<String> values = processEnumItem(propClazz);
             if (values != null) {
                 jsonSchemaProperties.setEnumValues(values);
             }
-            return;
+            return true;
         }
         if (jsonSchemaProperties.getType().equals(JsonSchemaType.ARRAY)) {
             processArray(prop, propType, jsonSchemaProperties, visited);
-            return;
+            return true;
         }
         if (typeMappingService.isMap(propType)) {
             processMap(prop, propType, jsonSchemaProperties, visited);
-            return;
+            return true;
         }
         if (jsonSchemaProperties.getType().equals(JsonSchemaType.OBJECT)) {
-            var complexProperties = processComplexType(propType, prop,visited);
+            var complexProperties = processComplexType(propType, prop, visited);
             if (complexProperties != null) {
                 jsonSchemaProperties.setProperties(complexProperties);
             }
         }
+        return true;
     }
 
     private void processMap(Property prop, String propType, JsonSchemaProperties propDef, Set<String> visited) {
@@ -312,9 +315,9 @@ public class JsonSchemaBuilder {
     private void processArray(Property prop, String propType, JsonSchemaProperties jsonSchemaProperties, Set<String> visited) {
         if (propType.equals("java.lang.String[]")) {
             jsonSchemaProperties.setItems(
-                            JsonSchemaProperties.builder()
-                                    .type(JsonSchemaType.STRING)
-                                    .build()
+                    JsonSchemaProperties.builder()
+                            .type(JsonSchemaType.STRING)
+                            .build()
             );
             return;
         }
@@ -322,9 +325,9 @@ public class JsonSchemaBuilder {
         String itemType = extractListItemType(propType);
         if (itemType.equals("java.lang.Object") || itemType.contains("<T>")) {
             jsonSchemaProperties.setItems(
-                            JsonSchemaProperties.builder()
-                                    .type(JsonSchemaType.OBJECT)
-                                    .build()
+                    JsonSchemaProperties.builder()
+                            .type(JsonSchemaType.OBJECT)
+                            .build()
             );
             return;
         }
@@ -333,9 +336,9 @@ public class JsonSchemaBuilder {
             Class<?> itemClass = Class.forName(itemType);
             if (itemClass.getTypeParameters().length > 0) {
                 jsonSchemaProperties.setItems(
-                                JsonSchemaProperties.builder()
-                                        .type(JsonSchemaType.OBJECT)
-                                        .build()
+                        JsonSchemaProperties.builder()
+                                .type(JsonSchemaType.OBJECT)
+                                .build()
                 );
                 return;
             }
@@ -358,7 +361,7 @@ public class JsonSchemaBuilder {
             jsonSchemaProperties.setItems(
                     JsonSchemaProperties.builder()
                             .type(JsonSchemaType.OBJECT)
-                    .build()
+                            .build()
             );
         }
     }
@@ -439,35 +442,42 @@ public class JsonSchemaBuilder {
         }
     }
 
+    private boolean isDeprecatedError(Property prop) {
+        return prop.getDeprecated() != null &&
+                prop.getDeprecated() &&
+                prop.getDeprecation() != null &&
+                (prop.getDeprecation().getLevel() == Deprecation.Level.ERROR ||
+                        prop.getDeprecation().getLevel() == Deprecation.Level.error);
+    }
+
     private boolean matchesIncluded(String propertyPath, List<String> included) {
         for (String include : included) {
             if (propertyPath.startsWith(include)) return true;
         }
         return false;
     }
-    
-    public Map<String,JsonSchemaProperties> processComplexType(String type, Property bootProp, Set<String> visited) {
+
+    public Map<String, JsonSchemaProperties> processComplexType(String type, Property bootProp, Set<String> visited) {
         if (visited == null) {
             visited = new HashSet<>();
         }
         if (visited.contains(type)) {
             log.warn("Detected cyclic reference for type: {}. Skipping nested properties. for Property {}", type, bootProp.getName());
-            return new HashMap<>();
+            return null;
         }
         if (config.getAllExcludedClasses().contains(type)) {
             log.warn("Excluding type {}. Skipping nested properties. for Property {}", type, bootProp.getName());
-            return new HashMap<>();
+            return null;
         }
         visited.add(type);
         Map<String, JsonSchemaProperties> properties = new TreeMap<>();
         try {
             Class<?> clazz = Class.forName(type);
             for (Field field : clazz.getDeclaredFields()) {
-                String fieldType = field.getType().getName();
                 String fieldGenName = field.getGenericType().getTypeName();
                 if (config.getExcludeClasses().contains(fieldGenName)) {
                     log.warn("Excluding type {}. Skipping nested properties. for Property {}", fieldGenName, bootProp.getName());
-                }else{
+                } else {
                     JsonSchemaProperties fieldProperty = new JsonSchemaProperties();
                     String propName = toKebabCase(field.getName());
                     Property filedProp = Property.builder()
@@ -475,14 +485,20 @@ public class JsonSchemaBuilder {
                             .type(fieldGenName)
                             .sourceType(type)
                             .build();
-                    processLeaf(fieldProperty, filedProp,visited);
-                    properties.put(propName, fieldProperty);
+                    var processed = processLeaf(fieldProperty, filedProp, visited);
+                    if (processed) {
+                        properties.put(propName, fieldProperty);
+                    }
                 }
             }
-        } catch (ClassNotFoundException e) {
-            log.debug("Type not found: {}", type);
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            log.debug("Type not found: {},{}", type, e.getMessage());
         }
+
         visited.remove(type);
+        if (properties.isEmpty()) {
+            return null;
+        }
         return properties;
     }
 
@@ -509,9 +525,30 @@ public class JsonSchemaBuilder {
     }
 
 
-    public String toKebabCase(String input) {
+    //    public String toKebabCase(String input) {
+//        if (input == null) return null;
+//        return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
+//    }
+
+    public  String toKebabCase(String input) {
         if (input == null) return null;
-        return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
+
+        // Split on underscores, process each segment separately, then join back with "_"
+        String[] segments = input.split("_");
+        for (int i = 0; i < segments.length; i++) {
+            String s = segments[i];
+            // Add space before every uppercase letter (splits acronyms into single letters too)
+            s = s.replaceAll("([A-Z])", " $1");
+            // Insert spaces between letters and numbers
+            s = s.replaceAll("([a-zA-Z])([0-9])", "$1 $2");
+            s = s.replaceAll("([0-9])([a-zA-Z])", "$1 $2");
+            // Collapse spaces
+            s = s.trim().replaceAll("\\s+", " ");
+            // Replace spaces with hyphens
+            segments[i] = String.join("-", s.split(" ")).toLowerCase();
+        }
+        // Join the processed segments back with underscores
+        return String.join("_", segments);
     }
 
 }

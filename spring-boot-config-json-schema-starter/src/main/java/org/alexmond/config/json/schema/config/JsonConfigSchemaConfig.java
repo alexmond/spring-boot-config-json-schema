@@ -66,6 +66,14 @@ public class JsonConfigSchemaConfig {
     private boolean useValidation = true;
 
     /**
+     * Controls whether additional properties not defined in the schema should be allowed.
+     * When true, the schema will accept properties that are not explicitly defined.
+     * When false, only properties defined in the schema will be accepted.
+     */
+    @Schema(description = "Allow additional properties not defined in schema", defaultValue = "true")
+    private boolean allowAdditionalProperties = true;
+
+    /**
      * List of additional configuration property paths to include in the schema.
      * By default, it includes the 'logging' configuration namespace.
      */

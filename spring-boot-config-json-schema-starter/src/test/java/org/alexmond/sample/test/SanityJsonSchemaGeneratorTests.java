@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.metamodel.Ignored;
 import org.alexmond.config.json.schema.metamodel.Property;
@@ -27,10 +29,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootTest
 @Slf4j
@@ -61,7 +60,7 @@ class SanityJsonSchemaGeneratorTests {
 
     @Test
     void testCollectMetadata() {
-        HashMap<String, Property> meta = jsonSchemaService.collectMetadata();
+        Map<String, Property> meta = jsonSchemaService.collectMetadata();
         assertNotNull(meta, "Collected metadata should not be null");
         assertFalse(meta.isEmpty(), "Collected metadata should not be empty");
     }
@@ -79,13 +78,52 @@ class SanityJsonSchemaGeneratorTests {
         writer.writeValue(Paths.get("gen.json").toFile(), productSchema);
 
     }
+//    @Test
+//    void testFieldTypes() throws IOException {
+//        Class<?> clazz = ConfigSample.class;
+//        for (Field field : clazz.getDeclaredFields()) {
+//            String fieldType = field.getType().getName();
+//            String fieldGenName = field.getGenericType().getTypeName();
+//            log.info("fieldType: {}, fieldGenName: {}", fieldType, fieldGenName);
+//        }
+//    }
+    
     @Test
-    void testFieldTypes() throws IOException {
-        Class<?> clazz = ConfigSample.class;
-        for (Field field : clazz.getDeclaredFields()) {
-            String fieldType = field.getType().getName();
-            String fieldGenName = field.getGenericType().getTypeName();
-            log.info("fieldType: {}, fieldGenName: {}", fieldType, fieldGenName);
+    void generateSchema() throws Exception {
+        String jsonConfigSchema;
+        jsonConfigSchema = jsonSchemaService.generateFullSchema();
+        ObjectMapper jsonMapper = new ObjectMapper();
+        com.fasterxml.jackson.databind.JsonNode jsonNode = jsonMapper.readTree(jsonConfigSchema);
+        Map<String, List<String>> duplicates = findDuplicateNodes(jsonNode);
+        duplicates.entrySet().stream()
+                .filter(entry -> entry.getValue().size() > 1)
+                .sorted((e1, e2) -> Integer.compare(e2.getValue().size(), e1.getValue().size()))
+                .forEach(entry -> {
+                    log.info("Duplicate count {},value: ===== {} ====== found in paths: {}", entry.getValue().size(), entry.getKey(), entry.getValue());
+                });
+    }
+
+    private Map<String, List<String>> findDuplicateNodes(com.fasterxml.jackson.databind.JsonNode node) {
+        Map<String, List<String>> duplicates = new HashMap<>();
+        traverseNode(node, "", duplicates);
+        return duplicates;
+    }
+
+    private void traverseNode(com.fasterxml.jackson.databind.JsonNode node, String path, Map<String, List<String>> duplicates) {
+        if (node.isObject()) {
+            node.fields().forEachRemaining(entry -> {
+                String newPath = path.isEmpty() ? entry.getKey() : path + "." + entry.getKey();
+                String value = entry.getValue().toString();
+                duplicates.computeIfAbsent(value, k -> new ArrayList<>()).add(newPath);
+                traverseNode(entry.getValue(), newPath, duplicates);
+            });
+        } else if (node.isArray()) {
+            for (int i = 0; i < node.size(); i++) {
+                String newPath = path + "[" + i + "]";
+                String value = node.get(i).toString();
+                duplicates.computeIfAbsent(value, k -> new ArrayList<>()).add(newPath);
+                traverseNode(node.get(i), newPath, duplicates);
+            }
         }
     }
 }

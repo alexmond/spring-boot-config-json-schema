@@ -10,9 +10,7 @@ import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @NoArgsConstructor
 @Slf4j
@@ -30,9 +28,9 @@ public class BootConfigMetaLoader {
         return config;
     }
 
-    public HashMap<String, Property> mergeConfig(List<BootConfigMeta> metaList) {
+    public Map<String, Property> mergeConfig(List<BootConfigMeta> metaList) {
         BootConfigMeta mergedConfig = new BootConfigMeta();
-        HashMap<String, Property> propertyMap = new HashMap<>();
+        Map<String, Property> propertyMap = new TreeMap<>();
         List<String> ignorelist = new ArrayList<>();
 
         for (var config : metaList) {
@@ -61,21 +59,18 @@ public class BootConfigMetaLoader {
         for (Group group : mergedConfig.getGroups()) {
             if (ignorelist.contains(group.getName())) {
                 log.warn("Ignored property name: {}, skipping", group.getName());
-            } else if (group.getSourceMethod() != null) {
-                log.warn("Ignored group name: {}, group has SourceMethod", group.getName());
-            } else if (!propertyMap.containsKey(group.getName())) {
-                var groupProperty = new Property();
+//            } else if (group.getSourceMethod() != null) {
+//                log.warn("Ignored group name: {}, group has SourceMethod", group.getName());
+            } else{
+                log.debug("Adding group property {} to config {}", group.getName(), group.getName());
+                Property groupProperty = propertyMap.get(group.getName());
+                if (groupProperty == null) {
+                    groupProperty = new Property();
+                }
                 groupProperty.mergeGroup(group);
                 propertyMap.put(group.getName(), groupProperty);
-                log.debug("Adding property {} to config {}", group.getName(), group.getName());
-            } else {
-                Property existing = propertyMap.get(group.getName());
-                if (existing != null) {
-                    log.warn("Duplicate property name: {}, merging", group.getName());
-                    existing.mergeGroup(group);
-                    propertyMap.put(group.getName(), existing);
-                }
             }
+
         }
 
 
