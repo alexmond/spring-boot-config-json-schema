@@ -18,6 +18,8 @@ import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 
@@ -33,14 +35,14 @@ class SampleJsonSchemaGeneratorTests {
     @Order(1)
     void generateJsonSchema() throws Exception {
 
-        String jsonConfigSchema;
-        jsonConfigSchema = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
         ObjectMapper jsonMapper = new ObjectMapper();
 
         // Validate generated schema
         JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
-        JsonSchema schema = factory.getSchema(jsonConfigSchema);
-        Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchema));
+        JsonSchema schema = factory.getSchema(jsonConfigSchemaJson);
+        Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
         if (!errors.isEmpty()) {
             errors.forEach(error -> log.error("Schema validation error: {}", error));
             throw new AssertionError("Schema validation failed");
@@ -49,16 +51,24 @@ class SampleJsonSchemaGeneratorTests {
 
         String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new java.util.Date());
 
-        ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
-        log.info("Writing json schema");
-        jsonWriter.writeValue(Paths.get("sample-schema-" + timestamp + ".json").toFile(), jsonMapper.readTree(jsonConfigSchema));
-        jsonWriter.writeValue(Paths.get("sample-schema.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
 
-        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-        ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-        log.info("Writing yaml schema");
-        yamlWriter.writeValue(Paths.get("sample-schema-" + timestamp + ".yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
-        yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
+        Files.writeString(Paths.get("sample-schema-" + timestamp + ".json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
+        Files.writeString(Paths.get("sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
+
+        Files.writeString(Paths.get("sample-schema-" + timestamp + ".yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
+        Files.writeString(Paths.get("sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
+
+
+//        ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
+//        log.info("Writing json schema");
+//        jsonWriter.writeValue(Paths.get("sample-schema-" + timestamp + ".json").toFile(), jsonMapper.readTree(jsonConfigSchema));
+//        jsonWriter.writeValue(Paths.get("sample-schema.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
+//
+//        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+//        ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
+//        log.info("Writing yaml schema");
+//        yamlWriter.writeValue(Paths.get("sample-schema-" + timestamp + ".yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
+//        yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
 
     }
 

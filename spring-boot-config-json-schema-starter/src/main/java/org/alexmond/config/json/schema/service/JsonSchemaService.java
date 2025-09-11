@@ -1,6 +1,9 @@
 package org.alexmond.config.json.schema.service;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
@@ -11,6 +14,7 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +40,19 @@ public class JsonSchemaService {
         if(config.getMissingTypeLog())
             missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing types: {}",type));
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
+    }
+
+    public String generateFullSchemaYaml() throws Exception {
+
+        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+
+        Map<String,Property> meta = collectMetadata();
+        List<String> included = propertyCollector.collectIncludedPropertyNames();
+
+        Map<String, Object> schema = schemaBuilder.buildSchema(meta, included);
+        if(config.getMissingTypeLog())
+            missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing types: {}",type));
+        return yamlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
     }
 
     public Map<String,Property> collectMetadata() {

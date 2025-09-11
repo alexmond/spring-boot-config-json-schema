@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @SpringBootTest
@@ -27,23 +29,16 @@ SimpleBootJsonSchemaGeneratorTests {
     @Test
     void generateJsonSchema() throws Exception {
 
-            String jsonConfigSchema;
-            jsonConfigSchema = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
+        log.info("Writing json schema");
+        Files.writeString(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
-            ObjectMapper jsonMapper = new ObjectMapper();
-            ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing json schema");
-            jsonWriter.writeValue(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
-
-
-            ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-            ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing yaml schema");
-            yamlWriter.writeValue(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
-            log.info("==================================");
-            missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing type: {}",type));
-
+        log.info("Writing yaml schema");
+        Files.writeString(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
     }
+    
+    
 
 
 }

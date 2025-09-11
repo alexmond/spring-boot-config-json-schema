@@ -16,6 +16,8 @@ import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 
@@ -37,28 +39,24 @@ SimpleBootJsonSchemaGeneratorTests {
     @Test
     void generateJsonSchema() throws Exception {
 
-            String jsonConfigSchema;
-            jsonConfigSchema = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
 
             ObjectMapper jsonMapper = new ObjectMapper();
             JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
-            JsonSchema schema = factory.getSchema(jsonConfigSchema);
-            Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchema));
+            JsonSchema schema = factory.getSchema(jsonConfigSchemaJson);
+            Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
             if (!errors.isEmpty()) {
                 errors.forEach(error -> log.error("Schema validation error: {}", error));
                 throw new AssertionError("Schema validation failed");
             }
             log.info("Schema validation passed successfully");
 
-            ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing json schema");
-            jsonWriter.writeValue(Paths.get("sample-schema.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
+        log.info("Writing json schema");
+        Files.writeString(Paths.get("sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
-
-            ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-            ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing yaml schema");
-            yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
+        log.info("Writing yaml schema");
+        Files.writeString(Paths.get("sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
     }
 
 //    @Test
