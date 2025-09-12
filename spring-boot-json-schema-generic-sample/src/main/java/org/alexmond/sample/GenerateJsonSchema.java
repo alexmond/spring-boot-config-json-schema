@@ -14,8 +14,8 @@ public class GenerateJsonSchema {
     private JsonSchemaService jsonSchemaService;
 
     @GetMapping("/config-schema")
-    public String getConfigSchema() throws Exception {
-        return jsonSchemaService.generateFullSchema();
+    public String getConfigSchema() {
+        return jsonSchemaService.generateFullSchemaJson();
     }
 
     @GetMapping("/config-schema.yaml")

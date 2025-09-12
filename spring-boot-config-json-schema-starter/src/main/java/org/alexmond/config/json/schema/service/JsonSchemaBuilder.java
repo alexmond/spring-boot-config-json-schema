@@ -9,6 +9,7 @@ import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaRoot;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
+import org.apache.commons.text.CaseUtils;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.util.ReflectionUtils;
 
@@ -16,8 +17,6 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.apache.commons.text.CaseUtils.toCamelCase;
 
 /**
  * Builder class responsible for generating JSON Schema definitions from Spring configuration metadata.
@@ -30,8 +29,6 @@ public class JsonSchemaBuilder {
     private final TypeMappingService typeMappingService;
 
     JsonSchemaBuilderHelper helper;
-
-    Map<String, Object> definitions = new LinkedHashMap<>();
 
     public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
         this.config = config;
@@ -60,16 +57,10 @@ public class JsonSchemaBuilder {
         schemaRoot.setDefinitions(getDefinitions());
 
         Map<String, JsonSchemaProperties> properties = new TreeMap<>();
-        HashMap<String, Property> filteredMeta = new HashMap<>();
         meta.forEach((key, value) -> {
             if (matchesIncluded(key, included) && !isDeprecatedError(value)) {
-                filteredMeta.put(key, value);
+                addProperty(properties, key.split("\\."), 0, value);
             }
-
-        });
-
-        filteredMeta.forEach((key, value) -> {
-            addProperty(properties, key.split("\\."), 0, value);
         });
         schemaRoot.setProperties(properties);
 
@@ -166,7 +157,6 @@ public class JsonSchemaBuilder {
                 if (processed) {
                     node.put(key, jsonSchemaProperties);
                 }
-
             }
         } else {
             Map<String, JsonSchemaProperties> properties = ensureObjectNode(node, key);
@@ -177,8 +167,7 @@ public class JsonSchemaBuilder {
     /**
      * Ensures that `node` contains an OBJECT-typed JsonSchemaProperties under `key`
      * with a non-null, mutable `properties` map, and returns that map.
-     */
-    /**
+     * <p>
      * Ensures that a node exists at the given key and has the correct structure for an object type.
      *
      * @param node Parent node to check/update
@@ -188,7 +177,7 @@ public class JsonSchemaBuilder {
     private Map<String, JsonSchemaProperties> ensureObjectNode(Map<String, JsonSchemaProperties> node, String key) {
         JsonSchemaProperties propNode = node.get(key);
         if (propNode == null) {
-            Map<String, JsonSchemaProperties> properties = new java.util.TreeMap<>();
+            Map<String, JsonSchemaProperties> properties = new TreeMap<>();
             propNode = JsonSchemaProperties.builder()
                     .type(JsonSchemaType.OBJECT)
                     .properties(properties)
@@ -199,7 +188,7 @@ public class JsonSchemaBuilder {
 
         Map<String, JsonSchemaProperties> properties = propNode.getProperties();
         if (properties == null) {
-            properties = new java.util.TreeMap<>();
+            properties = new TreeMap<>();
             propNode.setProperties(properties);
         }
         return properties;
@@ -232,7 +221,7 @@ public class JsonSchemaBuilder {
         if (prop.getSourceType() != null) {
             String propertyName = prop.getName();
             String lastField = propertyName.substring(propertyName.lastIndexOf('.') + 1);
-            String classField = toCamelCase(lastField, false, '-');
+            String classField = CaseUtils.toCamelCase(lastField, false, '-');
 
             try {
                 clazz = Class.forName(prop.getSourceType());
@@ -243,7 +232,7 @@ public class JsonSchemaBuilder {
                         propType = field.getGenericType().getTypeName();
                     }
                 }
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | NoClassDefFoundError e) {
                 log.debug("Unable to find class for property sourceType: {}, class: {}", prop.getName(), prop.getSourceType());
             }
         }
@@ -408,13 +397,12 @@ public class JsonSchemaBuilder {
         if (itemClass.isEnum()) {
             Object[] enumConstants = itemClass.getEnumConstants();
             if (enumConstants != null) {
-                List<String> enumValues = Arrays.stream(enumConstants)
+                return Arrays.stream(enumConstants)
                         .flatMap(enumConstant -> Arrays.stream(new String[]{
                                 enumConstant.toString(),
                                 enumConstant.toString().toLowerCase()
                         }))
                         .toList();
-                return enumValues;
             }
         }
         return null;
@@ -480,10 +468,10 @@ public class JsonSchemaBuilder {
 
     private boolean isDeprecatedError(Property prop) {
         return prop.getDeprecated() != null &&
-                prop.getDeprecated() &&
-                prop.getDeprecation() != null &&
-                (prop.getDeprecation().getLevel() == Deprecation.Level.ERROR ||
-                        prop.getDeprecation().getLevel() == Deprecation.Level.error);
+               prop.getDeprecated() &&
+               prop.getDeprecation() != null &&
+               (prop.getDeprecation().getLevel() == Deprecation.Level.ERROR ||
+                prop.getDeprecation().getLevel() == Deprecation.Level.error);
     }
 
     private boolean matchesIncluded(String propertyPath, List<String> included) {

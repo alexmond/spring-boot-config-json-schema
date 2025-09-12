@@ -32,7 +32,7 @@ class SampleJsonSchemaGeneratorTests {
     @Order(1)
     void generateJsonSchema() throws Exception {
 
-        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
         var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
         ObjectMapper jsonMapper = new ObjectMapper();
 

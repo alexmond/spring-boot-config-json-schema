@@ -41,9 +41,9 @@ class SampleJsonSchemaGeneratorTests {
     private JsonSchemaService jsonSchemaService;
 
     @Test
-    void generateJsonSchema() throws Exception {
+    void generateJsonSchema() {
 
-        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
         var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
         log.info("Writing json schema");
         Files.writeString(Paths.get("config-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
@@ -81,12 +81,12 @@ public class GenerateJsonSchema {
     private JsonSchemaService jsonSchemaService;
 
     @GetMapping("/config-schema")
-    public String getConfigSchema() throws Exception {
-        return jsonSchemaService.generateFullSchema();
+    public String getConfigSchema() {
+        return jsonSchemaService.generateFullSchemaJson();
     }
 
     @GetMapping("/config-schema.yaml")
-    public String getConfigSchemaYaml() throws Exception {
+    public String getConfigSchemaYaml() {
         return jsonSchemaService.generateFullSchemaYaml();
     }
 
@@ -119,8 +119,8 @@ public class ConfigSchemaEndpoint {
     private final JsonSchemaService jsonSchemaService;
 
     @ReadOperation
-    public String schema() throws Exception {
-        return jsonSchemaService.generateFullSchema();
+    public String schema() {
+        return jsonSchemaService.generateFullSchemaJson();
     }
 }
 ```
@@ -135,7 +135,7 @@ public class ConfigSchemaYamlEndpoint {
     private final JsonSchemaService jsonSchemaService;
 
     @ReadOperation
-    public String schema() throws Exception {
+    public String schema() {
         return jsonSchemaService.generateFullSchemaYaml();
     }
 }

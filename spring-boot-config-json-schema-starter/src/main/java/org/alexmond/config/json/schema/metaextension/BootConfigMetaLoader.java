@@ -44,38 +44,32 @@ public class BootConfigMetaLoader {
         }
 
         for (Property property : mergedConfig.getProperties()) {
-            if (!propertyMap.containsKey(property.getName()) && !ignorelist.contains(property.getName())) {
-                propertyMap.put(property.getName(), property);
-                log.debug("Adding property {} to config {}", property.getName(), property.getName());
-            } else if (ignorelist.contains(property.getName())) {
-                log.warn("Ignored property name: {}", property.getName());
+            if (ignorelist.contains(property.getName())) {
+                log.warn("Ignored property name: {}, skipping", property.getName());
             } else {
+                log.debug("Adding property {}", property.getName());
                 Property existing = propertyMap.get(property.getName());
-                if (existing != null) {
-                    log.warn("Duplicate property name: {}, merging", property.getName());
-                    existing.mergemergeProperties(property);
-                    propertyMap.put(property.getName(), existing);
+                if (existing == null) {
+                    existing = new Property();
                 }
+                existing.mergeProperties(property);
+                propertyMap.put(property.getName(), existing);
             }
         }
 
         for (Group group : mergedConfig.getGroups()) {
             if (ignorelist.contains(group.getName())) {
-                log.warn("Ignored property name: {}, skipping", group.getName());
-//            } else if (group.getSourceMethod() != null) {
-//                log.warn("Ignored group name: {}, group has SourceMethod", group.getName());
+                log.warn("Ignored group property name: {}, skipping", group.getName());
             } else {
-                log.debug("Adding group property {} to config {}", group.getName(), group.getName());
-                Property groupProperty = propertyMap.get(group.getName());
-                if (groupProperty == null) {
-                    groupProperty = new Property();
+                log.debug("Adding group property {}", group.getName());
+                Property existing = propertyMap.get(group.getName());
+                if (existing == null) {
+                    existing = new Property();
                 }
-                groupProperty.mergeGroup(group);
-                propertyMap.put(group.getName(), groupProperty);
+                existing.mergeGroup(group);
+                propertyMap.put(group.getName(), existing);
             }
-
         }
-
 
         for (Hint hint : mergedConfig.getHints()) {
             if (propertyMap.containsKey(hint.getName())) {

@@ -1,5 +1,6 @@
 package org.alexmond.config.json.schema.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.alexmond.config.json.schema.metaextension.BootConfigMetaLoader;
 import org.alexmond.config.json.schema.metamodel.BootConfigMeta;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +31,6 @@ public class JsonSchemaService {
     private final JsonConfigSchemaConfig config;
     private final ConfigurationPropertyCollector propertyCollector;
     private final JsonSchemaBuilder schemaBuilder;
-    private final ObjectMapper mapper;
     private final MissingTypeCollector missingTypeCollector;
     private final BootConfigMetaLoader bootConfigMetaLoader = new BootConfigMetaLoader();
 
@@ -37,16 +38,9 @@ public class JsonSchemaService {
      * Generates a complete JSON Schema representation of the application's configuration properties.
      *
      * @return A string containing the JSON Schema in pretty-printed JSON format
-     * @throws Exception if schema generation fails
      */
-    public String generateFullSchema() throws Exception {
-        Map<String, Property> meta = collectMetadata();
-        List<String> included = propertyCollector.collectIncludedPropertyNames();
-
-        Map<String, Object> schema = schemaBuilder.buildSchema(meta, included);
-        if (config.getMissingTypeLog())
-            missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing types: {}", type));
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
+    public String generateFullSchemaJson() {
+        return generateFullSchema(new ObjectMapper());
     }
 
     /**
@@ -54,19 +48,24 @@ public class JsonSchemaService {
      * and converts it to YAML format.
      *
      * @return A string containing the JSON Schema in pretty-printed YAML format
-     * @throws Exception if schema generation fails
      */
-    public String generateFullSchemaYaml() throws Exception {
+    public String generateFullSchemaYaml() {
+        return generateFullSchema(new ObjectMapper(new YAMLFactory()));
+    }
 
-        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+    private String generateFullSchema(ObjectMapper mapper) {
+        try {
+            Map<String, Property> meta = collectMetadata();
+            List<String> included = propertyCollector.collectIncludedPropertyNames();
 
-        Map<String, Property> meta = collectMetadata();
-        List<String> included = propertyCollector.collectIncludedPropertyNames();
-
-        Map<String, Object> schema = schemaBuilder.buildSchema(meta, included);
-        if (config.getMissingTypeLog())
-            missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing types: {}", type));
-        return yamlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
+            Map<String, Object> schema = schemaBuilder.buildSchema(meta, included);
+            if (config.getMissingTypeLog())
+                missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing types: {}", type));
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
+        } catch (JsonProcessingException e) {
+            log.error("Failed to generate schema", e);
+            return "";
+        }
     }
 
     /**
@@ -78,10 +77,8 @@ public class JsonSchemaService {
      * @throws RuntimeException if resource scanning fails
      */
     public Map<String, Property> collectMetadata() {
-
-        List<BootConfigMeta> configs = new ArrayList<>();
-        var resolver = new org.springframework.core.io.support.PathMatchingResourcePatternResolver();
-        Resource[] resources = null;
+        var resolver = new PathMatchingResourcePatternResolver();
+        Resource[] resources;
 
         try {
             resources = resolver.getResources("classpath*:/META-INF/spring-configuration-metadata.json");
@@ -90,6 +87,7 @@ public class JsonSchemaService {
             throw new RuntimeException(e);
         }
 
+        List<BootConfigMeta> configs = new ArrayList<>();
         for (var r : resources) {
             try (InputStream in = r.getInputStream()) {
                 configs.add(bootConfigMetaLoader.loadFromStream(in));

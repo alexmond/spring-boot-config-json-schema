@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 @Data
 @Builder
@@ -20,23 +21,20 @@ public class Property {
     private Hint hint;
 
     public void mergeGroup(Group group) {
-        if (group.getName() != null && !group.getName().isEmpty()) this.name = group.getName();
-        if (group.getType() != null && !group.getType().isEmpty()) this.type = group.getType();
-        if (group.getDescription() != null && !group.getDescription().isEmpty())
-            this.description = group.getDescription();
-        if (group.getSourceType() != null && !group.getSourceType().isEmpty()) this.sourceType = group.getSourceType();
+        if (StringUtils.isNotEmpty(group.getName())) this.name = group.getName();
+        if (StringUtils.isNotEmpty(group.getType())) this.type = group.getType();
+        if (StringUtils.isNotEmpty(group.getDescription())) this.description = group.getDescription();
+        if (StringUtils.isNotEmpty(group.getSourceType())) this.sourceType = group.getSourceType();
     }
 
-    public void mergemergeProperties(Property other) {
-        if (other.getType() != null && !other.getType().isEmpty()) this.type = other.getType();
-        if (other.getDescription() != null && !other.getDescription().isEmpty())
-            this.description = other.getDescription();
-        if (other.getSourceType() != null && !other.getSourceType().isEmpty()) this.sourceType = other.getSourceType();
+    public void mergeProperties(Property other) {
+        if (StringUtils.isNotEmpty(other.getName())) this.name = other.getName();
+        if (StringUtils.isNotEmpty(other.getType())) this.type = other.getType();
+        if (StringUtils.isNotEmpty(other.getDescription())) this.description = other.getDescription();
+        if (StringUtils.isNotEmpty(other.getSourceType())) this.sourceType = other.getSourceType();
         if (other.getDefaultValue() != null) this.defaultValue = other.getDefaultValue();
         if (other.getDeprecated() != null) this.deprecated = other.getDeprecated();
         if (other.getDeprecation() != null) this.deprecation = other.getDeprecation();
         if (other.getHint() != null) this.hint = other.getHint();
     }
-
-
 }

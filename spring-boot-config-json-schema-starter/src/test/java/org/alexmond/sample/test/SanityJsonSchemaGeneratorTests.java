@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.alexmond.config.json.schema.service.JsonSchemaBuilder;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
-import org.alexmond.config.json.schema.service.MissingTypeCollector;
 import org.alexmond.sample.test.config.ConfigSample;
 import org.alexmond.sample.test.config.EnumSample;
 import org.junit.jupiter.api.Test;
@@ -29,14 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class SanityJsonSchemaGeneratorTests {
 
-    @Autowired
-    private JsonSchemaService jsonSchemaService;
-
-    @Autowired
-    private MissingTypeCollector missingTypeCollector;
-
-    @Autowired
-    private JsonSchemaBuilder jsonSchemaBuilder;
+    @Autowired private JsonSchemaService jsonSchemaService;
+    @Autowired private JsonSchemaBuilder jsonSchemaBuilder;
 
     @Test
     void contextLoads() {
@@ -85,16 +78,14 @@ class SanityJsonSchemaGeneratorTests {
     @Test
     void generateSchema() throws Exception {
         String jsonConfigSchema;
-        jsonConfigSchema = jsonSchemaService.generateFullSchema();
+        jsonConfigSchema = jsonSchemaService.generateFullSchemaJson();
         ObjectMapper jsonMapper = new ObjectMapper();
         com.fasterxml.jackson.databind.JsonNode jsonNode = jsonMapper.readTree(jsonConfigSchema);
         Map<String, List<String>> duplicates = findDuplicateNodes(jsonNode);
         duplicates.entrySet().stream()
                 .filter(entry -> entry.getValue().size() > 1)
                 .sorted((e1, e2) -> Integer.compare(e2.getValue().size(), e1.getValue().size()))
-                .forEach(entry -> {
-                    log.info("Duplicate count {},value: ===== {} ====== found in paths: {}", entry.getValue().size(), entry.getKey(), entry.getValue());
-                });
+                .forEach(entry -> log.info("Duplicate count {},value: ===== {} ====== found in paths: {}", entry.getValue().size(), entry.getKey(), entry.getValue()));
     }
 
     private Map<String, List<String>> findDuplicateNodes(com.fasterxml.jackson.databind.JsonNode node) {
@@ -105,7 +96,7 @@ class SanityJsonSchemaGeneratorTests {
 
     private void traverseNode(com.fasterxml.jackson.databind.JsonNode node, String path, Map<String, List<String>> duplicates) {
         if (node.isObject()) {
-            node.fields().forEachRemaining(entry -> {
+            node.properties().forEach(entry -> {
                 String newPath = path.isEmpty() ? entry.getKey() : path + "." + entry.getKey();
                 String value = entry.getValue().toString();
                 duplicates.computeIfAbsent(value, k -> new ArrayList<>()).add(newPath);

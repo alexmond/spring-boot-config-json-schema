@@ -33,9 +33,9 @@ SimpleBootJsonSchemaGeneratorTests {
     }
 
     @Test
-    void generateJsonSchema() throws Exception {
+    void generateJsonSchema() {
 
-        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
         var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
 
         ObjectMapper jsonMapper = new ObjectMapper();

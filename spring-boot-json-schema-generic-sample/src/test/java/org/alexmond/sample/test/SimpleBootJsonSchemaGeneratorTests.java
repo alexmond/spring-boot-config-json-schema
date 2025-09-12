@@ -23,9 +23,9 @@ SimpleBootJsonSchemaGeneratorTests {
     private MissingTypeCollector missingTypeCollector;
 
     @Test
-    void generateJsonSchema() throws Exception {
+    void generateJsonSchema() {
 
-        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
         var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
         log.info("Writing json schema");
         Files.writeString(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);

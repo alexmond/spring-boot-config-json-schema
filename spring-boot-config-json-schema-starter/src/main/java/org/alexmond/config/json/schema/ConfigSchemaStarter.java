@@ -1,6 +1,5 @@
 package org.alexmond.config.json.schema;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.alexmond.config.json.schema.service.*;
 import org.springframework.context.ApplicationContext;
@@ -80,7 +79,6 @@ public class ConfigSchemaStarter {
      * @param config               Configuration settings for JSON Schema generation
      * @param propertyCollector    Collector for configuration properties
      * @param schemaBuilder        Builder for JSON Schema documents
-     * @param mapper               Jackson ObjectMapper for JSON processing
      * @param missingTypeCollector Collector for tracking missing type information
      * @return A new JsonSchemaService instance
      */
@@ -88,9 +86,8 @@ public class ConfigSchemaStarter {
     public JsonSchemaService jsonSchemaService(JsonConfigSchemaConfig config,
                                                ConfigurationPropertyCollector propertyCollector,
                                                JsonSchemaBuilder schemaBuilder,
-                                               ObjectMapper mapper,
                                                MissingTypeCollector missingTypeCollector) {
-        return new JsonSchemaService(config, propertyCollector, schemaBuilder, mapper, missingTypeCollector);
+        return new JsonSchemaService(config, propertyCollector, schemaBuilder, missingTypeCollector);
     }
 
 }
