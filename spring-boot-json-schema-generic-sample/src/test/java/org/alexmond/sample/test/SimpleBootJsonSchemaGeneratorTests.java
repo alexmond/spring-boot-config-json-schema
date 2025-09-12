@@ -1,9 +1,5 @@
 package org.alexmond.sample.test;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.config.json.schema.service.MissingTypeCollector;
@@ -11,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @SpringBootTest
@@ -25,24 +23,15 @@ SimpleBootJsonSchemaGeneratorTests {
     private MissingTypeCollector missingTypeCollector;
 
     @Test
-    void generateJsonSchema() throws Exception {
+    void generateJsonSchema() {
 
-            String jsonConfigSchema;
-            jsonConfigSchema = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
+        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
+        log.info("Writing json schema");
+        Files.writeString(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
-            ObjectMapper jsonMapper = new ObjectMapper();
-            ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing json schema");
-            jsonWriter.writeValue(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
-
-
-            ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-            ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing yaml schema");
-            yamlWriter.writeValue(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
-            log.info("==================================");
-            missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing type: {}",type));
-
+        log.info("Writing yaml schema");
+        Files.writeString(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
     }
 
 

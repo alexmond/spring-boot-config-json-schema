@@ -12,15 +12,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml -Pdefault --no-transfer-progress
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml -Pdefault --no-transfer-progress
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            **/surefire-reports/TEST-*.xml
+            **/failsafe-reports/TEST-*.xml
+
+    #    - name: Add coverage to PR
+    #      uses: codecov/codecov-action@v3
+    #      with:
+    #        token: ${{ secrets.CODECOV_TOKEN }}
+    #        files: ./target/site/jacoco/jacoco.xml
+    #        fail_ci_if_error: true
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 #    - name: Update dependency graph

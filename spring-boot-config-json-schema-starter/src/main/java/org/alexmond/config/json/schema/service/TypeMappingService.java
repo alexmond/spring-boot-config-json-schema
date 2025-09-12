@@ -1,10 +1,10 @@
-
 package org.alexmond.config.json.schema.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaFormat;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
-import org.alexmond.config.json.schema.jsonschemamodel.TypeProperties;
 import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.util.HashMap;
@@ -13,6 +13,11 @@ import java.util.Map;
 import java.util.Set;
 
 
+/**
+ * Service responsible for mapping Spring configuration property types to JSON Schema types.
+ * This service provides functionality to convert Java/Spring types into their corresponding
+ * JSON Schema property definitions, including type information and format specifications.
+ */
 @Slf4j
 public class TypeMappingService {
 
@@ -24,12 +29,19 @@ public class TypeMappingService {
         this.jsonConfigSchemaConfig = jsonConfigSchemaConfig;
     }
 
-    public TypeProperties typeProp(String springType, Property prop) {
+    /**
+     * Maps a Spring configuration property type to a basic JSON Schema property definition.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @param prop       the configuration property metadata
+     * @return JsonSchemaProperties containing the basic type mapping
+     */
+    public JsonSchemaProperties typeProp(String springType, Property prop) {
         log.debug("mapTypeProp({}, {})", springType, prop);
-        TypeProperties typeProperties;
-        typeProperties = extendedTypeProp(springType, prop);
-        if (typeProperties != null) {
-            return typeProperties;
+        JsonSchemaProperties jsonSchemaProperties;
+        jsonSchemaProperties = extendedTypeProp(springType, prop);
+        if (jsonSchemaProperties != null) {
+            return jsonSchemaProperties;
         }
 
         switch (springType) {
@@ -44,15 +56,18 @@ public class TypeMappingService {
             case "char":
             case "char[]":
             case "java.io.File":
+            case "java.nio.file.Path":
             case "org.springframework.http.MediaType":
             case "java.net.InetAddress":
             case "java.net.URI":
             case "org.springframework.core.io.Resource":
-                return TypeProperties.builder().type(JsonSchemaType.STRING).build();
+            case "java.lang.Class":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
 
             case "java.lang.Boolean":
             case "boolean":
-                return TypeProperties.builder().type(JsonSchemaType.BOOLEAN).build();
+            case "java.util.concurrent.atomic.AtomicBoolean":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.BOOLEAN).build();
 
             case "java.lang.Integer":
             case "int":
@@ -61,84 +76,272 @@ public class TypeMappingService {
             case "java.lang.Short":
             case "short":
             case "java.math.BigInteger":
-                return TypeProperties.builder().type(JsonSchemaType.INTEGER).build();
+            case "byte":
+            case "java.lang.Byte":
+            case "java.util.concurrent.atomic.AtomicInteger":
+            case "java.util.concurrent.atomic.AtomicLong":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.INTEGER).build();
 
             case "java.lang.Float":
             case "float":
             case "double":
             case "java.lang.Double":
+            case "java.lang.Number":
             case "java.math.BigDecimal":
-                return TypeProperties.builder().type(JsonSchemaType.NUMBER).build();
+                return JsonSchemaProperties.builder().type(JsonSchemaType.NUMBER).build();
 
             case "java.lang.Object":
-                return TypeProperties.builder().type(JsonSchemaType.OBJECT).build();
+                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
         }
 
         if (isArray(springType)) {
-            return TypeProperties.builder().type(JsonSchemaType.ARRAY).build();
+            return JsonSchemaProperties.builder().type(JsonSchemaType.ARRAY).build();
         }
         if (isMap(springType)) {
-            return TypeProperties.builder().type(JsonSchemaType.OBJECT).build();
+            return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
         }
         if (isEnum(springType)) {
-            return TypeProperties.builder().type(JsonSchemaType.STRING).build();
+            return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+        }
+
+
+        missingTypeCollector.addType(springType, prop);
+        log.debug("Mapping Spring type: {}  for Property {}", springType, prop);
+        try {
+            Class<?> type = Class.forName(springType);
+            if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
+                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
+            } else {
+                log.error("Missing primitive type {} for Property {}", springType, prop);
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+            }
+        } catch (ClassNotFoundException e) {
+            return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+        }
+    }
+
+    /**
+     * Maps a Spring configuration property type to an advanced JSON Schema property definition.
+     * This method provides more detailed type mappings including formats and encodings.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @param prop       the configuration property metadata
+     * @return JsonSchemaProperties containing the advanced type mapping
+     */
+    public JsonSchemaProperties typeAdvProp(String springType, Property prop) {
+        log.debug("mapTypeProp({}, {})", springType, prop);
+        JsonSchemaProperties jsonSchemaProperties;
+        jsonSchemaProperties = extendedTypeProp(springType, prop);
+        if (jsonSchemaProperties != null) {
+            return jsonSchemaProperties;
+        }
+
+        switch (springType) {
+            // Text-like
+            case "java.lang.String":
+            case "java.lang.CharSequence":
+            case "java.lang.Character":
+            case "char":
+            case "char[]":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+
+            // Binary
+            case "byte[]":
+            case "java.lang.Byte[]":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .contentEncoding("base64")
+                        .build();
+            case "byte":
+            case "java.lang.Byte":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.INTEGER).build();
+
+            // Temporal
+            case "java.time.Instant":
+            case "java.time.OffsetDateTime":
+            case "java.time.ZonedDateTime":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.DATE_TIME)
+                        .build();
+            case "java.time.LocalDateTime":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.DATE_TIME)
+                        .build();
+            case "java.time.LocalDate":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.DATE)
+                        .build();
+            case "java.time.LocalTime":
+            case "java.time.OffsetTime":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.TIME)
+                        .build();
+            case "java.time.Duration":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.DURATION)
+                        .build();
+            case "java.util.Date":
+            case "java.util.Calendar":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.DATE_TIME)
+                        .build();
+            case "java.util.TimeZone":
+            case "java.time.ZoneId":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+
+            // Files and resources
+            case "java.io.File":
+            case "java.nio.file.Path":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+            case "org.springframework.core.io.Resource":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.URI_REFERENCE)
+                        .build();
+
+            // Identifiers and network
+            case "java.util.UUID":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.UUID)
+                        .build();
+            case "java.net.URI":
+            case "java.net.URL":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.URI)
+                        .build();
+            case "java.net.Inet4Address":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.IPV4)
+                        .build();
+            case "java.net.Inet6Address":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.IPV6)
+                        .build();
+            case "java.net.InetAddress":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+
+            // Spring-specific simple types
+            case "org.springframework.util.unit.DataSize":
+            case "org.springframework.http.MediaType":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+
+            // Booleans
+            case "java.lang.Boolean":
+            case "boolean":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.BOOLEAN).build();
+
+            // Integers
+            case "java.lang.Integer":
+            case "int":
+            case "java.lang.Long":
+            case "long":
+            case "java.lang.Short":
+            case "short":
+            case "java.math.BigInteger":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.INTEGER).build();
+
+            // Numbers
+            case "java.lang.Float":
+            case "float":
+            case "double":
+            case "java.lang.Double":
+            case "java.lang.Number":
+            case "java.math.BigDecimal":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.NUMBER).build();
+
+            // Generic object-like
+            case "java.lang.Object":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
+
+            // Class names: better represented as string (FQCN)
+            case "java.lang.Class":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+        }
+
+        if (isArray(springType)) {
+            return JsonSchemaProperties.builder().type(JsonSchemaType.ARRAY).build();
+        }
+        if (isMap(springType)) {
+            return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
+        }
+        if (isEnum(springType)) {
+            return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
         }
 
         try {
             Class<?> type = Class.forName(springType);
             if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
                 missingTypeCollector.addType(springType, prop);
-                return TypeProperties.builder().type(JsonSchemaType.OBJECT).build();
+                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
             }
         } catch (ClassNotFoundException e) {
             if (springType.contains("Enum")) {
-                return TypeProperties.builder().type(JsonSchemaType.STRING).build();
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
             }
         }
 
         missingTypeCollector.addType(springType, prop);
         log.debug("Mapping Spring type: {}  for Property {}", springType, prop);
-        return TypeProperties.builder().type(JsonSchemaType.STRING).build();
+        return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
     }
-    
-    private TypeProperties extendedTypeProp(String springType, Property prop) {
-        
-        Map<String, TypeProperties> extendedTypeProps = new HashMap<>() {{
-            put("java.util.Locale",TypeProperties.builder().reference("#/$defs/Locales").build());
-            put("java.nio.charset.Charset", TypeProperties.builder().reference("#/$defs/Charsets").build());
-            put("logging.level", TypeProperties.builder().reference("#/$defs/loggerLevelProp").build());
-            put("logging.threshold.console", TypeProperties.builder().reference("#/$defs/loggerLevel").build());
-            put("logging.threshold.file", TypeProperties.builder().reference("#/$defs/loggerLevel").build());
+
+
+    private JsonSchemaProperties extendedTypeProp(String springType, Property prop) {
+
+        Map<String, JsonSchemaProperties> extendedTypeProps = new HashMap<>() {{
+            put("java.util.Locale", JsonSchemaProperties.builder().reference("#/$defs/Locales").build());
+            put("java.nio.charset.Charset", JsonSchemaProperties.builder().reference("#/$defs/Charsets").build());
+            put("logging.level", JsonSchemaProperties.builder().reference("#/$defs/loggerLevelProp").build());
+            put("logging.threshold.console", JsonSchemaProperties.builder().reference("#/$defs/loggerLevel").build());
+            put("logging.threshold.file", JsonSchemaProperties.builder().reference("#/$defs/loggerLevel").build());
         }};
 
 
-        TypeProperties typeProperties = null;
+        JsonSchemaProperties JsonSchemaProperties;
         if (prop != null) {
-            typeProperties = jsonConfigSchemaConfig.getTypePropertiesMap().get(prop.getName());
-            if (typeProperties != null) return typeProperties;
-        };
+            JsonSchemaProperties = jsonConfigSchemaConfig.getJsonSchemaPropertiesMap().get(prop.getName());
+            if (JsonSchemaProperties != null) return JsonSchemaProperties;
+        }
         if (springType != null) {
-            typeProperties = jsonConfigSchemaConfig.getTypePropertiesMap().get(springType);
-            if (typeProperties != null) return typeProperties;
-        };
-        if (prop != null){
-            typeProperties = extendedTypeProps.get(prop.getName());
-            if (typeProperties != null) return typeProperties;
-        };
-        if (springType != null){
-            typeProperties = extendedTypeProps.get(springType);
-            if (typeProperties != null) return typeProperties;
-        };
+            JsonSchemaProperties = jsonConfigSchemaConfig.getJsonSchemaPropertiesMap().get(springType);
+            if (JsonSchemaProperties != null) return JsonSchemaProperties;
+        }
+        if (prop != null) {
+            JsonSchemaProperties = extendedTypeProps.get(prop.getName());
+            if (JsonSchemaProperties != null) return JsonSchemaProperties;
+        }
+        if (springType != null) {
+            JsonSchemaProperties = extendedTypeProps.get(springType);
+            return JsonSchemaProperties;
+        }
 
         return null;
     }
 
+    /**
+     * Checks if the given Spring type represents an array or collection.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @return true if the type is an array or collection, false otherwise
+     */
     public boolean isArray(String springType) {
         Class<?> clazz;
-        try{
-            if(springType.contains("[]")){return true;}
-            if(springType.contains("<")){
-                springType=springType.split("<")[0];
+        try {
+            if (springType.contains("[]")) {
+                return true;
+            }
+            if (springType.contains("<")) {
+                springType = springType.split("<")[0];
             }
             clazz = Class.forName(springType);
             if (List.class.isAssignableFrom(clazz)) {
@@ -153,10 +356,17 @@ public class TypeMappingService {
         }
         return false;
     }
+
+    /**
+     * Checks if the given Spring type represents a Map.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @return true if the type is a Map, false otherwise
+     */
     public boolean isMap(String springType) {
         try {
-            if(springType.contains("<")){
-                springType=springType.split("<")[0];
+            if (springType.contains("<")) {
+                springType = springType.split("<")[0];
             }
             Class<?> clazz = Class.forName(springType);
             if (Map.class.isAssignableFrom(clazz)) {
@@ -168,6 +378,12 @@ public class TypeMappingService {
         return false;
     }
 
+    /**
+     * Checks if the given Spring type represents an Enum.
+     *
+     * @param springType the fully qualified name of the Spring/Java type
+     * @return true if the type is an Enum, false otherwise
+     */
     public boolean isEnum(String springType) {
         try {
             Class<?> clazz = Class.forName(springType);

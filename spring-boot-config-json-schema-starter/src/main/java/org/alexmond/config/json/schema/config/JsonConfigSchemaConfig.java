@@ -2,9 +2,10 @@ package org.alexmond.config.json.schema.config;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.alexmond.config.json.schema.jsonschemamodel.TypeProperties;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class JsonConfigSchemaConfig {
      * Controls whether OpenAPI annotations should be processed.
      * When true, OpenAPI annotations will be used to enhance the schema.
      */
-    @Schema(description = "Enable OpenAPI annotations processing", defaultValue = "true" )
+    @Schema(description = "Enable OpenAPI annotations processing", defaultValue = "true")
     private boolean useOpenapi = true;
     /**
      * Controls whether validation annotations should be processed.
@@ -65,10 +66,18 @@ public class JsonConfigSchemaConfig {
     private boolean useValidation = true;
 
     /**
+     * Controls whether additional properties not defined in the schema should be allowed.
+     * When true, the schema will accept properties that are not explicitly defined.
+     * When false, only properties defined in the schema will be accepted.
+     */
+    @Schema(description = "Allow additional properties not defined in schema", defaultValue = "true")
+    private boolean allowAdditionalProperties = true;
+
+    /**
      * List of additional configuration property paths to include in the schema.
      * By default, it includes the 'logging' configuration namespace.
      */
-    @Schema(description = "List of additional property paths to include",defaultValue = "logging")
+    @Schema(description = "List of additional property paths to include", defaultValue = "logging")
     private List<String> additionalProperties = List.of("logging");
 
 
@@ -77,7 +86,7 @@ public class JsonConfigSchemaConfig {
      * Used to store custom type mappings and property configurations
      * that override or extend the default schema generation behavior.
      */
-    private Map<String, TypeProperties> typePropertiesMap = new HashMap<>();
+    private Map<String, JsonSchemaProperties> JsonSchemaPropertiesMap = new HashMap<>();
 
     /**
      * Controls whether missing type information should be logged.
@@ -85,5 +94,35 @@ public class JsonConfigSchemaConfig {
      * This is useful for debugging and identifying unmapped types.
      */
     private Boolean missingTypeLog = false;
+    /**
+     * A list of fully qualified class names that should be excluded from schema generation.
+     * By default, includes ObjectMapper and ClassLoader classes to prevent processing of
+     * system-level classes that aren't relevant to configuration.
+     */
+    private List<String> excludeClasses = new ArrayList<>(List.of(
+            "com.fasterxml.jackson.databind.ObjectMapper",
+            "java.lang.ClassLoader",
+            "org.springframework.boot.context.logging.LoggingApplicationListener"));
+
+    /**
+     * Additional class names to be excluded from schema generation.
+     * This list can be used to specify custom classes that should be excluded
+     * beyond the default exclusions. Classes specified here will be combined
+     * with the default excludeClasses list.
+     */
+    private List<String> additionalExcludeClasses = new ArrayList<>();
+
+    /**
+     * Returns a combined list of all excluded classes.
+     * This includes both the default excludeClasses and any additional excluded classes.
+     *
+     * @return List of all class names that should be excluded from schema generation
+     */
+    public List<String> getAllExcludedClasses() {
+        List<String> allExcludes = new ArrayList<>(excludeClasses);
+        allExcludes.addAll(additionalExcludeClasses);
+        return allExcludes;
+    }
+
 
 }

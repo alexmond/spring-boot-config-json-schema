@@ -8,14 +8,14 @@ import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.stereotype.Component;
 
 @Component
-@Endpoint(id = "config-schema")
+@Endpoint(id = "config-schema.yaml")
 @RequiredArgsConstructor
-public class ConfigSchemaEndpoint {
+public class ConfigSchemaYamlEndpoint {
 
     private final JsonSchemaService jsonSchemaService;
 
     @ReadOperation
-    public String schema() {
-        return jsonSchemaService.generateFullSchemaJson();
+    public String schema() throws Exception {
+        return jsonSchemaService.generateFullSchemaYaml();
     }
 }

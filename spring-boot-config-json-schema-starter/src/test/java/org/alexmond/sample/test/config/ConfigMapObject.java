@@ -11,6 +11,6 @@ public class ConfigMapObject {
     private String configMap1 = "nestedConfig1";
 
     @Schema(description = "Second nested configuration property", example = "123")
-    private Integer configMap2 = 123 ;
+    private Integer configMap2 = 123;
 
 }

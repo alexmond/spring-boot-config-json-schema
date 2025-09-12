@@ -5,8 +5,8 @@ spring:
       - test
 
 sample:
-#  properties-example:
-#    abc : "test123"
+  #  properties-example:
+  #    abc : "test123"
   string-array-sample:
     - aaa
     - bbb
@@ -54,7 +54,7 @@ spring:
   config:
     activate:
       on-profile:
-          - test
+        - test
 
 sample:
   string-sample: "Test profile"

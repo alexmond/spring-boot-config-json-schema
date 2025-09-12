@@ -22,15 +22,17 @@ subject: [Springboot Config Documentation, Two Ways With IntelliJ IDEA](https://
 Add the following dependency to your `pom.xml` when using the generator in tests:
 
 ```xml
-        <dependency>
-            <groupId>org.alexmond</groupId>
-            <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.8</version>
-            <scope>test</scope>
-        </dependency>
+
+<dependency>
+    <groupId>org.alexmond</groupId>
+    <artifactId>spring-boot-config-json-schema-starter</artifactId>
+    <version>0.0.8</version>
+    <scope>test</scope>
+</dependency>
 ```
 
 ```java title=SampleJsonSchemaGeneratorTests.java
+
 @SpringBootTest
 @Slf4j
 class SampleJsonSchemaGeneratorTests {
@@ -39,21 +41,15 @@ class SampleJsonSchemaGeneratorTests {
     private JsonSchemaService jsonSchemaService;
 
     @Test
-    void generateJsonSchema() throws Exception {
+    void generateJsonSchema() {
 
-            String jsonConfigSchema;
-            jsonConfigSchema = jsonSchemaService.generateFullSchema();
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
+        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
+        log.info("Writing json schema");
+        Files.writeString(Paths.get("config-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
-            ObjectMapper jsonMapper = new ObjectMapper();
-            ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing json schema");
-            jsonWriter.writeValue(Paths.get("sample-schema.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
-
-
-            ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-            ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-            log.info("Writing yaml schema");
-            yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
+        log.info("Writing yaml schema");
+        Files.writeString(Paths.get("config-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
     }
 
 }
@@ -63,15 +59,20 @@ class SampleJsonSchemaGeneratorTests {
 
 To expose the JSON schema via a REST endpoint (similar to Swagger API docs), add the following dependency to your
 `pom.xml`:
+
 ```xml
-        <dependency>
-            <groupId>org.alexmond</groupId>
-            <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.8</version>
-        </dependency>
+
+<dependency>
+    <groupId>org.alexmond</groupId>
+    <artifactId>spring-boot-config-json-schema-starter</artifactId>
+    <version>0.0.8</version>
+</dependency>
 ```
+
 Then create a REST controller:
+
 ```java title=GenerateJsonSchema.java
+
 @RestController
 @Slf4j
 public class GenerateJsonSchema {
@@ -80,25 +81,36 @@ public class GenerateJsonSchema {
     private JsonSchemaService jsonSchemaService;
 
     @GetMapping("/config-schema")
-    public String getConfigSchema() throws Exception {
-        return jsonSchemaService.generateFullSchema();
+    public String getConfigSchema() {
+        return jsonSchemaService.generateFullSchemaJson();
+    }
+
+    @GetMapping("/config-schema.yaml")
+    public String getConfigSchemaYaml() {
+        return jsonSchemaService.generateFullSchemaYaml();
     }
 
 }
 ```
+
 ### Using as Actuator Endpoint
 
 To expose the JSON schema via an Actuator endpoint, add the following dependency to your
 `pom.xml`:
+
 ```xml
-        <dependency>
-            <groupId>org.alexmond</groupId>
-            <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>0.0.8</version>
-        </dependency>
+
+<dependency>
+    <groupId>org.alexmond</groupId>
+    <artifactId>spring-boot-config-json-schema-starter</artifactId>
+    <version>0.0.8</version>
+</dependency>
 ```
+
 Then create Actuator endpoint:
+
 ```java title=ConfigSchemaEndpoint.java
+
 @Component
 @Endpoint(id = "config-schema")
 @RequiredArgsConstructor
@@ -107,13 +119,30 @@ public class ConfigSchemaEndpoint {
     private final JsonSchemaService jsonSchemaService;
 
     @ReadOperation
-    public String schema() throws Exception {
-        return jsonSchemaService.generateFullSchema();
+    public String schema() {
+        return jsonSchemaService.generateFullSchemaJson();
     }
 }
 ```
 
-enable it in application.yaml 
+```java title=ConfigSchemaYamlEndpoint.java
+
+@Component
+@Endpoint(id = "config-schema.yaml")
+@RequiredArgsConstructor
+public class ConfigSchemaYamlEndpoint {
+
+    private final JsonSchemaService jsonSchemaService;
+
+    @ReadOperation
+    public String schema() {
+        return jsonSchemaService.generateFullSchemaYaml();
+    }
+}
+```
+
+enable it in application.yaml
+
 ```yaml
 management:
   endpoints:

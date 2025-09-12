@@ -11,15 +11,16 @@ import org.alexmond.config.json.schema.metamodel.Property;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @NoArgsConstructor
 @Slf4j
 public class BootConfigMetaLoader {
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public BootConfigMeta loadFromStream(InputStream stream){
+    public BootConfigMeta loadFromStream(InputStream stream) {
         log.debug("Loading configuration from input stream");
         BootConfigMeta config = null;
         try {
@@ -30,9 +31,9 @@ public class BootConfigMetaLoader {
         return config;
     }
 
-    public HashMap<String, Property> mergeConfig(List<BootConfigMeta> metaList) {
+    public Map<String, Property> mergeConfig(List<BootConfigMeta> metaList) {
         BootConfigMeta mergedConfig = new BootConfigMeta();
-        HashMap<String, Property> propertyMap = new HashMap<>();
+        Map<String, Property> propertyMap = new TreeMap<>();
         List<String> ignorelist = new ArrayList<>();
 
         for (var config : metaList) {
@@ -43,50 +44,44 @@ public class BootConfigMetaLoader {
         }
 
         for (Property property : mergedConfig.getProperties()) {
-            if (!propertyMap.containsKey(property.getName()) && !ignorelist.contains(property.getName())) {
-                propertyMap.put(property.getName(), property);
-                log.debug("Adding property {} to config {}", property.getName(), property.getName());
-            } else if (ignorelist.contains(property.getName())) {
-                log.warn("Ignored property name: {}", property.getName());
+            if (ignorelist.contains(property.getName())) {
+                log.warn("Ignored property name: {}, skipping", property.getName());
             } else {
+                log.debug("Adding property {}", property.getName());
                 Property existing = propertyMap.get(property.getName());
-                if (existing != null) {
-                    log.warn("Duplicate property name: {}, merging", property.getName());
-                    existing.mergeGroup(property);
-                    propertyMap.put(property.getName(), existing);
+                if (existing == null) {
+                    existing = new Property();
                 }
+                existing.mergeProperties(property);
+                propertyMap.put(property.getName(), existing);
             }
         }
 
-            for (Group group : mergedConfig.getGroups()) {
-                    if (!propertyMap.containsKey(group.getName()) && !ignorelist.contains(group.getName())) {
-                        var groupProperty = new Property();
-                        groupProperty.mergeGroup(group);
-                        propertyMap.put(group.getName(), groupProperty);
-                        log.debug("Adding property {} to config {}", group.getName(), group.getName());
-                    } else if (ignorelist.contains(group.getName())) {
-                        log.warn("Ignored property name: {}", group.getName());
-                    } else {
-                        Property existing = propertyMap.get(group.getName());
-                        if (existing != null) {
-                            log.warn("Duplicate property name: {}, merging", group.getName());
-                            existing.mergeGroup(group);
-                            propertyMap.put(group.getName(), existing);
-                        }
-                    }
+        for (Group group : mergedConfig.getGroups()) {
+            if (ignorelist.contains(group.getName())) {
+                log.warn("Ignored group property name: {}, skipping", group.getName());
+            } else {
+                log.debug("Adding group property {}", group.getName());
+                Property existing = propertyMap.get(group.getName());
+                if (existing == null) {
+                    existing = new Property();
                 }
-
-                for (Hint hint : mergedConfig.getHints()) {
-                    if (propertyMap.containsKey(hint.getName())) {
-                        Property existing = propertyMap.get(hint.getName());
-                        existing.setHint(hint);
-                        propertyMap.put(hint.getName(), existing);
-                    } else {
-                        log.debug("Missing property name for a hint: {}", hint.getName());
-                    }
-                }
-                return propertyMap;
+                existing.mergeGroup(group);
+                propertyMap.put(group.getName(), existing);
             }
-
-
         }
+
+        for (Hint hint : mergedConfig.getHints()) {
+            if (propertyMap.containsKey(hint.getName())) {
+                Property existing = propertyMap.get(hint.getName());
+                existing.setHint(hint);
+                propertyMap.put(hint.getName(), existing);
+            } else {
+                log.debug("Missing property name for a hint: {}", hint.getName());
+            }
+        }
+        return propertyMap;
+    }
+
+
+}
