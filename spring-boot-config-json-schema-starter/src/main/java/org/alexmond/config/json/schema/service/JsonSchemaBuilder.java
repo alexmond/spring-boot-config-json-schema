@@ -527,17 +527,16 @@ public class JsonSchemaBuilder {
     }
 
     public String extractListItemType(String type) {
+        if(type == null) return null;
         if (type.contains("<") && type.contains(">")) {
             String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
-            if (inner.contains(",")) {
-                inner = inner.split(",")[0];
-            }
             return inner.trim();
         }
         return "object";
     }
 
     public String extractMapValueType(String type) {
+        if(type == null) return null;
         if (type.contains("<") && type.contains(">")) {
             String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
             if (inner.contains(",")) {
@@ -548,11 +547,6 @@ public class JsonSchemaBuilder {
         return type;
     }
 
-
-    //    public String toKebabCase(String input) {
-//        if (input == null) return null;
-//        return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
-//    }
 
     public String toKebabCase(String input) {
         if (input == null) return null;
