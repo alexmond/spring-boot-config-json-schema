@@ -71,12 +71,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jsonSchema</artifactId>
-            <version>2.19.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -85,11 +79,6 @@
             <groupId>com.networknt</groupId>
             <artifactId>json-schema-validator</artifactId>
             <version>1.5.8</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jsonSchema</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -1,5 +1,6 @@
 package org.alexmond.sample.test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
@@ -42,7 +43,12 @@ SimpleBootJsonSchemaGeneratorTests {
         ObjectMapper jsonMapper = new ObjectMapper();
         JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
         JsonSchema schema = factory.getSchema(jsonConfigSchemaJson);
-        Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
+        Set<ValidationMessage> errors;
+        try {
+            errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         if (!errors.isEmpty()) {
             errors.forEach(error -> log.error("Schema validation error: {}", error));
             throw new AssertionError("Schema validation failed");
@@ -59,27 +65,5 @@ SimpleBootJsonSchemaGeneratorTests {
             throw new RuntimeException(e);
         }
     }
-
-//    @Test
-//    void useJacksonSchema() throws IOException {
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-//        JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
-//        // Generate schema for the Product class
-//        JsonSchema productSchema = schemaGen.generateSchema(ConfigSample.class);
-////        JsonSchema productSchema = schemaGen.generateSchema(io.swagger.v3.oas.models.media.Schema.class);
-////        JsonSchema productSchema = schemaGen.generateSchema(SpringDocConfigProperties.class);
-//        productSchema.set$schema("https://json-schema.org/draft/2020-12/schema");
-////        productSchema.setId("your-schema-id");
-//        productSchema.setDescription("This is a simple JSON Schema");
-//
-//        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-//        writer.writeValue(Paths.get("gen.json").toFile(), productSchema);
-//
-//        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-//        ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-//        yamlWriter.writeValue(Paths.get("gen.yaml").toFile(), productSchema);
-//    }
 
 }
