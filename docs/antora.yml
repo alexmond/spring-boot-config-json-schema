@@ -1,6 +1,6 @@
-name: component-b
-title: Component B
-version: 2.5
-prerelease: -beta.1
+name: spring-boot-config-json-schema-starter
+title: Spring boot config json schema starter
+version: 0.0.10
+#prerelease: -beta.1
 nav:
   - modules/ROOT/nav.adoc
