@@ -3,6 +3,8 @@
 Alex Mondshain <alex.mondshaing@gmail.com>
 2014-09-09
 :revnumber: 123
+project-version: '{page-component-version}'
+
 // ifndef::imagesdir[:imagesdir: images]
 // ifndef::pages[:pages: pages]
 // ifndef::partials[:partials: partials]
