@@ -4,10 +4,9 @@ Alex Mondshain <alex.mondshaing@gmail.com>
 2014-09-09
 :revnumber: {project-version}
 :example-caption!:
-[doctype::book]
-ifndef::imagesdir[:imagesdir: images]
-ifndef::pages[:pages: pages]
-ifndef::partials[:partials: partials]
+// ifndef::imagesdir[:imagesdir: images]
+// ifndef::pages[:pages: pages]
+// ifndef::partials[:partials: partials]
 
 A Spring Boot starter that generates JSON Schema documentation from your application's @ConfigurationProperties classes and Spring Boot configuration metadata.
 The generated schemas enable configuration validation and autocompletion in popular IDEs and CI/CD pipelines.
@@ -242,4 +241,4 @@ image::vcs2.png[scaledwidth=75%]
 
 Below you can find a list of configuration properties.
 
-include::{partials}/_configprops.adoc[]
+include::partial$_configprops.adoc[]
