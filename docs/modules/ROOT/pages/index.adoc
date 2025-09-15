@@ -2,12 +2,7 @@
 == Spring Boot Config JSON Schema Generator
 Alex Mondshain <alex.mondshaing@gmail.com>
 2014-09-09
-:revnumber: 123
-project-version: '{page-component-version}'
 
-// ifndef::imagesdir[:imagesdir: images]
-// ifndef::pages[:pages: pages]
-// ifndef::partials[:partials: partials]
 
 A Spring Boot starter that generates JSON Schema documentation from your application's @ConfigurationProperties classes and Spring Boot configuration metadata.
 The generated schemas enable configuration validation and autocompletion in popular IDEs and CI/CD pipelines.
@@ -71,7 +66,8 @@ Add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>{project-version}</version>
+    <version>{page-component-version}
+</version>
     <scope>test</scope>
 </dependency>
 ----
@@ -109,7 +105,8 @@ To expose the JSON schema via a REST endpoint (similar to Swagger API docs), fir
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>{project-version}</version>
+    <version>{page-component-version}
+</version>
 </dependency>
 ----
 
@@ -144,7 +141,8 @@ To expose the JSON schema via an Actuator endpoint, first add the following depe
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>{project-version}</version>
+    <version>{page-component-version}
+</version>
 </dependency>
 ----
 
