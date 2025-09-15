@@ -38,7 +38,7 @@ class SanityJsonSchemaGeneratorTests {
     @Test
     void processEnumItem() {
         Class<?> clazz = EnumSample.class;
-        List<String> values = jsonSchemaBuilder.processEnumItem(clazz);
+        List<String> values = jsonSchemaBuilder.getHelper().processEnumItem(clazz);
 
         assertNotNull(values, "Values list should not be null");
         assertTrue(values.containsAll(List.of("EN1", "en1", "EN2", "en2", "EN3", "en3")), "Values list should contain all enum values");
