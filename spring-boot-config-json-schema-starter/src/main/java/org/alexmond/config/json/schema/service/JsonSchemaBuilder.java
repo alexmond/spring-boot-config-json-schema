@@ -1,7 +1,6 @@
 package org.alexmond.config.json.schema.service;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
@@ -10,13 +9,10 @@ import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.apache.commons.text.CaseUtils;
-import org.springframework.boot.logging.LogLevel;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Builder class responsible for generating JSON Schema definitions from Spring configuration metadata.
@@ -28,12 +24,14 @@ public class JsonSchemaBuilder {
     private final JsonConfigSchemaConfig config;
     private final TypeMappingService typeMappingService;
 
-    JsonSchemaBuilderHelper helper;
+    @Getter private final JsonSchemaBuilderHelper helper;
+    private final DefinitionsHelper definitionsHelper;
 
     public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
         this.config = config;
         this.typeMappingService = typeMappingService;
         helper = new JsonSchemaBuilderHelper(config, typeMappingService);
+        definitionsHelper = new DefinitionsHelper(helper);
     }
 
     /**
@@ -52,9 +50,8 @@ public class JsonSchemaBuilder {
                 .description(config.getDescription())
                 .type(JsonSchemaType.OBJECT)
                 .additionalProperties(config.isAllowAdditionalProperties())
+                .definitions(definitionsHelper.getDefinitions())
                 .build();
-
-        schemaRoot.setDefinitions(getDefinitions());
 
         Map<String, JsonSchemaProperties> properties = new TreeMap<>();
         meta.forEach((key, value) -> {
@@ -66,64 +63,6 @@ public class JsonSchemaBuilder {
 
         return schemaRoot.toMap();
     }
-
-    /**
-     * Creates standard schema definitions for common types like logger levels, locales, and charsets.
-     *
-     * @return Map of named schema definitions
-     */
-    private Map<String, JsonSchemaProperties> getDefinitions() {
-
-        Map<String, JsonSchemaProperties> definitions = new LinkedHashMap<>();
-
-        definitions.put("loggerLevel", getLoggerLevelDef());
-        definitions.put("loggerLevelProp", getLoggerLevelPropDef());
-        definitions.put("Locales", getLocalesDef());
-        definitions.put("Charsets", getCharsetsDef());
-
-        return definitions;
-    }
-
-    private JsonSchemaProperties getCharsetsDef() {
-        return JsonSchemaProperties.builder()
-                .type(JsonSchemaType.STRING)
-                .enumValues(new ArrayList<>(Charset.availableCharsets().keySet()))
-                .build();
-    }
-
-    private JsonSchemaProperties getLocalesDef() {
-        return JsonSchemaProperties.builder()
-                .type(JsonSchemaType.STRING)
-                .enumValues(Arrays.stream(Locale.getAvailableLocales())
-                        .map(Locale::toString)
-                        .collect(Collectors.toList()))
-
-                .build();
-    }
-
-    private JsonSchemaProperties getLoggerLevelDef() {
-        return JsonSchemaProperties.builder()
-                .type(JsonSchemaType.STRING)
-                .enumValues(processEnumItem(LogLevel.class))
-                .build();
-    }
-
-    private JsonSchemaProperties getLoggerLevelPropDef() {
-        return JsonSchemaProperties.builder()
-                .type(JsonSchemaType.OBJECT)
-                .additionalProperties(JsonSchemaProperties.builder()
-                        .oneOf(List.of(
-                                JsonSchemaProperties.builder()
-                                        .reference("#/$defs/loggerLevel")
-                                        .build(),
-                                JsonSchemaProperties.builder()
-                                        .reference("#/$defs/loggerLevelProp")
-                                        .build()
-                        ))
-                        .build())
-                .build();
-    }
-
 
     /**
      * Recursively adds a property to the schema tree following the property path.
@@ -147,7 +86,7 @@ public class JsonSchemaBuilder {
             } else {
                 JsonSchemaProperties jsonSchemaProperties = new JsonSchemaProperties();
 //            if (node.get(key) == null) {
-                var processed = processLeaf(jsonSchemaProperties, prop, null);
+                var processed = processLeaf(jsonSchemaProperties, prop, new HashSet<>());
 //            } else {
 //                log.info("Duplicate leaf {}", key);
 //                if (prop.getDescription() != null) {
@@ -205,12 +144,8 @@ public class JsonSchemaBuilder {
      */
     private Boolean processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop, Set<String> visited) {
         String propType;
-        Class<?> clazz;
-        Class<?> propClazz = null;
         Field field = null;
-        if (visited == null) {
-            visited = new HashSet<>();
-        }
+
         if (prop.getType() == null) {
             log.error("property {} prop.type is null", prop.getName());
             return false;
@@ -224,26 +159,22 @@ public class JsonSchemaBuilder {
             String classField = CaseUtils.toCamelCase(lastField, false, '-');
 
             try {
-                clazz = Class.forName(prop.getSourceType());
+                Class<?> clazz = Class.forName(prop.getSourceType());
                 field = ReflectionUtils.findField(clazz, classField);
-                if (field != null) {
-                    if (!propType.equals(field.getGenericType().getTypeName())) {
-                        log.warn("Property type mismatch with real one");
-                        propType = field.getGenericType().getTypeName();
-                    }
-                }
             } catch (ClassNotFoundException | NoClassDefFoundError e) {
                 log.debug("Unable to find class for property sourceType: {}, class: {}", prop.getName(), prop.getSourceType());
             }
-        }
-        jsonSchemaProperties.merge(typeMappingService.typeProp(propType, prop));
-        if (prop.getType() != null) {
-            try {
-                propClazz = Class.forName(prop.getType());
-            } catch (ClassNotFoundException e) {
-                log.debug("Unable to find class for property type: {}, class: {}", prop.getName(), prop.getType());
+
+            if (field != null) {
+                if (!propType.equals(field.getGenericType().getTypeName())) {
+                    log.warn("Property {} type {} mismatch with real one {}",
+                            prop.getName(), propType, field.getGenericType().getTypeName());
+                    propType = field.getGenericType().getTypeName();
+                }
             }
         }
+
+        jsonSchemaProperties.merge(typeMappingService.typeProp(propType, prop));
 
         if (prop.getDescription() != null) {
             jsonSchemaProperties.setDescription(prop.getDescription());
@@ -252,25 +183,42 @@ public class JsonSchemaBuilder {
         if (prop.getDefaultValue() != null) {
             jsonSchemaProperties.setDefaultValue(prop.getDefaultValue());
         }
-        helper.processHints(jsonSchemaProperties, prop);
-        helper.processDeprecation(jsonSchemaProperties, prop);
+
+        if (prop.getHint() != null) {
+            helper.processHints(jsonSchemaProperties, prop);
+        }
+        if (prop.getDeprecated() != null && prop.getDeprecated()) {
+            helper.processDeprecation(jsonSchemaProperties, prop);
+        }
 
         if (config.isUseValidation() && field != null) {
-            processValidated(jsonSchemaProperties, field, prop.getName());
+            helper.processValidated(jsonSchemaProperties, field, prop.getName());
         }
         if (config.isUseOpenapi() && field != null) {
-            processOpenapi(jsonSchemaProperties, field, prop.getName());
+            helper.processOpenapi(jsonSchemaProperties, field, prop.getName());
         }
+
         if (jsonSchemaProperties.getReference() != null) {
             return true;
         }
-        if (propClazz != null && propClazz.isEnum()) {
-            List<String> values = processEnumItem(propClazz);
-            if (values != null) {
-                jsonSchemaProperties.setEnumValues(values);
+
+        if (prop.getType() != null) {
+            Class<?> propClazz = null;
+            try {
+                propClazz = Class.forName(prop.getType());
+            } catch (ClassNotFoundException e) {
+                log.debug("Unable to find class for property type: {}, class: {}", prop.getName(), prop.getType());
             }
-            return true;
+
+            if (propClazz != null && propClazz.isEnum()) {
+                List<String> values = helper.processEnumItem(propClazz);
+                if (values != null) {
+                    jsonSchemaProperties.setEnumValues(values);
+                }
+                return true;
+            }
         }
+
         if (jsonSchemaProperties.getType().equals(JsonSchemaType.ARRAY)) {
             processArray(prop, propType, jsonSchemaProperties, visited);
             return true;
@@ -369,13 +317,13 @@ public class JsonSchemaBuilder {
             }
             JsonSchemaProperties jsonSchemaPropertiesItem = typeMappingService.typeProp(itemType, prop);
 
-            if (jsonSchemaPropertiesItem.getType().equals(JsonSchemaType.OBJECT)) {
+            if (jsonSchemaPropertiesItem.getType() == JsonSchemaType.OBJECT) {
                 Map<String, JsonSchemaProperties> complexProperties = processComplexType(itemType, prop, visited);
                 if (complexProperties != null) {
                     jsonSchemaPropertiesItem.setProperties(complexProperties);
                 }
             } else if (itemClass.isEnum()) {
-                List<String> values = processEnumItem(itemClass);
+                List<String> values = helper.processEnumItem(itemClass);
                 if (values != null) {
                     jsonSchemaPropertiesItem.setEnumValues(values);
                 }
@@ -388,81 +336,6 @@ public class JsonSchemaBuilder {
                             .type(JsonSchemaType.OBJECT)
                             .build()
             );
-        }
-    }
-
-
-    public List<String> processEnumItem(Class<?> itemClass) {
-        log.debug("Processing enum values for property: {}", itemClass);
-        if (itemClass.isEnum()) {
-            Object[] enumConstants = itemClass.getEnumConstants();
-            if (enumConstants != null) {
-                return Arrays.stream(enumConstants)
-                        .flatMap(enumConstant -> Arrays.stream(new String[]{
-                                enumConstant.toString(),
-                                enumConstant.toString().toLowerCase()
-                        }))
-                        .toList();
-            }
-        }
-        return null;
-    }
-
-    private void processOpenapi(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
-        log.debug("OpenAPI: Processing schema for property: {}", propName);
-        if (field.isAnnotationPresent(Schema.class)) {
-            Schema schema = field.getAnnotation(Schema.class);
-            if (!schema.description().isEmpty()) {
-                jsonSchemaProperties.setDescription(schema.description());
-            }
-//            if (!schema.example().isEmpty()) {
-//                jsonSchemaProperties.setExamples(List.of(schema.example()));
-//            }
-            if (schema.deprecated()) {
-                jsonSchemaProperties.setDeprecated(true);
-            }
-//            if (!schema.defaultValue().isEmpty()) {
-//                jsonSchemaProperties.setDefaultValue(schema.defaultValue());
-//            }
-        }
-    }
-
-    private void processValidated(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
-        log.debug("Validation: Processing validation for property: {}", propName);
-
-        if (field.isAnnotationPresent(Min.class)) {
-            var value = field.getAnnotation(Min.class).value();
-            jsonSchemaProperties.setMinimum(value);
-            log.debug("Validation: Added Min validation with value {} for field {}", value, field.getName());
-        }
-        if (field.isAnnotationPresent(Max.class)) {
-            var value = field.getAnnotation(Max.class).value();
-            jsonSchemaProperties.setMaximum(value);
-            log.debug("Validation: Added Max validation with value {} for field {}", value, field.getName());
-        }
-        if (field.isAnnotationPresent(Size.class)) {
-            var size = field.getAnnotation(Size.class);
-            if (size.min() > 0) {
-                jsonSchemaProperties.setMinLength(size.min());
-                log.info("Validation: Added Size.min validation with value {} for field {}", size.min(), field.getName());
-            }
-            if (size.max() < Integer.MAX_VALUE) {
-                jsonSchemaProperties.setMaxLength(size.max());
-                log.info("Validation: Added Size.max validation with value {} for field {}", size.max(), field.getName());
-            }
-        }
-        if (field.isAnnotationPresent(Pattern.class)) {
-            var pattern = field.getAnnotation(Pattern.class).regexp();
-            jsonSchemaProperties.setPattern(pattern);
-            log.info("Validation: Added Pattern validation with regexp {} for field {}", pattern, field.getName());
-        }
-//        if (field.isAnnotationPresent(NotNull.class)) {
-//            propDef.put("required", true);
-//            log.debug("Validation: Added NotNull validation for field {}", field.getName());
-//        }
-        if (field.isAnnotationPresent(NotEmpty.class)) {
-            jsonSchemaProperties.setMinLength(1);
-            log.debug("Validation: Added NotEmpty validation for field {}", field.getName());
         }
     }
 
@@ -482,9 +355,6 @@ public class JsonSchemaBuilder {
     }
 
     public Map<String, JsonSchemaProperties> processComplexType(String type, Property bootProp, Set<String> visited) {
-        if (visited == null) {
-            visited = new HashSet<>();
-        }
         if (visited.contains(type)) {
             log.warn("Detected cyclic reference for type: {}. Skipping nested properties. for Property {}", type, bootProp.getName());
             return null;
