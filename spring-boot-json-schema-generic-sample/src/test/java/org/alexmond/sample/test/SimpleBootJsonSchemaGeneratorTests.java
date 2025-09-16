@@ -30,9 +30,9 @@ SimpleBootJsonSchemaGeneratorTests {
         var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
         try {
             log.info("Writing json schema");
-            Files.writeString(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
+            Files.writeString(Paths.get("../docs//modules/ROOT/attachments/boot-generic-config.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
             log.info("Writing yaml schema");
-            Files.writeString(Paths.get("../docs/src/docs/asciidoc/sample/boot-generic-config.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
+            Files.writeString(Paths.get("../docs/modules/ROOT/attachments/boot-generic-config.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
