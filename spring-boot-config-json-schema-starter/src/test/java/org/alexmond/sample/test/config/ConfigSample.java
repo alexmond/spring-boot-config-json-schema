@@ -26,7 +26,9 @@ enum SampleStatus {ACTIVE, PENDING, INACTIVE}
 @Schema(description = "Configuration sample class")
 public class ConfigSample {
     // Java doc style comments required for config metadata processor
-    /** String sample **/
+    /**
+     * String sample
+     **/
     @Schema(description = "Sample string property", defaultValue = "stringSample")
     @NotNull
     String stringSample = "stringSample";
@@ -109,7 +111,7 @@ public class ConfigSample {
     /**
      * Properties map example
      **/
-    Map<String,String> propertiesMapExample = new HashMap<>();
+    Map<String, String> propertiesMapExample = new HashMap<>();
 
 
     /**
@@ -117,5 +119,5 @@ public class ConfigSample {
      **/
     @NestedConfigurationProperty
     DeepLevel1 deepLevel1 = new DeepLevel1();
-    
+
 }

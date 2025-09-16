@@ -1,12 +1,8 @@
-
-= Spring Boot Config JSON Schema Generator
+[#_spring_boot_config_json_schema_generator]
+== Spring Boot Config JSON Schema Generator
 Alex Mondshain <alex.mondshaing@gmail.com>
 2014-09-09
-:revnumber: {project-version}
-:example-caption!:
-ifndef::imagesdir[:imagesdir: images]
-ifndef::pages[:pages: pages]
-ifndef::partials[:partials: partials]
+
 
 A Spring Boot starter that generates JSON Schema documentation from your application's @ConfigurationProperties classes and Spring Boot configuration metadata.
 The generated schemas enable configuration validation and autocompletion in popular IDEs and CI/CD pipelines.
@@ -15,7 +11,9 @@ The generated schemas enable configuration validation and autocompletion in popu
 == Introduction
 
 A Spring Boot starter library uses Spring Context to process @ConfigurationProperties annotated classes and relevant properties from Spring Boot's configuration metadata (spring-configuration-metadata.json) to generate JSON Schema.
-The generated schema can be used by compatible editors for configuration validation and assistance outside of the Java project, as well as for configuration validation during CI/CD pipelines.
+The generated schema can be used by compatible editors for configuration validation and assistance outside the Java project, as well as for configuration validation during CI/CD pipelines.
+
+A good article on this subject: xref:https://themightyprogrammer.dev/article/2ways-spring-configuration[Springboot Config Documentation, Two Ways With IntelliJ IDEA]
 
 == Features
 
@@ -68,7 +66,8 @@ Add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>{project-version}</version>
+    <version>{page-component-version}
+</version>
     <scope>test</scope>
 </dependency>
 ----
@@ -83,25 +82,17 @@ class SampleJsonSchemaGeneratorTests {
     @Autowired
     private JsonSchemaService jsonSchemaService;
 
-    @Test
-    void generateJsonSchema() throws Exception {
+     @Test
+    void generateJsonSchema() {
 
-        String jsonConfigSchema;
-        jsonConfigSchema = jsonSchemaService.generateFullSchema();
-
-        ObjectMapper jsonMapper = new ObjectMapper();
-        ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
+        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
+        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
         log.info("Writing json schema");
-        jsonWriter.writeValue(Paths.get("sample-schema.json").toFile(),
-            jsonMapper.readTree(jsonConfigSchema));
+        Files.writeString(Paths.get("config-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
-        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-        ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
         log.info("Writing yaml schema");
-        yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(),
-            jsonMapper.readTree(jsonConfigSchema));
+        Files.writeString(Paths.get("config-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
     }
-
 }
 ----
 
@@ -114,7 +105,8 @@ To expose the JSON schema via a REST endpoint (similar to Swagger API docs), fir
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>{project-version}</version>
+    <version>{page-component-version}
+</version>
 </dependency>
 ----
 
@@ -129,10 +121,66 @@ public class GenerateJsonSchema {
     private JsonSchemaService jsonSchemaService;
 
     @GetMapping("/config-schema")
-    public String getConfigSchema() throws Exception {
-        return jsonSchemaService.generateFullSchema();
+    public String getConfigSchema() {
+        return jsonSchemaService.generateFullSchemaJson();
     }
 
+    @GetMapping("/config-schema.yaml")
+    public String getConfigSchemaYaml() throws Exception {
+        return jsonSchemaService.generateFullSchemaYaml();
+    }
+}
+----
+
+=== Using as Actuator Endpoint
+
+To expose the JSON schema via an Actuator endpoint, first add the following dependency to your `pom.xml`:
+
+[source,xml,subs=+attributes]
+----
+<dependency>
+    <groupId>org.alexmond</groupId>
+    <artifactId>spring-boot-config-json-schema-starter</artifactId>
+    <version>{page-component-version}
+</version>
+</dependency>
+----
+
+==== In JSON format
+
+.ConfigSchemaEndpoint.java
+[source,java]
+----
+@Component
+@Endpoint(id = "config-schema")
+@RequiredArgsConstructor
+public class ConfigSchemaEndpoint {
+
+    private final JsonSchemaService jsonSchemaService;
+
+    @ReadOperation
+    public String schema() {
+        return jsonSchemaService.generateFullSchemaJson();
+    }
+}
+----
+
+==== In YAML format
+
+.ConfigSchemaYamlEndpoint.java
+[source,java]
+----
+@Component
+@Endpoint(id = "config-schema.yaml")
+@RequiredArgsConstructor
+public class ConfigSchemaYamlEndpoint {
+
+    private final JsonSchemaService jsonSchemaService;
+
+    @ReadOperation
+    public String schema() throws Exception {
+        return jsonSchemaService.generateFullSchemaYaml();
+    }
 }
 ----
 
@@ -143,7 +191,12 @@ public class GenerateJsonSchema {
 
 ==== IntelliJ IDEA and JetBrains IDEs
 
-Add schema reference to the top of your YAML configuration file:
+Add schema reference to the top of your YAML configuration
+
+For testing purposes, you can find sample generic schema files here:
+
+* xref:attachment$boot-generic-config.json[boot-generic-config.json]
+* xref:attachment$boot-generic-config.yaml[boot-generic-config.yaml]
 
 [source,yaml]
 ----
@@ -192,4 +245,4 @@ image::vcs2.png[scaledwidth=75%]
 
 Below you can find a list of configuration properties.
 
-include::{partials}/_configprops.adoc[]
+include::partial$_configprops.adoc[]

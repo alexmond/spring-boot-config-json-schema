@@ -1,4 +1,4 @@
-$schema: ./sample-schema.json
+$schema: ./sample-schema.yaml
 spring:
   profiles:
     active:
@@ -48,7 +48,7 @@ spring:
   config:
     activate:
       on-profile:
-          - test
+        - test
 
 
 

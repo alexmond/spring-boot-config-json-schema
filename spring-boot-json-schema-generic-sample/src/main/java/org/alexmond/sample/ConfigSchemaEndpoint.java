@@ -15,7 +15,7 @@ public class ConfigSchemaEndpoint {
     private final JsonSchemaService jsonSchemaService;
 
     @ReadOperation
-    public String schema() throws Exception {
-        return jsonSchemaService.generateFullSchema();
+    public String schema() {
+        return jsonSchemaService.generateFullSchemaJson();
     }
 }

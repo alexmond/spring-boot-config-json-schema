@@ -1,74 +1,80 @@
-
 package org.alexmond.config.json.schema.service;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaRoot;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
-import org.alexmond.config.json.schema.jsonschemamodel.TypeProperties;
 import org.alexmond.config.json.schema.metamodel.Deprecation;
 import org.alexmond.config.json.schema.metamodel.Property;
+import org.apache.commons.text.CaseUtils;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static org.apache.commons.text.CaseUtils.toCamelCase;
-
+/**
+ * Builder class responsible for generating JSON Schema definitions from Spring configuration metadata.
+ * Handles type mapping, property validation, and schema structure generation according to configured rules.
+ */
 @Slf4j
 public class JsonSchemaBuilder {
 
     private final JsonConfigSchemaConfig config;
     private final TypeMappingService typeMappingService;
 
-    Map<String, Object> definitions = new LinkedHashMap<>();
+    JsonSchemaBuilderHelper helper;
 
     public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
         this.config = config;
         this.typeMappingService = typeMappingService;
+        helper = new JsonSchemaBuilderHelper(config, typeMappingService);
     }
 
-    public Map<String, Object> buildSchema(HashMap<String, Property> meta, List<String> included) {
+    /**
+     * Builds a complete JSON Schema from the provided configuration metadata.
+     *
+     * @param meta     Map of property metadata keyed by property path
+     * @param included List of property paths to include in the schema
+     * @return Map representing the complete JSON Schema structure
+     */
+    public Map<String, Object> buildSchema(Map<String, Property> meta, List<String> included) {
         log.info("Starting JSON schema generation");
-        Map<String, Object> schema = new LinkedHashMap<>();
-        JsonSchemaRoot root = JsonSchemaRoot.builder()
+        JsonSchemaRoot schemaRoot = JsonSchemaRoot.builder()
                 .schema(config.getSchemaSpec())
                 .id(config.getSchemaId())
                 .title(config.getTitle())
                 .description(config.getDescription())
+                .type(JsonSchemaType.OBJECT)
+                .additionalProperties(config.isAllowAdditionalProperties())
                 .build();
-        
-        
-        schema.put("$schema", config.getSchemaSpec());
-        schema.put("$id", config.getSchemaId());
-        schema.put("title", config.getTitle());
-        schema.put("description", config.getDescription());
-        schema.put("type", "object");
 
-        schema.put("$defs", getDefinitions());
+        schemaRoot.setDefinitions(getDefinitions());
 
-
-        Map<String, Object> properties = new LinkedHashMap<>();
-        HashMap<String,Property> filteredMeta = new HashMap<>();
+        Map<String, JsonSchemaProperties> properties = new TreeMap<>();
         meta.forEach((key, value) -> {
-            if (matchesIncluded(key,included)) {
-                filteredMeta.put(key,value);
+            if (matchesIncluded(key, included) && !isDeprecatedError(value)) {
+                addProperty(properties, key.split("\\."), 0, value);
             }
         });
+        schemaRoot.setProperties(properties);
 
-        filteredMeta.forEach((key, value) -> {
-            addProperty(properties, key.split("\\."), 0, value);
-        });
-        schema.put("properties", properties);
-
-        return schema;
+        return schemaRoot.toMap();
     }
 
-    private Map<String, Object> getDefinitions() {
+    /**
+     * Creates standard schema definitions for common types like logger levels, locales, and charsets.
+     *
+     * @return Map of named schema definitions
+     */
+    private Map<String, JsonSchemaProperties> getDefinitions() {
+
+        Map<String, JsonSchemaProperties> definitions = new LinkedHashMap<>();
 
         definitions.put("loggerLevel", getLoggerLevelDef());
         definitions.put("loggerLevelProp", getLoggerLevelPropDef());
@@ -78,43 +84,56 @@ public class JsonSchemaBuilder {
         return definitions;
     }
 
-    private Object getCharsetsDef() {
-        return Map.of(
-                "type", "string",
-                "enum", new ArrayList<>(Charset.availableCharsets().values())
-                );
+    private JsonSchemaProperties getCharsetsDef() {
+        return JsonSchemaProperties.builder()
+                .type(JsonSchemaType.STRING)
+                .enumValues(new ArrayList<>(Charset.availableCharsets().keySet()))
+                .build();
     }
 
-    private Object getLocalesDef() {
-        return Map.of(
-                "type", "string",
-                "enum", Locale.getAvailableLocales());
+    private JsonSchemaProperties getLocalesDef() {
+        return JsonSchemaProperties.builder()
+                .type(JsonSchemaType.STRING)
+                .enumValues(Arrays.stream(Locale.getAvailableLocales())
+                        .map(Locale::toString)
+                        .collect(Collectors.toList()))
 
-    }
-    private Map<String, Object> getLoggerLevelDef() {
-        return Map.of(
-                "type", "string",
-                "enum", processEnumItem(LogLevel.class));
+                .build();
     }
 
-    private Map<String, Object> getLoggerLevelPropDef() {
-        return Map.of(
-                "type", "object",
-                "additionalProperties", Map.of(
-                        "oneOf", List.of(
-                                Map.of(
-                                        "$ref", "#/$defs/loggerLevel"
-                                ),
-                                Map.of(
-                                        "$ref", "#/$defs/loggerLevelProp"
-                                )
-                        )
-                )
-        );
+    private JsonSchemaProperties getLoggerLevelDef() {
+        return JsonSchemaProperties.builder()
+                .type(JsonSchemaType.STRING)
+                .enumValues(processEnumItem(LogLevel.class))
+                .build();
+    }
+
+    private JsonSchemaProperties getLoggerLevelPropDef() {
+        return JsonSchemaProperties.builder()
+                .type(JsonSchemaType.OBJECT)
+                .additionalProperties(JsonSchemaProperties.builder()
+                        .oneOf(List.of(
+                                JsonSchemaProperties.builder()
+                                        .reference("#/$defs/loggerLevel")
+                                        .build(),
+                                JsonSchemaProperties.builder()
+                                        .reference("#/$defs/loggerLevelProp")
+                                        .build()
+                        ))
+                        .build())
+                .build();
     }
 
 
-    private void addProperty(Map<String, Object> node, String[] path, int idx, Property prop) {
+    /**
+     * Recursively adds a property to the schema tree following the property path.
+     *
+     * @param node Current node in the schema tree
+     * @param path Array of path segments to the property
+     * @param idx  Current index in the path array
+     * @param prop Property metadata to add
+     */
+    private void addProperty(Map<String, JsonSchemaProperties> node, String[] path, int idx, Property prop) {
         log.debug("Processing property at path: {}, index: {}", String.join(".", path), idx);
 
         if (node == null) {
@@ -123,74 +142,101 @@ public class JsonSchemaBuilder {
         }
         String key = path[idx];
         if (idx == path.length - 1) {
-            if(node.get(key) == null) {
-                processLeaf(node, prop, key);
+            if (config.getExcludeClasses().contains(prop.getType())) {
+                log.warn("Excluding type {}. Skipping nested properties. for Property {}", prop.getName(), prop.getType());
             } else {
-                log.info("Duplicate leaf {}",key);
-                if(prop.getDescription() != null) {
-                    processLeaf(node, prop, key);
+                JsonSchemaProperties jsonSchemaProperties = new JsonSchemaProperties();
+//            if (node.get(key) == null) {
+                var processed = processLeaf(jsonSchemaProperties, prop, null);
+//            } else {
+//                log.info("Duplicate leaf {}", key);
+//                if (prop.getDescription() != null) {
+//                    processLeaf(jsonSchemaProperties, prop, null);
+//                }
+//            }
+                if (processed) {
+                    node.put(key, jsonSchemaProperties);
                 }
             }
         } else {
-            Map<String, Object> propNode;
-            Map<String, Object> properties = new HashMap<>();;
-            if (node.containsKey(key)) {
-                propNode = (Map<String, Object>) node.get(key);
-                Object propsObj = propNode.get("properties");
-                if (propsObj instanceof Map) {
-                    properties = (Map<String, Object>) propsObj;
-                } else {
-                    properties = new HashMap<>();
-                    propNode.put("properties", properties);
-                }
-            } else {
-                propNode = new HashMap<>();
-                propNode.put("type", "object");
-                propNode.put("properties", properties);
-                node.put(key, propNode);
-            }
-
+            Map<String, JsonSchemaProperties> properties = ensureObjectNode(node, key);
             addProperty(properties, path, idx + 1, prop);
         }
     }
 
+    /**
+     * Ensures that `node` contains an OBJECT-typed JsonSchemaProperties under `key`
+     * with a non-null, mutable `properties` map, and returns that map.
+     * <p>
+     * Ensures that a node exists at the given key and has the correct structure for an object type.
+     *
+     * @param node Parent node to check/update
+     * @param key  Key where the object node should exist
+     * @return Properties map of the ensured object node
+     */
+    private Map<String, JsonSchemaProperties> ensureObjectNode(Map<String, JsonSchemaProperties> node, String key) {
+        JsonSchemaProperties propNode = node.get(key);
+        if (propNode == null) {
+            Map<String, JsonSchemaProperties> properties = new TreeMap<>();
+            propNode = JsonSchemaProperties.builder()
+                    .type(JsonSchemaType.OBJECT)
+                    .properties(properties)
+                    .build();
+            node.put(key, propNode);
+            return properties;
+        }
 
-    private void processLeaf(Map<String, Object> node, Property prop, String key) {
-        TypeProperties typeProperties;
+        Map<String, JsonSchemaProperties> properties = propNode.getProperties();
+        if (properties == null) {
+            properties = new TreeMap<>();
+            propNode.setProperties(properties);
+        }
+        return properties;
+    }
+
+
+    /**
+     * Processes a leaf property, handling type mapping, validation rules, and nested type definitions.
+     *
+     * @param jsonSchemaProperties Schema properties to update
+     * @param prop                 Property metadata to process
+     * @param visited              Set of already processed types to prevent cycles
+     * @return True if property was processed successfully, false otherwise
+     */
+    private Boolean processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop, Set<String> visited) {
         String propType;
         Class<?> clazz;
         Class<?> propClazz = null;
         Field field = null;
-
-        Map<String, Object> propDef = new LinkedHashMap<>();
-
-        // skip deprecated property with the error level
-        if(prop.getDeprecated() != null && prop.getDeprecated() && ( prop.getDeprecation().getLevel() == Deprecation.Level.ERROR || prop.getDeprecation().getLevel() == Deprecation.Level.error)){
-            log.debug("Skipping property is deprecated and removed: {}", prop.getName());
-            return;
+        if (visited == null) {
+            visited = new HashSet<>();
         }
-        if(prop.getType() == null) {
+        if (prop.getType() == null) {
             log.error("property {} prop.type is null", prop.getName());
-            return;
-        }else{
-            propType= prop.getType();
-            typeProperties = typeMappingService.typeProp(propType,prop);
+            return false;
+        } else {
+            propType = prop.getType();
         }
-        propDef.putAll(typeProperties.toMap());
 
         if (prop.getSourceType() != null) {
             String propertyName = prop.getName();
             String lastField = propertyName.substring(propertyName.lastIndexOf('.') + 1);
-            String classField = toCamelCase(lastField, false, '-');
+            String classField = CaseUtils.toCamelCase(lastField, false, '-');
 
             try {
                 clazz = Class.forName(prop.getSourceType());
                 field = ReflectionUtils.findField(clazz, classField);
-            } catch (ClassNotFoundException e) {
+                if (field != null) {
+                    if (!propType.equals(field.getGenericType().getTypeName())) {
+                        log.warn("Property type mismatch with real one");
+                        propType = field.getGenericType().getTypeName();
+                    }
+                }
+            } catch (ClassNotFoundException | NoClassDefFoundError e) {
                 log.debug("Unable to find class for property sourceType: {}, class: {}", prop.getName(), prop.getSourceType());
             }
         }
-
+        jsonSchemaProperties.merge(typeMappingService.typeProp(propType, prop));
         if (prop.getType() != null) {
             try {
                 propClazz = Class.forName(prop.getType());
@@ -199,55 +245,53 @@ public class JsonSchemaBuilder {
             }
         }
 
-        if (prop.getDescription() != null ) {
-            propDef.put("description", prop.getDescription());
+        if (prop.getDescription() != null) {
+            jsonSchemaProperties.setDescription(prop.getDescription());
         }
 
         if (prop.getDefaultValue() != null) {
-            propDef.put("default", prop.getDefaultValue());
+            jsonSchemaProperties.setDefaultValue(prop.getDefaultValue());
         }
-        processHints(propDef, prop);
-        processDeprecation(propDef, prop);
+        helper.processHints(jsonSchemaProperties, prop);
+        helper.processDeprecation(jsonSchemaProperties, prop);
 
-        if(config.isUseValidation() && field != null) {
-            processValidated(propDef, field, prop.getName());
+        if (config.isUseValidation() && field != null) {
+            processValidated(jsonSchemaProperties, field, prop.getName());
         }
-        if (config.isUseOpenapi()  && field != null) {
-            processOpenapi(propDef, field, prop.getName());
+        if (config.isUseOpenapi() && field != null) {
+            processOpenapi(jsonSchemaProperties, field, prop.getName());
         }
-        if(propDef.containsKey("$ref")) {
-            node.put(key, propDef);
-            return;
+        if (jsonSchemaProperties.getReference() != null) {
+            return true;
         }
         if (propClazz != null && propClazz.isEnum()) {
             List<String> values = processEnumItem(propClazz);
             if (values != null) {
-                propDef.put("enum", values);
+                jsonSchemaProperties.setEnumValues(values);
             }
-            node.put(key, propDef);
-            return;
+            return true;
         }
-        if (typeProperties.getType().equals(JsonSchemaType.ARRAY)) {
-            processArray(prop, prop.getType(), propDef,null);
-            node.put(key, propDef);
-            return;
+        if (jsonSchemaProperties.getType().equals(JsonSchemaType.ARRAY)) {
+            processArray(prop, propType, jsonSchemaProperties, visited);
+            return true;
         }
         if (typeMappingService.isMap(propType)) {
-            processMap(prop, prop.getType(), propDef,null);
-            node.put(key, propDef);
-            return;
+            processMap(prop, propType, jsonSchemaProperties, visited);
+            return true;
         }
-        if (typeProperties.getType().equals(JsonSchemaType.OBJECT)) {
-            Map<String, Object> complexProperties = processComplexType(prop.getType(), prop);
+        if (jsonSchemaProperties.getType().equals(JsonSchemaType.OBJECT)) {
+            var complexProperties = processComplexType(propType, prop, visited);
             if (complexProperties != null) {
-                propDef.put("properties", complexProperties);
+                jsonSchemaProperties.setProperties(complexProperties);
             }
         }
-        node.put(key, propDef);
+        return true;
     }
 
-    private void processMap(Property prop, String propType, Map<String, Object> propDef, Set<String> visited) {
-
+    private void processMap(Property prop, String propType, JsonSchemaProperties propDef, Set<String> visited) {
+        if (visited == null) {
+            visited = new HashSet<>();
+        }
         if (propType.contains("java.util.Properties")) {
             addSimpleAdditionalProperties(propDef);
             return;
@@ -258,9 +302,9 @@ public class JsonSchemaBuilder {
             addSimpleAdditionalProperties(propDef);
             return;
         }
-        TypeProperties typeProperties = typeMappingService.typeProp(valueType, prop);
-        if (typeProperties.getType() == null) {
-            propDef.putAll(typeProperties.toMap());
+        JsonSchemaProperties JsonSchemaProperties = typeMappingService.typeProp(valueType, prop);
+        if (JsonSchemaProperties.getType() == null) {
+            propDef.merge(JsonSchemaProperties);
             return;
         }
         try {
@@ -269,17 +313,17 @@ public class JsonSchemaBuilder {
                 addSimpleAdditionalProperties(propDef);
                 return;
             }
-            if (typeProperties.getType().equals(JsonSchemaType.OBJECT)) {
-                visited = visited == null ? new HashSet<>() : visited;
-                Map<String, Object> valueTypeProperties = processComplexType(valueType, prop, visited);
-                if (valueTypeProperties != null) {
-                    propDef.put("additionalProperties", Map.of(
-                            "type", "object",
-                            "properties", valueTypeProperties
-                    ));
+            if (JsonSchemaProperties.getType().equals(JsonSchemaType.OBJECT)) {
+                Map<String, JsonSchemaProperties> valueJsonSchemaProperties = processComplexType(valueType, prop, visited);
+                if (valueJsonSchemaProperties != null) {
+                    var newProp = org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties.builder()
+                            .type(JsonSchemaType.OBJECT)
+                            .properties(valueJsonSchemaProperties)
+                            .build();
+                    propDef.merge(newProp);
                 }
             } else {
-                propDef.put("additionalProperties",typeProperties.toMap());
+                propDef.setAdditionalProperties(JsonSchemaProperties);
             }
         } catch (ClassNotFoundException e) {
             log.debug("Cannot find class for property type: {}, treating as object", valueType);
@@ -287,116 +331,129 @@ public class JsonSchemaBuilder {
         }
     }
 
-    private void addSimpleAdditionalProperties(Map<String, Object> propDef) {
-        propDef.put("additionalProperties", Map.of("type", "object"));
+    private void addSimpleAdditionalProperties(JsonSchemaProperties propDef) {
+        propDef.setAdditionalProperties(JsonSchemaProperties.builder()
+                .type(JsonSchemaType.OBJECT)
+                .build());
     }
 
-    private void processArray(Property prop, String propType, Map<String, Object> propDef, Set<String> visited) {
-        if (propType.contains("[]")) {
-            propDef.put("items", typeMappingService.typeProp(propType.replace("[]",""),null).toMap());
+    private void processArray(Property prop, String propType, JsonSchemaProperties jsonSchemaProperties, Set<String> visited) {
+        if (propType.equals("java.lang.String[]")) {
+            jsonSchemaProperties.setItems(
+                    JsonSchemaProperties.builder()
+                            .type(JsonSchemaType.STRING)
+                            .build()
+            );
             return;
         }
 
         String itemType = extractListItemType(propType);
         if (itemType.equals("java.lang.Object") || itemType.contains("<T>")) {
-            propDef.put("items", Map.of("type", "object"));
+            jsonSchemaProperties.setItems(
+                    JsonSchemaProperties.builder()
+                            .type(JsonSchemaType.OBJECT)
+                            .build()
+            );
             return;
         }
 
         try {
             Class<?> itemClass = Class.forName(itemType);
             if (itemClass.getTypeParameters().length > 0) {
-                propDef.put("items", Map.of("type", "object"));
+                jsonSchemaProperties.setItems(
+                        JsonSchemaProperties.builder()
+                                .type(JsonSchemaType.OBJECT)
+                                .build()
+                );
                 return;
             }
-            TypeProperties typeProperties = typeMappingService.typeProp(itemType, prop);
-            Map<String, Object> items = new HashMap<>();
-            items.putAll(typeProperties.toMap());
+            JsonSchemaProperties jsonSchemaPropertiesItem = typeMappingService.typeProp(itemType, prop);
 
-            if (typeProperties.getType().equals(JsonSchemaType.OBJECT)) {
-                visited = visited == null ? new HashSet<>() : visited;
-                Map<String, Object> complexProperties = processComplexType(itemType, prop, visited);
+            if (jsonSchemaPropertiesItem.getType().equals(JsonSchemaType.OBJECT)) {
+                Map<String, JsonSchemaProperties> complexProperties = processComplexType(itemType, prop, visited);
                 if (complexProperties != null) {
-                    items.put("properties", complexProperties);
+                    jsonSchemaPropertiesItem.setProperties(complexProperties);
                 }
             } else if (itemClass.isEnum()) {
                 List<String> values = processEnumItem(itemClass);
                 if (values != null) {
-                    items.put("enum", values);
+                    jsonSchemaPropertiesItem.setEnumValues(values);
                 }
             }
-            propDef.put("items", items);
-
+            jsonSchemaProperties.setItems(jsonSchemaPropertiesItem);
         } catch (ClassNotFoundException e) {
             log.debug("Cannot find class for property type: {}, treating as object", itemType);
-            propDef.put("items", Map.of("type", "object"));
+            jsonSchemaProperties.setItems(
+                    JsonSchemaProperties.builder()
+                            .type(JsonSchemaType.OBJECT)
+                            .build()
+            );
         }
     }
 
 
-    public  List<String> processEnumItem(Class<?> itemClass) {
+    public List<String> processEnumItem(Class<?> itemClass) {
         log.debug("Processing enum values for property: {}", itemClass);
         if (itemClass.isEnum()) {
             Object[] enumConstants = itemClass.getEnumConstants();
             if (enumConstants != null) {
-                List<String> enumValues = Arrays.stream(enumConstants)
+                return Arrays.stream(enumConstants)
                         .flatMap(enumConstant -> Arrays.stream(new String[]{
                                 enumConstant.toString(),
                                 enumConstant.toString().toLowerCase()
                         }))
                         .toList();
-                    return  enumValues;
             }
         }
         return null;
     }
 
-    private void processOpenapi(Map<String, Object> propDef, Field field, String propName) {
+    private void processOpenapi(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
         log.debug("OpenAPI: Processing schema for property: {}", propName);
         if (field.isAnnotationPresent(Schema.class)) {
             Schema schema = field.getAnnotation(Schema.class);
             if (!schema.description().isEmpty()) {
-                propDef.put("description", schema.description());
+                jsonSchemaProperties.setDescription(schema.description());
             }
 //            if (!schema.example().isEmpty()) {
-//                propDef.put("examples", schema.example());
+//                jsonSchemaProperties.setExamples(List.of(schema.example()));
 //            }
             if (schema.deprecated()) {
-                propDef.put("deprecated", true);
+                jsonSchemaProperties.setDeprecated(true);
             }
-//                    if (!schema.defaultValue().isEmpty()) {
-//                        propDef.put("default", schema.defaultValue());
-//                    }
+//            if (!schema.defaultValue().isEmpty()) {
+//                jsonSchemaProperties.setDefaultValue(schema.defaultValue());
+//            }
         }
     }
 
-    private void processValidated(Map<String, Object> propDef, Field field, String propName) {
+    private void processValidated(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
         log.debug("Validation: Processing validation for property: {}", propName);
 
         if (field.isAnnotationPresent(Min.class)) {
             var value = field.getAnnotation(Min.class).value();
-            propDef.put("minimum", value);
+            jsonSchemaProperties.setMinimum(value);
             log.debug("Validation: Added Min validation with value {} for field {}", value, field.getName());
         }
         if (field.isAnnotationPresent(Max.class)) {
             var value = field.getAnnotation(Max.class).value();
-            propDef.put("maximum", value);
+            jsonSchemaProperties.setMaximum(value);
             log.debug("Validation: Added Max validation with value {} for field {}", value, field.getName());
         }
         if (field.isAnnotationPresent(Size.class)) {
             var size = field.getAnnotation(Size.class);
             if (size.min() > 0) {
-                propDef.put("minLength", size.min());
+                jsonSchemaProperties.setMinLength(size.min());
                 log.info("Validation: Added Size.min validation with value {} for field {}", size.min(), field.getName());
             }
             if (size.max() < Integer.MAX_VALUE) {
-                propDef.put("maxLength", size.max());
+                jsonSchemaProperties.setMaxLength(size.max());
                 log.info("Validation: Added Size.max validation with value {} for field {}", size.max(), field.getName());
             }
         }
         if (field.isAnnotationPresent(Pattern.class)) {
             var pattern = field.getAnnotation(Pattern.class).regexp();
-            propDef.put("pattern", pattern);
+            jsonSchemaProperties.setPattern(pattern);
             log.info("Validation: Added Pattern validation with regexp {} for field {}", pattern, field.getName());
         }
 //        if (field.isAnnotationPresent(NotNull.class)) {
@@ -404,9 +461,17 @@ public class JsonSchemaBuilder {
 //            log.debug("Validation: Added NotNull validation for field {}", field.getName());
 //        }
         if (field.isAnnotationPresent(NotEmpty.class)) {
-            propDef.put("minLength", 1);
+            jsonSchemaProperties.setMinLength(1);
             log.debug("Validation: Added NotEmpty validation for field {}", field.getName());
         }
+    }
+
+    private boolean isDeprecatedError(Property prop) {
+        return prop.getDeprecated() != null &&
+               prop.getDeprecated() &&
+               prop.getDeprecation() != null &&
+               (prop.getDeprecation().getLevel() == Deprecation.Level.ERROR ||
+                prop.getDeprecation().getLevel() == Deprecation.Level.error);
     }
 
     private boolean matchesIncluded(String propertyPath, List<String> included) {
@@ -416,114 +481,62 @@ public class JsonSchemaBuilder {
         return false;
     }
 
-    private void processHints(Map<String, Object> propDef, Property prop) {
-        log.debug("Processing hints for property: {}", prop.getName());
-        if (prop.getHint() != null) {
-            if (prop.getHint().getValues() != null && !prop.getHint().getValues().isEmpty()) {
-                var hints = prop.getHint().getValues().stream()
-                        .map(hint -> hint.getValue())
-                        .filter(value -> value != null)
-                        .toList();
-                if (hints.size() > 1) {
-                    log.debug("Property '{}' has multiple hints: {}", prop.getName(), hints);
-                }
-                propDef.put("examples", hints);
-            }
+    public Map<String, JsonSchemaProperties> processComplexType(String type, Property bootProp, Set<String> visited) {
+        if (visited == null) {
+            visited = new HashSet<>();
         }
-    }
-
-
-    private void processDeprecation(Map<String, Object> propDef, Property prop) {
-        log.debug("Processing deprecation for property: {}", prop.getName());
-        if (prop.getDeprecated() != null && prop.getDeprecated()) {
-            propDef.put("deprecated", true);
-            if (prop.getDeprecation() != null) {
-                Map<String, Object> xDeprecation = new LinkedHashMap<>();
-                if (prop.getDeprecation().getReason() != null) {
-                    xDeprecation.put("reason", prop.getDeprecation().getReason());
-                }
-                if (prop.getDeprecation().getReplacement() != null) {
-                    xDeprecation.put("replacement", prop.getDeprecation().getReplacement());
-                }
-                if (prop.getDeprecation().getSince() != null) {
-                    xDeprecation.put("since", prop.getDeprecation().getSince());
-                }
-                if (prop.getDeprecation().getLevel() != null) {
-                    // Normalize level to upper-case to avoid duplicating values like WARNING/warning
-                    xDeprecation.put("level", prop.getDeprecation().getLevel().name().toUpperCase());
-                }
-                if (!xDeprecation.isEmpty()) {
-                    propDef.put("x-deprecation", xDeprecation);
-                }
-            }
-        }
-    }
-
-
-    public Map<String, Object> processComplexType(String type, Property bootProp) {
-        return processComplexType(type, bootProp,new HashSet<>());
-    }
-
-    public Map<String, Object> processComplexType(String type, Property bootProp,Set<String> visited) {
         if (visited.contains(type)) {
-            log.warn("Detected cyclic reference for type: {}. Skipping nested properties. for Property {}", type,bootProp.getName());
-            return new HashMap<>();
+            log.warn("Detected cyclic reference for type: {}. Skipping nested properties. for Property {}", type, bootProp.getName());
+            return null;
+        }
+        if (config.getAllExcludedClasses().contains(type)) {
+            log.warn("Excluding type {}. Skipping nested properties. for Property {}", type, bootProp.getName());
+            return null;
         }
         visited.add(type);
-        Map<String, Object> properties = new HashMap<>();
+        Map<String, JsonSchemaProperties> properties = new TreeMap<>();
         try {
             Class<?> clazz = Class.forName(type);
             for (Field field : clazz.getDeclaredFields()) {
-                Map<String, Object> fieldDef = new HashMap<>();
-                String fieldType = field.getType().getName();
                 String fieldGenName = field.getGenericType().getTypeName();
-                var typeProperties = typeMappingService.typeProp(fieldGenName,null);
-                fieldDef.putAll(typeProperties.toMap()); // TODO: check logic
-
-                if (typeProperties.getReference() != null) {
-                    fieldDef.put("properties",typeProperties.toMap());
-                } else if (typeProperties.getType().equals(JsonSchemaType.ARRAY)) {
-                    processArray(bootProp,fieldGenName, fieldDef, visited);
-                } else if (typeProperties.getType().equals(JsonSchemaType.OBJECT)) {
-                    if (typeMappingService.isMap(fieldType)) {
-                        processMap(bootProp, fieldGenName, fieldDef, visited);
-                    } else {
-                        try{
-                            if((Class.forName(fieldType)).getTypeParameters().length > 0){
-                                fieldDef.put("properties", Map.of("type", "object"));
-                            } else {
-                                Map<String, Object> nestedProperties = processComplexType(fieldType, bootProp, visited);
-                                if (nestedProperties != null) {
-                                    fieldDef.put("properties", nestedProperties);
-                                }
-                            }
-                        } catch (ClassNotFoundException e) {
-                            log.debug("Cannot find class for property type: {}, treating as object", fieldType);
-                            fieldDef.put("properties", Map.of("type", "object"));
-                        }
+                if (config.getExcludeClasses().contains(fieldGenName)) {
+                    log.warn("Excluding type {}. Skipping nested properties. for Property {}", fieldGenName, bootProp.getName());
+                } else {
+                    JsonSchemaProperties fieldProperty = new JsonSchemaProperties();
+                    String propName = toKebabCase(field.getName());
+                    Property filedProp = Property.builder()
+                            .name(bootProp.getName() + "." + propName)
+                            .type(fieldGenName)
+                            .sourceType(type)
+                            .build();
+                    var processed = processLeaf(fieldProperty, filedProp, visited);
+                    if (processed) {
+                        properties.put(propName, fieldProperty);
                     }
                 }
-                properties.put(toKebabCase(field.getName()), fieldDef);
             }
-        } catch (ClassNotFoundException e) {
-            log.debug("Type not found: {}", type);
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            log.debug("Type not found: {},{}", type, e.getMessage());
         }
+
         visited.remove(type);
+        if (properties.isEmpty()) {
+            return null;
+        }
         return properties;
     }
 
     public String extractListItemType(String type) {
+        if(type == null) return null;
         if (type.contains("<") && type.contains(">")) {
             String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
-            if (inner.contains(",")) {
-                inner = inner.split(",")[0];
-            }
             return inner.trim();
         }
         return "object";
     }
 
     public String extractMapValueType(String type) {
+        if(type == null) return null;
         if (type.contains("<") && type.contains(">")) {
             String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
             if (inner.contains(",")) {
@@ -537,7 +550,23 @@ public class JsonSchemaBuilder {
 
     public String toKebabCase(String input) {
         if (input == null) return null;
-        return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
+
+        // Split on underscores, process each segment separately, then join back with "_"
+        String[] segments = input.split("_");
+        for (int i = 0; i < segments.length; i++) {
+            String s = segments[i];
+            // Add space before every uppercase letter (splits acronyms into single letters too)
+            s = s.replaceAll("([A-Z])", " $1");
+            // Insert spaces between letters and numbers
+            s = s.replaceAll("([a-zA-Z])([0-9])", "$1 $2");
+            s = s.replaceAll("([0-9])([a-zA-Z])", "$1 $2");
+            // Collapse spaces
+            s = s.trim().replaceAll("\\s+", " ");
+            // Replace spaces with hyphens
+            segments[i] = String.join("-", s.split(" ")).toLowerCase();
+        }
+        // Join the processed segments back with underscores
+        return String.join("_", segments);
     }
 
 }

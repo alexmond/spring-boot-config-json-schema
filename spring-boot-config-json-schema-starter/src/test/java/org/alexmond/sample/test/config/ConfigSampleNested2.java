@@ -11,6 +11,6 @@ public class ConfigSampleNested2 {
     private String listNestedConfig1 = "nestedConfig1";
 
     @Schema(description = "Second nested configuration property", example = "123")
-    private Integer listNestedConfig2 = 123 ;
+    private Integer listNestedConfig2 = 123;
 
 }
