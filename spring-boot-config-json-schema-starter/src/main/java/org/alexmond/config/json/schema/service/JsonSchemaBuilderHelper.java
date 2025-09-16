@@ -18,6 +18,8 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Helper class for building JSON schema from configuration properties.
@@ -78,7 +80,7 @@ public class JsonSchemaBuilderHelper {
         }
     }
 
-    public List<String> processEnumItem(Class<?> itemClass) {
+    public Set<String> processEnumItem(Class<?> itemClass) {
         log.debug("Processing enum values for property: {}", itemClass.getCanonicalName());
         if (itemClass.isEnum()) {
             Object[] enumConstants = itemClass.getEnumConstants();
@@ -88,7 +90,7 @@ public class JsonSchemaBuilderHelper {
                                 enumConstant.toString(),
                                 enumConstant.toString().toLowerCase()
                         }))
-                        .toList();
+                        .collect(Collectors.toSet());
             }
         }
         return null;

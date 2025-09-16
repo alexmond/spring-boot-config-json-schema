@@ -64,14 +64,14 @@ public class DefinitionsHelper {
                 .type(JsonSchemaType.STRING)
                 .enumValues(Arrays.stream(Locale.getAvailableLocales())
                         .map(Locale::toString)
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toSet()))
                 .build();
     }
 
     private JsonSchemaProperties getCharsetsDef() {
         return JsonSchemaProperties.builder()
                 .type(JsonSchemaType.STRING)
-                .enumValues(new ArrayList<>(Charset.availableCharsets().keySet()))
+                .enumValues(Charset.availableCharsets().keySet())
                 .build();
     }
 }

@@ -17,10 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,7 +35,7 @@ class SanityJsonSchemaGeneratorTests {
     @Test
     void processEnumItem() {
         Class<?> clazz = EnumSample.class;
-        List<String> values = jsonSchemaBuilder.getHelper().processEnumItem(clazz);
+        Set<String> values = jsonSchemaBuilder.getHelper().processEnumItem(clazz);
 
         assertNotNull(values, "Values list should not be null");
         assertTrue(values.containsAll(List.of("EN1", "en1", "EN2", "en2", "EN3", "en3")), "Values list should contain all enum values");

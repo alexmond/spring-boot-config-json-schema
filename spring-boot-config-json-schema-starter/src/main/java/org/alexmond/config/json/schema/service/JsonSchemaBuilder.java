@@ -211,7 +211,7 @@ public class JsonSchemaBuilder {
             }
 
             if (propClazz != null && propClazz.isEnum()) {
-                List<String> values = helper.processEnumItem(propClazz);
+                Set<String> values = helper.processEnumItem(propClazz);
                 if (values != null) {
                     jsonSchemaProperties.setEnumValues(values);
                 }
@@ -323,7 +323,7 @@ public class JsonSchemaBuilder {
                     jsonSchemaPropertiesItem.setProperties(complexProperties);
                 }
             } else if (itemClass.isEnum()) {
-                List<String> values = helper.processEnumItem(itemClass);
+                Set<String> values = helper.processEnumItem(itemClass);
                 if (values != null) {
                     jsonSchemaPropertiesItem.setEnumValues(values);
                 }
