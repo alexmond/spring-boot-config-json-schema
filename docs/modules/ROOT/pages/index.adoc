@@ -194,8 +194,9 @@ public class ConfigSchemaYamlEndpoint {
 Add schema reference to the top of your YAML configuration
 
 For testing purposes, you can find sample generic schema files here:
-xref:attachment$boot-generic-config.json[boot-generic-config.json]
-xref:attachment$boot-generic-config.yaml[boot-generic-config.yaml]
+
+* xref:attachment$boot-generic-config.json[boot-generic-config.json]
+* xref:attachment$boot-generic-config.yaml[boot-generic-config.yaml]
 
 [source,yaml]
 ----
