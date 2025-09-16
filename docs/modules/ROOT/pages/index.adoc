@@ -1,6 +1,6 @@
 [#_spring_boot_config_json_schema_generator]
 == Spring Boot Config JSON Schema Generator
-Alex Mondshain <alex.mondshaing@gmail.com>
+Alex Mondshain <alex.mondshain@gmail.com>
 2014-09-09
 
 
