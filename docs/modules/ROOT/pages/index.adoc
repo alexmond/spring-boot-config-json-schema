@@ -13,7 +13,7 @@ The generated schemas enable configuration validation and autocompletion in popu
 A Spring Boot starter library uses Spring Context to process @ConfigurationProperties annotated classes and relevant properties from Spring Boot's configuration metadata (spring-configuration-metadata.json) to generate JSON Schema.
 The generated schema can be used by compatible editors for configuration validation and assistance outside the Java project, as well as for configuration validation during CI/CD pipelines.
 
-A good article on this subject: xref:https://themightyprogrammer.dev/article/2ways-spring-configuration[Springboot Config Documentation, Two Ways With IntelliJ IDEA]
+A good article on this subject: xref:https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
 
 == Features
 

@@ -12,7 +12,7 @@ For detailed documentation, please visit
 our [full documentation](https://alexmond.github.io/spring-boot-config-json-schema-starter/current/index.html).
 
 A good article on this
-subject: [Springboot Config Documentation, Two Ways With IntelliJ IDEA](https://themightyprogrammer.dev/article/2ways-spring-configuration)
+subject: [Spring Boot Config Documentation, Two Ways With IntelliJ IDEA](https://themightyprogrammer.dev/article/2ways-spring-configuration)
 
 ## Quick Start
 
