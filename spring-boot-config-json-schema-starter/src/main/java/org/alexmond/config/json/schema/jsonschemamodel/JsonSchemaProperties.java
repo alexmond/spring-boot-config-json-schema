@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -54,7 +56,7 @@ public class JsonSchemaProperties {
     @JsonProperty("$ref")
     private String reference;
     @JsonProperty("enum")
-    private List<String> enumValues;
+    private Set<String> enumValues;
     private Number minimum;
     private Number maximum;
     // FIX: Changed from Boolean to Number for 2020-12 compliance
@@ -93,8 +95,8 @@ public class JsonSchemaProperties {
     private Integer maxProperties;
     // NOTE: This is the correct implementation for the 'required' keyword in an object context.
     @JsonProperty("required")
-    private List<String> requiredProperties; // Array version
-    private Map<String, List<String>> dependentRequired;
+    private Set<String> requiredProperties; // Array of unique property names
+    private Map<String, Set<String>> dependentRequired;
     private Map<String, JsonSchemaProperties> dependentSchemas;
     private Map<String, JsonSchemaProperties> patternProperties;
     private JsonSchemaProperties propertyNames;
@@ -135,6 +137,14 @@ public class JsonSchemaProperties {
         List<T> result = new ArrayList<>(list1);
         result.removeAll(list2);
         result.addAll(list2);
+        return result;
+    }
+
+    private <T> Set<T> mergeSets(Set<T> set1, Set<T> set2) {
+        if (set1 == null) return set2;
+        if (set2 == null) return set1;
+        Set<T> result = new LinkedHashSet<>(set1);
+        result.addAll(set2);
         return result;
     }
 
@@ -185,10 +195,10 @@ public class JsonSchemaProperties {
         if (other.getHtmlDescription() != null) this.htmlDescription = other.getHtmlDescription();
         if (other.getItems() != null) this.items = other.getItems();
 
-        this.enumValues = mergeLists(this.enumValues, other.getEnumValues());
+        this.enumValues = mergeSets(this.enumValues, other.getEnumValues());
         this.examples = mergeLists(this.examples, other.getExamples());
         this.prefixItems = mergeLists(this.prefixItems, other.getPrefixItems());
-        this.requiredProperties = mergeLists(this.requiredProperties, other.getRequiredProperties());
+        this.requiredProperties = mergeSets(this.requiredProperties, other.getRequiredProperties());
         this.allOf = mergeLists(this.allOf, other.getAllOf());
         this.anyOf = mergeLists(this.anyOf, other.getAnyOf());
         this.oneOf = mergeLists(this.oneOf, other.getOneOf());

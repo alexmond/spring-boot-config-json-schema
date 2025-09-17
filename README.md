@@ -8,7 +8,8 @@ A Spring Boot starter library that automatically generates JSON Schema documenta
 configuration properties. It simplifies the process of documenting and validating configuration by generating JSON
 Schema from your Spring Boot configuration classes.
 
-A full guide can be found in our [docs](https://alexmond.github.io/spring-boot-config-json-schema/).
+For detailed documentation, please visit
+our [full documentation](https://alexmond.github.io/spring-boot-config-json-schema-starter/current/index.html).
 
 A good article on this
 subject: [Springboot Config Documentation, Two Ways With IntelliJ IDEA](https://themightyprogrammer.dev/article/2ways-spring-configuration)
@@ -26,7 +27,7 @@ Add the following dependency to your `pom.xml` when using the generator in tests
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>0.0.8</version>
+    <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -65,7 +66,7 @@ To expose the JSON schema via a REST endpoint (similar to Swagger API docs), add
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>0.0.8</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -103,7 +104,7 @@ To expose the JSON schema via an Actuator endpoint, add the following dependency
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>0.0.8</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
