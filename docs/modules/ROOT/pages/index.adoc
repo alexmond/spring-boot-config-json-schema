@@ -66,8 +66,7 @@ Add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>{page-component-version}
-</version>
+    <version>{page-component-version}</version>
     <scope>test</scope>
 </dependency>
 ----
@@ -105,8 +104,7 @@ To expose the JSON schema via a REST endpoint (similar to Swagger API docs), fir
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>{page-component-version}
-</version>
+    <version>{page-component-version}</version>
 </dependency>
 ----
 
@@ -141,8 +139,7 @@ To expose the JSON schema via an Actuator endpoint, first add the following depe
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>{page-component-version}
-</version>
+    <version>{page-component-version}</version>
 </dependency>
 ----
 
@@ -201,7 +198,7 @@ For testing purposes, you can find sample generic schema files here:
 [source,yaml]
 ----
 # Schema reference for JetBrains IDEs
-$schema: "https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json"
+$schema: "https://alexmond.github.io/spring-boot-config-json-schema-starter/current/_attachments/boot-generic-config.json"
 
 # Application properties
 spring:
@@ -224,7 +221,7 @@ Add schema reference using YAML language server directive (requires YAML Languag
 
 [source,yaml]
 ----
-# yaml-language-server: $schema=https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json
+# yaml-language-server: $schema=https://alexmond.github.io/spring-boot-config-json-schema-starter/current/_attachments/boot-generic-config.yaml
 
 spring:
   datasource:
