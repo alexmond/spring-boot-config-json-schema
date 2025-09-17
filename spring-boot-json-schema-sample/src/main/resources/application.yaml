@@ -2,11 +2,9 @@ spring:
   profiles:
     active: test
 
-sample:
-  deep-level1:
-    deep-level2:
-      list1:
-        - id: 123
+
+
+
 
 #  boolean-sample: false
 #  string-sample: "config string"

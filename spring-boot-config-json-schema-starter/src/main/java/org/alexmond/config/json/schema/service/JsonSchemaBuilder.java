@@ -268,7 +268,7 @@ public class JsonSchemaBuilder {
                             .type(JsonSchemaType.OBJECT)
                             .properties(valueJsonSchemaProperties)
                             .build();
-                    propDef.merge(newProp);
+                    propDef.setAdditionalProperties(newProp);
                 }
             } else {
                 propDef.setAdditionalProperties(JsonSchemaProperties);

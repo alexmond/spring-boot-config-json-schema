@@ -7,7 +7,7 @@
   "$defs" : {
     "loggerLevel" : {
       "type" : "string",
-      "enum" : [ "TRACE", "trace", "DEBUG", "debug", "INFO", "info", "WARN", "warn", "ERROR", "error", "FATAL", "fatal", "OFF", "off" ]
+      "enum" : [ "TRACE", "debug", "INFO", "error", "DEBUG", "WARN", "OFF", "off", "fatal", "warn", "trace", "ERROR", "FATAL", "info" ]
     },
     "loggerLevelProp" : {
       "type" : "object",
@@ -21,7 +21,7 @@
     },
     "Locales" : {
       "type" : "string",
-      "enum" : [ "", "he", "th_TH_#Thai", "nds", "tk_TM_#Latn", "ti_ET", "ta_SG", "lv", "en_NU", "zh_SG_#Hans", "ff_LR_#Adlm", "en_JM", "kkj", "se_NO_#Latn", "sd__#Arab", "es_BO", "dz_BT", "mni", "yi", "bs_BA", "dsb_DE", "lb_LU_#Latn", "en_LR", "ar_TD", "cs", "el", "nus_SS_#Latn", "af", "ff_MR_#Latn", "sw_UG", "smn", "tk_TM", "sr_ME_#Cyrl", "ar_EG", "dsb", "os_GE_#Cyrl", "yo_NG", "se_NO", "khq", "en_PW", "pl_PL", "sr_CS", "ne_IN", "agq_CM_#Latn", "ar_EH", "bs_BA_#Latn", "nds_DE", "nb_SJ", "es_US", "sa", "en_US_POSIX", "pt_MO", "zh__#Hans", "lb_LU", "dsb_DE_#Latn", "is_IS_#Latn", "so_KE", "dje_NE", "hy_AM_#Armn", "ff_GH_#Latn", "fr_PM", "ar_KM", "no_NO_NY", "pl_PL_#Latn", "agq_CM", "gu_IN_#Gujr", "teo", "tr_TR", "eu", "kl_GL_#Latn", "ar_MR", "es_DO", "ru", "az", "su__#Latn", "fa", "kl_GL", "en_NR", "nd", "kk", "nds_DE_#Latn", "rw_RW_#Latn", "hy", "en_AU", "en_CY", "tr_TR_#Latn", "ti_ER", "nus_SS", "en_RW", "ksb", "luo", "lb", "hr_HR_#Latn", "su", "ln_CD", "nnh_CM", "no", "dje_NE_#Latn", "ar_IL", "mgh", "or_IN", "ps_AF_#Arab", "az__#Latn", "ta", "lag", "ar_SY", "luo_KE_#Latn", "ksf_CM", "bo", "tt_RU", "om_KE", "en_AS", "fr_VU", "zh_TW", "sd_IN", "kln", "nnh_CM_#Latn", "mai", "pt_MZ", "fr_NE", "fur_IT_#Latn", "ast_ES_#Latn", "bez_TZ_#Latn", "ksb_TZ", "my_MM_#Mymr", "en_JE", "ln_CF", "uz_AF", "da_DK_#Latn", "en_CX", "ak_GH_#Latn", "en_AT", "gl", "sr__#Cyrl", "yue_CN_#Hans", "ff__#Adlm", "kn_IN", "ga", "qu", "en_TZ", "en_PR", "mua", "jv", "ps", "sn", "km", "zgh", "fr_NC", "es", "jgo", "gd_GB", "gsw", "fr_CM", "wae_CH_#Latn", "pa_IN_#Guru", "ur_PK_#Arab", "pcm_NG_#Latn", "teo_UG", "ceb", "no_NO_#Latn", "bn_BD_#Beng", "smn_FI_#Latn", "en_NL", "ln_CG", "ne_NP_#Deva", "te", "az_AZ", "sl", "el_CY", "mr_IN", "ku_TR", "ha", "guz_KE_#Latn", "lrc_IR", "gsw_FR", "es_HN", "hu_HU", "ff_SN", "sbp", "sq_MK", "sr_BA_#Cyrl", "bg_BG_#Cyrl", "so_SO_#Latn", "et_EE", "sw", "ar_OM", "fy_NL", "nmg", "tr_CY", "lv_LV_#Latn", "uz_UZ_#Latn", "lrc_IQ", "dua_CM", "de_IT", "pt_BR_#Latn", "vai__#Vaii", "fr_TN", "sr_RS", "de_CH", "sw_TZ_#Latn", "fr_PF", "pt_GQ", "gu", "vun_TZ", "jmc_TZ", "mg_MG_#Latn", "en_TV", "lo", "en_PN", "lu_CD_#Latn", "zh_HK_#Hans", "nl_NL", "en_GY", "bs__#Latn", "dyo_SN", "os", "nl_CW", "ar_DZ", "pt_CH", "fr_GQ", "am", "en_NG", "fr_CI", "ki_KE", "ia_001", "en_PK", "zh_CN", "en_LC", "rw", "brx_IN", "ff_BF_#Adlm", "gv_IM", "kw_GB_#Latn", "bm_ML_#Latn", "yav_CM_#Latn", "mk_MK", "en_TT", "dav", "sl_SI", "sg_CF_#Latn", "ses", "fi_FI_#Latn", "xh_ZA", "fr_BE", "jgo_CM", "ff_NE_#Adlm", "es_VE", "mer_KE", "mg", "mr", "en_BM", "nb_NO", "seh", "kea_CV", "mgo", "vi_VN", "en_US", "mfe_MU", "fr_BF", "pa__#Guru", "it_SM", "fa_IR_#Arab", "sa_IN_#Deva", "fr_YT", "gu_IN", "ff_CM_#Latn", "ast", "mt_MT_#Latn", "fi_FI", "yue__#Hans", "ca_FR", "sr_BA_#Latn", "ccp_BD_#Cakm", "uk_UA_#Cyrl", "fr_DJ", "ks__#Arab", "ff_GW_#Adlm", "ha_GH", "yi_001_#Hebr", "af_ZA_#Latn", "ti_ET_#Ethi", "to_TO_#Latn", "de_BE", "am_ET_#Ethi", "ff_GW_#Latn", "cgg", "zh_MO", "mua_CM_#Latn", "nyn_UG", "ms_MY", "rn_BI_#Latn", "ta_LK", "ksf", "de_DE_#Latn", "cy", "ceb_PH", "sq", "fr", "tg_TJ", "vun_TZ_#Latn", "qu_PE", "de", "es_EC", "mk_MK_#Cyrl", "ff_CM_#Adlm", "lg_UG", "ff_NE_#Latn", "zu_ZA", "fr_FR_#Latn", "su_ID_#Latn", "cgg_UG", "ksh_DE", "lg", "ru_RU", "pcm_NG", "en_DM", "sd", "he_IL_#Hebr", "ga_IE", "en_BI", "yue_CN", "rm_CH_#Latn", "en_WS", "fr_LU", "so", "mi_NZ", "ar_ER", "kab", "nus", "sn_ZW", "es_EA", "ga_GB", "th_TH_TH_#u-nu-thai", "hi", "fr_SC", "en_SL", "ff_NG_#Latn", "no_NO", "ff_NG_#Adlm", "zh_MO_#Hant", "en_SH", "vai", "sd_PK_#Arab", "de_LU", "mi", "mt", "de_DE", "nn_NO_#Latn", "en_DK", "yav", "so_DJ", "lt_LT", "kam", "ro", "eo_001", "ps_PK", "ee", "en_UM", "en_SI", "vai_LR_#Vaii", "lo_LA", "chr", "rof_TZ_#Latn", "ar_LB", "lrc_IR_#Arab", "af_ZA", "doi", "ff_GN", "ksh_DE_#Latn", "es_BZ", "ar_AE", "eo_001_#Latn", "hr_HR", "rof_TZ", "as", "it", "ks_IN", "my_MM", "mn_MN", "ur_PK", "da_DK", "en_FM", "en_BE", "ii", "fr_WF", "mzn_IR", "naq", "en_SG", "kln_KE", "tzm", "ff_GM_#Latn", "tt_RU_#Cyrl", "teo_UG_#Latn", "fur", "om", "asa_TZ_#Latn", "bez_TZ", "ff_GN_#Latn", "sl_SI_#Latn", "en_SD", "mai_IN_#Deva", "ja_JP_JP_#u-ca-japanese", "es_SV", "pt_BR", "mni_IN_#Beng", "ml_IN", "ga_IE_#Latn", "en_FK", "is_IS", "bas_CM_#Latn", "en_DG", "hr", "pt_ST", "ak_GH", "lt", "uz_AF_#Arab", "ccp", "en_SE", "zh_CN_#Hans", "es_419", "ln_CD_#Latn", "kkj_CM_#Latn", "en", "guz_KE", "gsw_LI", "ccp_BD", "es_IC", "ca", "ar_TN", "bm_ML", "kw_GB", "pa_PK", "ug_CN", "jmc_TZ_#Latn", "ki_KE_#Latn", "es_BR", "khq_ML", "en_SB", "bo_CN_#Tibt", "chr_US", "rw_RW", "shi_MA_#Tfng", "ar_IQ", "nyn", "mk", "sat", "pa__#Arab", "en_DE", "ro_MD", "bs", "en_FI", "fy", "th", "uz_UZ", "dav_KE", "ia_001_#Latn", "sah_RU_#Cyrl", "en_SC", "en_UG", "en_NZ", "dje", "es_UY", "mas_KE", "mni_IN", "ru_UA", "sg_CF", "en_FJ", "de_LI", "en_BB", "smn_FI", "hr_BA", "yo_NG_#Latn", "de_AT", "lu_CD", "ar_001", "so_SO", "lv_LV", "ckb", "ar_KW", "sr_RS_#Cyrl", "bem", "da", "wae", "en_LS", "ig", "en_HK", "brx_IN_#Deva", "mer_KE_#Latn", "ce_RU", "ka_GE", "sw_TZ", "fr_RW", "mg_MG", "en_US_#Latn", "os_RU", "sr_RS_#Latn", "ky_KG", "tzm_MA_#Latn", "nl_NL_#Latn", "ku_TR_#Latn", "ki", "mfe_MU_#Latn", "nb", "kok", "ewo", "nn", "ar_JO", "gl_ES_#Latn", "bg", "kea", "zu", "ky_KG_#Cyrl", "am_ET", "fr_DZ", "bo_CN", "hsb", "qu_EC", "ka_GE_#Geor", "en_MS", "kok_IN_#Deva", "en_GG", "kde_TZ_#Latn", "sat_IN", "sr_ME", "sv_SE", "pcm", "sah", "mer", "en_ZM", "fr_ML", "ha_NG", "br", "ar_SA", "fa_AF", "fil_PH_#Latn", "sk", "om_ET_#Latn", "os_GE", "ckb_IQ_#Arab", "yi_001", "ml", "en_MT", "en_GH", "en_IL", "sv", "kn_IN_#Knda", "tzm_MA", "el_GR_#Grek", "ses_ML", "rwk_TZ_#Latn", "lkt_US", "sd__#Deva", "vai_LR_#Latn", "ku", "sw_CD", "ff_MR_#Adlm", "fil_PH", "it_VA", "es_PH", "es_ES", "es_CO", "bg_BG", "en_VC", "ses_ML_#Latn", "agq", "hsb_DE", "eu_ES_#Latn", "en_150", "sv_SE_#Latn", "ar_SD", "ha_NE", "en_KN", "ebu", "ro_RO", "sr_ME_#Latn", "es_GT", "ff_LR_#Latn", "bas_CM", "nd_ZW_#Latn", "fr_MG", "es_CL", "mn", "kam_KE", "fa_IR", "en_MO", "ja_JP_#Jpan", "wo", "shi__#Tfng", "en_BZ", "lkt_US_#Latn", "sq_AL", "ro_RO_#Latn", "twq_NE", "nmg_CM", "ta_IN_#Taml", "kab_DZ_#Latn", "az__#Cyrl", "en_MP", "en_GD", "tk", "sbp_TZ_#Latn", "shi__#Latn", "en_BW", "kab_DZ", "he_IL", "kde_TZ", "ta_MY", "sv_FI", "nd_ZW", "luy_KE_#Latn", "mni__#Beng", "ne", "en_IE", "zh_SG", "si_LK_#Sinh", "en_KI", "twq_NE_#Latn", "om_ET", "lo_LA_#Laoo", "sq_AL_#Latn", "ja_JP", "kam_KE_#Latn", "my", "ka", "ff_GH_#Adlm", "ko_KR_#Kore", "fr_MF", "ms_ID", "shi", "kl", "sa_IN", "yue_HK", "id", "en_SZ", "fo_FO_#Latn", "rwk_TZ", "zh", "es_PE", "mgh_MZ", "saq", "en_GB", "zh_HK_#Hant", "sat_IN_#Olck", "kk_KZ", "es_PA", "ar_PS", "bez", "fr_MC", "kw", "vai__#Latn", "ksh", "ur_IN", "ln", "ce_RU_#Cyrl", "gsw_CH", "luy_KE", "pt", "kkj_CM", "es_GQ", "mgh_MZ_#Latn", "ar_YE", "to", "en_SX", "ru_KZ", "et", "ko_KP", "nl_SR", "rof", "en_BS", "bem_ZM_#Latn", "be", "gv", "kln_KE_#Latn", "dua", "cgg_UG_#Latn", "nl_BQ", "ee_GH_#Latn", "ff_GN_#Adlm", "uz_UZ_#Cyrl", "hi_IN_#Deva", "guz", "en_KE", "mfe", "asa_TZ", "ja", "fr_SN", "or", "brx", "fr_MA", "pt_LU", "ff_GM_#Adlm", "fr_BL", "mgo_CM", "nmg_CM_#Latn", "mai_IN", "ko_KR", "tg_TJ_#Cyrl", "es_MX", "zu_ZA_#Latn", "doi_IN", "fi", "uz", "bs__#Cyrl", "sr__#Latn", "en_SS", "bo_IN", "rm", "shi_MA", "en_MG", "fr_BI", "hsb_DE_#Latn", "naq_NA_#Latn", "bn", "br_FR_#Latn", "kn", "nnh", "bn_BD", "es_ES_#Latn", "en_ZA", "cy_GB_#Latn", "fr_FR", "pa_IN", "en_MH", "fr_BJ", "vai_LR", "zh__#Hant", "jv_ID_#Latn", "sah_RU", "ps_AF", "ky", "mas", "bs_BA_#Cyrl", "xh_ZA_#Latn", "dav_KE_#Latn", "sk_SK", "xh", "khq_ML_#Latn", "mzn_IR_#Arab", "mn_MN_#Cyrl", "wo_SN", "ha_NG_#Latn", "fr_HT", "ru_RU_#Cyrl", "te_IN", "mas_KE_#Latn", "nl_SX", "lrc", "ce", "fr_CG", "gv_IM_#Latn", "mt_MT", "ko", "ms_MY_#Latn", "ml_IN_#Mlym", "nds_NL", "zgh_MA_#Tfng", "ak", "kde", "dz", "nyn_UG_#Latn", "en_VU", "ia", "to_TO", "ff_SL_#Latn", "seh_MZ", "xog_UG_#Latn", "ff_SN_#Adlm", "vi_VN_#Latn", "su_ID", "jgo_CM_#Latn", "ii_CN", "pa_PK_#Arab", "fr_RE", "bn_IN", "fr_GP", "pa", "zgh_MA", "uk_UA", "rwk", "rn", "tg", "hu", "fr_CH", "lg_UG_#Latn", "ceb_PH_#Latn", "en_NF", "twq", "sr_XK_#Cyrl", "bm", "nb_NO_#Latn", "ar_SS", "en_GU", "nl_AW", "en_AI", "fy_NL_#Latn", "xog_UG", "en_CM", "cs_CZ", "tr", "ca_ES", "hu_HU_#Latn", "rm_CH", "ru_MD", "ff_SN_#Latn", "en_TO", "ff_SL_#Adlm", "en_PG", "et_EE_#Latn", "fr_CF", "pt_TL", "en_ER", "sr_BA", "es_PY", "kok_IN", "be_BY_#Cyrl", "fr_TG", "dz_BT_#Tibt", "sr_XK_#Latn", "en_PH", "ig_NG", "fr_GN", "gd_GB_#Latn", "zh_MO_#Hans", "sat__#Olck", "se_FI", "ff", "en_CK", "ar_MA", "haw_US_#Latn", "en_AG", "fr_TD", "ebu_KE", "lt_LT_#Latn", "bem_ZM", "ewo_CM_#Latn", "xog", "ewo_CM", "fr_CD", "rn_BI", "en_NA", "mgo_CM_#Latn", "ms", "ug", "ca_IT", "qu_PE_#Latn", "lag_TZ", "id_ID", "teo_KE", "ca_AD", "qu_BO", "haw_US", "vi", "fr_CA", "kea_CV_#Latn", "sq_XK", "dyo", "mi_NZ_#Latn", "en_KY", "it_CH", "si_LK", "luo_KE", "en_AE", "it_IT", "eo", "ar_SO", "en_ZW", "nn_NO", "fr_MU", "pl", "se_SE", "en_TK", "mua_CM", "ur", "uz__#Arab", "saq_KE", "pt_GW", "se", "sn_ZW_#Latn", "ms_SG", "ee_TG", "ln_AO", "be_BY", "yue__#Hant", "km_KH_#Khmr", "it_IT_#Latn", "luy", "pt_CV", "uk", "es_PR", "mzn", "wae_CH", "tt", "ru_BY", "fo_DK", "ee_GH", "ar_BH", "kk_KZ_#Cyrl", "ug_CN_#Arab", "hi_IN", "en_CH", "saq_KE_#Latn", "asa", "fo_FO", "yo_BJ", "ast_ES", "fr_KM", "fr_MQ", "es_AR", "ff__#Latn", "doi_IN_#Deva", "en_MY", "sbp_TZ", "ebu_KE_#Latn", "uz__#Cyrl", "fil", "yue_HK_#Hant", "hy_AM", "en_GM", "fo", "ksb_TZ_#Latn", "ne_NP", "fur_IT", "ta_IN", "fr_GF", "lkt", "id_ID_#Latn", "is", "pt_AO", "te_IN_#Telu", "si", "en_001", "dua_CM_#Latn", "jv_ID", "lag_TZ_#Latn", "ru_KG", "fr_MR", "ksf_CM_#Latn", "ks", "zh_TW_#Hant", "ff_BF_#Latn", "as_IN", "zh_HK", "sw_KE", "th_TH", "as_IN_#Beng", "jmc", "yue", "en_MW", "naq_NA", "en_IO", "ar_QA", "ar_EG_#Arab", "en_CC", "pt_PT", "sk_SK_#Latn", "az_AZ_#Cyrl", "ckb_IQ", "shi_MA_#Latn", "es_CU", "ar", "en_VI", "haw", "eu_ES", "bas", "ig_NG_#Latn", "el_GR", "uz__#Latn", "yav_CM", "sg", "da_GL", "km_KH", "ckb_IR", "nl", "ks_IN_#Arab", "ca_ES_VALENCIA", "wo_SN_#Latn", "sd_IN_#Deva", "mr_IN_#Deva", "es_CR", "fr_GA", "sr", "ar_LY", "en_MU", "gl_ES", "az_AZ_#Latn", "en_IM", "gsw_CH_#Latn", "seh_MZ_#Latn", "en_GI", "en_CA", "gd", "chr_US_#Cher", "fr_SY", "or_IN_#Orya", "so_ET", "ca_ES_#Latn", "nl_BE", "ar_DJ", "dyo_SN_#Latn", "cy_GB", "en_VG", "en_TC", "sv_AX", "cs_CZ_#Latn", "af_NA", "vun", "en_IN", "lu", "yo", "es_NI", "ii_CN_#Yiii", "sd_PK", "mas_TZ", "ti", "ms_BN", "ccp_IN", "br_FR" ]
+      "enum" : [ "", "ksh", "rw_RW", "af_ZA", "en_TC", "fr_LU", "en_TK", "ccp", "sn_ZW_#Latn", "it_SM", "en_TO", "en_TT", "sbp_TZ_#Latn", "nl_AW", "de_IT", "en_TV", "om_ET_#Latn", "en_TZ", "teo", "fr_ML", "sr_ME_#Latn", "ti_ER", "nl_BE", "fr_MQ", "fr_MU", "ti_ET", "en_UG", "fr_MR", "en_UM", "os_RU", "nl_BQ", "seh_MZ_#Latn", "nus_SS_#Latn", "fr_MA", "ko_KR", "en_US", "ko_KP", "kok_IN", "ksh_DE", "fr_MC", "fr_MF", "ses_ML", "fr_MG", "ceb", "pcm_NG_#Latn", "be_BY", "de_LI", "dav_KE_#Latn", "se_NO", "xog", "en_RW", "nd_ZW", "dua_CM", "sr_XK_#Cyrl", "bn_IN", "mzn", "ms_ID", "en_SC", "pa_IN", "en_SD", "en_SB", "fr_KM", "en_SG", "en_SH", "en_SE", "en_SL", "en_SI", "et_EE_#Latn", "fi_FI", "en_SS", "ru_UA", "vai__#Latn", "ur_PK", "en_SX", "uz_UZ_#Latn", "en_SZ", "cgg", "en_PH", "bn_BD", "fr_HT", "en_PG", "nnh_CM", "en_PK", "ff_LR_#Latn", "en_PN", "sr_BA", "en_PR", "kw_GB_#Latn", "en_PW", "sg_CF_#Latn", "ewo_CM_#Latn", "ur_IN", "bg_BG_#Cyrl", "shi_MA_#Latn", "sg_CF", "be_BY_#Cyrl", "chr", "nds_DE_#Latn", "sw_TZ_#Latn", "jmc_TZ", "en_MY", "sw_UG", "en_MW", "da_DK_#Latn", "hi_IN", "en_NA", "en_NF", "en_NG", "sw_TZ", "fr_FR", "yo_BJ", "ms_MY", "sr_BA_#Latn", "nl_CW", "en_NL", "ks__#Arab", "en_NR", "sr_CS", "haw_US", "nl_NL_#Latn", "pcm", "en_NU", "tt_RU_#Cyrl", "wae_CH", "en_NZ", "fr_GF", "kam_KE", "fr_GN", "ca_ES_VALENCIA", "fr_GP", "fr_GQ", "cy_GB", "ceb_PH", "ckb", "lu_CD", "fr_GA", "de_AT", "en_KY", "mgo_CM_#Latn", "gsw", "agq", "lag_TZ_#Latn", "fr_DJ", "ca_IT", "ff_GM_#Adlm", "en_LC", "vai_LR_#Vaii", "yue__#Hant", "yue__#Hans", "ja_JP_JP_#u-ca-japanese", "sv_AX", "luy_KE", "en_LR", "naq", "en_LS", "ti_ET_#Ethi", "sn_ZW", "ff_NE_#Adlm", "ms_MY_#Latn", "ff_SN_#Latn", "en_MG", "en_MH", "ar_EG_#Arab", "naq_NA", "nmg_CM_#Latn", "kea_CV", "en_MO", "fr_DZ", "en_MP", "en_MU", "en_MS", "bs_BA_#Latn", "yue_CN_#Hans", "en_MT", "bas_CM_#Latn", "it_IT", "pl_PL", "fr_BE", "teo_UG_#Latn", "fr_BF", "ks_IN", "tr_TR", "fr_BI", "fr_BJ", "my_MM_#Mymr", "ff_GH_#Adlm", "ca_ES_#Latn", "guz", "de_DE", "fr_BL", "tg_TJ", "ksf_CM", "en_JE", "de_CH", "zh_HK", "uz_AF", "luy_KE_#Latn", "en_JM", "yo_NG", "pa_PK", "pa_PK_#Arab", "ee_GH", "zu_ZA_#Latn", "fr_CA", "fr_CF", "fr_CG", "fr_CD", "so_SO_#Latn", "ff_GN_#Adlm", "fr_CH", "fr_CI", "vi_VN", "fr_CM", "de_BE", "en_KE", "en_KI", "guz_KE_#Latn", "en_KN", "nds", "uz__#Latn", "fy_NL", "lag_TZ", "ast_ES_#Latn", "en_GU", "en_GY", "bn_BD_#Beng", "lv_LV_#Latn", "af_NA", "yo_NG_#Latn", "ig_NG", "vun", "th_TH_#Thai", "ca_ES", "lag", "sv_SE_#Latn", "en_HK", "sa_IN_#Deva", "nl_NL", "ff_GW_#Latn", "ky_KG_#Cyrl", "en_IE", "hr_HR", "ms_SG", "en_IM", "en_IN", "en_IL", "en_IO", "rof_TZ_#Latn", "en_ER", "kab_DZ_#Latn", "ii_CN_#Yiii", "zh_SG_#Hans", "rof", "sat_IN_#Olck", "hr_HR_#Latn", "fur_IT", "sat_IN", "en_FJ", "en_FK", "en_FI", "se_SE", "as_IN", "en_FM", "az_AZ_#Cyrl", "jmc_TZ_#Latn", "teo_UG", "ca_FR", "sr_ME", "en_GD", "ksb_TZ", "en_GB", "en_GG", "en_GH", "ml_IN", "en_GI", "zh_CN", "ewo", "dje_NE", "en_GM", "ta_LK", "jgo_CM_#Latn", "nb_NO_#Latn", "bem_ZM_#Latn", "to_TO_#Latn", "nb_NO", "sd__#Deva", "sd_IN_#Deva", "en_US_POSIX", "tg_TJ_#Cyrl", "sr_RS_#Latn", "el_GR_#Grek", "ia_001", "zh_CN_#Hans", "qu_BO", "bez_TZ", "mni_IN_#Beng", "ta_MY", "fo_FO", "se_NO_#Latn", "sa_IN", "jgo_CM", "sr__#Cyrl", "twq", "gl_ES_#Latn", "gsw_CH", "fo_DK", "asa", "yav", "ebu_KE", "mfe_MU_#Latn", "lv_LV", "ar_IQ", "zh_MO_#Hant", "ar_IL", "ksf_CM_#Latn", "zh_MO_#Hans", "br_FR", "ast", "nmg", "th_TH", "sw_CD", "gu_IN_#Gujr", "lb_LU_#Latn", "su_ID", "ru_KZ", "ar_BH", "shi__#Tfng", "uz__#Arab", "haw", "ff_BF_#Latn", "uz_AF_#Arab", "mgh_MZ", "sk_SK_#Latn", "ru_KG", "tzm", "gd_GB", "ta_IN", "nnh", "teo_KE", "rn_BI_#Latn", "dua_CM_#Latn", "yue_CN", "kk_KZ", "fr_YT", "no_NO", "fr_VU", "luo_KE", "rwk", "mgh_MZ_#Latn", "twq_NE_#Latn", "gsw_FR", "jgo", "lkt", "ar_DJ", "kde_TZ_#Latn", "wae", "nyn_UG", "qu_PE_#Latn", "ce_RU", "si_LK_#Sinh", "jv_ID", "kk_KZ_#Cyrl", "eu_ES_#Latn", "ar_DZ", "lb_LU", "dsb_DE_#Latn", "fr_WF", "tzm_MA", "mt_MT_#Latn", "kkj_CM_#Latn", "ar_ER", "qu_EC", "ar_EG", "kln_KE_#Latn", "ar_EH", "sq_XK", "nb_SJ", "saq_KE", "pl_PL_#Latn", "en_001", "fr_TD", "fr_TG", "ff_NE_#Latn", "ff_GH_#Latn", "fr_TN", "te_IN", "brx_IN", "ff_CM_#Adlm", "ff_GN_#Latn", "tr_CY", "ff_MR_#Adlm", "os_GE", "id_ID", "fr_RW", "en_ZM", "km_KH", "en_ZW", "se_FI", "rn_BI", "fr_RE", "no_NO_#Latn", "hy_AM_#Armn", "fr_SY", "ru_MD", "lkt_US_#Latn", "fr_SC", "zgh_MA", "sd_PK_#Arab", "sl_SI", "fr_SN", "te_IN_#Telu", "ar_AE", "gsw_LI", "jmc", "fr_PM", "nus", "luo_KE_#Latn", "lo_LA", "gv_IM", "dav", "ug_CN", "sw_KE", "fr_PF", "lrc", "qu_PE", "ja_JP_#Jpan", "pa_IN_#Guru", "is_IS_#Latn", "vai_LR_#Latn", "ms_BN", "de_LU", "eo_001", "en_ZA", "fy_NL_#Latn", "en_VC", "ru_RU", "it_VA", "en_VG", "mai_IN", "sd__#Arab", "seh_MZ", "en_VI", "ee_TG", "ff_GM_#Latn", "vai__#Vaii", "en_VU", "fr_NE", "fr_NC", "sah", "haw_US_#Latn", "az__#Latn", "saq", "sat", "ps_PK", "mai_IN_#Deva", "bg_BG", "mn_MN_#Cyrl", "en_WS", "et_EE", "bem_ZM", "ta_SG", "pcm_NG", "sbp", "ha_GH", "gv_IM_#Latn", "nyn", "bo_CN", "luo", "fil", "es_EA", "es_EC", "luy", "bas", "es_ES", "pt_ST", "mi_NZ_#Latn", "xh_ZA", "nn_NO_#Latn", "af", "nnh_CM_#Latn", "bo_CN_#Tibt", "af_ZA_#Latn", "to_TO", "no_NO_NY", "pt_BR_#Latn", "ak", "sd_PK", "am_ET", "am", "ar", "as", "es_ES_#Latn", "az", "pa__#Arab", "ki_KE_#Latn", "chr_US_#Cher", "be", "es_BR", "bg", "zu_ZA", "ccp_BD", "bm", "ff__#Latn", "bn", "bo", "es_BZ", "br", "bs", "ar_YE", "seh", "es_CO", "mk_MK_#Cyrl", "ses_ML_#Latn", "pa__#Guru", "ca", "es_CL", "sq_AL_#Latn", "ses", "ff_NG_#Latn", "ce", "nmg_CM", "es_CR", "es_CU", "rof_TZ", "br_FR_#Latn", "mg_MG", "cs", "az_AZ", "kam_KE_#Latn", "cy", "es_DO", "ff_BF_#Adlm", "da", "pt_PT", "de", "ln_CD_#Latn", "mg_MG_#Latn", "wae_CH_#Latn", "bem", "hu_HU", "ar_SA", "es_419", "ar_SD", "so_KE", "bez", "dz", "ff_MR_#Latn", "tr_TR_#Latn", "jv_ID_#Latn", "ak_GH", "dje", "ee", "en_US_#Latn", "ar_SS", "ro_MD", "vai_LR", "ar_SO", "es_AR", "el", "en", "eo", "es", "et", "eu", "ar_TD", "bas_CM", "he_IL_#Hebr", "shi", "su_ID_#Latn", "hsb", "ar_SY", "es_BO", "bs_BA_#Cyrl", "fa", "ug_CN_#Arab", "ff", "fi", "ar_TN", "yue", "hsb_DE_#Latn", "fo", "fr", "sah_RU_#Cyrl", "fy", "uz_UZ", "ga", "ro_RO_#Latn", "gd", "gl", "fr_FR_#Latn", "gu", "yi_001", "gv", "sr__#Latn", "xh_ZA_#Latn", "zh_TW_#Hant", "pt_TL", "ha", "ga_IE_#Latn", "ff_SL_#Latn", "he", "or_IN_#Orya", "om_ET", "hi", "cgg_UG", "ro_RO", "smn_FI_#Latn", "uk_UA_#Cyrl", "mt_MT", "hr", "ff_GN", "mgo_CM", "sah_RU", "hu", "hy", "lrc_IR_#Arab", "om_KE", "kkj_CM", "ia", "id", "ig", "ar_OM", "ii", "dz_BT", "ne_NP_#Deva", "yue_HK", "ccp_IN", "is", "it", "mzn_IR", "ceb_PH_#Latn", "ja", "kde_TZ", "cy_GB_#Latn", "doi", "kl_GL_#Latn", "ko_KR_#Kore", "jv", "ps_AF_#Arab", "rwk_TZ_#Latn", "saq_KE_#Latn", "ar_QA", "mai", "smn", "ka", "ar_PS", "ki", "mas", "kk", "hu_HU_#Latn", "kl", "km", "kn", "ko", "lt_LT_#Latn", "ks", "ku", "kw", "az__#Cyrl", "ky", "am_ET_#Ethi", "lb", "cs_CZ_#Latn", "lg", "mi_NZ", "fur", "ln", "lo", "lt", "lu", "lv", "ckb_IQ", "ckb_IR", "sq_MK", "mni__#Beng", "so_SO", "mg", "yi_001_#Hebr", "mi", "mk", "ar_JO", "ml", "ckb_IQ_#Arab", "mn", "is_IS", "fil_PH_#Latn", "sr_ME_#Cyrl", "mr", "ms", "mt", "nus_SS", "ee_GH_#Latn", "my", "chr_US", "ru_BY", "dsb", "nb", "shi_MA_#Tfng", "nd", "ar_KW", "kn_IN_#Knda", "nd_ZW_#Latn", "lt_LT", "ne", "kea_CV_#Latn", "ar_KM", "dyo_SN_#Latn", "ps_AF", "nl", "nn", "zh__#Hans", "no", "rm_CH_#Latn", "zh__#Hant", "ar_LB", "mas_KE_#Latn", "kab", "ki_KE", "vi_VN_#Latn", "sat__#Olck", "bs__#Latn", "kam", "ar_LY", "zh_HK_#Hans", "mer", "zh_HK_#Hant", "om", "mni_IN", "or", "os", "fil_PH", "naq_NA_#Latn", "mk_MK", "mfe", "ar_MA", "dua", "pa", "lg_UG", "ml_IN_#Mlym", "uz_UZ_#Cyrl", "twq_NE", "pl", "ku_TR_#Latn", "smn_FI", "ar_MR", "en_CM", "ps", "pt", "ca_AD", "it_CH", "en_CX", "es_US", "pt_BR", "en_CY", "mgh", "ig_NG_#Latn", "es_UY", "ii_CN", "mgo", "en_DE", "fo_FO_#Latn", "ln_CD", "mer_KE", "en_DG", "tzm_MA_#Latn", "en_DM", "en_DK", "dz_BT_#Tibt", "qu", "es_VE", "ff_NG_#Adlm", "da_DK", "ak_GH_#Latn", "brx", "pt_AO", "lkt_US", "kde", "mua_CM", "ln_AO", "yav_CM_#Latn", "fa_IR_#Arab", "rm", "rn", "ro", "el_GR", "ru", "eo_001_#Latn", "rw", "kea", "en_AU", "da_GL", "en_AS", "en_AT", "he_IL", "sa", "es_SV", "ka_GE_#Geor", "sr_BA_#Cyrl", "sd", "se", "sbp_TZ", "en_BB", "sg", "si", "gsw_CH_#Latn", "sk", "sl", "sn", "en_BE", "so", "rw_RW_#Latn", "sq", "asa_TZ", "en_BI", "sr", "hi_IN_#Deva", "su", "en_BM", "sv", "ln_CG", "sw", "ln_CF", "en_BS", "en_BW", "ur_PK_#Arab", "ia_001_#Latn", "en_BZ", "ta", "doi_IN_#Deva", "te", "tg", "th", "en_CC", "ti", "ka_GE", "en_CA", "tk", "uk_UA", "en_CH", "os_GE_#Cyrl", "hr_BA", "to", "dyo", "en_CK", "tr", "tt", "bez_TZ_#Latn", "si_LK", "ne_IN", "rm_CH", "ug", "sv_FI", "kl_GL", "kw_GB", "uk", "it_IT_#Latn", "mua_CM_#Latn", "ur", "uz", "sr_RS", "nds_NL", "ff_SL_#Adlm", "vi", "su__#Latn", "zh_MO", "khq", "en_AE", "en_AI", "en_AG", "lu_CD_#Latn", "nl_SR", "ff_LR_#Adlm", "nl_SX", "khq_ML_#Latn", "fur_IT_#Latn", "mn_MN", "el_CY", "ksh_DE_#Latn", "shi_MA", "wo", "sr_XK_#Latn", "zgh", "ar_001", "ff_CM_#Latn", "pt_CH", "nn_NO", "es_PE", "es_PA", "fa_IR", "mni", "mas_TZ", "es_PH", "pt_CV", "xh", "lg_UG_#Latn", "hsb_DE", "ewo_CM", "es_PR", "fi_FI_#Latn", "tt_RU", "ru_RU_#Cyrl", "es_PY", "kkj", "cs_CZ", "asa_TZ_#Latn", "yi", "yo", "mfe_MU", "kln_KE", "es_MX", "sk_SK", "ccp_BD_#Cakm", "vai", "sv_SE", "sq_AL", "gd_GB_#Latn", "es_NI", "my_MM", "kln", "zh", "th_TH_TH_#u-nu-thai", "vun_TZ", "doi_IN", "ha_NG_#Latn", "mer_KE_#Latn", "zu", "bm_ML_#Latn", "guz_KE", "km_KH_#Khmr", "ks_IN_#Arab", "ja_JP", "or_IN", "sd_IN", "bs__#Cyrl", "ha_NG", "eu_ES", "ha_NE", "as_IN_#Beng", "pt_GQ", "en_150", "az_AZ_#Latn", "ku_TR", "pt_GW", "nyn_UG_#Latn", "agq_CM_#Latn", "yue_HK_#Hant", "vun_TZ_#Latn", "ff_SN_#Adlm", "bs_BA", "ne_NP", "agq_CM", "ga_IE", "ebu", "brx_IN_#Deva", "bm_ML", "kok", "khq_ML", "es_IC", "sr_RS_#Cyrl", "mr_IN_#Deva", "ff__#Adlm", "gl_ES", "kn_IN", "ff_GW_#Adlm", "ast_ES", "sl_SI_#Latn", "shi__#Latn", "ksb_TZ_#Latn", "id_ID_#Latn", "pt_MZ", "dsb_DE", "zgh_MA_#Tfng", "cgg_UG_#Latn", "mas_KE", "mua", "ga_GB", "xog_UG_#Latn", "ce_RU_#Cyrl", "dyo_SN", "so_DJ", "pt_LU", "dje_NE_#Latn", "mr_IN", "lrc_IQ", "lrc_IR", "kok_IN_#Deva", "bo_IN", "ky_KG", "zh_TW", "yav_CM", "tk_TM", "rwk_TZ", "es_GT", "pt_MO", "es_GQ", "ta_IN_#Taml", "uz__#Cyrl", "zh_SG", "wo_SN", "fa_AF", "nds_DE", "hy_AM", "mzn_IR_#Arab", "xog_UG", "de_DE_#Latn", "dav_KE", "kab_DZ", "es_HN", "gu_IN", "wo_SN_#Latn", "ff_SN", "ebu_KE_#Latn", "so_ET", "ksb", "tk_TM_#Latn", "lo_LA_#Laoo", "ksf" ]
     },
     "Charsets" : {
       "type" : "string",
@@ -88,194 +88,197 @@
         "json-schema-properties-map" : {
           "type" : "object",
           "description" : "Map of property names or java objects to their type definitions. Used to store custom type mappings and property configurations that override or extend the default schema generation behavior.",
-          "properties" : {
-            "additional-properties" : {
-              "type" : "object"
-            },
-            "all-of" : {
-              "type" : "array",
-              "items" : {
-                "type" : "object"
-              }
-            },
-            "any-of" : {
-              "type" : "array",
-              "items" : {
-                "type" : "object"
-              }
-            },
-            "comment" : {
-              "type" : "string"
-            },
-            "const-value" : {
-              "type" : "object"
-            },
-            "contains" : {
-              "type" : "object"
-            },
-            "content-encoding" : {
-              "type" : "string"
-            },
-            "content-media-type" : {
-              "type" : "string"
-            },
-            "content-schema" : {
-              "type" : "object"
-            },
-            "default-value" : {
-              "type" : "object"
-            },
-            "dependent-required" : {
-              "type" : "object",
-              "additionalProperties" : {
-                "type" : "object"
-              }
-            },
-            "dependent-schemas" : {
-              "type" : "object"
-            },
-            "deprecated" : {
-              "type" : "boolean"
-            },
-            "description" : {
-              "type" : "string"
-            },
-            "else-schema" : {
-              "type" : "object"
-            },
-            "enum-values" : {
-              "type" : "array",
-              "items" : {
-                "type" : "string"
-              }
-            },
-            "examples" : {
-              "type" : "array",
-              "items" : {
-                "type" : "string"
-              }
-            },
-            "exclusive-maximum" : {
-              "type" : "number"
-            },
-            "exclusive-minimum" : {
-              "type" : "number"
-            },
-            "format" : {
-              "type" : "string",
-              "enum" : [ "DATE_TIME", "date_time", "TIME", "time", "DATE", "date", "DURATION", "duration", "EMAIL", "email", "IDN_EMAIL", "idn_email", "HOSTNAME", "hostname", "IDN_HOSTNAME", "idn_hostname", "IPV4", "ipv4", "IPV6", "ipv6", "URI", "uri", "URI_REFERENCE", "uri_reference", "IRI", "iri", "IRI_REFERENCE", "iri_reference", "UUID", "uuid", "JSON_POINTER", "json_pointer", "RELATIVE_JSON_POINTER", "relative_json_pointer" ]
-            },
-            "html-description" : {
-              "type" : "string"
-            },
-            "if-schema" : {
-              "type" : "object"
-            },
-            "items" : {
-              "type" : "object"
-            },
-            "max-contains" : {
-              "type" : "integer"
-            },
-            "max-items" : {
-              "type" : "integer"
-            },
-            "max-length" : {
-              "type" : "integer"
-            },
-            "max-properties" : {
-              "type" : "integer"
-            },
-            "maximum" : {
-              "type" : "number"
-            },
-            "min-contains" : {
-              "type" : "integer"
-            },
-            "min-items" : {
-              "type" : "integer"
-            },
-            "min-length" : {
-              "type" : "integer"
-            },
-            "min-properties" : {
-              "type" : "integer"
-            },
-            "minimum" : {
-              "type" : "number"
-            },
-            "multiple-of" : {
-              "type" : "number"
-            },
-            "not" : {
-              "type" : "object"
-            },
-            "one-of" : {
-              "type" : "array",
-              "items" : {
-                "type" : "object"
-              }
-            },
-            "pattern" : {
-              "type" : "string"
-            },
-            "pattern-properties" : {
-              "type" : "object"
-            },
-            "prefix-items" : {
-              "type" : "array",
-              "items" : {
-                "type" : "object"
-              }
-            },
+          "additionalProperties" : {
+            "type" : "object",
             "properties" : {
-              "type" : "object"
-            },
-            "property-names" : {
-              "type" : "object"
-            },
-            "read-only" : {
-              "type" : "boolean"
-            },
-            "reference" : {
-              "type" : "string"
-            },
-            "required-properties" : {
-              "type" : "array",
-              "items" : {
+              "additional-properties" : {
+                "type" : "object"
+              },
+              "all-of" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object"
+                }
+              },
+              "any-of" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object"
+                }
+              },
+              "comment" : {
                 "type" : "string"
-              }
-            },
-            "then-schema" : {
-              "type" : "object"
-            },
-            "title" : {
-              "type" : "string"
-            },
-            "type" : {
-              "type" : "string",
-              "enum" : [ "STRING", "string", "NUMBER", "number", "INTEGER", "integer", "BOOLEAN", "boolean", "ARRAY", "array", "OBJECT", "object", "NULL", "null" ]
-            },
-            "unique-items" : {
-              "type" : "boolean"
-            },
-            "write-only" : {
-              "type" : "boolean"
-            },
-            "x-deprecation" : {
-              "type" : "object",
+              },
+              "const-value" : {
+                "type" : "object"
+              },
+              "contains" : {
+                "type" : "object"
+              },
+              "content-encoding" : {
+                "type" : "string"
+              },
+              "content-media-type" : {
+                "type" : "string"
+              },
+              "content-schema" : {
+                "type" : "object"
+              },
+              "default-value" : {
+                "type" : "object"
+              },
+              "dependent-required" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "object"
+                }
+              },
+              "dependent-schemas" : {
+                "type" : "object"
+              },
+              "deprecated" : {
+                "type" : "boolean"
+              },
+              "description" : {
+                "type" : "string"
+              },
+              "else-schema" : {
+                "type" : "object"
+              },
+              "enum-values" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "examples" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "exclusive-maximum" : {
+                "type" : "number"
+              },
+              "exclusive-minimum" : {
+                "type" : "number"
+              },
+              "format" : {
+                "type" : "string",
+                "enum" : [ "date", "IRI", "idn_email", "IRI_REFERENCE", "EMAIL", "URI", "uuid", "duration", "hostname", "date_time", "ipv4", "IDN_EMAIL", "ipv6", "UUID", "email", "relative_json_pointer", "uri_reference", "json_pointer", "iri", "IPV6", "IPV4", "TIME", "IDN_HOSTNAME", "URI_REFERENCE", "uri", "iri_reference", "DATE", "HOSTNAME", "RELATIVE_JSON_POINTER", "idn_hostname", "DATE_TIME", "time", "JSON_POINTER", "DURATION" ]
+              },
+              "html-description" : {
+                "type" : "string"
+              },
+              "if-schema" : {
+                "type" : "object"
+              },
+              "items" : {
+                "type" : "object"
+              },
+              "max-contains" : {
+                "type" : "integer"
+              },
+              "max-items" : {
+                "type" : "integer"
+              },
+              "max-length" : {
+                "type" : "integer"
+              },
+              "max-properties" : {
+                "type" : "integer"
+              },
+              "maximum" : {
+                "type" : "number"
+              },
+              "min-contains" : {
+                "type" : "integer"
+              },
+              "min-items" : {
+                "type" : "integer"
+              },
+              "min-length" : {
+                "type" : "integer"
+              },
+              "min-properties" : {
+                "type" : "integer"
+              },
+              "minimum" : {
+                "type" : "number"
+              },
+              "multiple-of" : {
+                "type" : "number"
+              },
+              "not" : {
+                "type" : "object"
+              },
+              "one-of" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object"
+                }
+              },
+              "pattern" : {
+                "type" : "string"
+              },
+              "pattern-properties" : {
+                "type" : "object"
+              },
+              "prefix-items" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object"
+                }
+              },
               "properties" : {
-                "level" : {
+                "type" : "object"
+              },
+              "property-names" : {
+                "type" : "object"
+              },
+              "read-only" : {
+                "type" : "boolean"
+              },
+              "reference" : {
+                "type" : "string"
+              },
+              "required-properties" : {
+                "type" : "array",
+                "items" : {
                   "type" : "string"
-                },
-                "reason" : {
-                  "type" : "string"
-                },
-                "replacement" : {
-                  "type" : "string"
-                },
-                "since" : {
-                  "type" : "string"
+                }
+              },
+              "then-schema" : {
+                "type" : "object"
+              },
+              "title" : {
+                "type" : "string"
+              },
+              "type" : {
+                "type" : "string",
+                "enum" : [ "NUMBER", "ARRAY", "NULL", "string", "integer", "OBJECT", "BOOLEAN", "number", "boolean", "null", "array", "STRING", "INTEGER", "object" ]
+              },
+              "unique-items" : {
+                "type" : "boolean"
+              },
+              "write-only" : {
+                "type" : "boolean"
+              },
+              "x-deprecation" : {
+                "type" : "object",
+                "properties" : {
+                  "level" : {
+                    "type" : "string"
+                  },
+                  "reason" : {
+                    "type" : "string"
+                  },
+                  "replacement" : {
+                    "type" : "string"
+                  },
+                  "since" : {
+                    "type" : "string"
+                  }
                 }
               }
             }
@@ -698,7 +701,7 @@
                   "type" : "string",
                   "description" : "Permitted level of access for the health endpoint.",
                   "default" : "unrestricted",
-                  "enum" : [ "NONE", "none", "READ_ONLY", "read_only", "UNRESTRICTED", "unrestricted" ]
+                  "enum" : [ "read_only", "UNRESTRICTED", "unrestricted", "none", "NONE", "READ_ONLY" ]
                 },
                 "cache" : {
                   "type" : "object",
@@ -729,31 +732,34 @@
                 "group" : {
                   "type" : "object",
                   "description" : "Health endpoint groups.",
-                  "properties" : {
-                    "additional-path" : {
-                      "type" : "string"
-                    },
-                    "exclude" : {
-                      "type" : "array",
-                      "items" : {
+                  "additionalProperties" : {
+                    "type" : "object",
+                    "properties" : {
+                      "additional-path" : {
                         "type" : "string"
-                      }
-                    },
-                    "include" : {
-                      "type" : "array",
-                      "items" : {
+                      },
+                      "exclude" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "string"
+                        }
+                      },
+                      "include" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "string"
+                        }
+                      },
+                      "m-a-n-a-g-e-m-e-n-t_p-r-e-f-i-x" : {
                         "type" : "string"
+                      },
+                      "s-e-r-v-e-r_p-r-e-f-i-x" : {
+                        "type" : "string"
+                      },
+                      "show-details" : {
+                        "type" : "string",
+                        "enum" : [ "always", "never", "NEVER", "WHEN_AUTHORIZED", "when_authorized", "ALWAYS" ]
                       }
-                    },
-                    "m-a-n-a-g-e-m-e-n-t_p-r-e-f-i-x" : {
-                      "type" : "string"
-                    },
-                    "s-e-r-v-e-r_p-r-e-f-i-x" : {
-                      "type" : "string"
-                    },
-                    "show-details" : {
-                      "type" : "string",
-                      "enum" : [ "NEVER", "never", "WHEN_AUTHORIZED", "when_authorized", "ALWAYS", "always" ]
                     }
                   }
                 },
@@ -1118,13 +1124,13 @@
                 "show-components" : {
                   "type" : "string",
                   "description" : "When to show components. If not specified the 'show-details' setting will be used.",
-                  "enum" : [ "NEVER", "never", "WHEN_AUTHORIZED", "when_authorized", "ALWAYS", "always" ]
+                  "enum" : [ "always", "never", "NEVER", "WHEN_AUTHORIZED", "when_authorized", "ALWAYS" ]
                 },
                 "show-details" : {
                   "type" : "string",
                   "description" : "When to show full health details.",
                   "default" : "never",
-                  "enum" : [ "NEVER", "never", "WHEN_AUTHORIZED", "when_authorized", "ALWAYS", "always" ]
+                  "enum" : [ "always", "never", "NEVER", "WHEN_AUTHORIZED", "when_authorized", "ALWAYS" ]
                 },
                 "status" : {
                   "type" : "object",
@@ -1358,7 +1364,7 @@
                   "type" : "string",
                   "description" : "Mode to use to expose git information.",
                   "default" : "simple",
-                  "enum" : [ "FULL", "full", "SIMPLE", "simple" ]
+                  "enum" : [ "SIMPLE", "simple", "FULL", "full" ]
                 }
               }
             },
@@ -1720,7 +1726,7 @@
                 "client-auth" : {
                   "type" : "string",
                   "description" : "Client authentication mode. Requires a trust store.",
-                  "enum" : [ "NONE", "none", "WANT", "want", "NEED", "need" ]
+                  "enum" : [ "NEED", "need", "want", "WANT", "none", "NONE" ]
                 },
                 "enabled" : {
                   "type" : "boolean",
@@ -1854,7 +1860,7 @@
                       "type" : "string",
                       "description" : "Counting mode.",
                       "default" : "cumulative",
-                      "enum" : [ "CUMULATIVE", "cumulative", "STEP", "step" ]
+                      "enum" : [ "CUMULATIVE", "STEP", "step", "cumulative" ]
                     },
                     "step" : {
                       "type" : "string",
@@ -1923,7 +1929,7 @@
               "type" : "string",
               "description" : "When to include \"errors\" attribute.",
               "default" : "never",
-              "enum" : [ "NEVER", "never", "ALWAYS", "always", "ON_PARAM", "on_param" ]
+              "enum" : [ "always", "never", "NEVER", "ON_PARAM", "on_param", "ALWAYS" ]
             },
             "include-exception" : {
               "type" : "boolean",
@@ -1934,19 +1940,19 @@
               "type" : "string",
               "description" : "When to include \"message\" attribute.",
               "default" : "never",
-              "enum" : [ "NEVER", "never", "ALWAYS", "always", "ON_PARAM", "on_param" ]
+              "enum" : [ "always", "never", "NEVER", "ON_PARAM", "on_param", "ALWAYS" ]
             },
             "include-path" : {
               "type" : "string",
               "description" : "When to include \"path\" attribute.",
               "default" : "always",
-              "enum" : [ "NEVER", "never", "ALWAYS", "always", "ON_PARAM", "on_param" ]
+              "enum" : [ "always", "never", "NEVER", "ON_PARAM", "on_param", "ALWAYS" ]
             },
             "include-stacktrace" : {
               "type" : "string",
               "description" : "When to include the \"trace\" attribute.",
               "default" : "never",
-              "enum" : [ "NEVER", "never", "ALWAYS", "always", "ON_PARAM", "on_param" ]
+              "enum" : [ "always", "never", "NEVER", "ON_PARAM", "on_param", "ALWAYS" ]
             },
             "path" : {
               "type" : "string",
@@ -1968,7 +1974,7 @@
         "forward-headers-strategy" : {
           "type" : "string",
           "description" : "Strategy for handling X-Forwarded-* headers.",
-          "enum" : [ "NATIVE", "native", "FRAMEWORK", "framework", "NONE", "none" ]
+          "enum" : [ "NATIVE", "framework", "native", "FRAMEWORK", "none", "NONE" ]
         },
         "http-2" : {
           "type" : "object",
@@ -2020,7 +2026,7 @@
                   "type" : "string",
                   "description" : "Log format.",
                   "default" : "ncsa",
-                  "enum" : [ "NCSA", "ncsa", "EXTENDED_NCSA", "extended_ncsa" ]
+                  "enum" : [ "ncsa", "EXTENDED_NCSA", "NCSA", "extended_ncsa" ]
                 },
                 "ignore-paths" : {
                   "type" : "array",
@@ -2109,12 +2115,15 @@
             },
             "map" : {
               "type" : "object",
-              "properties" : {
-                "extension" : {
-                  "type" : "string"
-                },
-                "mime-type" : {
-                  "type" : "string"
+              "additionalProperties" : {
+                "type" : "object",
+                "properties" : {
+                  "extension" : {
+                    "type" : "string"
+                  },
+                  "mime-type" : {
+                    "type" : "string"
+                  }
                 }
               }
             }
@@ -2201,7 +2210,7 @@
                     "same-site" : {
                       "type" : "string",
                       "description" : "SameSite setting for the cookie.",
-                      "enum" : [ "OMITTED", "omitted", "NONE", "none", "LAX", "lax", "STRICT", "strict" ]
+                      "enum" : [ "STRICT", "LAX", "lax", "OMITTED", "omitted", "none", "NONE", "strict" ]
                     },
                     "secure" : {
                       "type" : "boolean",
@@ -2341,7 +2350,7 @@
                     "same-site" : {
                       "type" : "string",
                       "description" : "SameSite setting for the cookie.",
-                      "enum" : [ "OMITTED", "omitted", "NONE", "none", "LAX", "lax", "STRICT", "strict" ]
+                      "enum" : [ "STRICT", "LAX", "lax", "OMITTED", "omitted", "none", "NONE", "strict" ]
                     },
                     "secure" : {
                       "type" : "boolean",
@@ -2376,7 +2385,7 @@
                   "description" : "Session tracking modes.",
                   "items" : {
                     "type" : "string",
-                    "enum" : [ "COOKIE", "cookie", "URL", "url", "SSL", "ssl" ]
+                    "enum" : [ "cookie", "COOKIE", "SSL", "ssl", "URL", "url" ]
                   }
                 }
               }
@@ -2387,7 +2396,7 @@
           "type" : "string",
           "description" : "Type of shutdown that the server will support.",
           "default" : "graceful",
-          "enum" : [ "GRACEFUL", "graceful", "IMMEDIATE", "immediate" ]
+          "enum" : [ "immediate", "GRACEFUL", "graceful", "IMMEDIATE" ]
         },
         "ssl" : {
           "type" : "object",
@@ -2414,7 +2423,7 @@
             "client-auth" : {
               "type" : "string",
               "description" : "Client authentication mode. Requires a trust store.",
-              "enum" : [ "NONE", "none", "WANT", "want", "NEED", "need" ]
+              "enum" : [ "NEED", "need", "want", "WANT", "none", "NONE" ]
             },
             "enabled" : {
               "type" : "boolean",
@@ -2775,7 +2784,7 @@
               "type" : "string",
               "description" : "Whether to use APR.",
               "default" : "never",
-              "enum" : [ "ALWAYS", "always", "WHEN_AVAILABLE", "when_available", "NEVER", "never" ]
+              "enum" : [ "always", "never", "when_available", "WHEN_AVAILABLE", "NEVER", "ALWAYS" ]
             },
             "use-relative-redirects" : {
               "type" : "boolean",
@@ -3027,7 +3036,7 @@
                   "type" : "string",
                   "description" : "The strategy to use when call to server fails and there are multiple URLs configured on the uri property (default {@link MultipleUriStrategy#ALWAYS}).",
                   "default" : "always",
-                  "enum" : [ "ALWAYS", "always", "CONNECTION_TIMEOUT_ONLY", "connection_timeout_only" ]
+                  "enum" : [ "always", "connection_timeout_only", "CONNECTION_TIMEOUT_ONLY", "ALWAYS" ]
                 },
                 "n-a-m-e_p-l-a-c-e-h-o-l-d-e-r" : {
                   "type" : "string"
@@ -3399,7 +3408,7 @@
                       "type" : "string",
                       "description" : "Configures how to render Spring Data Pageable instances.",
                       "default" : "direct",
-                      "enum" : [ "DIRECT", "direct", "VIA_DTO", "via_dto" ]
+                      "enum" : [ "via_dto", "VIA_DTO", "direct", "DIRECT" ]
                     },
                     "size-parameter" : {
                       "type" : "string",
@@ -3605,7 +3614,7 @@
             "embedded-database-connection" : {
               "type" : "string",
               "description" : "Connection details for an embedded database. Defaults to the most suitable embedded database that is available on the classpath.",
-              "enum" : [ "NONE", "none", "H2", "h2", "DERBY", "derby", "HSQLDB", "hsqldb" ]
+              "enum" : [ "HSQLDB", "hsqldb", "DERBY", "derby", "H2", "h2", "none", "NONE" ]
             },
             "generate-unique-name" : {
               "type" : "boolean",
@@ -4757,7 +4766,7 @@
                 "factory" : {
                   "type" : "string",
                   "description" : "Default factory used for a client HTTP request.",
-                  "enum" : [ "HTTP_COMPONENTS", "http_components", "JETTY", "jetty", "REACTOR", "reactor", "JDK", "jdk", "SIMPLE", "simple" ]
+                  "enum" : [ "JDK", "jdk", "http_components", "REACTOR", "HTTP_COMPONENTS", "reactor", "SIMPLE", "simple", "jetty", "JETTY" ]
                 },
                 "read-timeout" : {
                   "type" : "string",
@@ -4766,7 +4775,7 @@
                 "redirects" : {
                   "type" : "string",
                   "description" : "Handling for HTTP redirects.",
-                  "enum" : [ "FOLLOW_WHEN_POSSIBLE", "follow_when_possible", "FOLLOW", "follow", "DONT_FOLLOW", "dont_follow" ]
+                  "enum" : [ "follow_when_possible", "FOLLOW", "FOLLOW_WHEN_POSSIBLE", "dont_follow", "DONT_FOLLOW", "follow" ]
                 },
                 "ssl" : {
                   "type" : "object",
@@ -4823,7 +4832,7 @@
               "type" : "string",
               "description" : "Strategy to use to auto-detect constructor, and in particular behavior with single-argument constructors.",
               "default" : "default",
-              "enum" : [ "DEFAULT", "default", "USE_PROPERTIES_BASED", "use_properties_based", "USE_DELEGATING", "use_delegating", "EXPLICIT_ONLY", "explicit_only" ]
+              "enum" : [ "EXPLICIT_ONLY", "explicit_only", "default", "USE_PROPERTIES_BASED", "USE_DELEGATING", "use_delegating", "use_properties_based", "DEFAULT" ]
             },
             "datatype" : {
               "type" : "object",
@@ -4861,7 +4870,7 @@
             "default-property-inclusion" : {
               "type" : "string",
               "description" : "Controls the inclusion of properties during serialization. Configured with one of the values in Jackson's JsonInclude.Include enumeration.",
-              "enum" : [ "ALWAYS", "always", "NON_NULL", "non_null", "NON_ABSENT", "non_absent", "NON_EMPTY", "non_empty", "NON_DEFAULT", "non_default", "CUSTOM", "custom", "USE_DEFAULTS", "use_defaults" ]
+              "enum" : [ "always", "non_null", "non_absent", "non_default", "custom", "ALWAYS", "non_empty", "NON_DEFAULT", "NON_EMPTY", "NON_ABSENT", "USE_DEFAULTS", "NON_NULL", "CUSTOM", "use_defaults" ]
             },
             "deserialization" : {
               "type" : "object",
@@ -4979,7 +4988,7 @@
             "database" : {
               "type" : "string",
               "description" : "Target database to operate on, auto-detected by default. Can be alternatively set using the \"databasePlatform\" property.",
-              "enum" : [ "DEFAULT", "default", "DB2", "db2", "DERBY", "derby", "H2", "h2", "HANA", "hana", "HSQL", "hsql", "INFORMIX", "informix", "MYSQL", "mysql", "ORACLE", "oracle", "POSTGRESQL", "postgresql", "SQL_SERVER", "sql_server", "SYBASE", "sybase" ]
+              "enum" : [ "SQL_SERVER", "oracle", "sybase", "MYSQL", "HSQL", "H2", "h2", "HANA", "ORACLE", "informix", "SYBASE", "default", "postgresql", "DB2", "db2", "DERBY", "INFORMIX", "hsql", "sql_server", "derby", "mysql", "hana", "DEFAULT", "POSTGRESQL" ]
             },
             "database-platform" : {
               "type" : "string",
@@ -5170,7 +5179,7 @@
             "message-codes-resolver-format" : {
               "type" : "string",
               "description" : "Formatting strategy for message codes. For instance, 'PREFIX_ERROR_CODE'.",
-              "enum" : [ "PREFIX_ERROR_CODE", "prefix_error_code", "POSTFIX_ERROR_CODE", "postfix_error_code" ]
+              "enum" : [ "prefix_error_code", "postfix_error_code", "POSTFIX_ERROR_CODE", "PREFIX_ERROR_CODE" ]
             },
             "pathmatch" : {
               "type" : "object",
@@ -5179,7 +5188,7 @@
                   "type" : "string",
                   "description" : "Choice of strategy for matching request paths against registered mappings.",
                   "default" : "path-pattern-parser",
-                  "enum" : [ "ANT_PATH_MATCHER", "ant_path_matcher", "PATH_PATTERN_PARSER", "path_pattern_parser" ]
+                  "enum" : [ "ANT_PATH_MATCHER", "PATH_PATTERN_PARSER", "path_pattern_parser", "ant_path_matcher" ]
                 }
               }
             },
@@ -5318,7 +5327,7 @@
                   "type" : "string",
                   "description" : "Mode to apply when determining whether initialization should be performed.",
                   "default" : "embedded",
-                  "enum" : [ "ALWAYS", "always", "EMBEDDED", "embedded", "NEVER", "never" ]
+                  "enum" : [ "always", "never", "EMBEDDED", "NEVER", "ALWAYS", "embedded" ]
                 },
                 "password" : {
                   "type" : "string",
@@ -5358,38 +5367,41 @@
                 "jks" : {
                   "type" : "object",
                   "description" : "Java keystore SSL trust material.",
-                  "properties" : {
-                    "keystore" : {
-                      "type" : "object",
-                      "properties" : {
-                        "location" : {
-                          "type" : "string"
-                        },
-                        "password" : {
-                          "type" : "string"
-                        },
-                        "provider" : {
-                          "type" : "string"
-                        },
-                        "type" : {
-                          "type" : "string"
+                  "additionalProperties" : {
+                    "type" : "object",
+                    "properties" : {
+                      "keystore" : {
+                        "type" : "object",
+                        "properties" : {
+                          "location" : {
+                            "type" : "string"
+                          },
+                          "password" : {
+                            "type" : "string"
+                          },
+                          "provider" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
                         }
-                      }
-                    },
-                    "truststore" : {
-                      "type" : "object",
-                      "properties" : {
-                        "location" : {
-                          "type" : "string"
-                        },
-                        "password" : {
-                          "type" : "string"
-                        },
-                        "provider" : {
-                          "type" : "string"
-                        },
-                        "type" : {
-                          "type" : "string"
+                      },
+                      "truststore" : {
+                        "type" : "object",
+                        "properties" : {
+                          "location" : {
+                            "type" : "string"
+                          },
+                          "password" : {
+                            "type" : "string"
+                          },
+                          "provider" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
                         }
                       }
                     }
@@ -5398,44 +5410,47 @@
                 "pem" : {
                   "type" : "object",
                   "description" : "PEM-encoded SSL trust material.",
-                  "properties" : {
-                    "keystore" : {
-                      "type" : "object",
-                      "properties" : {
-                        "certificate" : {
-                          "type" : "string"
-                        },
-                        "private-key" : {
-                          "type" : "string"
-                        },
-                        "private-key-password" : {
-                          "type" : "string"
-                        },
-                        "type" : {
-                          "type" : "string"
-                        },
-                        "verify-keys" : {
-                          "type" : "boolean"
+                  "additionalProperties" : {
+                    "type" : "object",
+                    "properties" : {
+                      "keystore" : {
+                        "type" : "object",
+                        "properties" : {
+                          "certificate" : {
+                            "type" : "string"
+                          },
+                          "private-key" : {
+                            "type" : "string"
+                          },
+                          "private-key-password" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          },
+                          "verify-keys" : {
+                            "type" : "boolean"
+                          }
                         }
-                      }
-                    },
-                    "truststore" : {
-                      "type" : "object",
-                      "properties" : {
-                        "certificate" : {
-                          "type" : "string"
-                        },
-                        "private-key" : {
-                          "type" : "string"
-                        },
-                        "private-key-password" : {
-                          "type" : "string"
-                        },
-                        "type" : {
-                          "type" : "string"
-                        },
-                        "verify-keys" : {
-                          "type" : "boolean"
+                      },
+                      "truststore" : {
+                        "type" : "object",
+                        "properties" : {
+                          "certificate" : {
+                            "type" : "string"
+                          },
+                          "private-key" : {
+                            "type" : "string"
+                          },
+                          "private-key-password" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          },
+                          "verify-keys" : {
+                            "type" : "boolean"
+                          }
                         }
                       }
                     }
@@ -5614,7 +5629,7 @@
               "type" : "string",
               "description" : "Define how the locale should be resolved.",
               "default" : "accept-header",
-              "enum" : [ "FIXED", "fixed", "ACCEPT_HEADER", "accept_header" ]
+              "enum" : [ "ACCEPT_HEADER", "accept_header", "FIXED", "fixed" ]
             },
             "resources" : {
               "type" : "object",

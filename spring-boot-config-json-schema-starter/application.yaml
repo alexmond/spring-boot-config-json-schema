@@ -22,6 +22,14 @@ sample:
   map-sample:
     test1: test1value
     test2: test2value
+  map-object-sample:
+    item1:
+      config-map1: abc
+      config-map2: 1000
+    item2:
+      config-map1: abc
+      config-map2: 1001
+
 
   config-sample-nested:
     nested-config1: nestedConfig
