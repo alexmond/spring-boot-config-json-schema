@@ -1,3 +1,5 @@
+# Spring Boot Config JSON Schema Generator
+
 [![Maven Central](https://img.shields.io/maven-central/v/org.alexmond/spring-boot-config-json-schema-starter.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.alexmond/spring-boot-config-json-schema-starter)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/alexmond/spring-boot-config-json-schema/maven.yml)](https://github.com/alexmond/spring-boot-config-json-schema/actions)
@@ -14,6 +16,14 @@ our [full documentation](https://alexmond.github.io/spring-boot-config-json-sche
 A good article on this
 subject: [Spring Boot Config Documentation, Two Ways With IntelliJ IDEA](https://themightyprogrammer.dev/article/2ways-spring-configuration)
 
+## Table of Contents
+- [Quick Start](#quick-start)
+    - [Maven Dependencies](#maven-dependencies)
+    - [For Testing](#for-testing)
+    - [For Production (REST or Actuator)](#for-production-rest-or-actuator)
+- [Changelog](#changelog)
+- [Contributing](#contributing)
+- [License](#license)
 ## Quick Start
 
 ### Maven Dependencies
@@ -55,8 +65,9 @@ class SampleJsonSchemaGeneratorTests {
 
 }
 ```
+### For Production (REST or Actuator)
 
-### Using as REST API Endpoint
+#### REST API Endpoint
 
 To expose the JSON schema via a REST endpoint (similar to Swagger API docs), add the following dependency to your
 `pom.xml`:
@@ -94,7 +105,7 @@ public class GenerateJsonSchema {
 }
 ```
 
-### Using as Actuator Endpoint
+#### Actuator Endpoint
 
 To expose the JSON schema via an Actuator endpoint, add the following dependency to your
 `pom.xml`:
@@ -142,8 +153,7 @@ public class ConfigSchemaYamlEndpoint {
 }
 ```
 
-enable it in application.yaml
-
+Configure in `application.yaml`:
 ```yaml
 management:
   endpoints:
@@ -152,6 +162,19 @@ management:
         include: config-schema
 ```
 
-### License
+## Changelog
+- **1.0.1** (September 2025): Stable release with Actuator endpoint support, improved schema generation, and license addition.
+- **0.0.8** (September 2025): Added Actuator endpoint; minor fixes.
+- **0.0.5** (August 2025): Initial release with JSON/YAML schema generation.
+See [Releases](https://github.com/alexmond/spring-boot-config-json-schema/releases) for details.
 
-Licensed under the Apache 2.0 License.
+## Contributing
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Open issues for bugs or feature requests (e.g., IDE enhancements, validation support).
+
+
+## License
+Licensed under the [Apache 2.0 License](LICENSE).
+
+---
+
+⭐ Star this repo if you find it useful! Share feedback via [issues](https://github.com/alexmond/spring-boot-config-json-schema/issues).

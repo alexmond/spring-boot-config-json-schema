@@ -1,0 +1,78 @@
+# Contributing to Spring Boot Config JSON Schema Generator
+
+Thank you for your interest in contributing to the Spring Boot Config JSON Schema Generator! This project auto-generates JSON Schemas for `application.yaml` or `application.properties` from `@ConfigurationProperties`, simplifying configuration documentation and validation for IDEs (e.g., IntelliJ, VS Code) and CI/CD pipelines. We welcome contributions from everyone, whether you're fixing bugs, adding features, or improving documentation.
+
+## Table of Contents
+- [How to Contribute](#how-to-contribute)
+- [Setting Up the Project](#setting-up-the-project)
+- [Submitting Changes](#submitting-changes)
+- [Good First Issues](#good-first-issues)
+- [Code of Conduct](#code-of-conduct)
+- [Questions?](#questions)
+
+## How to Contribute
+We value all contributions, including:
+- **Bug Fixes**: Address issues in schema generation (e.g., handling nested properties).
+- **Features**: Enhance functionality, like adding support for `x-intellij-html-description` or runtime validation with `networknt/json-schema-validator`.
+- **Documentation**: Improve README, add examples, or update the GitHub Pages site.
+- **Tests**: Add unit/integration tests to increase coverage.
+
+To get started:
+1. Check the [Issues](https://github.com/alexmond/spring-boot-config-json-schema/issues) tab for open tasks or create a new issue to propose your idea.
+2. Look for issues labeled `good first issue` or `help wanted` for beginner-friendly tasks.
+3. Fork the repository and submit a pull request (PR) with your changes.
+
+## Setting Up the Project
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/alexmond/spring-boot-config-json-schema.git
+   cd spring-boot-config-json-schema
+   ```
+2. **Requirements**:
+   - Java 17+
+   - Maven 3.6+
+   - Spring Boot 3.x
+   - Dependencies: Jackson (`jackson-databind`, `jackson-dataformat-yaml`), optional `spring-boot-starter-actuator`
+3. **Build and Test**:
+   ```bash
+   mvn clean install
+   mvn test
+   ```
+4. **Development**:
+   - Use an IDE like IntelliJ IDEA for best support with Spring Boot.
+   - Add tests in `src/test/java` using JUnit 5.
+   - Follow existing code style (e.g., 2-space indentation, consistent Lombok usage).
+
+## Submitting Changes
+1. **Fork and Branch**:
+   - Fork the repo to your GitHub account.
+   - Create a branch: `git checkout -b feature/your-feature-name` or `bugfix/issue-number`.
+2. **Make Changes**:
+   - Keep changes focused (one feature/bug per PR).
+   - Update tests and documentation as needed.
+3. **Commit**:
+   - Use clear commit messages, e.g., "Add support for nested @ConfigurationProperties in schema generation #12".
+4. **Submit a Pull Request**:
+   - Push your branch: `git push origin feature/your-feature-name`.
+   - Open a PR against the `main` branch, referencing any related issues (e.g., "Fixes #12").
+   - Describe your changes clearly in the PR description.
+5. **Review Process**:
+   - Maintainers will review within 3-5 days.
+   - Address feedback promptly to expedite merging.
+
+## Good First Issues
+New to contributing? Try these:
+- **Documentation**: Add a sample `application.yaml` and its generated schema to the README.
+- **Feature**: Implement `x-intellij-html-description` for richer IDE autocompletion (e.g., HTML-formatted property descriptions).
+- **Bug Fix**: Fix schema generation for deprecated `@ConfigurationProperties` fields.
+- **Test**: Add a test case for `enum` support in schemas (e.g., logging levels).
+Check [Issues](https://github.com/alexmond/spring-boot-config-json-schema/issues) for tasks labeled `good first issue`.
+
+## Code of Conduct
+We follow the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html). Please be respectful and inclusive in all interactions.
+
+## Questions?
+- Open an issue with the `question` label.
+- Reach out via [GitHub Discussions](https://github.com/alexmond/spring-boot-config-json-schema/discussions).
+
+Thank you for helping make this project better! ⭐ Star the repo if you find it useful!
