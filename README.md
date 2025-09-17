@@ -151,3 +151,7 @@ management:
       exposure:
         include: config-schema
 ```
+
+### License
+
+Licensed under the Apache 2.0 License.
