@@ -1,0 +1,49 @@
+[#getting-started]
+= Getting Started
+
+This page helps you install and generate a schema quickly.
+
+== Prerequisites
+- Java 17+
+- Spring Boot 3.x
+- Build tool: Maven or Gradle
+- Spring Boot configuration processor:
+[source,xml]
+----
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-configuration-processor</artifactId>
+  <optional>true</optional>
+  </dependency>
+----
+
+== Install (Maven)
+[source,xml]
+----
+<dependency>
+  <groupId>org.alexmond</groupId>
+  <artifactId>spring-boot-config-json-schema-starter</artifactId>
+  <version>{page-component-version}</version>
+  <scope>test</scope>
+</dependency>
+----
+
+== Quick start (generate files in tests)
+[source,java]
+----
+@SpringBootTest
+class SampleJsonSchemaGeneratorTests {
+  @Autowired JsonSchemaService jsonSchemaService;
+
+  @Test
+  void generateJsonSchema() throws IOException {
+    Files.writeString(Path.of("config-schema.json"), jsonSchemaService.generateFullSchemaJson(), UTF_8);
+    Files.writeString(Path.of("config-schema.yaml"), jsonSchemaService.generateFullSchemaYaml(), UTF_8);
+  }
+}
+----
+
+== Next steps
+- Serve schema at runtime: xref:runtime-exposure.adoc[Expose at Runtime]
+- Use in editors: xref:ide-integration.adoc[IDE Integration]
+- Learn schema details: xref:schema-details.adoc[Schema Details]

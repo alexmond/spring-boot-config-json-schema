@@ -1,0 +1,36 @@
+[#schema-details]
+= Schema Details
+
+What the generator produces and how annotations affect it.
+
+== Coverage
+- Properties from @ConfigurationProperties classes
+- Metadata from spring-configuration-metadata.json
+- Nested objects, collections, maps, and enums
+
+== Validation
+- Jakarta Bean Validation annotations inform constraints:
+  - @NotNull → required
+  - @Min/@Max → minimum/maximum
+  - @Size → minLength/maxLength or minItems/maxItems
+  - @Email/@Pattern → format/pattern
+
+== Types and formats
+- Primitives: string, integer, number, boolean
+- Collections: array with typed items
+- Maps: object with additionalProperties
+- Enums: string with enum values
+- Common formats: date, date-time, uri, email, hostname, ipv4/ipv6
+
+== Customization
+- Javadoc and description annotations enrich title/description
+- Defaults included when available
+- You can extend type and metadata mapping as needed
+
+== Outputs
+- JSON Schema (default)
+- YAML representation of the same schema
+
+== See also
+- xref:ide-integration.adoc[IDE Integration]
+- xref:ci-cd.adoc[CI/CD]

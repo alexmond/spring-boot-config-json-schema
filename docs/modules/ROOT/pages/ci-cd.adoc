@@ -1,0 +1,21 @@
+[#ci-cd]
+= CI/CD
+
+Validate configuration in pipelines using the generated schema.
+
+== Typical approaches
+- Generate schema during build (test scope) and publish as artifact.
+- Validate environment-specific YAML/Properties against the schema.
+
+== Pipeline outline
+1. Build the project and generate schema files (JSON/YAML).
+2. Make schema available to validation step (workspace or artifact).
+3. Run a schema validation task for each configuration file.
+
+== Tips
+- Keep schema generation deterministic by ensuring configuration metadata is up to date.
+- Fail the pipeline on validation errors to catch misconfig early.
+
+== See also
+- xref:getting-started.adoc[Getting Started]
+- xref:schema-details.adoc[Schema Details]

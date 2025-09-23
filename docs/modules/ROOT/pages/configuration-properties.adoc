@@ -1,0 +1,6 @@
+[#configuration-properties]
+= Configuration Properties
+
+Generated list of available configuration properties.
+
+include::partial$_configprops.adoc[]

@@ -1,0 +1,62 @@
+[#runtime-exposure]
+= Expose at Runtime
+
+Serve the generated schema via REST or Actuator.
+
+== Dependency (runtime)
+[source,xml]
+----
+<dependency>
+  <groupId>org.alexmond</groupId>
+  <artifactId>spring-boot-config-json-schema-starter</artifactId>
+  <version>{page-component-version}</version>
+</dependency>
+----
+
+== REST endpoint
+[source,java]
+----
+@RestController
+@RequiredArgsConstructor
+class ConfigSchemaController {
+  private final JsonSchemaService jsonSchemaService;
+
+  @GetMapping("/config-schema")
+  String json() { return jsonSchemaService.generateFullSchemaJson(); }
+
+  @GetMapping("/config-schema.yaml")
+  String yaml() throws Exception { return jsonSchemaService.generateFullSchemaYaml(); }
+}
+----
+
+== Actuator endpoint (JSON)
+[source,java]
+----
+@Component
+@Endpoint(id = "config-schema")
+@RequiredArgsConstructor
+class ConfigSchemaEndpoint {
+  private final JsonSchemaService jsonSchemaService;
+
+  @ReadOperation
+  String schema() { return jsonSchemaService.generateFullSchemaJson(); }
+}
+----
+
+== Actuator endpoint (YAML)
+[source,java]
+----
+@Component
+@Endpoint(id = "config-schema.yaml")
+@RequiredArgsConstructor
+class ConfigSchemaYamlEndpoint {
+  private final JsonSchemaService jsonSchemaService;
+
+  @ReadOperation
+  String schema() throws Exception { return jsonSchemaService.generateFullSchemaYaml(); }
+}
+----
+
+== See also
+- xref:getting-started.adoc[Getting Started]
+- xref:ide-integration.adoc[IDE Integration]

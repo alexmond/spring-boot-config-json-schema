@@ -1,0 +1,29 @@
+[#troubleshooting]
+= Troubleshooting
+
+Common issues and quick fixes.
+
+== Missing properties in schema
+- Ensure the Spring Boot configuration processor is on the classpath.
+- Verify classes are annotated with @ConfigurationProperties.
+
+== Enum casing or values differ
+- Check actual enum constants; schema reflects source values.
+- Confirm metadata and compiled classes are up to date (clean build).
+
+== IDE does not validate
+- Confirm $schema line (JetBrains) or YAML directive (VS Code) is at the top.
+- Ensure the schema URL is reachable or the local endpoint is running.
+- Reload the editor window if caching interferes.
+
+== REST/Actuator endpoint returns empty/404
+- Verify controller/endpoint is loaded (component scan).
+- Check endpoint paths and exposure settings if using management endpoints.
+
+== CI step flaky
+- Pin schema generation to a specific build phase.
+- Cache dependencies but not build outputs that affect metadata unless consistent.
+
+== See also
+- xref:getting-started.adoc[Getting Started]
+- xref:runtime-exposure.adoc[Expose at Runtime]

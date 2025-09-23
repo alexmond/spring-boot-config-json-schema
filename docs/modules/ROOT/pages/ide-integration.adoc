@@ -1,0 +1,38 @@
+[#ide-integration]
+= IDE Integration
+
+Use the generated schema to validate and autocomplete configuration files.
+
+== IntelliJ IDEA / JetBrains IDEs
+Add a $schema reference at the top of your YAML:
+[source,yaml]
+----
+$schema: "https://alexmond.github.io/spring-boot-config-json-schema-starter/current/_attachments/boot-generic-config.json"
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+----
+
+Notes:
+- $schema must appear before content.
+- You can also reference a locally served schema (for example, a REST endpoint).
+
+== Visual Studio Code
+Use the YAML language server directive at the very top:
+[source,yaml]
+----
+# yaml-language-server: $schema=https://alexmond.github.io/spring-boot-config-json-schema-starter/current/_attachments/boot-generic-config.yaml
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+----
+
+Notes:
+- The directive must be the first line (as a comment).
+- You can switch to a locally served schema when running the app.
+
+== See also
+- xref:runtime-exposure.adoc[Expose at Runtime]
+- xref:schema-details.adoc[Schema Details]

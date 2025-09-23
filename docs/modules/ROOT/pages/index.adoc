@@ -1,42 +1,32 @@
-[#_spring_boot_config_json_schema_generator]
-== Spring Boot Config JSON Schema Generator
-Alex Mondshain <alex.mondshain@gmail.com>
-2014-09-09
+[#spring-boot-config-json-schema-generator]
+= Spring Boot Config JSON Schema Generator
 
+This starter generates JSON Schema from your @ConfigurationProperties and Spring Boot configuration metadata. Use it for:
+- IDE validation and autocompletion in YAML/Properties
+- CI/CD configuration validation
+- Runtime exposure via REST or Actuator
 
-A Spring Boot starter that generates JSON Schema documentation from your application's @ConfigurationProperties classes and Spring Boot configuration metadata.
-The generated schemas enable configuration validation and autocompletion in popular IDEs and CI/CD pipelines.
+Get started:
+- xref:getting-started.adoc[Getting Started]
+- xref:runtime-exposure.adoc[Expose at Runtime]
+- xref:ide-integration.adoc[IDE Integration]
+- xref:schema-details.adoc[Schema Details]
 
-[#introduction]
-== Introduction
+Highlights
+- Generate JSON Schema for configuration properties
+- Jakarta Bean Validation support
+- Spring Boot 3.x, Java 17+
+- REST/Actuator endpoints, test utilities, CI/CD validation
 
-A Spring Boot starter library uses Spring Context to process @ConfigurationProperties annotated classes and relevant properties from Spring Boot's configuration metadata (spring-configuration-metadata.json) to generate JSON Schema.
-The generated schema can be used by compatible editors for configuration validation and assistance outside the Java project, as well as for configuration validation during CI/CD pipelines.
+Related reading:
+xref:https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
 
-A good article on this subject: xref:https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
-
-== Features
-
-=== Core Capabilities
-
-- Automatic JSON Schema generation from @ConfigurationProperties classes
-- Support for Jakarta Bean Validation (JSR-380) annotations
-- Full Spring Boot 3.x compatibility
-- Java 17+ runtime support
-
-=== Integration Support  
-
-- Built-in REST API endpoint for schema access
-- IDE integration (IntelliJ IDEA, VS Code)
-- Unit test helpers for schema generation
-- CI/CD pipeline validation
-
-=== Schema Features
-
-- Nested property support
-- Complex type handling
-- Custom validation rules
-- Comprehensive property metadata
+== What’s next?
+- New to the project? Start with xref:getting-started.adoc[Getting Started].
+- Want to serve the schema at runtime? See xref:runtime-exposure.adoc[Expose at Runtime].
+- Need editor assistance? Go to xref:ide-integration.adoc[IDE Integration].
+- Curious about schema contents and validation? See xref:schema-details.adoc[Schema Details].
+- Having issues? Check xref:troubleshooting.adoc[Troubleshooting].
 
 == Prerequisites
 
