@@ -73,7 +73,7 @@ public class JsonSchemaBuilder {
      * @param prop Property metadata to add
      */
     private void addProperty(Map<String, JsonSchemaProperties> node, String[] path, int idx, Property prop) {
-        log.debug("Processing property at path: {}, index: {}", String.join(".", path), idx);
+        log.trace("Processing property at path: {}, index: {}", String.join(".", path), idx);
 
         if (node == null) {
             log.error("Null node encountered while adding property at path: {}, index: {}", String.join(".", path), idx);
@@ -167,7 +167,7 @@ public class JsonSchemaBuilder {
 
             if (field != null) {
                 if (!propType.equals(field.getGenericType().getTypeName())) {
-                    log.warn("Property {} type {} mismatch with real one {}",
+                    log.debug("Property {} type {} mismatch with real one {}",
                             prop.getName(), propType, field.getGenericType().getTypeName());
                     propType = field.getGenericType().getTypeName();
                 }

@@ -349,6 +349,9 @@
               "description" : "Whether to clean the archive log files on startup. Only supported with the default logback setup.",
               "deprecated" : true,
               "default" : false,
+              "xdeprecation" : {
+                "replacement" : "logging.logback.rollingpolicy.clean-history-on-start"
+              },
               "x-deprecation" : {
                 "replacement" : "logging.logback.rollingpolicy.clean-history-on-start"
               }
@@ -358,6 +361,9 @@
               "description" : "Maximum number of archive log files to keep. Only supported with the default logback setup.",
               "deprecated" : true,
               "default" : 7,
+              "xdeprecation" : {
+                "replacement" : "logging.logback.rollingpolicy.max-history"
+              },
               "x-deprecation" : {
                 "replacement" : "logging.logback.rollingpolicy.max-history"
               }
@@ -367,6 +373,9 @@
               "description" : "Maximum log file size. Only supported with the default logback setup.",
               "deprecated" : true,
               "default" : "10MB",
+              "xdeprecation" : {
+                "replacement" : "logging.logback.rollingpolicy.max-file-size"
+              },
               "x-deprecation" : {
                 "replacement" : "logging.logback.rollingpolicy.max-file-size"
               }
@@ -384,6 +393,9 @@
               "description" : "Total size of log backups to be kept. Only supported with the default logback setup.",
               "deprecated" : true,
               "default" : "0B",
+              "xdeprecation" : {
+                "replacement" : "logging.logback.rollingpolicy.total-size-cap"
+              },
               "x-deprecation" : {
                 "replacement" : "logging.logback.rollingpolicy.total-size-cap"
               }
@@ -493,6 +505,9 @@
               "description" : "Pattern for rolled-over log file names. Supported only with the default Logback setup.",
               "deprecated" : true,
               "default" : "${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz",
+              "xdeprecation" : {
+                "replacement" : "logging.logback.rollingpolicy.file-name-pattern"
+              },
               "x-deprecation" : {
                 "replacement" : "logging.logback.rollingpolicy.file-name-pattern"
               }
@@ -724,6 +739,10 @@
                   "description" : "Whether to enable the health endpoint.",
                   "deprecated" : true,
                   "default" : true,
+                  "xdeprecation" : {
+                    "replacement" : "management.endpoint.health.access",
+                    "since" : "3.4.0"
+                  },
                   "x-deprecation" : {
                     "replacement" : "management.endpoint.health.access",
                     "since" : "3.4.0"
@@ -2751,7 +2770,8 @@
                 },
                 "cache-ttl" : {
                   "type" : "string",
-                  "description" : "Time-to-live of the static resource cache."
+                  "description" : "Time-to-live of the static resource cache.",
+                  "default" : "5s"
                 }
               }
             },
@@ -2835,6 +2855,10 @@
               "description" : "Whether the server should decode percent encoded slash characters. Enabling encoded slashes can have security implications due to different servers interpreting the slash differently. Only enable this if you have a legacy application that requires it. Has no effect when server.undertow.decode-slash is set.",
               "deprecated" : true,
               "default" : false,
+              "xdeprecation" : {
+                "replacement" : "server.undertow.decode-slash",
+                "since" : "3.0.3"
+              },
               "x-deprecation" : {
                 "replacement" : "server.undertow.decode-slash",
                 "since" : "3.0.3"
@@ -3243,7 +3267,8 @@
                               "type" : "string"
                             },
                             "uri" : {
-                              "type" : "string"
+                              "type" : "string",
+                              "format" : "uri"
                             }
                           }
                         },
@@ -5314,6 +5339,10 @@
                   "description" : "Whether basic script-based initialization of an SQL database is enabled.",
                   "deprecated" : true,
                   "default" : true,
+                  "xdeprecation" : {
+                    "replacement" : "spring.sql.init.mode",
+                    "level" : "WARNING"
+                  },
                   "x-deprecation" : {
                     "replacement" : "spring.sql.init.mode",
                     "level" : "WARNING"

@@ -44,31 +44,110 @@ public class TypeMappingService {
             return jsonSchemaProperties;
         }
 
+
         switch (springType) {
+            // Text-like
             case "java.lang.String":
-            case "java.time.Duration":
-            case "java.util.Date":
-            case "java.util.Calendar":
-            case "java.util.TimeZone":
-            case "org.springframework.util.unit.DataSize":
-            case "java.lang.Character":
             case "java.lang.CharSequence":
+            case "java.lang.Character":
             case "char":
             case "char[]":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+
+            // Binary
+            case "byte[]":
+            case "java.lang.Byte[]":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .contentEncoding("base64")
+                        .build();
+            case "byte":
+            case "java.lang.Byte":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.INTEGER).build();
+
+            // Temporal
+            case "java.util.TimeZone":
+            case "java.time.ZoneId":
+                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+
+            case "java.time.Instant":
+            case "java.time.OffsetDateTime":
+            case "java.time.ZonedDateTime":
+            case "java.time.LocalDateTime":
+            case "java.util.Date":
+            case "java.util.Calendar":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+//                        .format(JsonSchemaFormat.DATE_TIME)
+                        .build();
+            case "java.time.LocalDate":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+//                        .format(JsonSchemaFormat.DATE)
+                        .build();
+            case "java.time.LocalTime":
+            case "java.time.OffsetTime":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+//                        .format(JsonSchemaFormat.TIME)
+                        .build();
+            case "java.time.Duration":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+//                        .format(JsonSchemaFormat.DURATION)
+                        .build();
+
+            // Files and resources
             case "java.io.File":
             case "java.nio.file.Path":
-            case "org.springframework.http.MediaType":
-            case "java.net.InetAddress":
-            case "java.net.URI":
-            case "org.springframework.core.io.Resource":
-            case "java.lang.Class":
                 return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
+            case "org.springframework.core.io.Resource":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+//                        .format(JsonSchemaFormat.URI_REFERENCE)
+                        .build();
+            // Identifiers and network
+            case "java.util.UUID":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.UUID)
+                        .build();
+            case "java.net.URI":
+            case "java.net.URL":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.URI)
+                        .build();
+            case "java.net.Inet4Address":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.IPV4)
+                        .build();
+            case "java.net.Inet6Address":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .format(JsonSchemaFormat.IPV6)
+                        .build();
+            case "java.net.InetAddress":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .build();
+
+            // Spring-specific simple types
+            case "org.springframework.util.unit.DataSize":
+            case "org.springframework.http.MediaType":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .build();
 
             case "java.lang.Boolean":
             case "boolean":
             case "java.util.concurrent.atomic.AtomicBoolean":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.BOOLEAN).build();
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.BOOLEAN)
+                        .build();
 
+            // Integers
             case "java.lang.Integer":
             case "int":
             case "java.lang.Long":
@@ -76,22 +155,34 @@ public class TypeMappingService {
             case "java.lang.Short":
             case "short":
             case "java.math.BigInteger":
-            case "byte":
-            case "java.lang.Byte":
             case "java.util.concurrent.atomic.AtomicInteger":
             case "java.util.concurrent.atomic.AtomicLong":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.INTEGER).build();
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.INTEGER)
+                        .build();
 
+            // Numbers
             case "java.lang.Float":
             case "float":
             case "double":
             case "java.lang.Double":
             case "java.lang.Number":
             case "java.math.BigDecimal":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.NUMBER).build();
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.NUMBER)
+                        .build();
 
+            // Generic object-like
             case "java.lang.Object":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.OBJECT)
+                        .build();
+
+            // Class names: better represented as string (FQCN)
+            case "java.lang.Class":
+                return JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.STRING)
+                        .build();
         }
 
         if (isArray(springType)) {
@@ -118,181 +209,6 @@ public class TypeMappingService {
         } catch (ClassNotFoundException e) {
             return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
         }
-    }
-
-    /**
-     * Maps a Spring configuration property type to an advanced JSON Schema property definition.
-     * This method provides more detailed type mappings including formats and encodings.
-     *
-     * @param springType the fully qualified name of the Spring/Java type
-     * @param prop       the configuration property metadata
-     * @return JsonSchemaProperties containing the advanced type mapping
-     */
-    public JsonSchemaProperties typeAdvProp(String springType, Property prop) {
-        log.debug("mapTypeProp({}, {})", springType, prop);
-        JsonSchemaProperties jsonSchemaProperties;
-        jsonSchemaProperties = extendedTypeProp(springType, prop);
-        if (jsonSchemaProperties != null) {
-            return jsonSchemaProperties;
-        }
-
-        switch (springType) {
-            // Text-like
-            case "java.lang.String":
-            case "java.lang.CharSequence":
-            case "java.lang.Character":
-            case "char":
-            case "char[]":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-
-            // Binary
-            case "byte[]":
-            case "java.lang.Byte[]":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .contentEncoding("base64")
-                        .build();
-            case "byte":
-            case "java.lang.Byte":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.INTEGER).build();
-
-            // Temporal
-            case "java.time.Instant":
-            case "java.time.OffsetDateTime":
-            case "java.time.ZonedDateTime":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.DATE_TIME)
-                        .build();
-            case "java.time.LocalDateTime":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.DATE_TIME)
-                        .build();
-            case "java.time.LocalDate":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.DATE)
-                        .build();
-            case "java.time.LocalTime":
-            case "java.time.OffsetTime":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.TIME)
-                        .build();
-            case "java.time.Duration":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.DURATION)
-                        .build();
-            case "java.util.Date":
-            case "java.util.Calendar":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.DATE_TIME)
-                        .build();
-            case "java.util.TimeZone":
-            case "java.time.ZoneId":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-
-            // Files and resources
-            case "java.io.File":
-            case "java.nio.file.Path":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-            case "org.springframework.core.io.Resource":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.URI_REFERENCE)
-                        .build();
-
-            // Identifiers and network
-            case "java.util.UUID":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.UUID)
-                        .build();
-            case "java.net.URI":
-            case "java.net.URL":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.URI)
-                        .build();
-            case "java.net.Inet4Address":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.IPV4)
-                        .build();
-            case "java.net.Inet6Address":
-                return JsonSchemaProperties.builder()
-                        .type(JsonSchemaType.STRING)
-                        .format(JsonSchemaFormat.IPV6)
-                        .build();
-            case "java.net.InetAddress":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-
-            // Spring-specific simple types
-            case "org.springframework.util.unit.DataSize":
-            case "org.springframework.http.MediaType":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-
-            // Booleans
-            case "java.lang.Boolean":
-            case "boolean":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.BOOLEAN).build();
-
-            // Integers
-            case "java.lang.Integer":
-            case "int":
-            case "java.lang.Long":
-            case "long":
-            case "java.lang.Short":
-            case "short":
-            case "java.math.BigInteger":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.INTEGER).build();
-
-            // Numbers
-            case "java.lang.Float":
-            case "float":
-            case "double":
-            case "java.lang.Double":
-            case "java.lang.Number":
-            case "java.math.BigDecimal":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.NUMBER).build();
-
-            // Generic object-like
-            case "java.lang.Object":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
-
-            // Class names: better represented as string (FQCN)
-            case "java.lang.Class":
-                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-        }
-
-        if (isArray(springType)) {
-            return JsonSchemaProperties.builder().type(JsonSchemaType.ARRAY).build();
-        }
-        if (isMap(springType)) {
-            return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
-        }
-        if (isEnum(springType)) {
-            return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-        }
-
-        try {
-            Class<?> type = Class.forName(springType);
-            if (!type.isPrimitive() && !type.getName().startsWith("java.lang.")) {
-                missingTypeCollector.addType(springType, prop);
-                return JsonSchemaProperties.builder().type(JsonSchemaType.OBJECT).build();
-            }
-        } catch (ClassNotFoundException e) {
-            if (springType.contains("Enum")) {
-                return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
-            }
-        }
-
-        missingTypeCollector.addType(springType, prop);
-        log.debug("Mapping Spring type: {}  for Property {}", springType, prop);
-        return JsonSchemaProperties.builder().type(JsonSchemaType.STRING).build();
     }
 
 

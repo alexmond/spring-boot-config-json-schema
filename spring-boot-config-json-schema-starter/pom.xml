@@ -19,7 +19,7 @@
     <properties>
         <commons-text.version>1.14.0</commons-text.version>
         <json-schema-validator.version>1.5.8</json-schema-validator.version>
-        <jackson-module-jsonSchema.version>2.17.0</jackson-module-jsonSchema.version>
+        <jackson-module-jsonSchema.version>2.20.0</jackson-module-jsonSchema.version>
         <swagger-annotations.version>2.2.36</swagger-annotations.version>
     </properties>
 
@@ -86,12 +86,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.erosb</groupId>
-            <artifactId>json-sKema</artifactId>
-            <version>0.25.0</version>
             <scope>test</scope>
         </dependency>
 

@@ -97,7 +97,7 @@ public class JsonSchemaBuilderHelper {
     }
 
     public void processValidated(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
-        log.debug("Validation: Processing validation for property: {}", propName);
+        log.trace("Validation: Processing validation for property: {}", propName);
 
         if (field.isAnnotationPresent(Min.class)) {
             var value = field.getAnnotation(Min.class).value();
@@ -136,7 +136,7 @@ public class JsonSchemaBuilderHelper {
     }
 
     public void processOpenapi(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
-        log.debug("OpenAPI: Processing schema for property: {}", propName);
+        log.trace("OpenAPI: Processing schema for property: {}", propName);
         if (field.isAnnotationPresent(Schema.class)) {
             Schema schema = field.getAnnotation(Schema.class);
             if (!schema.description().isEmpty()) {
