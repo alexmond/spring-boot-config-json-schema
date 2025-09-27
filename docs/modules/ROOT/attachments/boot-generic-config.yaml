@@ -1511,8 +1511,6 @@ properties:
               \ supported with the default logback setup."
             deprecated: true
             default: false
-            xdeprecation:
-              replacement: "logging.logback.rollingpolicy.clean-history-on-start"
             x-deprecation:
               replacement: "logging.logback.rollingpolicy.clean-history-on-start"
           max-history:
@@ -1521,8 +1519,6 @@ properties:
               \ with the default logback setup."
             deprecated: true
             default: 7
-            xdeprecation:
-              replacement: "logging.logback.rollingpolicy.max-history"
             x-deprecation:
               replacement: "logging.logback.rollingpolicy.max-history"
           max-size:
@@ -1531,8 +1527,6 @@ properties:
               \ setup."
             deprecated: true
             default: "10MB"
-            xdeprecation:
-              replacement: "logging.logback.rollingpolicy.max-file-size"
             x-deprecation:
               replacement: "logging.logback.rollingpolicy.max-file-size"
           name:
@@ -1548,8 +1542,6 @@ properties:
               \ the default logback setup."
             deprecated: true
             default: "0B"
-            xdeprecation:
-              replacement: "logging.logback.rollingpolicy.total-size-cap"
             x-deprecation:
               replacement: "logging.logback.rollingpolicy.total-size-cap"
       group:
@@ -1637,8 +1629,6 @@ properties:
               \ the default Logback setup."
             deprecated: true
             default: "${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz"
-            xdeprecation:
-              replacement: "logging.logback.rollingpolicy.file-name-pattern"
             x-deprecation:
               replacement: "logging.logback.rollingpolicy.file-name-pattern"
       register-shutdown-hook:
@@ -1827,9 +1817,6 @@ properties:
                 description: "Whether to enable the health endpoint."
                 deprecated: true
                 default: true
-                xdeprecation:
-                  replacement: "management.endpoint.health.access"
-                  since: "3.4.0"
                 x-deprecation:
                   replacement: "management.endpoint.health.access"
                   since: "3.4.0"
@@ -3663,9 +3650,6 @@ properties:
               \ is set."
             deprecated: true
             default: false
-            xdeprecation:
-              replacement: "server.undertow.decode-slash"
-              since: "3.0.3"
             x-deprecation:
               replacement: "server.undertow.decode-slash"
               since: "3.0.3"
@@ -5608,9 +5592,6 @@ properties:
                   \ database is enabled."
                 deprecated: true
                 default: true
-                xdeprecation:
-                  replacement: "spring.sql.init.mode"
-                  level: "WARNING"
                 x-deprecation:
                   replacement: "spring.sql.init.mode"
                   level: "WARNING"

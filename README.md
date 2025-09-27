@@ -37,7 +37,7 @@ Add the following dependency to your `pom.xml` when using the generator in tests
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -77,7 +77,7 @@ To expose the JSON schema via a REST endpoint (similar to Swagger API docs), add
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 
@@ -115,7 +115,7 @@ To expose the JSON schema via an Actuator endpoint, add the following dependency
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 
