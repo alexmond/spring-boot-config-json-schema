@@ -120,9 +120,15 @@ public class JsonSchemaProperties {
     private String contentEncoding;
     private String contentMediaType;
     private JsonSchemaProperties contentSchema;
+
     // Extensions
     @JsonProperty("x-deprecation")
     private XDeprecation xDeprecation;
+
+    public XDeprecation getxDeprecation() {
+        return xDeprecation;
+    }
+
     @JsonProperty("x-intellij-html-description")
     private String htmlDescription;
 
@@ -229,8 +235,8 @@ public class JsonSchemaProperties {
         if (other.getContentSchema() != null) {
             this.contentSchema = this.contentSchema != null ? this.contentSchema.merge(other.getContentSchema()) : other.getContentSchema();
         }
-        if (other.getXDeprecation() != null) {
-            this.xDeprecation = other.getXDeprecation();
+        if (other.getxDeprecation() != null) {
+            this.xDeprecation = other.getxDeprecation();
         }
         if (other.getAdditionalProperties() != null) {
             this.additionalProperties = other.getAdditionalProperties();

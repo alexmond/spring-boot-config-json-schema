@@ -46,7 +46,7 @@ public class JsonSchemaBuilderHelper {
 
         jsonSchemaProperties.setDeprecated(true);
         if (prop.getDeprecation() != null) {
-            XDeprecation xDeprecation = org.alexmond.config.json.schema.jsonschemamodel.XDeprecation.builder()
+            XDeprecation xDeprecation = XDeprecation.builder()
                     .reason(prop.getDeprecation().getReason())
                     .replacement(prop.getDeprecation().getReplacement())
                     .since(prop.getDeprecation().getSince())
