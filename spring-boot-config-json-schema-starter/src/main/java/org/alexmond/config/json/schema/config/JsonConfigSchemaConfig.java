@@ -38,8 +38,8 @@ public class JsonConfigSchemaConfig {
      * The unique identifier for this schema.
      * Should be replaced with a meaningful ID for your configuration.
      */
-    @Schema(description = "Schema identifier", defaultValue = "your-schema-id")
-    private String schemaId = "urn:example";
+    @Schema(description = "Schema identifier urn, or url", defaultValue = "urn:uuid:your-schema-id")
+    private String schemaId = "urn:uuid:your-schema-id";
     /**
      * The title of the schema document.
      * Provides a human-readable name for the configuration schema.

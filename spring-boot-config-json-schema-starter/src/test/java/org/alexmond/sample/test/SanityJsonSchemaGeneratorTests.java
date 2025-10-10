@@ -25,8 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class SanityJsonSchemaGeneratorTests {
 
-    @Autowired private JsonSchemaService jsonSchemaService;
-    @Autowired private JsonSchemaBuilder jsonSchemaBuilder;
+    @Autowired
+    private JsonSchemaService jsonSchemaService;
+    @Autowired
+    private JsonSchemaBuilder jsonSchemaBuilder;
 
     @Test
     void contextLoads() {

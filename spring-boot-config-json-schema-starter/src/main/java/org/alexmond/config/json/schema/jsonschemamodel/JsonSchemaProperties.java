@@ -11,11 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Builder
@@ -124,13 +120,12 @@ public class JsonSchemaProperties {
     // Extensions
     @JsonProperty("x-deprecation")
     private XDeprecation xDeprecation;
+    @JsonProperty("x-intellij-html-description")
+    private String htmlDescription;
 
     public XDeprecation getxDeprecation() {
         return xDeprecation;
     }
-
-    @JsonProperty("x-intellij-html-description")
-    private String htmlDescription;
 
     public Map<String, Object> toMap() {
         return objectMapper.convertValue(this, Map.class);

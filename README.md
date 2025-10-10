@@ -17,6 +17,7 @@ A good article on this
 subject: [Spring Boot Config Documentation, Two Ways With IntelliJ IDEA](https://themightyprogrammer.dev/article/2ways-spring-configuration)
 
 ## Table of Contents
+
 - [Quick Start](#quick-start)
     - [Maven Dependencies](#maven-dependencies)
     - [For Testing](#for-testing)
@@ -24,6 +25,7 @@ subject: [Spring Boot Config Documentation, Two Ways With IntelliJ IDEA](https:/
 - [Changelog](#changelog)
 - [Contributing](#contributing)
 - [License](#license)
+
 ## Quick Start
 
 ### Maven Dependencies
@@ -65,6 +67,7 @@ class SampleJsonSchemaGeneratorTests {
 
 }
 ```
+
 ### For Production (REST or Actuator)
 
 #### REST API Endpoint
@@ -154,6 +157,7 @@ public class ConfigSchemaYamlEndpoint {
 ```
 
 Configure in `application.yaml`:
+
 ```yaml
 management:
   endpoints:
@@ -163,20 +167,25 @@ management:
 ```
 
 ## Changelog
-- **1.0.3** Spring boot version update, type mapping cleanup 
-- **1.0.2** Fix Map<String,Object> handling 
-- **1.0.1** (September 2025): Stable release with Actuator endpoint support, improved schema generation, and license addition.
+
+- **1.0.3** Spring boot version update, type mapping cleanup
+- **1.0.2** Fix Map<String,Object> handling
+- **1.0.1** (September 2025): Stable release with Actuator endpoint support, improved schema generation, and license
+  addition.
 - **0.0.8** (September 2025): Added Actuator endpoint; minor fixes.
 - **0.0.5** (August 2025): Initial release with JSON/YAML schema generation.
-See [Releases](https://github.com/alexmond/spring-boot-config-json-schema/releases) for details.
+  See [Releases](https://github.com/alexmond/spring-boot-config-json-schema/releases) for details.
 
 ## Contributing
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Open issues for bugs or feature requests (e.g., IDE enhancements, validation support).
 
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Open issues for bugs or feature requests (
+e.g., IDE enhancements, validation support).
 
 ## License
+
 Licensed under the [Apache 2.0 License](LICENSE).
 
 ---
 
-⭐ Star this repo if you find it useful! Share feedback via [issues](https://github.com/alexmond/spring-boot-config-json-schema/issues).
+⭐ Star this repo if you find it useful! Share feedback
+via [issues](https://github.com/alexmond/spring-boot-config-json-schema/issues).

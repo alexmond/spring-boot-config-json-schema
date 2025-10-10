@@ -4,22 +4,31 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.alexmond</groupId>
-        <artifactId>spring-boot-json-schema</artifactId>
+        <artifactId>spring-boot-config-json-schema-parent</artifactId>
         <version>1.0.5-SNAPSHOT</version>
     </parent>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
     <version>1.0.5-SNAPSHOT</version>
     <name>Spring Boot Config Json Schema Starter</name>
 
-    <url>https://alexmond.github.io/</url>
-    <description>A Spring Boot library for generating JSON Schema documentation from configuration properties,
-        supporting both annotated beans and environment properties. Includes type mapping and property collection
-        services.
+    <url>https://alexmond.github.io/spring-boot-config-json-schema-starter/current/index.html</url>
+    <description>A Spring Boot starter for generating JSON Schema from Spring Boot application configuration properties,
+        providing automated documentation and validation support for both @ConfigurationProperties annotated classes and
+        environment properties.
     </description>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/alexmond/spring-boot-config-json-schema/issues</url>
+    </issueManagement>
+    <developers>
+        <developer>
+            <name>Alex Mondshain</name>
+            <email>alex.mondshain@gmail.com</email>
+        </developer>
+    </developers>
     <properties>
         <commons-text.version>1.14.0</commons-text.version>
         <json-schema-validator.version>1.5.8</json-schema-validator.version>
-        <jackson-module-jsonSchema.version>2.20.0</jackson-module-jsonSchema.version>
         <swagger-annotations.version>2.2.36</swagger-annotations.version>
     </properties>
 
@@ -69,7 +78,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jsonSchema</artifactId>
-            <version>${jackson-module-jsonSchema.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

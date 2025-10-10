@@ -1,8 +1,7 @@
 [#_spring_boot_config_json_schema_generator]
 == Spring Boot Config JSON Schema Generator
-Alex Mondshain <alex.mondshain@gmail.com>
-2014-09-09
 
+Alex Mondshain <alex.mondshain@gmail.com> 2014-09-09
 
 A Spring Boot starter that generates JSON Schema documentation from your application's @ConfigurationProperties classes and Spring Boot configuration metadata.
 The generated schemas enable configuration validation and autocompletion in popular IDEs and CI/CD pipelines.

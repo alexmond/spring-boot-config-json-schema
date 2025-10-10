@@ -1,11 +1,7 @@
 package org.alexmond.config.json.schema.service;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
@@ -16,7 +12,6 @@ import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;

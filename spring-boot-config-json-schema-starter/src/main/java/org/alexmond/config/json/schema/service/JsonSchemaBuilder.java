@@ -24,7 +24,8 @@ public class JsonSchemaBuilder {
     private final JsonConfigSchemaConfig config;
     private final TypeMappingService typeMappingService;
 
-    @Getter private final JsonSchemaBuilderHelper helper;
+    @Getter
+    private final JsonSchemaBuilderHelper helper;
     private final DefinitionsHelper definitionsHelper;
 
     public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
@@ -341,10 +342,10 @@ public class JsonSchemaBuilder {
 
     private boolean isDeprecatedError(Property prop) {
         return prop.getDeprecated() != null &&
-               prop.getDeprecated() &&
-               prop.getDeprecation() != null &&
-               (prop.getDeprecation().getLevel() == Deprecation.Level.ERROR ||
-                prop.getDeprecation().getLevel() == Deprecation.Level.error);
+                prop.getDeprecated() &&
+                prop.getDeprecation() != null &&
+                (prop.getDeprecation().getLevel() == Deprecation.Level.ERROR ||
+                        prop.getDeprecation().getLevel() == Deprecation.Level.error);
     }
 
     private boolean matchesIncluded(String propertyPath, List<String> included) {
@@ -397,7 +398,7 @@ public class JsonSchemaBuilder {
     }
 
     public String extractListItemType(String type) {
-        if(type == null) return null;
+        if (type == null) return null;
         if (type.contains("<") && type.contains(">")) {
             String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
             return inner.trim();
@@ -406,7 +407,7 @@ public class JsonSchemaBuilder {
     }
 
     public String extractMapValueType(String type) {
-        if(type == null) return null;
+        if (type == null) return null;
         if (type.contains("<") && type.contains(">")) {
             String inner = type.substring(type.indexOf('<') + 1, type.lastIndexOf('>'));
             if (inner.contains(",")) {

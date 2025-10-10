@@ -9,10 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.alexmond</groupId>
-    <artifactId>spring-boot-json-schema</artifactId>
+    <artifactId>spring-boot-config-json-schema-parent</artifactId>
     <version>1.0.5-SNAPSHOT</version>
-    <name>spring-boot-json-schema</name>
+    <name>Spring Boot Config Json Schema Starter Parent pom</name>
     <packaging>pom</packaging>
+
     <properties>
         <java.version>17</java.version>
 
@@ -21,9 +22,10 @@
         <springdoc-openapi.version>2.8.9</springdoc-openapi.version>
     </properties>
     <url>https://alexmond.github.io/spring-boot-config-json-schema-starter/current/index.html</url>
-    <description>A Spring Boot library for generating JSON Schema documentation from configuration properties,
-        supporting both annotated beans and environment properties. Includes type mapping and property collection
-        services.
+    <description>A parent pom A Spring Boot starter for generating JSON Schema from Spring Boot application
+        configuration properties,
+        providing automated documentation and validation support for both @ConfigurationProperties annotated classes and
+        environment properties.
     </description>
     <licenses>
         <license>
@@ -37,6 +39,10 @@
         <url>https://github.com/alexmond/spring-boot-config-json-schema/</url>
         <tag>HEAD</tag>
     </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/alexmond/spring-boot-config-json-schema/issues</url>
+    </issueManagement>
     <developers>
         <developer>
             <name>Alex Mondshain</name>
