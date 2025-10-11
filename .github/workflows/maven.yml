@@ -39,4 +39,4 @@ jobs:
         run: pipx install check-jsonschema
       - name: Validate files
         run: |
-          check-jsonschema --check-metaschema spring-boot-config-json-schema/spring-boot-json-schema-sample/application.yaml
+          check-jsonschema --check-metaschema spring-boot-json-schema-sample/application.yaml
