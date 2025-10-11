@@ -30,13 +30,13 @@ jobs:
             **/surefire-reports/TEST-*.xml
             **/failsafe-reports/TEST-*.xml
 
-    #    - name: Add coverage to PR
-    #      uses: codecov/codecov-action@v3
-    #      with:
-    #        token: ${{ secrets.CODECOV_TOKEN }}
-    #        files: ./target/site/jacoco/jacoco.xml
-    #        fail_ci_if_error: true
 
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-#    - name: Update dependency graph
-#      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install check-jsonschema
+        run: pipx install check-jsonschema
+      - name: Validate files
+        run: |
+          check-jsonschema --check-metaschema spring-boot-config-json-schema/spring-boot-json-schema-sample/application.yaml
