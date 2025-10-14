@@ -31,9 +31,11 @@
   "properties" : {
     "health" : {
       "type" : "object",
+      "$anchor" : "org.springframework.cloud.config.client.ConfigClientHealthProperties",
       "properties" : {
         "config" : {
           "type" : "object",
+          "$ref" : "#org.springframework.cloud.config.client.ConfigClientHealthProperties",
           "properties" : {
             "time-to-live" : {
               "type" : "string",
@@ -46,6 +48,7 @@
     },
     "json-config-schema" : {
       "type" : "object",
+      "$anchor" : "org.alexmond.config.json.schema.config.JsonConfigSchemaConfig",
       "properties" : {
         "additional-exclude-classes" : {
           "type" : "array",
@@ -87,6 +90,7 @@
           "description" : "Map of property names or java objects to their type definitions. Used to store custom type mappings and property configurations that override or extend the default schema generation behavior.",
           "additionalProperties" : {
             "type" : "object",
+            "$anchor" : "org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties",
             "properties" : {
               "additional-properties" : {
                 "type" : "object"
@@ -94,13 +98,18 @@
               "all-of" : {
                 "type" : "array",
                 "items" : {
-                  "type" : "object"
+                  "type" : "object",
+                  "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
                 }
+              },
+              "anchor" : {
+                "type" : "string"
               },
               "any-of" : {
                 "type" : "array",
                 "items" : {
-                  "type" : "object"
+                  "type" : "object",
+                  "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
                 }
               },
               "comment" : {
@@ -110,7 +119,8 @@
                 "type" : "object"
               },
               "contains" : {
-                "type" : "object"
+                "type" : "object",
+                "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
               },
               "content-encoding" : {
                 "type" : "string"
@@ -119,7 +129,8 @@
                 "type" : "string"
               },
               "content-schema" : {
-                "type" : "object"
+                "type" : "object",
+                "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
               },
               "default-value" : {
                 "type" : "object"
@@ -131,7 +142,11 @@
                 }
               },
               "dependent-schemas" : {
-                "type" : "object"
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "object",
+                  "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
+                }
               },
               "deprecated" : {
                 "type" : "boolean"
@@ -140,7 +155,8 @@
                 "type" : "string"
               },
               "else-schema" : {
-                "type" : "object"
+                "type" : "object",
+                "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
               },
               "enum-values" : {
                 "type" : "array",
@@ -168,10 +184,12 @@
                 "type" : "string"
               },
               "if-schema" : {
-                "type" : "object"
+                "type" : "object",
+                "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
               },
               "items" : {
-                "type" : "object"
+                "type" : "object",
+                "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
               },
               "max-contains" : {
                 "type" : "integer"
@@ -207,31 +225,43 @@
                 "type" : "number"
               },
               "not" : {
-                "type" : "object"
+                "type" : "object",
+                "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
               },
               "one-of" : {
                 "type" : "array",
                 "items" : {
-                  "type" : "object"
+                  "type" : "object",
+                  "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
                 }
               },
               "pattern" : {
                 "type" : "string"
               },
               "pattern-properties" : {
-                "type" : "object"
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "object",
+                  "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
+                }
               },
               "prefix-items" : {
                 "type" : "array",
                 "items" : {
-                  "type" : "object"
+                  "type" : "object",
+                  "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
                 }
               },
               "properties" : {
-                "type" : "object"
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "object",
+                  "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
+                }
               },
               "property-names" : {
-                "type" : "object"
+                "type" : "object",
+                "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
               },
               "read-only" : {
                 "type" : "boolean"
@@ -246,7 +276,8 @@
                 }
               },
               "then-schema" : {
-                "type" : "object"
+                "type" : "object",
+                "$ref" : "#org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties"
               },
               "title" : {
                 "type" : "string"
@@ -263,6 +294,7 @@
               },
               "x-deprecation" : {
                 "type" : "object",
+                "$anchor" : "org.alexmond.config.json.schema.jsonschemamodel.XDeprecation",
                 "properties" : {
                   "level" : {
                     "type" : "string"
@@ -292,9 +324,6 @@
         "schema-spec" : {
           "type" : "string",
           "description" : "JSON Schema specification URL"
-        },
-        "skip-missing-classes" : {
-          "type" : "boolean"
         },
         "title" : {
           "type" : "string",
@@ -337,6 +366,7 @@
         },
         "file" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.context.logging.LoggingApplicationListener",
           "properties" : {
             "clean-history-on-start" : {
               "type" : "boolean",
@@ -424,9 +454,11 @@
         },
         "logback" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.context.logging.LoggingApplicationListener",
           "properties" : {
             "rollingpolicy" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.context.logging.LoggingApplicationListener",
               "properties" : {
                 "clean-history-on-start" : {
                   "type" : "boolean",
@@ -459,6 +491,7 @@
         },
         "pattern" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.context.logging.LoggingApplicationListener",
           "properties" : {
             "console" : {
               "type" : "string",
@@ -565,10 +598,7 @@
               "properties" : {
                 "add" : {
                   "type" : "object",
-                  "description" : "Additional members that should be added to structured logging JSON",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Additional members that should be added to structured logging JSON"
                 },
                 "context" : {
                   "type" : "object",
@@ -606,10 +636,7 @@
                 },
                 "rename" : {
                   "type" : "object",
-                  "description" : "Mapping between member paths and an alternative name that should be used in structured logging JSON",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Mapping between member paths and an alternative name that should be used in structured logging JSON"
                 },
                 "stacktrace" : {
                   "type" : "object",
@@ -687,9 +714,11 @@
         },
         "endpoint" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.actuate.health.HealthEndpoint",
           "properties" : {
             "health" : {
               "type" : "object",
+              "$ref" : "#org.springframework.boot.actuate.health.HealthEndpoint",
               "properties" : {
                 "access" : {
                   "type" : "string",
@@ -699,18 +728,13 @@
                 },
                 "cache" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.health.HealthEndpoint",
                   "properties" : {
                     "time-to-live" : {
                       "type" : "string",
                       "description" : "Maximum time that a response can be cached.",
                       "default" : "0ms"
                     }
-                  }
-                },
-                "e-m-p-t-y_p-a-t-h" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
                   }
                 },
                 "enabled" : {
@@ -728,6 +752,7 @@
                   "description" : "Health endpoint groups.",
                   "additionalProperties" : {
                     "type" : "object",
+                    "$anchor" : "org.springframework.boot.actuate.autoconfigure.health.HealthEndpointProperties$Group",
                     "properties" : {
                       "additional-path" : {
                         "type" : "string"
@@ -757,334 +782,9 @@
                     }
                   }
                 },
-                "i-d" : {
-                  "type" : "object",
-                  "properties" : {
-                    "logged-warnings" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
-                      }
-                    },
-                    "logger" : {
-                      "type" : "object"
-                    },
-                    "lower-case-alpha-numeric" : {
-                      "type" : "string"
-                    },
-                    "lower-case-value" : {
-                      "type" : "string"
-                    },
-                    "m-i-g-r-a-t-e_l-e-g-a-c-y_n-a-m-e-s_p-r-o-p-e-r-t-y" : {
-                      "type" : "string"
-                    },
-                    "v-a-l-i-d_p-a-t-t-e-r-n" : {
-                      "type" : "object",
-                      "properties" : {
-                        "$assertions-disabled" : {
-                          "type" : "boolean"
-                        },
-                        "a-l-l_f-l-a-g-s" : {
-                          "type" : "integer"
-                        },
-                        "accept" : {
-                          "type" : "object",
-                          "properties" : {
-                            "next" : {
-                              "type" : "object"
-                            }
-                          }
-                        },
-                        "buffer" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object"
-                          }
-                        },
-                        "c-a-n-o-n_e-q" : {
-                          "type" : "integer"
-                        },
-                        "c-a-s-e_i-n-s-e-n-s-i-t-i-v-e" : {
-                          "type" : "integer"
-                        },
-                        "c-o-m-m-e-n-t-s" : {
-                          "type" : "integer"
-                        },
-                        "capturing-group-count" : {
-                          "type" : "integer"
-                        },
-                        "compiled" : {
-                          "type" : "boolean"
-                        },
-                        "cursor" : {
-                          "type" : "integer"
-                        },
-                        "d-o-t-a-l-l" : {
-                          "type" : "integer"
-                        },
-                        "flags" : {
-                          "type" : "integer"
-                        },
-                        "flags-0" : {
-                          "type" : "integer"
-                        },
-                        "group-nodes" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object"
-                          }
-                        },
-                        "has-group-ref" : {
-                          "type" : "boolean"
-                        },
-                        "has-supplementary" : {
-                          "type" : "boolean"
-                        },
-                        "l-i-t-e-r-a-l" : {
-                          "type" : "integer"
-                        },
-                        "last-accept" : {
-                          "type" : "object",
-                          "properties" : {
-                            "next" : {
-                              "type" : "object"
-                            }
-                          }
-                        },
-                        "local-count" : {
-                          "type" : "integer"
-                        },
-                        "local-t-c-n-count" : {
-                          "type" : "integer"
-                        },
-                        "m-a-x_r-e-p-s" : {
-                          "type" : "integer"
-                        },
-                        "m-u-l-t-i-l-i-n-e" : {
-                          "type" : "integer"
-                        },
-                        "match-root" : {
-                          "type" : "object",
-                          "properties" : {
-                            "next" : {
-                              "type" : "object"
-                            }
-                          }
-                        },
-                        "named-groups" : {
-                          "type" : "object",
-                          "additionalProperties" : {
-                            "type" : "integer"
-                          }
-                        },
-                        "normalized-pattern" : {
-                          "type" : "string"
-                        },
-                        "pattern" : {
-                          "type" : "string"
-                        },
-                        "pattern-length" : {
-                          "type" : "integer"
-                        },
-                        "predicate" : {
-                          "type" : "object"
-                        },
-                        "root" : {
-                          "type" : "object",
-                          "properties" : {
-                            "next" : {
-                              "type" : "object"
-                            }
-                          }
-                        },
-                        "serial-version-u-i-d" : {
-                          "type" : "integer"
-                        },
-                        "temp" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object"
-                          }
-                        },
-                        "top-closure-nodes" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object",
-                            "properties" : {
-                              "next" : {
-                                "type" : "object"
-                              }
-                            }
-                          }
-                        },
-                        "u-n-i-c-o-d-e_c-a-s-e" : {
-                          "type" : "integer"
-                        },
-                        "u-n-i-c-o-d-e_c-h-a-r-a-c-t-e-r_c-l-a-s-s" : {
-                          "type" : "integer"
-                        },
-                        "u-n-i-x_l-i-n-e-s" : {
-                          "type" : "integer"
-                        }
-                      }
-                    },
-                    "value" : {
-                      "type" : "string"
-                    },
-                    "w-a-r-n-i-n-g_p-a-t-t-e-r-n" : {
-                      "type" : "object",
-                      "properties" : {
-                        "$assertions-disabled" : {
-                          "type" : "boolean"
-                        },
-                        "a-l-l_f-l-a-g-s" : {
-                          "type" : "integer"
-                        },
-                        "accept" : {
-                          "type" : "object",
-                          "properties" : {
-                            "next" : {
-                              "type" : "object"
-                            }
-                          }
-                        },
-                        "buffer" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object"
-                          }
-                        },
-                        "c-a-n-o-n_e-q" : {
-                          "type" : "integer"
-                        },
-                        "c-a-s-e_i-n-s-e-n-s-i-t-i-v-e" : {
-                          "type" : "integer"
-                        },
-                        "c-o-m-m-e-n-t-s" : {
-                          "type" : "integer"
-                        },
-                        "capturing-group-count" : {
-                          "type" : "integer"
-                        },
-                        "compiled" : {
-                          "type" : "boolean"
-                        },
-                        "cursor" : {
-                          "type" : "integer"
-                        },
-                        "d-o-t-a-l-l" : {
-                          "type" : "integer"
-                        },
-                        "flags" : {
-                          "type" : "integer"
-                        },
-                        "flags-0" : {
-                          "type" : "integer"
-                        },
-                        "group-nodes" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object"
-                          }
-                        },
-                        "has-group-ref" : {
-                          "type" : "boolean"
-                        },
-                        "has-supplementary" : {
-                          "type" : "boolean"
-                        },
-                        "l-i-t-e-r-a-l" : {
-                          "type" : "integer"
-                        },
-                        "last-accept" : {
-                          "type" : "object",
-                          "properties" : {
-                            "next" : {
-                              "type" : "object"
-                            }
-                          }
-                        },
-                        "local-count" : {
-                          "type" : "integer"
-                        },
-                        "local-t-c-n-count" : {
-                          "type" : "integer"
-                        },
-                        "m-a-x_r-e-p-s" : {
-                          "type" : "integer"
-                        },
-                        "m-u-l-t-i-l-i-n-e" : {
-                          "type" : "integer"
-                        },
-                        "match-root" : {
-                          "type" : "object",
-                          "properties" : {
-                            "next" : {
-                              "type" : "object"
-                            }
-                          }
-                        },
-                        "named-groups" : {
-                          "type" : "object",
-                          "additionalProperties" : {
-                            "type" : "integer"
-                          }
-                        },
-                        "normalized-pattern" : {
-                          "type" : "string"
-                        },
-                        "pattern" : {
-                          "type" : "string"
-                        },
-                        "pattern-length" : {
-                          "type" : "integer"
-                        },
-                        "predicate" : {
-                          "type" : "object"
-                        },
-                        "root" : {
-                          "type" : "object",
-                          "properties" : {
-                            "next" : {
-                              "type" : "object"
-                            }
-                          }
-                        },
-                        "serial-version-u-i-d" : {
-                          "type" : "integer"
-                        },
-                        "temp" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object"
-                          }
-                        },
-                        "top-closure-nodes" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object",
-                            "properties" : {
-                              "next" : {
-                                "type" : "object"
-                              }
-                            }
-                          }
-                        },
-                        "u-n-i-c-o-d-e_c-a-s-e" : {
-                          "type" : "integer"
-                        },
-                        "u-n-i-c-o-d-e_c-h-a-r-a-c-t-e-r_c-l-a-s-s" : {
-                          "type" : "integer"
-                        },
-                        "u-n-i-x_l-i-n-e-s" : {
-                          "type" : "integer"
-                        }
-                      }
-                    }
-                  }
-                },
                 "logging" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.health.HealthEndpointProperties$Logging",
                   "properties" : {
                     "slow-indicator-threshold" : {
                       "type" : "string",
@@ -1128,13 +828,11 @@
                 },
                 "status" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.health.HealthProperties$Status",
                   "properties" : {
                     "http-mapping" : {
                       "type" : "object",
-                      "description" : "Mapping of health statuses to HTTP status codes. By default, registered health statuses map to sensible defaults (for example, UP maps to 200).",
-                      "additionalProperties" : {
-                        "type" : "integer"
-                      }
+                      "description" : "Mapping of health statuses to HTTP status codes. By default, registered health statuses map to sensible defaults (for example, UP maps to 200)."
                     },
                     "order" : {
                       "type" : "array",
@@ -1157,9 +855,11 @@
         },
         "endpoints" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
           "properties" : {
             "web" : {
               "type" : "object",
+              "$ref" : "#org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
               "properties" : {
                 "base-path" : {
                   "type" : "string",
@@ -1168,6 +868,7 @@
                 },
                 "cors" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties",
                   "properties" : {
                     "allow-credentials" : {
                       "type" : "boolean",
@@ -1220,6 +921,7 @@
                 },
                 "discovery" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties$Discovery",
                   "properties" : {
                     "enabled" : {
                       "type" : "boolean",
@@ -1230,6 +932,7 @@
                 },
                 "exposure" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties$Exposure",
                   "properties" : {
                     "exclude" : {
                       "type" : "array",
@@ -1250,10 +953,7 @@
                 },
                 "path-mapping" : {
                   "type" : "object",
-                  "description" : "Mapping between endpoint IDs and the path that should expose them.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Mapping between endpoint IDs and the path that should expose them."
                 }
               }
             }
@@ -1261,9 +961,11 @@
         },
         "health" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthIndicatorProperties",
           "properties" : {
             "db" : {
               "type" : "object",
+              "$ref" : "#org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthIndicatorProperties",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -1279,6 +981,7 @@
             },
             "diskspace" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.system.DiskSpaceHealthIndicatorProperties",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -1298,6 +1001,7 @@
             },
             "ssl" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.ssl.SslHealthIndicatorProperties",
               "properties" : {
                 "certificate-validity-warning-threshold" : {
                   "type" : "string",
@@ -1315,6 +1019,7 @@
         },
         "info" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.actuate.autoconfigure.info.InfoContributorProperties",
           "properties" : {
             "build" : {
               "type" : "object",
@@ -1348,6 +1053,7 @@
             },
             "git" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.info.InfoContributorProperties$Git",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -1406,15 +1112,19 @@
         },
         "metrics" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties",
           "properties" : {
             "data" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties$Data",
               "properties" : {
                 "repository" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties$Data$Repository",
                   "properties" : {
                     "autotime" : {
                       "type" : "object",
+                      "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.AutoTimeProperties",
                       "properties" : {
                         "enabled" : {
                           "type" : "boolean",
@@ -1446,34 +1156,23 @@
             },
             "distribution" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties$Distribution",
               "properties" : {
                 "buffer-length" : {
                   "type" : "object",
-                  "description" : "Number of histograms for meter IDs starting with the specified name to keep in the ring buffer. The longest match wins, the key `all` can also be used to configure all meters.",
-                  "additionalProperties" : {
-                    "type" : "integer"
-                  }
+                  "description" : "Number of histograms for meter IDs starting with the specified name to keep in the ring buffer. The longest match wins, the key `all` can also be used to configure all meters."
                 },
                 "expiry" : {
                   "type" : "object",
-                  "description" : "Maximum amount of time that samples for meter IDs starting with the specified name are accumulated to decaying distribution statistics before they are reset and rotated. The longest match wins, the key `all` can also be used to configure all meters.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Maximum amount of time that samples for meter IDs starting with the specified name are accumulated to decaying distribution statistics before they are reset and rotated. The longest match wins, the key `all` can also be used to configure all meters."
                 },
                 "maximum-expected-value" : {
                   "type" : "object",
-                  "description" : "Maximum value that meter IDs starting with the specified name are expected to observe. The longest match wins. Values can be specified as a double or as a Duration value (for timer meters, defaulting to ms if no unit specified).",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Maximum value that meter IDs starting with the specified name are expected to observe. The longest match wins. Values can be specified as a double or as a Duration value (for timer meters, defaulting to ms if no unit specified)."
                 },
                 "minimum-expected-value" : {
                   "type" : "object",
-                  "description" : "Minimum value that meter IDs starting with the specified name are expected to observe. The longest match wins. Values can be specified as a double or as a Duration value (for timer meters, defaulting to ms if no unit specified).",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Minimum value that meter IDs starting with the specified name are expected to observe. The longest match wins. Values can be specified as a double or as a Duration value (for timer meters, defaulting to ms if no unit specified)."
                 },
                 "percentiles" : {
                   "type" : "array",
@@ -1484,10 +1183,7 @@
                 },
                 "percentiles-histogram" : {
                   "type" : "object",
-                  "description" : "Whether meter IDs starting with the specified name should publish percentile histograms. For monitoring systems that support aggregable percentile calculation based on a histogram, this can be set to true. For other systems, this has no effect. The longest match wins, the key 'all' can also be used to configure all meters.",
-                  "additionalProperties" : {
-                    "type" : "boolean"
-                  }
+                  "description" : "Whether meter IDs starting with the specified name should publish percentile histograms. For monitoring systems that support aggregable percentile calculation based on a histogram, this can be set to true. For other systems, this has no effect. The longest match wins, the key 'all' can also be used to configure all meters."
                 },
                 "slo" : {
                   "type" : "array",
@@ -1500,10 +1196,7 @@
             },
             "enable" : {
               "type" : "object",
-              "description" : "Whether meter IDs starting with the specified name should be enabled. The longest match wins, the key 'all' can also be used to configure all meters.",
-              "additionalProperties" : {
-                "type" : "boolean"
-              }
+              "description" : "Whether meter IDs starting with the specified name should be enabled. The longest match wins, the key 'all' can also be used to configure all meters."
             },
             "mongo" : {
               "type" : "object",
@@ -1520,9 +1213,11 @@
             },
             "system" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties$System",
               "properties" : {
                 "diskspace" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties$System$Diskspace",
                   "properties" : {
                     "paths" : {
                       "type" : "array",
@@ -1538,10 +1233,7 @@
             },
             "tags" : {
               "type" : "object",
-              "description" : "Common tags that are applied to every meter.",
-              "additionalProperties" : {
-                "type" : "string"
-              }
+              "description" : "Common tags that are applied to every meter."
             },
             "use-global-registry" : {
               "type" : "boolean",
@@ -1550,9 +1242,11 @@
             },
             "web" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties$Web",
               "properties" : {
                 "client" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties$Web$Client",
                   "properties" : {
                     "max-uri-tags" : {
                       "type" : "integer",
@@ -1563,6 +1257,7 @@
                 },
                 "server" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties$Web$Server",
                   "properties" : {
                     "max-uri-tags" : {
                       "type" : "integer",
@@ -1577,6 +1272,7 @@
         },
         "observations" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties",
           "properties" : {
             "annotations" : {
               "type" : "object",
@@ -1590,19 +1286,19 @@
             },
             "enable" : {
               "type" : "object",
-              "description" : "Whether observations starting with the specified name should be enabled. The longest match wins, the key 'all' can also be used to configure all observations.",
-              "additionalProperties" : {
-                "type" : "boolean"
-              }
+              "description" : "Whether observations starting with the specified name should be enabled. The longest match wins, the key 'all' can also be used to configure all observations."
             },
             "http" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties$Http",
               "properties" : {
                 "client" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties$Http$Client",
                   "properties" : {
                     "requests" : {
                       "type" : "object",
+                      "$anchor" : "org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties$Http$Client$ClientRequests",
                       "properties" : {
                         "name" : {
                           "type" : "string",
@@ -1615,9 +1311,11 @@
                 },
                 "server" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties$Http$Server",
                   "properties" : {
                     "requests" : {
                       "type" : "object",
+                      "$anchor" : "org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties$Http$Server$ServerRequests",
                       "properties" : {
                         "name" : {
                           "type" : "string",
@@ -1632,13 +1330,11 @@
             },
             "key-values" : {
               "type" : "object",
-              "description" : "Common key-values that are applied to every observation.",
-              "additionalProperties" : {
-                "type" : "string"
-              }
+              "description" : "Common key-values that are applied to every observation."
             },
             "long-task-timer" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties$LongTaskTimer",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -1649,6 +1345,7 @@
             },
             "r2dbc" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.r2dbc.R2dbcObservationProperties",
               "properties" : {
                 "include-parameter-values" : {
                   "type" : "boolean",
@@ -1661,6 +1358,7 @@
         },
         "server" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties",
           "properties" : {
             "add-application-context-header" : {
               "type" : "boolean",
@@ -1678,9 +1376,11 @@
             },
             "jetty" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties$Jetty",
               "properties" : {
                 "accesslog" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties$Accesslog",
                   "properties" : {
                     "prefix" : {
                       "type" : "string",
@@ -1697,6 +1397,7 @@
             },
             "ssl" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.web.server.Ssl",
               "properties" : {
                 "bundle" : {
                   "type" : "string",
@@ -1768,6 +1469,7 @@
                   "description" : "Mapping of host names to SSL bundles for SNI configuration.",
                   "items" : {
                     "type" : "object",
+                    "$anchor" : "org.springframework.boot.web.server.Ssl$ServerNameSslBundle",
                     "properties" : {
                       "bundle" : {
                         "type" : "string"
@@ -1806,9 +1508,11 @@
             },
             "tomcat" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties$Tomcat",
               "properties" : {
                 "accesslog" : {
                   "type" : "object",
+                  "$ref" : "#org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties$Accesslog",
                   "properties" : {
                     "prefix" : {
                       "type" : "string",
@@ -1821,9 +1525,11 @@
             },
             "undertow" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties$Undertow",
               "properties" : {
                 "accesslog" : {
                   "type" : "object",
+                  "$ref" : "#org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties$Accesslog",
                   "properties" : {
                     "prefix" : {
                       "type" : "string",
@@ -1838,12 +1544,15 @@
         },
         "simple" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleProperties",
           "properties" : {
             "metrics" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleProperties",
               "properties" : {
                 "export" : {
                   "type" : "object",
+                  "$ref" : "#org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleProperties",
                   "properties" : {
                     "enabled" : {
                       "type" : "boolean",
@@ -1881,6 +1590,7 @@
     },
     "server" : {
       "type" : "object",
+      "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties",
       "properties" : {
         "address" : {
           "type" : "string",
@@ -1888,6 +1598,7 @@
         },
         "compression" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.web.server.Compression",
           "properties" : {
             "enabled" : {
               "type" : "boolean",
@@ -1918,6 +1629,7 @@
         },
         "error" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.ErrorProperties",
           "properties" : {
             "include-binding-errors" : {
               "type" : "string",
@@ -1955,6 +1667,7 @@
             },
             "whitelabel" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ErrorProperties$Whitelabel",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -1970,16 +1683,9 @@
           "description" : "Strategy for handling X-Forwarded-* headers.",
           "enum" : [ "NATIVE", "framework", "native", "FRAMEWORK", "none", "NONE" ]
         },
-        "http-2" : {
-          "type" : "object",
-          "properties" : {
-            "enabled" : {
-              "type" : "boolean"
-            }
-          }
-        },
         "http2" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.web.server.Http2",
           "properties" : {
             "enabled" : {
               "type" : "boolean",
@@ -1990,9 +1696,11 @@
         },
         "jetty" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Jetty",
           "properties" : {
             "accesslog" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Jetty$Accesslog",
               "properties" : {
                 "append" : {
                   "type" : "boolean",
@@ -2062,6 +1770,7 @@
             },
             "threads" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Jetty$Threads",
               "properties" : {
                 "acceptors" : {
                   "type" : "integer",
@@ -2103,14 +1812,17 @@
         },
         "mime-mappings" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.web.server.MimeMappings",
           "properties" : {
             "d-e-f-a-u-l-t" : {
-              "type" : "object"
+              "type" : "object",
+              "$ref" : "#org.springframework.boot.web.server.MimeMappings"
             },
             "map" : {
               "type" : "object",
               "additionalProperties" : {
                 "type" : "object",
+                "$anchor" : "org.springframework.boot.web.server.MimeMappings$Mapping",
                 "properties" : {
                   "extension" : {
                     "type" : "string"
@@ -2125,13 +1837,11 @@
         },
         "netty" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Netty",
           "properties" : {
             "connection-timeout" : {
               "type" : "string",
               "description" : "Connection timeout of the Netty channel."
-            },
-            "h-2-c-max-content-length" : {
-              "type" : "string"
             },
             "h2c-max-content-length" : {
               "type" : "string",
@@ -2170,12 +1880,15 @@
         },
         "reactive" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Reactive",
           "properties" : {
             "session" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Reactive$Session",
               "properties" : {
                 "cookie" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.web.server.Cookie",
                   "properties" : {
                     "domain" : {
                       "type" : "string",
@@ -2232,6 +1945,7 @@
         },
         "servlet" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Servlet",
           "properties" : {
             "application-display-name" : {
               "type" : "string",
@@ -2240,10 +1954,7 @@
             },
             "context-parameters" : {
               "type" : "object",
-              "description" : "Servlet context init parameters.",
-              "additionalProperties" : {
-                "type" : "string"
-              }
+              "description" : "Servlet context init parameters."
             },
             "context-path" : {
               "type" : "string",
@@ -2251,6 +1962,7 @@
             },
             "encoding" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.web.servlet.server.Encoding",
               "properties" : {
                 "charset" : {
                   "$ref" : "#/$defs/Charsets",
@@ -2286,6 +1998,7 @@
             },
             "jsp" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.web.servlet.server.Jsp",
               "properties" : {
                 "class-name" : {
                   "type" : "string",
@@ -2294,10 +2007,7 @@
                 },
                 "init-parameters" : {
                   "type" : "object",
-                  "description" : "Init parameters used to configure the JSP servlet.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Init parameters used to configure the JSP servlet."
                 },
                 "registered" : {
                   "type" : "boolean",
@@ -2313,6 +2023,7 @@
             },
             "session" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.web.servlet.server.Session",
               "properties" : {
                 "cookie" : {
                   "type" : "object",
@@ -2359,6 +2070,7 @@
                 },
                 "session-store-directory" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.web.servlet.server.SessionStoreDirectory",
                   "properties" : {
                     "directory" : {
                       "type" : "string"
@@ -2394,6 +2106,7 @@
         },
         "ssl" : {
           "type" : "object",
+          "$ref" : "#org.springframework.boot.web.server.Ssl",
           "properties" : {
             "bundle" : {
               "type" : "string",
@@ -2465,14 +2178,7 @@
               "description" : "Mapping of host names to SSL bundles for SNI configuration.",
               "items" : {
                 "type" : "object",
-                "properties" : {
-                  "bundle" : {
-                    "type" : "string"
-                  },
-                  "server-name" : {
-                    "type" : "string"
-                  }
-                }
+                "$ref" : "#org.springframework.boot.web.server.Ssl$ServerNameSslBundle"
               }
             },
             "trust-certificate" : {
@@ -2503,6 +2209,7 @@
         },
         "tomcat" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Tomcat",
           "properties" : {
             "accept-count" : {
               "type" : "integer",
@@ -2511,6 +2218,7 @@
             },
             "accesslog" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Tomcat$Accesslog",
               "properties" : {
                 "buffered" : {
                   "type" : "boolean",
@@ -2548,9 +2256,6 @@
                   "type" : "string",
                   "description" : "Date format to place in the log file name.",
                   "default" : ".yyyy-MM-dd"
-                },
-                "ipv-6-canonical" : {
-                  "type" : "boolean"
                 },
                 "ipv6-canonical" : {
                   "type" : "boolean",
@@ -2664,6 +2369,7 @@
             },
             "mbeanregistry" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Tomcat$Mbeanregistry",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -2700,6 +2406,7 @@
             },
             "remoteip" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Tomcat$Remoteip",
               "properties" : {
                 "host-header" : {
                   "type" : "string",
@@ -2737,6 +2444,7 @@
             },
             "resource" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Tomcat$Resource",
               "properties" : {
                 "allow-caching" : {
                   "type" : "boolean",
@@ -2752,6 +2460,7 @@
             },
             "threads" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Tomcat$Threads",
               "properties" : {
                 "max" : {
                   "type" : "integer",
@@ -2790,9 +2499,11 @@
         },
         "undertow" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Undertow",
           "properties" : {
             "accesslog" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Undertow$Accesslog",
               "properties" : {
                 "dir" : {
                   "type" : "string",
@@ -2886,20 +2597,15 @@
             },
             "options" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Undertow$Options",
               "properties" : {
                 "server" : {
                   "type" : "object",
-                  "description" : "Server options as defined in io.undertow.UndertowOptions.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Server options as defined in io.undertow.UndertowOptions."
                 },
                 "socket" : {
                   "type" : "object",
-                  "description" : "Socket options as defined in org.xnio.Options.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Socket options as defined in org.xnio.Options."
                 }
               }
             },
@@ -2910,6 +2616,7 @@
             },
             "threads" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.ServerProperties$Undertow$Threads",
               "properties" : {
                 "io" : {
                   "type" : "integer",
@@ -2932,12 +2639,15 @@
     },
     "spring" : {
       "type" : "object",
+      "$anchor" : "org.springframework.cloud.configuration.CompatibilityVerifierProperties",
       "properties" : {
         "cloud" : {
           "type" : "object",
+          "$anchor" : "org.springframework.cloud.configuration.CompatibilityVerifierProperties",
           "properties" : {
             "compatibility-verifier" : {
               "type" : "object",
+              "$ref" : "#org.springframework.cloud.configuration.CompatibilityVerifierProperties",
               "properties" : {
                 "compatible-boot-versions" : {
                   "type" : "array",
@@ -2956,6 +2666,7 @@
             },
             "config" : {
               "type" : "object",
+              "$anchor" : "org.springframework.cloud.config.client.ConfigClientProperties",
               "properties" : {
                 "a-u-t-h-o-r-i-z-a-t-i-o-n" : {
                   "type" : "string"
@@ -2981,6 +2692,7 @@
                 },
                 "discovery" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.cloud.config.client.ConfigClientProperties$Discovery",
                   "properties" : {
                     "d-e-f-a-u-l-t_c-o-n-f-i-g_s-e-r-v-e-r" : {
                       "type" : "string"
@@ -3009,10 +2721,7 @@
                 },
                 "headers" : {
                   "type" : "object",
-                  "description" : "Additional headers used to create the client request.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Additional headers used to create the client request."
                 },
                 "initialize-on-context-refresh" : {
                   "type" : "boolean",
@@ -3074,6 +2783,7 @@
                 },
                 "retry" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.cloud.config.client.RetryProperties",
                   "properties" : {
                     "initial-interval" : {
                       "type" : "integer",
@@ -3123,16 +2833,14 @@
                 },
                 "tls" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.cloud.configuration.TlsProperties",
                   "description" : "TLS properties.",
                   "properties" : {
                     "d-e-f-a-u-l-t_s-t-o-r-e_t-y-p-e" : {
                       "type" : "string"
                     },
                     "e-x-t-e-n-s-i-o-n_s-t-o-r-e_t-y-p-e-s" : {
-                      "type" : "object",
-                      "additionalProperties" : {
-                        "type" : "string"
-                      }
+                      "type" : "object"
                     },
                     "enabled" : {
                       "type" : "boolean"
@@ -3180,12 +2888,15 @@
             },
             "discovery" : {
               "type" : "object",
+              "$anchor" : "org.springframework.cloud.client.discovery.health.DiscoveryClientHealthIndicatorProperties",
               "properties" : {
                 "client" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.cloud.client.discovery.health.DiscoveryClientHealthIndicatorProperties",
                   "properties" : {
                     "health-indicator" : {
                       "type" : "object",
+                      "$ref" : "#org.springframework.cloud.client.discovery.health.DiscoveryClientHealthIndicatorProperties",
                       "properties" : {
                         "enabled" : {
                           "type" : "boolean",
@@ -3204,6 +2915,7 @@
                     },
                     "simple" : {
                       "type" : "object",
+                      "$anchor" : "org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryProperties",
                       "properties" : {
                         "instances" : {
                           "type" : "object",
@@ -3213,6 +2925,7 @@
                         },
                         "local" : {
                           "type" : "object",
+                          "$anchor" : "org.springframework.cloud.client.DefaultServiceInstance",
                           "properties" : {
                             "host" : {
                               "type" : "string"
@@ -3221,10 +2934,7 @@
                               "type" : "string"
                             },
                             "metadata" : {
-                              "type" : "object",
-                              "additionalProperties" : {
-                                "type" : "string"
-                              }
+                              "type" : "object"
                             },
                             "port" : {
                               "type" : "integer",
@@ -3254,6 +2964,7 @@
             },
             "inetutils" : {
               "type" : "object",
+              "$anchor" : "org.springframework.cloud.commons.util.InetUtilsProperties",
               "properties" : {
                 "default-hostname" : {
                   "type" : "string",
@@ -3296,6 +3007,7 @@
             },
             "refresh" : {
               "type" : "object",
+              "$anchor" : "org.springframework.cloud.autoconfigure.RefreshAutoConfiguration$RefreshProperties",
               "properties" : {
                 "additional-property-sources-to-retain" : {
                   "type" : "array",
@@ -3336,9 +3048,11 @@
             },
             "service-registry" : {
               "type" : "object",
+              "$anchor" : "org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties",
               "properties" : {
                 "auto-registration" : {
                   "type" : "object",
+                  "$ref" : "#org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties",
                   "properties" : {
                     "enabled" : {
                       "type" : "boolean",
@@ -3363,12 +3077,15 @@
         },
         "data" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties",
           "properties" : {
             "web" : {
               "type" : "object",
+              "$ref" : "#org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties",
               "properties" : {
                 "pageable" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties$Pageable",
                   "properties" : {
                     "default-page-size" : {
                       "type" : "integer",
@@ -3415,6 +3132,7 @@
                 },
                 "sort" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties$Sort",
                   "properties" : {
                     "sort-parameter" : {
                       "type" : "string",
@@ -3429,6 +3147,7 @@
         },
         "datasource" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties",
           "properties" : {
             "dbcp2" : {
               "type" : "string",
@@ -3619,6 +3338,7 @@
             },
             "hikari" : {
               "type" : "object",
+              "$anchor" : "com.zaxxer.hikari.HikariDataSource",
               "properties" : {
                 "allow-pool-suspension" : {
                   "type" : "boolean"
@@ -3658,9 +3378,11 @@
                 },
                 "fast-path-pool" : {
                   "type" : "object",
+                  "$anchor" : "com.zaxxer.hikari.pool.HikariPool",
                   "properties" : {
                     "add-connection-executor" : {
                       "type" : "object",
+                      "$anchor" : "java.util.concurrent.ThreadPoolExecutor",
                       "properties" : {
                         "allow-core-thread-time-out" : {
                           "type" : "boolean"
@@ -3694,12 +3416,14 @@
                         },
                         "main-lock" : {
                           "type" : "object",
+                          "$anchor" : "java.util.concurrent.locks.ReentrantLock",
                           "properties" : {
                             "serial-version-u-i-d" : {
                               "type" : "integer"
                             },
                             "sync" : {
                               "type" : "object",
+                              "$anchor" : "java.util.concurrent.locks.ReentrantLock$Sync",
                               "properties" : {
                                 "serial-version-u-i-d" : {
                                   "type" : "integer"
@@ -3745,6 +3469,7 @@
                           "type" : "array",
                           "items" : {
                             "type" : "object",
+                            "$anchor" : "java.util.concurrent.ThreadPoolExecutor$Worker",
                             "properties" : {
                               "completed-tasks" : {
                                 "type" : "integer"
@@ -3756,7 +3481,8 @@
                                 "type" : "integer"
                               },
                               "this$0" : {
-                                "type" : "object"
+                                "type" : "object",
+                                "$ref" : "#java.util.concurrent.ThreadPoolExecutor"
                               },
                               "thread" : {
                                 "type" : "string"
@@ -3771,110 +3497,7 @@
                     },
                     "close-connection-executor" : {
                       "type" : "object",
-                      "properties" : {
-                        "allow-core-thread-time-out" : {
-                          "type" : "boolean"
-                        },
-                        "c-o-u-n-t_b-i-t-s" : {
-                          "type" : "integer"
-                        },
-                        "c-o-u-n-t_m-a-s-k" : {
-                          "type" : "integer"
-                        },
-                        "completed-task-count" : {
-                          "type" : "integer"
-                        },
-                        "core-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "ctl" : {
-                          "type" : "integer"
-                        },
-                        "default-handler" : {
-                          "type" : "object"
-                        },
-                        "handler" : {
-                          "type" : "object"
-                        },
-                        "keep-alive-time" : {
-                          "type" : "integer"
-                        },
-                        "largest-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "main-lock" : {
-                          "type" : "object",
-                          "properties" : {
-                            "serial-version-u-i-d" : {
-                              "type" : "integer"
-                            },
-                            "sync" : {
-                              "type" : "object",
-                              "properties" : {
-                                "serial-version-u-i-d" : {
-                                  "type" : "integer"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "maximum-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "o-n-l-y_o-n-e" : {
-                          "type" : "boolean"
-                        },
-                        "r-u-n-n-i-n-g" : {
-                          "type" : "integer"
-                        },
-                        "s-h-u-t-d-o-w-n" : {
-                          "type" : "integer"
-                        },
-                        "s-t-o-p" : {
-                          "type" : "integer"
-                        },
-                        "shutdown-perm" : {
-                          "type" : "string"
-                        },
-                        "t-e-r-m-i-n-a-t-e-d" : {
-                          "type" : "integer"
-                        },
-                        "t-i-d-y-i-n-g" : {
-                          "type" : "integer"
-                        },
-                        "termination" : {
-                          "type" : "object"
-                        },
-                        "thread-factory" : {
-                          "type" : "object"
-                        },
-                        "work-queue" : {
-                          "type" : "string"
-                        },
-                        "workers" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object",
-                            "properties" : {
-                              "completed-tasks" : {
-                                "type" : "integer"
-                              },
-                              "first-task" : {
-                                "type" : "string"
-                              },
-                              "serial-version-u-i-d" : {
-                                "type" : "integer"
-                              },
-                              "this$0" : {
-                                "type" : "object"
-                              },
-                              "thread" : {
-                                "type" : "string"
-                              }
-                            }
-                          }
-                        }
-                      }
+                      "$ref" : "#java.util.concurrent.ThreadPoolExecutor"
                     },
                     "connection-bag" : {
                       "type" : "string"
@@ -3899,6 +3522,7 @@
                     },
                     "leak-task-factory" : {
                       "type" : "object",
+                      "$anchor" : "com.zaxxer.hikari.pool.ProxyLeakTaskFactory",
                       "properties" : {
                         "executor-service" : {
                           "type" : "object"
@@ -3913,11 +3537,7 @@
                     },
                     "logger" : {
                       "type" : "object",
-                      "properties" : {
-                        "r-o-o-t_l-o-g-g-e-r_n-a-m-e" : {
-                          "type" : "string"
-                        }
-                      }
+                      "$ref" : "#org.slf4j.Logger"
                     },
                     "p-o-o-l_n-o-r-m-a-l" : {
                       "type" : "integer"
@@ -3930,12 +3550,14 @@
                     },
                     "pool-entry-creator" : {
                       "type" : "object",
+                      "$anchor" : "com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator",
                       "properties" : {
                         "logging-prefix" : {
                           "type" : "string"
                         },
                         "this$0" : {
-                          "type" : "object"
+                          "type" : "object",
+                          "$ref" : "#com.zaxxer.hikari.pool.HikariPool"
                         }
                       }
                     },
@@ -3944,26 +3566,22 @@
                     },
                     "post-fill-pool-entry-creator" : {
                       "type" : "object",
-                      "properties" : {
-                        "logging-prefix" : {
-                          "type" : "string"
-                        },
-                        "this$0" : {
-                          "type" : "object"
-                        }
-                      }
+                      "$ref" : "#com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator"
                     },
                     "suspend-resume-lock" : {
                       "type" : "object",
+                      "$anchor" : "com.zaxxer.hikari.util.SuspendResumeLock",
                       "properties" : {
                         "acquisition-semaphore" : {
                           "type" : "object",
+                          "$anchor" : "java.util.concurrent.Semaphore",
                           "properties" : {
                             "serial-version-u-i-d" : {
                               "type" : "integer"
                             },
                             "sync" : {
                               "type" : "object",
+                              "$anchor" : "java.util.concurrent.Semaphore$Sync",
                               "properties" : {
                                 "serial-version-u-i-d" : {
                                   "type" : "integer"
@@ -3973,7 +3591,8 @@
                           }
                         },
                         "f-a-u-x_l-o-c-k" : {
-                          "type" : "object"
+                          "type" : "object",
+                          "$ref" : "#com.zaxxer.hikari.util.SuspendResumeLock"
                         },
                         "m-a-x_p-e-r-m-i-t-s" : {
                           "type" : "integer"
@@ -4011,6 +3630,7 @@
                 },
                 "l-o-g-g-e-r" : {
                   "type" : "object",
+                  "$anchor" : "org.slf4j.Logger",
                   "properties" : {
                     "r-o-o-t_l-o-g-g-e-r_n-a-m-e" : {
                       "type" : "string"
@@ -4040,329 +3660,7 @@
                 },
                 "pool" : {
                   "type" : "object",
-                  "properties" : {
-                    "add-connection-executor" : {
-                      "type" : "object",
-                      "properties" : {
-                        "allow-core-thread-time-out" : {
-                          "type" : "boolean"
-                        },
-                        "c-o-u-n-t_b-i-t-s" : {
-                          "type" : "integer"
-                        },
-                        "c-o-u-n-t_m-a-s-k" : {
-                          "type" : "integer"
-                        },
-                        "completed-task-count" : {
-                          "type" : "integer"
-                        },
-                        "core-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "ctl" : {
-                          "type" : "integer"
-                        },
-                        "default-handler" : {
-                          "type" : "object"
-                        },
-                        "handler" : {
-                          "type" : "object"
-                        },
-                        "keep-alive-time" : {
-                          "type" : "integer"
-                        },
-                        "largest-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "main-lock" : {
-                          "type" : "object",
-                          "properties" : {
-                            "serial-version-u-i-d" : {
-                              "type" : "integer"
-                            },
-                            "sync" : {
-                              "type" : "object",
-                              "properties" : {
-                                "serial-version-u-i-d" : {
-                                  "type" : "integer"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "maximum-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "o-n-l-y_o-n-e" : {
-                          "type" : "boolean"
-                        },
-                        "r-u-n-n-i-n-g" : {
-                          "type" : "integer"
-                        },
-                        "s-h-u-t-d-o-w-n" : {
-                          "type" : "integer"
-                        },
-                        "s-t-o-p" : {
-                          "type" : "integer"
-                        },
-                        "shutdown-perm" : {
-                          "type" : "string"
-                        },
-                        "t-e-r-m-i-n-a-t-e-d" : {
-                          "type" : "integer"
-                        },
-                        "t-i-d-y-i-n-g" : {
-                          "type" : "integer"
-                        },
-                        "termination" : {
-                          "type" : "object"
-                        },
-                        "thread-factory" : {
-                          "type" : "object"
-                        },
-                        "work-queue" : {
-                          "type" : "string"
-                        },
-                        "workers" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object",
-                            "properties" : {
-                              "completed-tasks" : {
-                                "type" : "integer"
-                              },
-                              "first-task" : {
-                                "type" : "string"
-                              },
-                              "serial-version-u-i-d" : {
-                                "type" : "integer"
-                              },
-                              "this$0" : {
-                                "type" : "object"
-                              },
-                              "thread" : {
-                                "type" : "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "alive-bypass-window-ms" : {
-                      "type" : "integer"
-                    },
-                    "close-connection-executor" : {
-                      "type" : "object",
-                      "properties" : {
-                        "allow-core-thread-time-out" : {
-                          "type" : "boolean"
-                        },
-                        "c-o-u-n-t_b-i-t-s" : {
-                          "type" : "integer"
-                        },
-                        "c-o-u-n-t_m-a-s-k" : {
-                          "type" : "integer"
-                        },
-                        "completed-task-count" : {
-                          "type" : "integer"
-                        },
-                        "core-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "ctl" : {
-                          "type" : "integer"
-                        },
-                        "default-handler" : {
-                          "type" : "object"
-                        },
-                        "handler" : {
-                          "type" : "object"
-                        },
-                        "keep-alive-time" : {
-                          "type" : "integer"
-                        },
-                        "largest-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "main-lock" : {
-                          "type" : "object",
-                          "properties" : {
-                            "serial-version-u-i-d" : {
-                              "type" : "integer"
-                            },
-                            "sync" : {
-                              "type" : "object",
-                              "properties" : {
-                                "serial-version-u-i-d" : {
-                                  "type" : "integer"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "maximum-pool-size" : {
-                          "type" : "integer"
-                        },
-                        "o-n-l-y_o-n-e" : {
-                          "type" : "boolean"
-                        },
-                        "r-u-n-n-i-n-g" : {
-                          "type" : "integer"
-                        },
-                        "s-h-u-t-d-o-w-n" : {
-                          "type" : "integer"
-                        },
-                        "s-t-o-p" : {
-                          "type" : "integer"
-                        },
-                        "shutdown-perm" : {
-                          "type" : "string"
-                        },
-                        "t-e-r-m-i-n-a-t-e-d" : {
-                          "type" : "integer"
-                        },
-                        "t-i-d-y-i-n-g" : {
-                          "type" : "integer"
-                        },
-                        "termination" : {
-                          "type" : "object"
-                        },
-                        "thread-factory" : {
-                          "type" : "object"
-                        },
-                        "work-queue" : {
-                          "type" : "string"
-                        },
-                        "workers" : {
-                          "type" : "array",
-                          "items" : {
-                            "type" : "object",
-                            "properties" : {
-                              "completed-tasks" : {
-                                "type" : "integer"
-                              },
-                              "first-task" : {
-                                "type" : "string"
-                              },
-                              "serial-version-u-i-d" : {
-                                "type" : "integer"
-                              },
-                              "this$0" : {
-                                "type" : "object"
-                              },
-                              "thread" : {
-                                "type" : "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "connection-bag" : {
-                      "type" : "string"
-                    },
-                    "d-e-a-d_c-o-n-n-e-c-t-i-o-n_m-e-s-s-a-g-e" : {
-                      "type" : "string"
-                    },
-                    "e-v-i-c-t-e-d_c-o-n-n-e-c-t-i-o-n_m-e-s-s-a-g-e" : {
-                      "type" : "string"
-                    },
-                    "house-keeper-task" : {
-                      "type" : "string"
-                    },
-                    "house-keeping-executor-service" : {
-                      "type" : "object"
-                    },
-                    "housekeeping-period-ms" : {
-                      "type" : "integer"
-                    },
-                    "is-request-boundaries-enabled" : {
-                      "type" : "boolean"
-                    },
-                    "leak-task-factory" : {
-                      "type" : "object",
-                      "properties" : {
-                        "executor-service" : {
-                          "type" : "object"
-                        },
-                        "leak-detection-threshold" : {
-                          "type" : "integer"
-                        }
-                      }
-                    },
-                    "life-time-variance-factor" : {
-                      "type" : "integer"
-                    },
-                    "logger" : {
-                      "type" : "object",
-                      "properties" : {
-                        "r-o-o-t_l-o-g-g-e-r_n-a-m-e" : {
-                          "type" : "string"
-                        }
-                      }
-                    },
-                    "p-o-o-l_n-o-r-m-a-l" : {
-                      "type" : "integer"
-                    },
-                    "p-o-o-l_s-h-u-t-d-o-w-n" : {
-                      "type" : "integer"
-                    },
-                    "p-o-o-l_s-u-s-p-e-n-d-e-d" : {
-                      "type" : "integer"
-                    },
-                    "pool-entry-creator" : {
-                      "type" : "object",
-                      "properties" : {
-                        "logging-prefix" : {
-                          "type" : "string"
-                        },
-                        "this$0" : {
-                          "type" : "object"
-                        }
-                      }
-                    },
-                    "pool-state" : {
-                      "type" : "integer"
-                    },
-                    "post-fill-pool-entry-creator" : {
-                      "type" : "object",
-                      "properties" : {
-                        "logging-prefix" : {
-                          "type" : "string"
-                        },
-                        "this$0" : {
-                          "type" : "object"
-                        }
-                      }
-                    },
-                    "suspend-resume-lock" : {
-                      "type" : "object",
-                      "properties" : {
-                        "acquisition-semaphore" : {
-                          "type" : "object",
-                          "properties" : {
-                            "serial-version-u-i-d" : {
-                              "type" : "integer"
-                            },
-                            "sync" : {
-                              "type" : "object",
-                              "properties" : {
-                                "serial-version-u-i-d" : {
-                                  "type" : "integer"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "f-a-u-x_l-o-c-k" : {
-                          "type" : "object"
-                        },
-                        "m-a-x_p-e-r-m-i-t-s" : {
-                          "type" : "integer"
-                        }
-                      }
-                    }
-                  }
+                  "$ref" : "#com.zaxxer.hikari.pool.HikariPool"
                 },
                 "pool-name" : {
                   "type" : "string"
@@ -4733,6 +4031,7 @@
             },
             "xa" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$Xa",
               "properties" : {
                 "data-source-class-name" : {
                   "type" : "string",
@@ -4740,10 +4039,7 @@
                 },
                 "properties" : {
                   "type" : "object",
-                  "description" : "Properties to pass to the XA data source.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Properties to pass to the XA data source."
                 }
               }
             }
@@ -4751,9 +4047,11 @@
         },
         "http" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.http.client.HttpClientProperties",
           "properties" : {
             "client" : {
               "type" : "object",
+              "$ref" : "#org.springframework.boot.autoconfigure.http.client.HttpClientProperties",
               "properties" : {
                 "connect-timeout" : {
                   "type" : "string",
@@ -4775,6 +4073,7 @@
                 },
                 "ssl" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.http.client.AbstractHttpClientProperties$Ssl",
                   "properties" : {
                     "bundle" : {
                       "type" : "string",
@@ -4788,9 +4087,11 @@
         },
         "info" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.info.ProjectInfoProperties",
           "properties" : {
             "build" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.info.ProjectInfoProperties$Build",
               "properties" : {
                 "encoding" : {
                   "$ref" : "#/$defs/Charsets",
@@ -4806,6 +4107,7 @@
             },
             "git" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.info.ProjectInfoProperties$Git",
               "properties" : {
                 "encoding" : {
                   "$ref" : "#/$defs/Charsets",
@@ -4823,6 +4125,7 @@
         },
         "jackson" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.jackson.JacksonProperties",
           "properties" : {
             "constructor-detector" : {
               "type" : "string",
@@ -4832,26 +4135,18 @@
             },
             "datatype" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.jackson.JacksonProperties$Datatype",
               "properties" : {
                 "enum" : {
                   "type" : "object",
-                  "description" : "Jackson on/off features for enums.",
-                  "additionalProperties" : {
-                    "type" : "boolean"
-                  }
+                  "description" : "Jackson on/off features for enums."
                 },
                 "enum-features" : {
-                  "type" : "object",
-                  "additionalProperties" : {
-                    "type" : "boolean"
-                  }
+                  "type" : "object"
                 },
                 "json-node" : {
                   "type" : "object",
-                  "description" : "Jackson on/off features for JsonNodes.",
-                  "additionalProperties" : {
-                    "type" : "boolean"
-                  }
+                  "description" : "Jackson on/off features for JsonNodes."
                 }
               }
             },
@@ -4870,17 +4165,11 @@
             },
             "deserialization" : {
               "type" : "object",
-              "description" : "Jackson on/off features that affect the way Java objects are deserialized.",
-              "additionalProperties" : {
-                "type" : "boolean"
-              }
+              "description" : "Jackson on/off features that affect the way Java objects are deserialized."
             },
             "generator" : {
               "type" : "object",
-              "description" : "Jackson on/off features for generators.",
-              "additionalProperties" : {
-                "type" : "boolean"
-              }
+              "description" : "Jackson on/off features for generators."
             },
             "locale" : {
               "$ref" : "#/$defs/Locales",
@@ -4888,17 +4177,11 @@
             },
             "mapper" : {
               "type" : "object",
-              "description" : "Jackson general purpose on/off features.",
-              "additionalProperties" : {
-                "type" : "boolean"
-              }
+              "description" : "Jackson general purpose on/off features."
             },
             "parser" : {
               "type" : "object",
-              "description" : "Jackson on/off features for parsers.",
-              "additionalProperties" : {
-                "type" : "boolean"
-              }
+              "description" : "Jackson on/off features for parsers."
             },
             "property-naming-strategy" : {
               "type" : "string",
@@ -4906,10 +4189,7 @@
             },
             "serialization" : {
               "type" : "object",
-              "description" : "Jackson on/off features that affect the way Java objects are serialized.",
-              "additionalProperties" : {
-                "type" : "boolean"
-              }
+              "description" : "Jackson on/off features that affect the way Java objects are serialized."
             },
             "time-zone" : {
               "type" : "string",
@@ -4917,18 +4197,17 @@
             },
             "visibility" : {
               "type" : "object",
-              "description" : "Jackson visibility thresholds that can be used to limit which methods (and fields) are auto-detected.",
-              "additionalProperties" : {
-                "type" : "string"
-              }
+              "description" : "Jackson visibility thresholds that can be used to limit which methods (and fields) are auto-detected."
             }
           }
         },
         "jdbc" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.jdbc.JdbcProperties",
           "properties" : {
             "template" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.jdbc.JdbcProperties$Template",
               "properties" : {
                 "fetch-size" : {
                   "type" : "integer",
@@ -4970,6 +4249,7 @@
         },
         "jmx" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.jmx.JmxProperties",
           "properties" : {
             "enabled" : {
               "type" : "boolean",
@@ -4980,6 +4260,7 @@
         },
         "jpa" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.orm.jpa.JpaProperties",
           "properties" : {
             "database" : {
               "type" : "string",
@@ -5002,6 +4283,7 @@
             },
             "hibernate" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties",
               "properties" : {
                 "d-i-s-a-b-l-e-d_s-c-a-n-n-e-r_c-l-a-s-s" : {
                   "type" : "string"
@@ -5013,6 +4295,7 @@
                 },
                 "naming" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties$Naming",
                   "properties" : {
                     "implicit-strategy" : {
                       "type" : "string",
@@ -5040,10 +4323,7 @@
             },
             "properties" : {
               "type" : "object",
-              "description" : "Additional native properties to set on the JPA provider.",
-              "additionalProperties" : {
-                "type" : "string"
-              }
+              "description" : "Additional native properties to set on the JPA provider."
             },
             "show-sql" : {
               "type" : "boolean",
@@ -5054,6 +4334,7 @@
         },
         "lifecycle" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.context.LifecycleProperties",
           "properties" : {
             "timeout-per-shutdown-phase" : {
               "type" : "string",
@@ -5064,9 +4345,11 @@
         },
         "mvc" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties",
           "properties" : {
             "async" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties$Async",
               "properties" : {
                 "request-timeout" : {
                   "type" : "string",
@@ -5076,6 +4359,7 @@
             },
             "contentnegotiation" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties$Contentnegotiation",
               "properties" : {
                 "default-content-types" : {
                   "type" : "array",
@@ -5091,10 +4375,7 @@
                 },
                 "media-types" : {
                   "type" : "object",
-                  "description" : "Map file extensions to media types for content negotiation. For instance, yml to text/yaml.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Map file extensions to media types for content negotiation. For instance, yml to text/yaml."
                 },
                 "parameter-name" : {
                   "type" : "string",
@@ -5114,6 +4395,7 @@
             },
             "format" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties$Format",
               "properties" : {
                 "date" : {
                   "type" : "string",
@@ -5179,6 +4461,7 @@
             },
             "pathmatch" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties$Pathmatch",
               "properties" : {
                 "matching-strategy" : {
                   "type" : "string",
@@ -5190,6 +4473,7 @@
             },
             "problemdetails" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties$Problemdetails",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -5205,6 +4489,7 @@
             },
             "servlet" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties$Servlet",
               "properties" : {
                 "load-on-startup" : {
                   "type" : "integer",
@@ -5225,6 +4510,7 @@
             },
             "view" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties$View",
               "properties" : {
                 "prefix" : {
                   "type" : "string",
@@ -5245,9 +4531,11 @@
         },
         "servlet" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.servlet.MultipartProperties",
           "properties" : {
             "multipart" : {
               "type" : "object",
+              "$ref" : "#org.springframework.boot.autoconfigure.web.servlet.MultipartProperties",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -5289,9 +4577,11 @@
         },
         "sql" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties",
           "properties" : {
             "init" : {
               "type" : "object",
+              "$ref" : "#org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties",
               "properties" : {
                 "continue-on-error" : {
                   "type" : "boolean",
@@ -5356,18 +4646,22 @@
         },
         "ssl" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.ssl.SslProperties",
           "properties" : {
             "bundle" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.ssl.SslProperties$Bundles",
               "properties" : {
                 "jks" : {
                   "type" : "object",
                   "description" : "Java keystore SSL trust material.",
                   "additionalProperties" : {
                     "type" : "object",
+                    "$anchor" : "org.springframework.boot.autoconfigure.ssl.JksSslBundleProperties",
                     "properties" : {
                       "keystore" : {
                         "type" : "object",
+                        "$anchor" : "org.springframework.boot.autoconfigure.ssl.JksSslBundleProperties$Store",
                         "properties" : {
                           "location" : {
                             "type" : "string"
@@ -5385,20 +4679,7 @@
                       },
                       "truststore" : {
                         "type" : "object",
-                        "properties" : {
-                          "location" : {
-                            "type" : "string"
-                          },
-                          "password" : {
-                            "type" : "string"
-                          },
-                          "provider" : {
-                            "type" : "string"
-                          },
-                          "type" : {
-                            "type" : "string"
-                          }
-                        }
+                        "$ref" : "#org.springframework.boot.autoconfigure.ssl.JksSslBundleProperties$Store"
                       }
                     }
                   }
@@ -5408,9 +4689,11 @@
                   "description" : "PEM-encoded SSL trust material.",
                   "additionalProperties" : {
                     "type" : "object",
+                    "$anchor" : "org.springframework.boot.autoconfigure.ssl.PemSslBundleProperties",
                     "properties" : {
                       "keystore" : {
                         "type" : "object",
+                        "$anchor" : "org.springframework.boot.autoconfigure.ssl.PemSslBundleProperties$Store",
                         "properties" : {
                           "certificate" : {
                             "type" : "string"
@@ -5431,32 +4714,18 @@
                       },
                       "truststore" : {
                         "type" : "object",
-                        "properties" : {
-                          "certificate" : {
-                            "type" : "string"
-                          },
-                          "private-key" : {
-                            "type" : "string"
-                          },
-                          "private-key-password" : {
-                            "type" : "string"
-                          },
-                          "type" : {
-                            "type" : "string"
-                          },
-                          "verify-keys" : {
-                            "type" : "boolean"
-                          }
-                        }
+                        "$ref" : "#org.springframework.boot.autoconfigure.ssl.PemSslBundleProperties$Store"
                       }
                     }
                   }
                 },
                 "watch" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.ssl.SslProperties$Bundles$Watch",
                   "properties" : {
                     "file" : {
                       "type" : "object",
+                      "$anchor" : "org.springframework.boot.autoconfigure.ssl.SslProperties$Bundles$Watch$File",
                       "properties" : {
                         "quiet-period" : {
                           "type" : "string",
@@ -5473,9 +4742,11 @@
         },
         "task" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.task.TaskExecutionProperties",
           "properties" : {
             "execution" : {
               "type" : "object",
+              "$ref" : "#org.springframework.boot.autoconfigure.task.TaskExecutionProperties",
               "properties" : {
                 "mode" : {
                   "type" : "string",
@@ -5485,6 +4756,7 @@
                 },
                 "pool" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.task.TaskExecutionProperties$Pool",
                   "properties" : {
                     "allow-core-thread-timeout" : {
                       "type" : "boolean",
@@ -5511,6 +4783,7 @@
                     },
                     "shutdown" : {
                       "type" : "object",
+                      "$anchor" : "org.springframework.boot.autoconfigure.task.TaskExecutionProperties$Pool$Shutdown",
                       "properties" : {
                         "accept-tasks-after-context-close" : {
                           "type" : "boolean",
@@ -5523,6 +4796,7 @@
                 },
                 "shutdown" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.task.TaskExecutionProperties$Shutdown",
                   "properties" : {
                     "await-termination" : {
                       "type" : "boolean",
@@ -5537,6 +4811,7 @@
                 },
                 "simple" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.task.TaskExecutionProperties$Simple",
                   "properties" : {
                     "concurrency-limit" : {
                       "type" : "integer",
@@ -5558,9 +4833,11 @@
             },
             "scheduling" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.task.TaskSchedulingProperties",
               "properties" : {
                 "pool" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.task.TaskSchedulingProperties$Pool",
                   "properties" : {
                     "size" : {
                       "type" : "integer",
@@ -5571,6 +4848,7 @@
                 },
                 "shutdown" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.task.TaskSchedulingProperties$Shutdown",
                   "properties" : {
                     "await-termination" : {
                       "type" : "boolean",
@@ -5585,6 +4863,7 @@
                 },
                 "simple" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.task.TaskSchedulingProperties$Simple",
                   "properties" : {
                     "concurrency-limit" : {
                       "type" : "integer",
@@ -5603,6 +4882,7 @@
         },
         "transaction" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.transaction.TransactionProperties",
           "properties" : {
             "default-timeout" : {
               "type" : "string",
@@ -5616,6 +4896,7 @@
         },
         "web" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.WebProperties",
           "properties" : {
             "locale" : {
               "$ref" : "#/$defs/Locales",
@@ -5629,6 +4910,7 @@
             },
             "resources" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.WebProperties$Resources",
               "properties" : {
                 "add-mappings" : {
                   "type" : "boolean",
@@ -5643,9 +4925,11 @@
                 },
                 "cache" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.web.WebProperties$Resources$Cache",
                   "properties" : {
                     "cachecontrol" : {
                       "type" : "object",
+                      "$anchor" : "org.springframework.boot.autoconfigure.web.WebProperties$Resources$Cache$Cachecontrol",
                       "properties" : {
                         "cache-private" : {
                           "type" : "boolean",
@@ -5712,6 +4996,7 @@
                 },
                 "chain" : {
                   "type" : "object",
+                  "$anchor" : "org.springframework.boot.autoconfigure.web.WebProperties$Resources$Chain",
                   "properties" : {
                     "cache" : {
                       "type" : "boolean",
@@ -5732,9 +5017,11 @@
                     },
                     "strategy" : {
                       "type" : "object",
+                      "$anchor" : "org.springframework.boot.autoconfigure.web.WebProperties$Resources$Chain$Strategy",
                       "properties" : {
                         "content" : {
                           "type" : "object",
+                          "$anchor" : "org.springframework.boot.autoconfigure.web.WebProperties$Resources$Chain$Strategy$Content",
                           "properties" : {
                             "customized" : {
                               "type" : "boolean"
@@ -5756,6 +5043,7 @@
                         },
                         "fixed" : {
                           "type" : "object",
+                          "$anchor" : "org.springframework.boot.autoconfigure.web.WebProperties$Resources$Chain$Strategy$Fixed",
                           "properties" : {
                             "customized" : {
                               "type" : "boolean"
@@ -5800,6 +5088,7 @@
         },
         "webflux" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties",
           "properties" : {
             "base-path" : {
               "type" : "string",
@@ -5807,6 +5096,7 @@
             },
             "format" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties$Format",
               "properties" : {
                 "date" : {
                   "type" : "string",
@@ -5842,6 +5132,7 @@
             },
             "multipart" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.reactive.ReactiveMultipartProperties",
               "properties" : {
                 "file-storage-directory" : {
                   "type" : "string",
@@ -5876,6 +5167,7 @@
             },
             "problemdetails" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties$Problemdetails",
               "properties" : {
                 "enabled" : {
                   "type" : "boolean",
@@ -5898,6 +5190,7 @@
         },
         "webservices" : {
           "type" : "object",
+          "$anchor" : "org.springframework.boot.autoconfigure.webservices.WebServicesProperties",
           "properties" : {
             "path" : {
               "type" : "string",
@@ -5906,13 +5199,11 @@
             },
             "servlet" : {
               "type" : "object",
+              "$anchor" : "org.springframework.boot.autoconfigure.webservices.WebServicesProperties$Servlet",
               "properties" : {
                 "init" : {
                   "type" : "object",
-                  "description" : "Servlet init parameters to pass to Spring Web Services.",
-                  "additionalProperties" : {
-                    "type" : "string"
-                  }
+                  "description" : "Servlet init parameters to pass to Spring Web Services."
                 },
                 "load-on-startup" : {
                   "type" : "integer",

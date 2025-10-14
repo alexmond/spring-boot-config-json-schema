@@ -42,7 +42,8 @@ class JsonSchemaBuilderTest {
             "CamelCASEInput, camel-c-a-s-e-input",
             ",",
             "HelloWorld_specialTest, hello-world_special-test",
-            "HTTPRequest, h-t-t-p-request"
+            "HTTPRequest, h-t-t-p-request",
+            "DeepLevel1, deep-level1"
     })
     void testToKebabCase(String input, String expected) {
         JsonSchemaBuilder builder = new JsonSchemaBuilder(null, null);

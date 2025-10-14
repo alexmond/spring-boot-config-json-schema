@@ -1,4 +1,4 @@
-$schema: ./sample-schema.json
+$schema: ./sample-schema.yaml
 spring:
   profiles:
     active:
@@ -33,12 +33,8 @@ sample:
 
   config-sample-nested:
     nested-config1: nestedConfig
-  deep-level1:
-    keys:
-      idp:
-        - id: "1234"
-          param1: "1234"
-          param2: "1234"
+
+
 
 
 logging:
@@ -66,6 +62,17 @@ spring:
 
 sample:
   string-sample: "Test profile"
+  deep-level1:
+    deep-level2:
+      list1:
+        - id: abc
+          param2: test1
+          param1: test2
+      list2:
+        - id: abc
+          param2: test1
+          param1: test2
+
 
 
 

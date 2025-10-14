@@ -19,8 +19,10 @@ public class Property {
     private Boolean deprecated = null;
     private Deprecation deprecation;
     private Hint hint;
+    private boolean groupProperty = false;
 
     public void mergeGroup(Group group) {
+        groupProperty = true;
         if (StringUtils.isNotEmpty(group.getName())) this.name = group.getName();
         if (StringUtils.isNotEmpty(group.getType())) this.type = group.getType();
         if (StringUtils.isNotEmpty(group.getDescription())) this.description = group.getDescription();

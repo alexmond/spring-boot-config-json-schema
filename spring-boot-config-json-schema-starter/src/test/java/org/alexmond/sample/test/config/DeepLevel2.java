@@ -11,20 +11,20 @@ import java.util.List;
  * Represents a deep level 2 configuration class containing lists of DeepLevel3 objects.
  */
 @Data
-@Schema(description = "Deep level 2 configuration containing RP and IDP lists")
+@Schema(description = "Deep level 2 configuration of 2 lists")
 public class DeepLevel2 {
     /**
-     * List of Relying Party (RP) configurations at level 3.
+     * List1 configurations at level 3.
      */
-    @Schema(description = "List of Relying Party (RP) configurations")
+    @Schema(description = "List1 configurations")
     @NestedConfigurationProperty
-    private List<DeepLevel3> rp = new ArrayList<>();
+    private List<DeepLevel3> list1 = new ArrayList<>();
 
     /**
-     * List of Identity Provider (IDP) configurations at level 3.
+     * List2  configurations at level 3.
      */
-    @Schema(description = "List of Identity Provider (IDP) configurations")
+    @Schema(description = "List2 configurations")
     @NestedConfigurationProperty
-    private List<DeepLevel3> idp = new ArrayList<>();
+    private List<DeepLevel3> list2 = new ArrayList<>();
 
 }
