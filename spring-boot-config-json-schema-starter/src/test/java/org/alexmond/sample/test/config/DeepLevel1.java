@@ -17,5 +17,5 @@ public class DeepLevel1 {
      */
     @Schema(description = "Second level nested configuration properties")
     @NestedConfigurationProperty
-    private DeepLevel2 keys = new DeepLevel2();
+    private DeepLevel2 deepLevel2 = new DeepLevel2();
 }

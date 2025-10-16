@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
-import java.util.TreeMap;
 
 @Data
 @Builder
@@ -18,8 +17,7 @@ import java.util.TreeMap;
 @AllArgsConstructor
 @JsonPropertyOrder({"schema", "id", "title", "description", "type", "definitions", "properties"})
 public class JsonSchemaRoot {
-    @JsonIgnore
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    @Builder.Default
     @JsonProperty("$schema")
     private String schema = "https://json-schema.org/draft/2020-12/schema";
     @JsonProperty("$id")
@@ -28,12 +26,13 @@ public class JsonSchemaRoot {
     private String description;
     private JsonSchemaType type = JsonSchemaType.OBJECT;
     @JsonProperty("$defs")
-    private Map<String, JsonSchemaProperties> definitions = new TreeMap<>();
-    private Map<String, JsonSchemaProperties> properties = new TreeMap<>();
+    private Map<String, JsonSchemaProperties> definitions;
+    private Map<String, JsonSchemaProperties> properties;
     @JsonProperty("additionalProperties")
     private Object additionalProperties;
 
     public Map<String, Object> toMap() {
+        ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.convertValue(this, Map.class);
     }
 }

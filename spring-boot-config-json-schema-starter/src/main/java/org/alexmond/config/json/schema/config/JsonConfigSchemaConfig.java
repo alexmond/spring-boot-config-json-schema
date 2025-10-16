@@ -70,8 +70,16 @@ public class JsonConfigSchemaConfig {
      * When true, the schema will accept properties that are not explicitly defined.
      * When false, only properties defined in the schema will be accepted.
      */
-    @Schema(description = "Allow additional properties not defined in schema", defaultValue = "true")
+    @Schema(description = "Allow additional properties not defined in schema, currently not supported by intellij", defaultValue = "true")
     private boolean allowAdditionalProperties = true;
+
+    /**
+     * Controls whether JSON Schema anchors and references should be enabled.
+     * When true, the schema will generate anchor references for types that appear multiple times,
+     * reducing schema size and improving readability by avoiding type duplication.
+     */
+    @Schema(description = "Enable JSON Schema anchor references", defaultValue = "true")
+    private boolean enableAnchorRefs = false;
 
     /**
      * List of additional configuration property paths to include in the schema.

@@ -8,5 +8,9 @@ json-config-schema:
   additional-exclude-classes:
     - io.swagger.v3.oas.models.OpenAPI
 
+sample:
+  kebab2-case: abc
+  h-t-t-p-request: abc
+
 
 

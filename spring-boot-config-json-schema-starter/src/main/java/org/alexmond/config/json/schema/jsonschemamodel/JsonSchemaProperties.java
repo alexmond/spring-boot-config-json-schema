@@ -20,7 +20,7 @@ import java.util.*;
 @AllArgsConstructor
 @JsonPropertyOrder({
         // Type and format
-        "type", "format", "$ref",
+        "type", "format", "$ref", "$anchor",
         // Core metadata
         "title", "description", "$comment", "deprecated",
         // Defaults
@@ -72,6 +72,8 @@ public class JsonSchemaProperties {
     private String title;
     @JsonProperty("$comment")
     private String comment;
+    @JsonProperty("$anchor")
+    private String anchor;
     private Object constValue; // Single allowed value
     private Boolean readOnly;
     private Boolean writeOnly;
@@ -180,6 +182,7 @@ public class JsonSchemaProperties {
         if (other.getDeprecated() != null) this.deprecated = other.getDeprecated();
         if (other.getTitle() != null) this.title = other.getTitle();
         if (other.getComment() != null) this.comment = other.getComment();
+        if (other.getAnchor() != null) this.anchor = other.getAnchor();
         if (other.getConstValue() != null) this.constValue = other.getConstValue();
         if (other.getReadOnly() != null) this.readOnly = other.getReadOnly();
         if (other.getWriteOnly() != null) this.writeOnly = other.getWriteOnly();

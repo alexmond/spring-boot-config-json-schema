@@ -120,4 +120,8 @@ public class ConfigSample {
     @NestedConfigurationProperty
     DeepLevel1 deepLevel1 = new DeepLevel1();
 
+    String Kebab2Case;
+
+    String HTTPRequest;
+
 }

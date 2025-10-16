@@ -25,8 +25,8 @@ public class DefinitionsHelper {
 
         definitions.put("loggerLevel", getLoggerLevelDef());
         definitions.put("loggerLevelProp", getLoggerLevelPropDef());
-        definitions.put("Locales", getLocalesDef());
-        definitions.put("Charsets", getCharsetsDef());
+        definitions.put("java.util.Locales", getLocalesDef());
+        definitions.put("java.nio.charset.Charset", getCharsetsDef());
 
         return definitions;
     }

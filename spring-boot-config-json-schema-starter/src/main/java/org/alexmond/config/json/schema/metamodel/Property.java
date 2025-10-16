@@ -16,11 +16,14 @@ public class Property {
     private String description;
     private String sourceType;
     private Object defaultValue;
-    private Boolean deprecated = null;
+    private Boolean deprecated;
     private Deprecation deprecation;
     private Hint hint;
+    @Builder.Default
+    private boolean groupProperty = false;
 
     public void mergeGroup(Group group) {
+        groupProperty = true;
         if (StringUtils.isNotEmpty(group.getName())) this.name = group.getName();
         if (StringUtils.isNotEmpty(group.getType())) this.type = group.getType();
         if (StringUtils.isNotEmpty(group.getDescription())) this.description = group.getDescription();
