@@ -5,10 +5,10 @@
     <parent>
         <groupId>org.alexmond</groupId>
         <artifactId>spring-boot-config-json-schema-parent</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6-SNAPSHOT</version>
     </parent>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6-SNAPSHOT</version>
     <name>Spring Boot Config Json Schema Starter</name>
 
     <url>https://alexmond.github.io/spring-boot-config-json-schema-starter/current/index.html</url>
