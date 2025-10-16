@@ -167,7 +167,7 @@ management:
 ```
 
 ## Changelog
-
+- **1.0.5** Updated kebab conversion to align with spring boot one, added class anchors for future use in references 
 - **1.0.3** Spring boot version update, type mapping cleanup
 - **1.0.2** Fix Map<String,Object> handling
 - **1.0.1** (September 2025): Stable release with Actuator endpoint support, improved schema generation, and license
