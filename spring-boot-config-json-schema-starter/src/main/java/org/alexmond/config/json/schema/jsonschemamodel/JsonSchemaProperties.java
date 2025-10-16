@@ -20,7 +20,7 @@ import java.util.*;
 @AllArgsConstructor
 @JsonPropertyOrder({
         // Type and format
-        "type", "format", "$ref","$anchor",
+        "type", "format", "$ref", "$anchor",
         // Core metadata
         "title", "description", "$comment", "deprecated",
         // Defaults

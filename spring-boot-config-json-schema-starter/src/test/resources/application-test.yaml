@@ -7,7 +7,6 @@ json-config-schema:
   missing-type-log: true
   additional-exclude-classes:
     - io.swagger.v3.oas.models.OpenAPI
-  schema-id: "https://alexmond.github.io/schema/"
 
 sample:
   kebab2-case: abc

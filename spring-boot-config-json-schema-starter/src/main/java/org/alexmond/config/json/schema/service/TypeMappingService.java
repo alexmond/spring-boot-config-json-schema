@@ -215,8 +215,8 @@ public class TypeMappingService {
     private JsonSchemaProperties extendedTypeProp(String springType, Property prop) {
 
         Map<String, JsonSchemaProperties> extendedTypeProps = new HashMap<>() {{
-            put("java.util.Locale", JsonSchemaProperties.builder().reference("#/$defs/Locales").build());
-            put("java.nio.charset.Charset", JsonSchemaProperties.builder().reference("#/$defs/Charsets").build());
+            put("java.util.Locale", JsonSchemaProperties.builder().reference("#/$defs/java.util.Locale").build());
+            put("java.nio.charset.Charset", JsonSchemaProperties.builder().reference("#/$defs/java.nio.charset.Charset").build());
             put("logging.level", JsonSchemaProperties.builder().reference("#/$defs/loggerLevelProp").build());
             put("logging.threshold.console", JsonSchemaProperties.builder().reference("#/$defs/loggerLevel").build());
             put("logging.threshold.file", JsonSchemaProperties.builder().reference("#/$defs/loggerLevel").build());

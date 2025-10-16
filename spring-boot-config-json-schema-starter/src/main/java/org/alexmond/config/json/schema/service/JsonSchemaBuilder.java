@@ -30,6 +30,7 @@ public class JsonSchemaBuilder {
     private Set<String> anchors;
     private Set<String> processedProp;
     private Map<String, Property> allMeta;
+    Map<String, JsonSchemaProperties> definitions;
 
     public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
         this.config = config;
@@ -49,6 +50,7 @@ public class JsonSchemaBuilder {
         allMeta = meta;
         anchors = new HashSet<>();
         processedProp = new HashSet<>();
+        definitions = null;
 
         log.info("Starting JSON schema generation");
         JsonSchemaRoot schemaRoot = JsonSchemaRoot.builder()
@@ -58,8 +60,9 @@ public class JsonSchemaBuilder {
                 .description(config.getDescription())
                 .type(JsonSchemaType.OBJECT)
                 .additionalProperties(config.isAllowAdditionalProperties())
-                .definitions(definitionsHelper.getDefinitions())
                 .build();
+
+        definitions = definitionsHelper.getDefinitions();
 
         Map<String, JsonSchemaProperties> properties = new TreeMap<>();
         meta.forEach((key, value) -> {
@@ -67,6 +70,7 @@ public class JsonSchemaBuilder {
                 addProperty(properties, key.split("\\."), 0, value);
             }
         });
+        schemaRoot.setDefinitions(definitions);
         schemaRoot.setProperties(properties);
 
         return schemaRoot.toMap();
@@ -190,7 +194,7 @@ public class JsonSchemaBuilder {
         jsonSchemaProperties.merge(typeMappingService.typeProp(propType, prop));
 
         if (anchors.contains(propType)) {
-            if (jsonSchemaProperties.getAnchor() == null) {
+            if (jsonSchemaProperties.getAnchor() == null && config.isEnableAnchorRefs()) {
                 jsonSchemaProperties.setReference("#" + propType);
             }
         }
@@ -292,8 +296,10 @@ public class JsonSchemaBuilder {
                 if (anchors.contains(valueType)) {
                     var newProp = org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties.builder()
                             .type(JsonSchemaType.OBJECT)
-                            .reference("#" + valueType)
                             .build();
+                    if (config.isEnableAnchorRefs()) {
+                        newProp.setReference("#" + valueType);
+                    }
                     propDef.setAdditionalProperties(newProp);
                 } else {
                     var newProp = org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties.builder()
@@ -356,7 +362,7 @@ public class JsonSchemaBuilder {
             JsonSchemaProperties jsonSchemaPropertiesItem = typeMappingService.typeProp(itemType, prop);
 
             if (jsonSchemaPropertiesItem.getType() == JsonSchemaType.OBJECT) {
-                if (anchors.contains(itemType)) {
+                if (anchors.contains(itemType) && config.isEnableAnchorRefs()) {
                     jsonSchemaPropertiesItem.setReference("#" + itemType);
                 } else {
                     jsonSchemaPropertiesItem.setAnchor(itemType);
@@ -364,7 +370,7 @@ public class JsonSchemaBuilder {
                     Map<String, JsonSchemaProperties> complexProperties = processComplexType(itemType, prop, visited);
                     if (complexProperties != null) {
                         jsonSchemaPropertiesItem.setProperties(complexProperties);
-                    }else{
+                    } else {
                         jsonSchemaPropertiesItem.setAnchor(null);
                         anchors.remove(itemType);
                     }
