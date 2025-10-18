@@ -167,6 +167,8 @@ management:
 ```
 
 ## Changelog
+
+- **1.0.6** Added support for circular object references using $ref and $defs, fixed placement of $anchor
 - **1.0.5** Updated kebab conversion to align with spring boot one, added class anchors for future use in references 
 - **1.0.3** Spring boot version update, type mapping cleanup
 - **1.0.2** Fix Map<String,Object> handling

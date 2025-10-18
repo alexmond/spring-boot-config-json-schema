@@ -16,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import org.springframework.boot.autoconfigure.http.client.HttpClientProperties;
+import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
+import org.springframework.boot.context.logging.LoggingApplicationListener;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -56,18 +60,6 @@ class SampleJsonSchemaGeneratorTests {
 
         Files.writeString(Paths.get("sample-schema-" + timestamp + ".yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
         Files.writeString(Paths.get("sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
-
-
-//        ObjectWriter jsonWriter = jsonMapper.writer(new DefaultPrettyPrinter());
-//        log.info("Writing json schema");
-//        jsonWriter.writeValue(Paths.get("sample-schema-" + timestamp + ".json").toFile(), jsonMapper.readTree(jsonConfigSchema));
-//        jsonWriter.writeValue(Paths.get("sample-schema.json").toFile(), jsonMapper.readTree(jsonConfigSchema));
-//
-//        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-//        ObjectWriter yamlWriter = yamlMapper.writer(new DefaultPrettyPrinter());
-//        log.info("Writing yaml schema");
-//        yamlWriter.writeValue(Paths.get("sample-schema-" + timestamp + ".yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
-//        yamlWriter.writeValue(Paths.get("sample-schema.yaml").toFile(), jsonMapper.readTree(jsonConfigSchema));
 
     }
 

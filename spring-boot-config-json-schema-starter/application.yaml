@@ -66,12 +66,12 @@ sample:
     deep-level2:
       list1:
         - id: abc
-          param2: test1
-          param1: test2
+          param1: abd
+          param2: zzz
       list2:
         - id: abc
-          param2: test1
-          param1: test2
+          param2: bbbb
+          param1: zzz
 
 
 

@@ -12,5 +12,10 @@ sample:
   kebab2-case: abc
   h-t-t-p-request: abc
 
+spring:
+  servlet:
+    multipart:
+      enabled: true
+
 
 

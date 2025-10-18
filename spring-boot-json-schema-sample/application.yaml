@@ -26,7 +26,6 @@ sample:
     deep-level2:
       list1:
         - id: abc
-      list2:
 
 
 

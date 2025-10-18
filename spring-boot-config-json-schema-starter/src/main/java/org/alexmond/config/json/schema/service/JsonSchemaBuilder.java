@@ -28,9 +28,11 @@ public class JsonSchemaBuilder {
     private final JsonSchemaBuilderHelper helper;
     private final DefinitionsHelper definitionsHelper;
     private Set<String> anchors;
+    private Set<String> defs;
     private Set<String> processedProp;
     private Map<String, Property> allMeta;
     Map<String, JsonSchemaProperties> definitions;
+    Map<String, JsonSchemaProperties> extraDefinitions;
 
     public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
         this.config = config;
@@ -49,8 +51,10 @@ public class JsonSchemaBuilder {
     public Map<String, Object> buildSchema(Map<String, Property> meta, List<String> included) {
         allMeta = meta;
         anchors = new HashSet<>();
+        defs = new HashSet<>();
         processedProp = new HashSet<>();
         definitions = null;
+        extraDefinitions = new TreeMap<>();
 
         log.info("Starting JSON schema generation");
         JsonSchemaRoot schemaRoot = JsonSchemaRoot.builder()
@@ -70,10 +74,44 @@ public class JsonSchemaBuilder {
                 addProperty(properties, key.split("\\."), 0, value);
             }
         });
+
+        if (config.isEnableDefinitionRefs()) {
+            defs.forEach(def -> {
+                definitions.put(def, extraDefinitions.get(def).toBuilder().build());
+            });
+            definitions.forEach((key, value) -> {
+            });
+            removeReferecedProperrties(properties,0);
+        }
+
         schemaRoot.setDefinitions(definitions);
         schemaRoot.setProperties(properties);
 
         return schemaRoot.toMap();
+    }
+
+    private void removeReferecedProperrties(Map<String, JsonSchemaProperties> properties,int depth) {
+
+        properties.forEach((key, value) -> {
+            if(value.getAnchor() != null && definitions.containsKey(value.getAnchor())) {
+                log.info("anchor: {} {}","=======".repeat(depth),value.getAnchor());
+                value.setReference("#/$defs/" + value.getAnchor());
+                value.setAnchor(null);
+                value.setType(null);
+                value.setProperties(null);
+                value.setAdditionalProperties(null);
+                value.setItems(null);
+            }
+            if (value.getProperties() != null) {
+                removeReferecedProperrties(value.getProperties(), depth + 1);
+            }
+            if (value.getAdditionalProperties() != null && (value.getAdditionalProperties() instanceof JsonSchemaProperties)) {
+                removeReferecedProperrties(Map.of("#addProp",(JsonSchemaProperties)value.getAdditionalProperties()), depth + 1);
+            }
+            if (value.getItems() != null ) {
+                removeReferecedProperrties(Map.of("#itemProp",value.getItems()), depth + 1);
+            }
+        });
     }
 
     /**
@@ -110,7 +148,7 @@ public class JsonSchemaBuilder {
                 }
             }
         } else {
-            Map<String, JsonSchemaProperties> properties = ensureObjectNode(node, key, prop.getSourceType());
+            Map<String, JsonSchemaProperties> properties = ensureObjectNode(node, key, prop);
             addProperty(properties, path, idx + 1, prop);
         }
     }
@@ -125,7 +163,7 @@ public class JsonSchemaBuilder {
      * @param key  Key where the object node should exist
      * @return Properties map of the ensured object node
      */
-    private Map<String, JsonSchemaProperties> ensureObjectNode(Map<String, JsonSchemaProperties> node, String key, String sourceType) {
+    private Map<String, JsonSchemaProperties> ensureObjectNode(Map<String, JsonSchemaProperties> node, String key, Property prop) {
         JsonSchemaProperties propNode = node.get(key);
         if (propNode == null) {
             Map<String, JsonSchemaProperties> properties = new TreeMap<>();
@@ -133,9 +171,8 @@ public class JsonSchemaBuilder {
                     .type(JsonSchemaType.OBJECT)
                     .properties(properties)
                     .build();
-            if (sourceType != null) {
-                propNode.setAnchor(sourceType);
-                anchors.add(sourceType);
+            if (prop.getSourceType() != null && !prop.isGroupProperty()) {
+                addAnchor(prop.getSourceType(), propNode);
             }
             node.put(key, propNode);
             return properties;
@@ -149,6 +186,47 @@ public class JsonSchemaBuilder {
         return properties;
     }
 
+    private void addAnchor(String type, JsonSchemaProperties propNode) {
+        if(config.getExcludeAnchors().contains(type)) {
+            return;
+        }
+        if(propNode.getType() != JsonSchemaType.OBJECT) {
+            log.error("Setting anchor for type {} is not supported", propNode.getType());
+        }
+        var fixedTypeName = type.replace("$",":");
+        if(anchors.contains(fixedTypeName)) {
+            log.error("Duplicate anchor type {}.", fixedTypeName);
+            return;
+        }
+        propNode.setAnchor(fixedTypeName);
+        anchors.add(fixedTypeName);
+        extraDefinitions.put(fixedTypeName, propNode);
+    }
+
+    private void removeAnchor(String type, JsonSchemaProperties propNode) {
+        var fixedTypeName = type.replace("$",":");
+        propNode.setAnchor(null);
+        anchors.remove(fixedTypeName);
+        extraDefinitions.remove(fixedTypeName);
+    }
+
+    private boolean addReference(JsonSchemaProperties jsonSchemaProperties, String type) {
+        var fixedTypeName = type.replace("$",":");
+        if (anchors.contains(fixedTypeName) && jsonSchemaProperties.getAnchor() == null) {
+            if (config.isEnableAnchorRefs()) {
+                jsonSchemaProperties.setReference("#" + fixedTypeName);
+                return true;
+            }else if (config.isEnableDefinitionRefs()) {
+                jsonSchemaProperties.setReference("#/$defs/" + fixedTypeName);
+                defs.add(fixedTypeName);
+                return true;
+            } else {
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
 
     /**
      * Processes a leaf property, handling type mapping, validation rules, and nested type definitions.
@@ -193,11 +271,8 @@ public class JsonSchemaBuilder {
 
         jsonSchemaProperties.merge(typeMappingService.typeProp(propType, prop));
 
-        if (anchors.contains(propType)) {
-            if (jsonSchemaProperties.getAnchor() == null && config.isEnableAnchorRefs()) {
-                jsonSchemaProperties.setReference("#" + propType);
-            }
-        }
+        addReference(jsonSchemaProperties, propType);
+
         if (prop.getDescription() != null) {
             jsonSchemaProperties.setDescription(prop.getDescription());
         }
@@ -250,18 +325,13 @@ public class JsonSchemaBuilder {
             return true;
         }
         if (jsonSchemaProperties.getType().equals(JsonSchemaType.OBJECT)) {
-            if (!anchors.contains(propType)) {
-                jsonSchemaProperties.setAnchor(propType);
-                anchors.add(propType);
-            } else {
-                log.error("SHOULD NOT HAPPEN - anchor already exists for type {}", propType);
-            }
+            addAnchor(propType, jsonSchemaProperties);
             var complexProperties = processComplexType(propType, prop, visited);
             if (complexProperties != null) {
                 jsonSchemaProperties.setProperties(complexProperties);
+                extraDefinitions.put(propType, jsonSchemaProperties);
             } else {
-                jsonSchemaProperties.setAnchor(null);
-                anchors.remove(propType);
+                removeAnchor(propType, jsonSchemaProperties);
             }
         }
         return true;
@@ -293,26 +363,27 @@ public class JsonSchemaBuilder {
                 return;
             }
             if (JsonSchemaProperties.getType().equals(JsonSchemaType.OBJECT)) {
-                if (anchors.contains(valueType)) {
-                    var newProp = org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties.builder()
-                            .type(JsonSchemaType.OBJECT)
-                            .build();
-                    if (config.isEnableAnchorRefs()) {
-                        newProp.setReference("#" + valueType);
-                    }
-                    propDef.setAdditionalProperties(newProp);
+
+                var refProp = org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties.builder()
+                        .type(JsonSchemaType.OBJECT)
+                        .build();
+                if (addReference(refProp,valueType)) {
+                    propDef.setAdditionalProperties(refProp);
                 } else {
                     var newProp = org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties.builder()
                             .type(JsonSchemaType.OBJECT)
                             .anchor(valueType)
                             .build();
                     anchors.add(valueType);
+                    extraDefinitions.put(valueType, newProp);
                     Map<String, JsonSchemaProperties> valueJsonSchemaProperties = processComplexType(valueType, prop, visited);
                     if (valueJsonSchemaProperties != null) {
                         newProp.setProperties(valueJsonSchemaProperties);
                         propDef.setAdditionalProperties(newProp);
+                        extraDefinitions.put(valueType, newProp);
                     } else {
                         anchors.remove(valueType);
+                        extraDefinitions.remove(valueType);
                         propDef.setAdditionalProperties(JsonSchemaProperties);
                     }
                 }
@@ -362,17 +433,15 @@ public class JsonSchemaBuilder {
             JsonSchemaProperties jsonSchemaPropertiesItem = typeMappingService.typeProp(itemType, prop);
 
             if (jsonSchemaPropertiesItem.getType() == JsonSchemaType.OBJECT) {
-                if (anchors.contains(itemType) && config.isEnableAnchorRefs()) {
-                    jsonSchemaPropertiesItem.setReference("#" + itemType);
+                if (addReference(jsonSchemaPropertiesItem,itemType)){
                 } else {
-                    jsonSchemaPropertiesItem.setAnchor(itemType);
-                    anchors.add(itemType);
+                    addAnchor(itemType, jsonSchemaPropertiesItem);
                     Map<String, JsonSchemaProperties> complexProperties = processComplexType(itemType, prop, visited);
                     if (complexProperties != null) {
                         jsonSchemaPropertiesItem.setProperties(complexProperties);
+                        extraDefinitions.put(itemType, jsonSchemaPropertiesItem);
                     } else {
-                        jsonSchemaPropertiesItem.setAnchor(null);
-                        anchors.remove(itemType);
+                        removeAnchor(itemType,jsonSchemaPropertiesItem);
                     }
                 }
             } else if (itemClass.isEnum()) {

@@ -78,8 +78,16 @@ public class JsonConfigSchemaConfig {
      * When true, the schema will generate anchor references for types that appear multiple times,
      * reducing schema size and improving readability by avoiding type duplication.
      */
-    @Schema(description = "Enable JSON Schema anchor references", defaultValue = "true")
+    @Schema(description = "Enable JSON Schema anchor references", defaultValue = "false")
     private boolean enableAnchorRefs = false;
+
+    /**
+     * Controls whether JSON Schema definitions and references should be enabled.
+     * When true, the schema will generate definition references for types that appear multiple times,
+     * reducing schema size and improving readability by avoiding type duplication.
+     */
+    @Schema(description = "Enable JSON Schema definition references", defaultValue = "true")
+    private boolean enableDefinitionRefs = true;
 
     /**
      * List of additional configuration property paths to include in the schema.
@@ -94,6 +102,12 @@ public class JsonConfigSchemaConfig {
      * Used to store custom type mappings and property configurations
      * that override or extend the default schema generation behavior.
      */
+    /**
+     * Map of property names or java objects to their type definitions.
+     * Used to store custom type mappings and property configurations
+     * that override or extend the default schema generation behavior.
+     */
+    @Schema(description = "Custom JSON Schema property mappings")
     private Map<String, JsonSchemaProperties> JsonSchemaPropertiesMap = new HashMap<>();
 
     /**
@@ -101,6 +115,12 @@ public class JsonConfigSchemaConfig {
      * When true, logs will be generated for types that couldn't be mapped during schema generation.
      * This is useful for debugging and identifying unmapped types.
      */
+    /**
+     * Controls whether missing type information should be logged.
+     * When true, logs will be generated for types that couldn't be mapped during schema generation.
+     * This is useful for debugging and identifying unmapped types.
+     */
+    @Schema(description = "Enable logging for missing type information", defaultValue = "false")
     private Boolean missingTypeLog = false;
     /**
      * A list of fully qualified class names that should be excluded from schema generation.
@@ -110,6 +130,16 @@ public class JsonConfigSchemaConfig {
     private List<String> excludeClasses = new ArrayList<>(List.of(
             "com.fasterxml.jackson.databind.ObjectMapper",
             "java.lang.ClassLoader",
+            "org.springframework.boot.context.logging.LoggingApplicationListener",
+            "org.slf4j.Logger"));
+
+    /**
+     * List of fully qualified class names that should be excluded from anchor generation.
+     * Classes in this list will not have JSON Schema anchors generated for them,
+     * even if they appear multiple times in the schema.
+     */
+    @Schema(description = "List of classes to exclude from anchor generation")
+    private List<String> excludeAnchors = new ArrayList<>(List.of(
             "org.springframework.boot.context.logging.LoggingApplicationListener"));
 
     /**
