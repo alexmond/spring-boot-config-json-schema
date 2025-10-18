@@ -1,5 +1,5 @@
 name: spring-boot-config-json-schema-starter
 title: Spring boot config json schema starter
-version: 1.0.4
+version: 1.0.6
 nav:
   - modules/ROOT/nav.adoc
