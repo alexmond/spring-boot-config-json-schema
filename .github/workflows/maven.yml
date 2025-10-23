@@ -28,7 +28,24 @@ jobs:
         with:
           files: |
             **/surefire-reports/TEST-*.xml
-            **/failsafe-reports/TEST-*.xml
+
+      - name: Add coverage to PR
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ${{ github.workspace }}/spring-boot-config-json-schema-starter/target/site/jacoco/jacoco.xml
+          fail_ci_if_error: true
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: |
+            **/surefire-reports/TEST-*.xml
+
+      - name: Submit Dependency Snapshot
+        uses: advanced-security/maven-dependency-submission-action@v5
 
 
       - name: Set up Python
