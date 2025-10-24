@@ -36,8 +36,9 @@ public class ConfigSchemaStarter {
     @Bean
     public ConfigurationPropertyCollector configurationPropertyCollector(ApplicationContext context,
                                                                          ConfigurableEnvironment env,
-                                                                         JsonConfigSchemaConfig config) {
-        return new ConfigurationPropertyCollector(context, env, config);
+                                                                         JsonConfigSchemaConfig config,
+                                                                         JsonSchemaBuilder schemaBuilder) {
+        return new ConfigurationPropertyCollector(context, env, config, schemaBuilder);
     }
 
     /**

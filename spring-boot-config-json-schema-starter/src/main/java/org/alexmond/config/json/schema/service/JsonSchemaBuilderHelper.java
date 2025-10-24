@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaFormat;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
 import org.alexmond.config.json.schema.jsonschemamodel.XDeprecation;
 import org.alexmond.config.json.schema.metamodel.HintValue;
@@ -128,6 +129,10 @@ public class JsonSchemaBuilderHelper {
             jsonSchemaProperties.setMinLength(1);
             log.debug("Validation: Added NotEmpty validation for field {}", field.getName());
         }
+        if (field.isAnnotationPresent(Email.class)) {
+            jsonSchemaProperties.setFormat(JsonSchemaFormat.EMAIL);
+            log.debug("Validation: Added NotEmpty validation for field {}", field.getName());
+        }
     }
 
     public void processOpenapi(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
@@ -136,6 +141,9 @@ public class JsonSchemaBuilderHelper {
             Schema schema = field.getAnnotation(Schema.class);
             if (!schema.description().isEmpty()) {
                 jsonSchemaProperties.setDescription(schema.description());
+            }
+            if (!schema.format().isEmpty()) {
+                jsonSchemaProperties.setFormat(JsonSchemaFormat.valueOf(schema.format().toUpperCase()));
             }
 //            if (!schema.example().isEmpty()) {
 //                jsonSchemaProperties.setExamples(List.of(schema.example()));

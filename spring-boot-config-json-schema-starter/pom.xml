@@ -28,7 +28,6 @@
     </developers>
     <properties>
         <commons-text.version>1.14.0</commons-text.version>
-        <json-schema-validator.version>1.5.8</json-schema-validator.version>
         <swagger-annotations.version>2.2.36</swagger-annotations.version>
 
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
@@ -163,8 +162,8 @@
                         <artifactId>maven-source-plugin</artifactId>
                     </plugin>
                     <plugin>
-                        <groupId>pl.project13.maven</groupId>
-                        <artifactId>git-commit-id-plugin</artifactId>
+                        <groupId>io.github.git-commit-id</groupId>
+                        <artifactId>git-commit-id-maven-plugin</artifactId>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

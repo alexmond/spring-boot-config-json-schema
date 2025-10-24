@@ -1,4 +1,4 @@
-$schema: ./sample-schema.yaml
+$schema: ./sample-schema.json
 spring:
   profiles:
     active:
@@ -11,7 +11,7 @@ sample:
     - aaa
     - bbb
     - ccc
-  boolean-sample: false
+  boolean-sample: true
   string-sample: "config string"
   integer-sample: 10
   enum-sample: en2
@@ -54,6 +54,7 @@ server:
       cookie:
         partitioned: true
 ---
+$schema: ./sample-schema.json
 spring:
   config:
     activate:
@@ -72,6 +73,16 @@ sample:
         - id: abc
           param2: bbbb
           param1: zzz
+specialtype:
+  url: "http://abc.com"
+  uri: "http://abc.com"
+  email: bzzz
+  email-pattern: bzzz@yahoo.com
+  inet4-address: 192.168.100.10
+  uuid: AA97B177-9383-4934-8543-0F91A7A02836
+  inet6-address: "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+
+
 
 
 

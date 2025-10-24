@@ -94,7 +94,7 @@ public class JsonSchemaBuilder {
 
         properties.forEach((key, value) -> {
             if(value.getAnchor() != null && definitions.containsKey(value.getAnchor())) {
-                log.info("anchor: {} {}","=======".repeat(depth),value.getAnchor());
+                log.debug("anchor: {} {}","=======".repeat(depth),value.getAnchor());
                 value.setReference("#/$defs/" + value.getAnchor());
                 value.setAnchor(null);
                 value.setType(null);

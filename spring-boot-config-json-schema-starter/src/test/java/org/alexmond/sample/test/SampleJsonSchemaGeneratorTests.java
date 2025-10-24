@@ -71,7 +71,7 @@ class SampleJsonSchemaGeneratorTests {
         JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
         JsonSchema schema = factory.getSchema(Paths.get("sample-schema.json").toFile().toURI());
         ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-        Set<ValidationMessage> errors = schema.validate(yamlMapper.readTree(Paths.get("application.yaml").toFile()));
+        Set<ValidationMessage> errors = schema.validate(yamlMapper.readTree(Paths.get("test.yaml").toFile()));
         if (!errors.isEmpty()) {
             errors.forEach(error -> log.error("YAML validation error: {}", error));
             throw new AssertionError("YAML validation failed");
