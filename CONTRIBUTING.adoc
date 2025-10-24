@@ -1,20 +1,12 @@
-# Contributing to Spring Boot Config JSON Schema Generator
+= Contributing to Spring Boot Config JSON Schema Generator
+:toc:
 
 Thank you for your interest in contributing to the Spring Boot Config JSON Schema Generator! This project auto-generates
 JSON Schemas for `application.yaml` or `application.properties` from `@ConfigurationProperties`, simplifying
 configuration documentation and validation for IDEs (e.g., IntelliJ, VS Code) and CI/CD pipelines. We welcome
 contributions from everyone, whether you're fixing bugs, adding features, or improving documentation.
 
-## Table of Contents
-
-- [How to Contribute](#how-to-contribute)
-- [Setting Up the Project](#setting-up-the-project)
-- [Submitting Changes](#submitting-changes)
-- [Good First Issues](#good-first-issues)
-- [Code of Conduct](#code-of-conduct)
-- [Questions?](#questions)
-
-## How to Contribute
+== How to Contribute
 
 We value all contributions, including:
 
@@ -31,29 +23,36 @@ To get started:
 2. Look for issues labeled `good first issue` or `help wanted` for beginner-friendly tasks.
 3. Fork the repository and submit a pull request (PR) with your changes.
 
-## Setting Up the Project
+[#_setting_up_the_project]
+== Setting Up the Project
 
 1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/alexmond/spring-boot-config-json-schema.git
-   cd spring-boot-config-json-schema
-   ```
+
+[source,bash]
+----
+git clone https://github.com/alexmond/spring-boot-config-json-schema.git
+cd spring-boot-config-json-schema
+----
+
 2. **Requirements**:
     - Java 17+
     - Maven 3.6+
     - Spring Boot 3.x
     - Dependencies: Jackson (`jackson-databind`, `jackson-dataformat-yaml`), optional `spring-boot-starter-actuator`
 3. **Build and Test**:
-   ```bash
-   mvn clean install
-   mvn test
-   ```
+
+[source,bash]
+----
+mvn clean install
+mvn test
+----
+
 4. **Development**:
     - Use an IDE like IntelliJ IDEA for best support with Spring Boot.
     - Add tests in `src/test/java` using JUnit 5.
     - Follow existing code style (e.g., 2-space indentation, consistent Lombok usage).
 
-## Submitting Changes
+== Submitting Changes
 
 1. **Fork and Branch**:
     - Fork the repo to your GitHub account.
@@ -71,7 +70,7 @@ To get started:
     - Maintainers will review within 3-5 days.
     - Address feedback promptly to expedite merging.
 
-## Good First Issues
+== Good First Issues
 
 New to contributing? Try these:
 
@@ -83,13 +82,13 @@ New to contributing? Try these:
   Check [Issues](https://github.com/alexmond/spring-boot-config-json-schema/issues) for tasks labeled
   `good first issue`.
 
-## Code of Conduct
+== Code of Conduct
 
 We follow
 the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html).
 Please be respectful and inclusive in all interactions.
 
-## Questions?
+== Questions?
 
 - Open an issue with the `question` label.
 - Reach out via [GitHub Discussions](https://github.com/alexmond/spring-boot-config-json-schema/discussions).

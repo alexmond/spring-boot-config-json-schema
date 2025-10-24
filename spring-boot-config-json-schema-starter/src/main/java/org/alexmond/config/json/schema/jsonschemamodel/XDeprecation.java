@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 @Data
 @Builder
@@ -21,10 +21,10 @@ public class XDeprecation {
 
     @JsonIgnore
     public boolean isEmpty() {
-        return (StringUtils.isEmpty(reason)) &&
-                (StringUtils.isEmpty(replacement)) &&
-                (StringUtils.isEmpty(since)) &&
-                (StringUtils.isEmpty(level));
+        return (!StringUtils.hasLength(reason)) &&
+                (!StringUtils.hasLength(replacement)) &&
+                (!StringUtils.hasLength(since)) &&
+                (!StringUtils.hasLength(level));
     }
 
 }
