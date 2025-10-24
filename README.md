@@ -3,6 +3,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/org.alexmond/spring-boot-config-json-schema-starter.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.alexmond/spring-boot-config-json-schema-starter)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/alexmond/spring-boot-config-json-schema/maven.yml)](https://github.com/alexmond/spring-boot-config-json-schema/actions)
+[![codecov](https://codecov.io/gh/alexmond/spring-boot-config-json-schema/graph/badge.svg?token=C4IEMB36WJ)](https://codecov.io/gh/alexmond/spring-boot-config-json-schema)
 
 # Spring Boot Config JSON Schema Generator
 
