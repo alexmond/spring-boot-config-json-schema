@@ -26,10 +26,6 @@
             <email>alex.mondshain@gmail.com</email>
         </developer>
     </developers>
-    <properties>
-        <commons-text.version>1.14.0</commons-text.version>
-        <swagger-annotations.version>2.2.36</swagger-annotations.version>
-    </properties>
 
     <dependencies>
         <dependency>
