@@ -29,9 +29,6 @@
     <properties>
         <commons-text.version>1.14.0</commons-text.version>
         <swagger-annotations.version>2.2.36</swagger-annotations.version>
-
-        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-        <jacoco.agent.arg>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco-maven-plugin.version}/org.jacoco.agent-${jacoco-maven-plugin.version}-runtime.jar=destfile=target/jacoco.exec</jacoco.agent.arg>
     </properties>
 
     <dependencies>

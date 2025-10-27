@@ -60,7 +60,7 @@ public class SpecialFormatConfig {
     /**
      * Email address
      */
-    @Schema(description = "Email address",format = "email")
+    @Schema(description = "Email address", format = "email")
     String emailSchemaFormat;
 
     /**

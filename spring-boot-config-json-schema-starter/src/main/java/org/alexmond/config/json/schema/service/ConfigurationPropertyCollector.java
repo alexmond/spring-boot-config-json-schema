@@ -23,7 +23,7 @@ public class ConfigurationPropertyCollector {
     private final ApplicationContext context;
     private final ConfigurableEnvironment env;
     private final JsonConfigSchemaConfig config;
-    private final JsonSchemaBuilder  schemaBuilder;
+    private final JsonSchemaBuilder schemaBuilder;
 
     /**
      * Collects all included property names from various sources.
@@ -59,9 +59,9 @@ public class ConfigurationPropertyCollector {
             if (!prefix.isEmpty()) {
                 log.info("Adding property for processing: {} (from bean: {})", prefix, beanName);
                 included.add(prefix);
-            }else{
+            } else {
                 Class<?> clazz = context.getType(beanName);
-                if(clazz != null) {
+                if (clazz != null) {
                     for (Field field : clazz.getDeclaredFields()) {
                         included.add(schemaBuilder.toKebabCase(field.getName()));
                     }

@@ -8,14 +8,12 @@ image:https://codecov.io/gh/alexmond/spring-boot-config-json-schema/graph/badge.
 
 == Spring Boot Config JSON Schema Generator
 
-A Spring Boot starter library that automatically generates JSON Schema documentation for your application's
-configuration properties. It simplifies the process of documenting and validating configuration by generating JSON
-Schema from your Spring Boot configuration classes.
+A Spring Boot starter library that automatically generates JSON Schema documentation for your application's configuration properties.
+It simplifies the process of documenting and validating configuration by generating JSON Schema from your Spring Boot configuration classes.
 
 For detailed documentation, please visit our link:https://alexmond.github.io/spring-boot-config-json-schema-starter/current/index.html[full documentation].
 
 A good article on this subject: link:https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
-
 
 [[quick-start]]
 == Quick Start
@@ -170,13 +168,13 @@ management:
 
 [[changelog]]
 == Changelog
+
 - **1.0.7** Fixed Locale ref, added support for Config properties without a prefix, extended openapi Schema support for format parameter, added code coverage
 - **1.0.6** Added support for circular object references using $ref and $defs, fixed placement of $anchor
-- **1.0.5** Updated kebab conversion to align with spring boot one, added class anchors for future use in references 
+- **1.0.5** Updated kebab conversion to align with spring boot one, added class anchors for future use in references
 - **1.0.3** Spring boot version update, type mapping cleanup
 - **1.0.2** Fix Map<String,Object> handling
-- **1.0.1** (September 2025): Stable release with Actuator endpoint support, improved schema generation, and license
-  addition.
+- **1.0.1** (September 2025): Stable release with Actuator endpoint support, improved schema generation, and license addition.
 - **0.0.8** (September 2025): Added Actuator endpoint; minor fixes.
 - **0.0.5** (August 2025): Initial release with JSON/YAML schema generation.
 See link:https://github.com/alexmond/spring-boot-config-json-schema/releases[Releases] for details.
@@ -195,5 +193,5 @@ Licensed under link:LICENSE[Apache 2.0 License].
 
 '''
 
-⭐ Star this repo if you find it useful! Share feedback
-via [issues](https://github.com/alexmond/spring-boot-config-json-schema/issues).
+⭐ Star this repo if you find it useful!
+Share feedback via [issues](https://github.com/alexmond/spring-boot-config-json-schema/issues).

@@ -13,6 +13,7 @@ import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -145,15 +146,25 @@ public class JsonSchemaBuilderHelper {
             if (!schema.format().isEmpty()) {
                 jsonSchemaProperties.setFormat(JsonSchemaFormat.valueOf(schema.format().toUpperCase()));
             }
-//            if (!schema.example().isEmpty()) {
-//                jsonSchemaProperties.setExamples(List.of(schema.example()));
-//            }
+            if (!schema.example().isEmpty() && jsonSchemaProperties.getExamples() != null && jsonSchemaProperties.getExamples().isEmpty()) {
+                jsonSchemaProperties.setExamples(List.of(schema.example()));
+            }
             if (schema.deprecated()) {
                 jsonSchemaProperties.setDeprecated(true);
             }
-//            if (!schema.defaultValue().isEmpty()) {
-//                jsonSchemaProperties.setDefaultValue(schema.defaultValue());
-//            }
+            if (!schema.defaultValue().isEmpty() && (jsonSchemaProperties.getDefaultValue() != null)) {
+                jsonSchemaProperties.setDefaultValue(schema.defaultValue());
+            }
+        }
+    }
+
+    public void processClassOpenapi(JsonSchemaProperties jsonSchemaProperties, Class<?> propClass) {
+        log.trace("OpenAPI: Processing Class schema for property: {}", propClass.getCanonicalName());
+        if (propClass.isAnnotationPresent(Schema.class)) {
+            Schema schema = propClass.getAnnotation(Schema.class);
+            if (!schema.description().isEmpty()) {
+                jsonSchemaProperties.setDescription(schema.description());
+            }
         }
     }
 }
