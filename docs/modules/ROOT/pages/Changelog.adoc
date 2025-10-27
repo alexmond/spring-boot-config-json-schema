@@ -1,0 +1,8 @@
+- **1.0.7** Fixed Locale ref, added support for Config properties without a prefix, extended openapi Schema support for format parameter, added code coverage
+- **1.0.6** Added support for circular object references using $ref and $defs, fixed placement of $anchor
+- **1.0.5** Updated kebab conversion to align with spring boot one, added class anchors for future use in references
+- **1.0.3** Spring boot version update, type mapping cleanup
+- **1.0.2** Fix Map<String,Object> handling
+- **1.0.1** (September 2025): Stable release with Actuator endpoint support, improved schema generation, and license addition.
+- **0.0.8** (September 2025): Added Actuator endpoint; minor fixes.
+- **0.0.5** (August 2025): Initial release with JSON/YAML schema generation.

@@ -1,1 +1,2 @@
 * xref:index.adoc[Spring Boot Config JSON Schema Generator]
+* xref:Changelog.adoc[Changelog]
