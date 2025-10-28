@@ -168,7 +168,7 @@ management:
 
 [[changelog]]
 == Changelog
-include::Changelog.adoc[]
+include::CHANGELOG.adoc[]
 
 [[contributing]]
 == Contributing
