@@ -1,3 +1,4 @@
+:version: 1.0.8
 = Spring Boot Config JSON Schema Generator
 :toc:
 
@@ -25,13 +26,13 @@ A good article on this subject: link:https://themightyprogrammer.dev/article/2wa
 
 Add the following dependency to your `pom.xml` when using the generator in tests:
 
-[source,xml]
+[source,xml,subs=+attributes]
 ----
 
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>1.0.7</version>
+    <version>{version}</version>
     <scope>test</scope>
 </dependency>
 ----
@@ -69,13 +70,13 @@ class SampleJsonSchemaGeneratorTests {
 To expose the JSON schema via a REST endpoint (similar to Swagger API docs), add the following dependency to your
 `pom.xml`:
 
-[source,xml]
+[source,xml,subs=+attributes]
 ----
 
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>1.0.7</version>
+    <version>{version}</version>
 </dependency>
 ----
 
@@ -109,13 +110,13 @@ public class GenerateJsonSchema {
 To expose the JSON schema via an Actuator endpoint, add the following dependency to your
 `pom.xml`:
 
-[source,xml]
+[source,xml,subs=+attributes]
 ----
 
 <dependency>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>1.0.7</version>
+    <version>{version}</version>
 </dependency>
 ----
 
