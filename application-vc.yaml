@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://alexmond.github.io/spring-boot-config-json-schema/sample/boot-generic-config.json
+# yaml-language-server: $schema=https://www.alexmond.org/spring-boot-config-json-schema/sample/boot-generic-config.json
 
 logging:
   level:

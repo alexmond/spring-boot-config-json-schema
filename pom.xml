@@ -30,7 +30,7 @@
             -javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco-maven-plugin.version}/org.jacoco.agent-${jacoco-maven-plugin.version}-runtime.jar=destfile=target/jacoco.exec
         </jacoco.agent.arg>
     </properties>
-    <url>https://alexmond.github.io/spring-boot-config-json-schema-starter/current/index.html</url>
+    <url>https://www.alexmond.org/spring-boot-config-json-schema-starter/current/index.html</url>
     <description>A parent pom A Spring Boot starter for generating JSON Schema from Spring Boot application
         configuration properties,
         providing automated documentation and validation support for both @ConfigurationProperties annotated classes and

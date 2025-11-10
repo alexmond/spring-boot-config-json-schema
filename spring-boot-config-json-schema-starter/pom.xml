@@ -11,7 +11,7 @@
     <version>1.0.9-SNAPSHOT</version>
     <name>Spring Boot Config Json Schema Starter</name>
 
-    <url>https://alexmond.github.io/spring-boot-config-json-schema-starter/current/index.html</url>
+    <url>https://www.alexmond.org/spring-boot-config-json-schema-starter/current/index.html</url>
     <description>A Spring Boot starter for generating JSON Schema from Spring Boot application configuration properties,
         providing automated documentation and validation support for both @ConfigurationProperties annotated classes and
         environment properties.
