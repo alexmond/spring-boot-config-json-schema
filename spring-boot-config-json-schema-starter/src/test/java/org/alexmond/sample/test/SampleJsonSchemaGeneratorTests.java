@@ -2,10 +2,11 @@ package org.alexmond.sample.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.ValidationMessage;
+import com.networknt.schema.Schema;
+import com.networknt.schema.SchemaRegistry;
+import com.networknt.schema.SpecificationVersion;
+import com.networknt.schema.Error;
+import com.networknt.schema.dialect.Dialects;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.junit.jupiter.api.MethodOrderer;
@@ -19,7 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Set;
+import java.util.List;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -39,9 +40,9 @@ class SampleJsonSchemaGeneratorTests {
         ObjectMapper jsonMapper = new ObjectMapper();
 
         // Validate generated schema
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
-        JsonSchema schema = factory.getSchema(jsonConfigSchemaJson);
-        Set<ValidationMessage> errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
+        SchemaRegistry schemaRegistry = SchemaRegistry.withDialect(Dialects.getDraft202012());
+        Schema schema = schemaRegistry.getSchema(jsonConfigSchemaJson);
+        List<Error> errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
         if (!errors.isEmpty()) {
             errors.forEach(error -> log.error("Schema validation error: {}", error));
             throw new AssertionError("Schema validation failed");
@@ -64,10 +65,10 @@ class SampleJsonSchemaGeneratorTests {
     void validateSample() throws Exception {
 
         // Validate application.yaml against schema
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
-        JsonSchema schema = factory.getSchema(Paths.get("sample-schema.json").toFile().toURI());
+        SchemaRegistry factory = SchemaRegistry.withDialect(Dialects.getDraft202012());
+        Schema schema = factory.getSchema(Files.newInputStream(Paths.get("sample-schema.json")));
         ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-        Set<ValidationMessage> errors = schema.validate(yamlMapper.readTree(Paths.get("test.yaml").toFile()));
+        List<Error> errors = schema.validate(yamlMapper.readTree(Paths.get("test.yaml").toFile()));
         if (!errors.isEmpty()) {
             errors.forEach(error -> log.error("YAML validation error: {}", error));
             throw new AssertionError("YAML validation failed");

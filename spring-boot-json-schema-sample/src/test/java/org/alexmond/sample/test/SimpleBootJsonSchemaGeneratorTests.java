@@ -2,10 +2,10 @@ package org.alexmond.sample.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.ValidationMessage;
+import com.networknt.schema.Error;
+import com.networknt.schema.Schema;
+import com.networknt.schema.SchemaRegistry;
+import com.networknt.schema.dialect.Dialects;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.config.json.schema.service.MissingTypeCollector;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Set;
 
 @ActiveProfiles("test")
@@ -28,9 +29,6 @@ SimpleBootJsonSchemaGeneratorTests {
 
     @Autowired
     private JsonSchemaService jsonSchemaService;
-
-    @Autowired
-    private MissingTypeCollector missingTypeCollector;
 
     @Test
     void contextLoads() {
@@ -43,9 +41,9 @@ SimpleBootJsonSchemaGeneratorTests {
         var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
 
         ObjectMapper jsonMapper = new ObjectMapper();
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
-        JsonSchema schema = factory.getSchema(jsonConfigSchemaJson);
-        Set<ValidationMessage> errors;
+        SchemaRegistry factory = SchemaRegistry.withDialect(Dialects.getDraft202012());
+        Schema schema = factory.getSchema(jsonConfigSchemaJson);
+        List<Error> errors;
         try {
             errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
         } catch (JsonProcessingException e) {

@@ -201,7 +201,7 @@ For testing purposes, you can find sample generic schema files here:
 [source,yaml]
 ----
 # Schema reference for JetBrains IDEs
-$schema: "https://www.alexmond.org/spring-boot-config-json-schema-starter/current/_attachments/boot-generic-config.json"
+$schema: "https://www.alexmond.org/spring-boot-config-json-schema-starter/current/boot-generic-config.json"
 
 # Application properties
 spring:
@@ -224,7 +224,7 @@ Add schema reference using YAML language server directive (requires YAML Languag
 
 [source,yaml]
 ----
-# yaml-language-server: $schema=https://www.alexmond.org/spring-boot-config-json-schema-starter/current/_attachments/boot-generic-config.yaml
+# yaml-language-server: $schema=https://www.alexmond.org/spring-boot-config-json-schema-starter/current/boot-generic-config.yaml
 
 spring:
   datasource:

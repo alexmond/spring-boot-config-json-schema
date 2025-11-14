@@ -22,7 +22,7 @@ logging:
 json-config-schema:
   additional-exclude-classes:
     - "io.swagger.v3.oas.models.OpenAPI"
-
+  title: "Spring boot generic schema"
 
 
 
