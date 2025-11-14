@@ -1,3 +1,4 @@
+- **1.0.9** Updated website address to www.alexmond.org, updated validator to NetwrorkNT 2.0.0
 - **1.0.8** Updated Spring Boot and dependencies, introduced class-level OpenAPI annotations and enhanced field-level OpenAPI support
 - **1.0.7** Fixed Locale ref, added support for Config properties without a prefix, extended openapi Schema support for format parameter, added code coverage
 - **1.0.6** Added support for circular object references using $ref and $defs, fixed placement of $anchor
