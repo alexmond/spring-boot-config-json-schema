@@ -1,4 +1,4 @@
-:version: 1.0.8
+:version: 3.5.10.1
 = Spring Boot Config JSON Schema Generator
 :toc:
 
