@@ -5,10 +5,10 @@
     <parent>
         <groupId>org.alexmond</groupId>
         <artifactId>spring-boot-config-json-schema-parent</artifactId>
-        <version>3.5.10.1</version>
+        <version>3.5.10.2-SNAPSHOT</version>
     </parent>
     <artifactId>spring-boot-json-schema-generic-sample</artifactId>
-    <version>3.5.10.1</version>
+    <version>3.5.10.2-SNAPSHOT</version>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.alexmond</groupId>
             <artifactId>spring-boot-config-json-schema-starter</artifactId>
-            <version>3.5.10.1</version>
+            <version>3.5.10.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
