@@ -6,6 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
+/**
+ * Represents a configuration property with metadata.
+ * This class holds information about configuration properties including their name, type,
+ * description, default values, and deprecation status.
+ *
+ * @since 1.0
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,6 +29,13 @@ public class Property {
     @Builder.Default
     private boolean groupProperty = false;
 
+    /**
+     * Merges this property with a Group, inheriting the group's properties if they are not empty.
+     * Sets this property as a group property and updates name, type, description, and sourceType
+     * from the provided group if they have values.
+     *
+     * @param group the Group instance to merge with this property
+     */
     public void mergeGroup(Group group) {
         groupProperty = true;
         if (StringUtils.hasLength(group.getName())) this.name = group.getName();
@@ -30,6 +44,14 @@ public class Property {
         if (StringUtils.hasLength(group.getSourceType())) this.sourceType = group.getSourceType();
     }
 
+    /**
+     * Merges this property with another Property instance, inheriting non-null values.
+     * Updates all fields from the other property if they have values, including name,
+     * type, description, sourceType, defaultValue, deprecated status, deprecation info,
+     * and hints.
+     *
+     * @param other the Property instance to merge with this property
+     */
     public void mergeProperties(Property other) {
         if (StringUtils.hasLength(other.getName())) this.name = other.getName();
         if (StringUtils.hasLength(other.getType())) this.type = other.getType();

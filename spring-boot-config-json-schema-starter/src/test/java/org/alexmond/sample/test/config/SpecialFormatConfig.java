@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @Component
 @ConfigurationProperties(prefix = "specialtype")
 @Validated

@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
+@SuppressWarnings("ConfigurationProperties")
 @Component
 @ConfigurationProperties
 @Validated

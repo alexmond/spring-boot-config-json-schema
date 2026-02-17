@@ -7,6 +7,7 @@ import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.stereotype.Component;
 
+@SuppressWarnings("unused")
 @Component
 @Endpoint(id = "config-schema")
 @RequiredArgsConstructor

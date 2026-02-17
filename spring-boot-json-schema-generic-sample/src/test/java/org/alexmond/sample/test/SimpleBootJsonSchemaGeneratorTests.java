@@ -3,7 +3,6 @@ package org.alexmond.sample.test;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
-import org.alexmond.config.json.schema.service.MissingTypeCollector;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

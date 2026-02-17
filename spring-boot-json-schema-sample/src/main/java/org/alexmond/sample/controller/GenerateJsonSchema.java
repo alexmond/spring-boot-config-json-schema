@@ -20,7 +20,7 @@ public class GenerateJsonSchema {
     }
 
     @GetMapping("/config-schema.yaml")
-    public String getConfigSchemaYaml() throws Exception {
+    public String getConfigSchemaYaml() {
         return jsonSchemaService.generateFullSchemaYaml();
     }
 

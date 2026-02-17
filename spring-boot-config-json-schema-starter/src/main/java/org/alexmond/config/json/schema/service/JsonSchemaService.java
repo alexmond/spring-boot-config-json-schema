@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaRoot;
 import org.alexmond.config.json.schema.metaextension.BootConfigMetaLoader;
 import org.alexmond.config.json.schema.metamodel.BootConfigMeta;
 import org.alexmond.config.json.schema.metamodel.Property;
@@ -33,7 +34,17 @@ public class JsonSchemaService {
     private final JsonSchemaBuilder schemaBuilder;
     private final MissingTypeCollector missingTypeCollector;
     private final BootConfigMetaLoader bootConfigMetaLoader = new BootConfigMetaLoader();
+    private JsonSchemaRoot schemaCache;
 
+    public JsonSchemaRoot getSchemaCache() {
+        if (schemaCache == null) {
+            Map<String, Property> meta = collectMetadata();
+            List<String> included = propertyCollector.collectIncludedPropertyNames();
+
+            schemaCache = schemaBuilder.buildSchema(meta, included);
+         }
+        return schemaCache;
+    }
     /**
      * Generates a complete JSON Schema representation of the application's configuration properties.
      *
@@ -53,15 +64,25 @@ public class JsonSchemaService {
         return generateFullSchema(new ObjectMapper(new YAMLFactory()));
     }
 
+    /**
+     * Generates a complete JSON Schema representation using the specified ObjectMapper.
+     * This method implements the core schema generation logic and supports both JSON and YAML output formats.
+     * The generated schema is cached to avoid redundant generation of the same schema.
+     *
+     * @param mapper The ObjectMapper instance to use for serialization (can be configured for JSON or YAML output)
+     * @return A string containing the schema in the format determined by the provided ObjectMapper
+     */
     private String generateFullSchema(ObjectMapper mapper) {
-        try {
+        if (schemaCache == null) {
             Map<String, Property> meta = collectMetadata();
             List<String> included = propertyCollector.collectIncludedPropertyNames();
 
-            Map<String, Object> schema = schemaBuilder.buildSchema(meta, included);
+            schemaCache = schemaBuilder.buildSchema(meta, included);
             if (config.getMissingTypeLog())
                 missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing types: {}", type));
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
+        }
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schemaCache);
         } catch (JsonProcessingException e) {
             log.error("Failed to generate schema", e);
             return "";

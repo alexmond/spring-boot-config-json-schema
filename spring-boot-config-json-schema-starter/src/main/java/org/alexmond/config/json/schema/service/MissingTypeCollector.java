@@ -13,7 +13,7 @@ import java.util.Map;
  * This class maintains a count of how many times each missing type is encountered.
  */
 public class MissingTypeCollector {
-    Map<String, Integer> missingTypes = new HashMap<>();
+    private final Map<String, Integer> missingTypes = new HashMap<>();
 
     /**
      * Records an occurrence of a missing type.

@@ -8,6 +8,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.validation.annotation.Validated;
 
+@SuppressWarnings("unused")
 @Schema(description = "Sample enumeration values")
 enum NestEnumSample {NEN1, NEN2, NEN3}
 

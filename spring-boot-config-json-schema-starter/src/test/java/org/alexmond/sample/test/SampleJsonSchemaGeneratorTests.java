@@ -2,10 +2,9 @@ package org.alexmond.sample.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.networknt.schema.Error;
 import com.networknt.schema.Schema;
 import com.networknt.schema.SchemaRegistry;
-import com.networknt.schema.SpecificationVersion;
-import com.networknt.schema.Error;
 import com.networknt.schema.dialect.Dialects;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.service.JsonSchemaService;

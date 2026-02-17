@@ -9,6 +9,11 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Helper class for creating standard JSON Schema definitions for common Java types.
+ * This class provides predefined schema definitions for logger levels, locales,
+ * and character sets that can be reused across the schema.
+ */
 @RequiredArgsConstructor
 public class DefinitionsHelper {
 
@@ -31,6 +36,11 @@ public class DefinitionsHelper {
         return definitions;
     }
 
+    /**
+     * Creates a JSON Schema definition for logger levels.
+     *
+     * @return JSON Schema properties defining the possible logger level values
+     */
     private JsonSchemaProperties getLoggerLevelDef() {
         return JsonSchemaProperties.builder()
                 .type(JsonSchemaType.STRING)
@@ -38,6 +48,12 @@ public class DefinitionsHelper {
                 .build();
     }
 
+    /**
+     * Creates a JSON Schema definition for logger level properties.
+     * This definition allows for nested logger level configurations.
+     *
+     * @return JSON Schema properties defining the structure of logger level properties
+     */
     private JsonSchemaProperties getLoggerLevelPropDef() {
         return JsonSchemaProperties.builder()
                 .type(JsonSchemaType.OBJECT)
@@ -54,6 +70,12 @@ public class DefinitionsHelper {
                 .build();
     }
 
+    /**
+     * Creates a JSON Schema definition for Java Locales.
+     * Includes all available locales from the Java runtime.
+     *
+     * @return JSON Schema properties defining the possible locale values
+     */
     private JsonSchemaProperties getLocalesDef() {
         return JsonSchemaProperties.builder()
                 .type(JsonSchemaType.STRING)
@@ -63,6 +85,12 @@ public class DefinitionsHelper {
                 .build();
     }
 
+    /**
+     * Creates a JSON Schema definition for character sets.
+     * Includes all available charsets from the Java runtime.
+     *
+     * @return JSON Schema properties defining the possible charset values
+     */
     private JsonSchemaProperties getCharsetsDef() {
         return JsonSchemaProperties.builder()
                 .type(JsonSchemaType.STRING)

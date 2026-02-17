@@ -3,6 +3,10 @@ package org.alexmond.config.json.schema.jsonschemamodel;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
+/**
+ * Enum representing the standard formats defined in JSON Schema specification.
+ * These formats are used to validate string values against specific patterns or rules.
+ */
 @Getter
 public enum JsonSchemaFormat {
     DATE_TIME("date-time"),      // Combined date and time with timezone
@@ -23,12 +27,25 @@ public enum JsonSchemaFormat {
     JSON_POINTER("json-pointer"), // JSON Pointer string
     RELATIVE_JSON_POINTER("relative-json-pointer"); // Relative JSON Pointer string
 
+    /**
+     * The string representation of the format as defined in JSON Schema specification.
+     */
     private final String value;
 
+    /**
+     * Constructs a new JsonSchemaFormat enum constant.
+     *
+     * @param value the string representation of the format
+     */
     JsonSchemaFormat(String value) {
         this.value = value;
     }
 
+    /**
+     * Returns the string representation of the format for JSON serialization.
+     *
+     * @return the format string value
+     */
     @JsonValue
     public String getJsonValue() {
         return value;

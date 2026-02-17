@@ -20,14 +20,23 @@ import java.util.stream.Collectors;
 
 /**
  * Helper class for building JSON schema from configuration properties.
- * Provides utility methods to process deprecation information and hints
- * during schema generation.
+ * Provides utility methods to process deprecation information, hints,
+ * validation constraints, and OpenAPI annotations during JSON schema generation.
+ * This class handles the conversion of Java annotations and metadata into
+ * corresponding JSON schema elements.
  */
 @AllArgsConstructor
 @Slf4j
 public class JsonSchemaBuilderHelper {
 
+    /**
+     * Configuration settings for JSON schema generation.
+     */
     private final JsonConfigSchemaConfig config;
+
+    /**
+     * Service for mapping Java types to JSON schema types.
+     */
     private final TypeMappingService typeMappingService;
 
     /**
@@ -77,6 +86,13 @@ public class JsonSchemaBuilderHelper {
         }
     }
 
+    /**
+     * Processes an enum class and returns a set of possible enum values.
+     * The returned set includes both the original enum names and their lowercase versions.
+     *
+     * @param itemClass The enum class to process
+     * @return Set of enum values, or null if the class is not an enum
+     */
     public Set<String> processEnumItem(Class<?> itemClass) {
         log.debug("Processing enum values for property: {}", itemClass.getCanonicalName());
         if (itemClass.isEnum()) {
@@ -93,6 +109,14 @@ public class JsonSchemaBuilderHelper {
         return null;
     }
 
+    /**
+     * Processes validation annotations on a field and updates the JSON schema properties accordingly.
+     * Handles Jakarta validation annotations such as @Min, @Max, @Size, @Pattern, @NotEmpty, and @Email.
+     *
+     * @param jsonSchemaProperties The JSON schema properties to update with validation constraints
+     * @param field                The field to process for validation annotations
+     * @param propName             The name of the property being processed
+     */
     public void processValidated(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
         log.trace("Validation: Processing validation for property: {}", propName);
 
@@ -136,6 +160,14 @@ public class JsonSchemaBuilderHelper {
         }
     }
 
+    /**
+     * Processes OpenAPI annotations on a field and updates the JSON schema properties.
+     * Handles various Schema annotation attributes like description, format, example, etc.
+     *
+     * @param jsonSchemaProperties The JSON schema properties to update with OpenAPI information
+     * @param field                The field to process for OpenAPI annotations
+     * @param propName             The name of the property being processed
+     */
     public void processOpenapi(JsonSchemaProperties jsonSchemaProperties, Field field, String propName) {
         log.trace("OpenAPI: Processing schema for property: {}", propName);
         if (field.isAnnotationPresent(Schema.class)) {
@@ -158,6 +190,13 @@ public class JsonSchemaBuilderHelper {
         }
     }
 
+    /**
+     * Processes OpenAPI annotations on a class level and updates the JSON schema properties.
+     * Currently handles the Schema description annotation at class level.
+     *
+     * @param jsonSchemaProperties The JSON schema properties to update with class-level OpenAPI information
+     * @param propClass            The class to process for OpenAPI annotations
+     */
     public void processClassOpenapi(JsonSchemaProperties jsonSchemaProperties, Class<?> propClass) {
         log.trace("OpenAPI: Processing Class schema for property: {}", propClass.getCanonicalName());
         if (propClass.isAnnotationPresent(Schema.class)) {

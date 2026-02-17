@@ -8,7 +8,6 @@ import com.networknt.schema.SchemaRegistry;
 import com.networknt.schema.dialect.Dialects;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
-import org.alexmond.config.json.schema.service.MissingTypeCollector;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Set;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -30,6 +28,7 @@ SimpleBootJsonSchemaGeneratorTests {
     @Autowired
     private JsonSchemaService jsonSchemaService;
 
+    @SuppressWarnings("EmptyMethod")
     @Test
     void contextLoads() {
     }

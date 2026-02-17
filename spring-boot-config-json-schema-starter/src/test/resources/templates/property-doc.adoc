@@ -1,0 +1,20 @@
+:toc: left
+:sectnums:
+= Configuration Properties
+Description of all available configuration properties for JSON Schema generation.
+
+
+[# th:each="group : ${groups}"]
+== [(${group.value.description})]
+|===
+|Name | Type | Description | Default Value | Example
+
+[# th:each="entry : ${group.value.asciiDocs}"]
+|[(${entry.key})]
+|[(${entry.value.type})]
+l|[(${entry.value.description})]
+l|[(${entry.value.defaultValue})]
+l|[(${entry.value.example})]
+[/]
+|===
+[/]

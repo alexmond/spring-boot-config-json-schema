@@ -1,9 +1,6 @@
 package org.alexmond.config.json.schema.jsonschemamodel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -129,10 +126,6 @@ public class JsonSchemaProperties {
 
     public XDeprecation getxDeprecation() {
         return xDeprecation;
-    }
-
-    public Map<String, Object> toMap() {
-        return objectMapper.convertValue(this, Map.class);
     }
 
     private <T> List<T> mergeLists(List<T> list1, List<T> list2) {

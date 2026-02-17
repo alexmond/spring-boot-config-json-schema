@@ -52,7 +52,7 @@ class JsonSchemaBuilderTest {
     }
 
     /**
-     * Tests the extraction of item type from List/Set generic type string.
+     * Tests the extraction of an item type from List/Set generic type string.
      *
      * @param input    The input List/Set type string to parse
      * @param expected The expected item type string

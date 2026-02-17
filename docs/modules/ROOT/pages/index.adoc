@@ -1,3 +1,5 @@
+:toc: left
+:sectnums:
 :title: Spring Boot Config JSON Schema Generator
 :description: Generate JSON Schema documentation from Spring Boot configuration properties
 :keywords: spring-boot, json-schema, configuration, validation, documentation

@@ -96,12 +96,6 @@ public class JsonConfigSchemaConfig {
     @Schema(description = "List of additional property paths to include", defaultValue = "logging")
     private List<String> additionalProperties = List.of("logging");
 
-
-    /**
-     * Map of property names or java objects to their type definitions.
-     * Used to store custom type mappings and property configurations
-     * that override or extend the default schema generation behavior.
-     */
     /**
      * Map of property names or java objects to their type definitions.
      * Used to store custom type mappings and property configurations
@@ -110,11 +104,6 @@ public class JsonConfigSchemaConfig {
     @Schema(description = "Custom JSON Schema property mappings")
     private Map<String, JsonSchemaProperties> JsonSchemaPropertiesMap = new HashMap<>();
 
-    /**
-     * Controls whether missing type information should be logged.
-     * When true, logs will be generated for types that couldn't be mapped during schema generation.
-     * This is useful for debugging and identifying unmapped types.
-     */
     /**
      * Controls whether missing type information should be logged.
      * When true, logs will be generated for types that couldn't be mapped during schema generation.

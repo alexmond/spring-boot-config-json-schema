@@ -16,6 +16,25 @@ spring:
   servlet:
     multipart:
       enabled: true
+  thymeleaf:
+    mode: text
+    suffix: .adoc
 
+
+ascii-doc:
+  ascii-doc-groups:
+    - prefix: "sample"
+      description: "Sample config"
+    - prefix: "spring"
+      description: "Core spring config"
+    - prefix: "ascii-doc"
+      description: "Ascii doc generator"
+    - prefix: "json-config-schema"
+      description: "Json schema config generator"
+    - prefix: "logging"
+      description: "Logging configuration"
+  includes:
+    - logging
+    - sample
 
 

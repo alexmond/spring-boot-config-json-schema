@@ -17,6 +17,23 @@ import java.util.*;
 /**
  * Builder class responsible for generating JSON Schema definitions from Spring configuration metadata.
  * Handles type mapping, property validation, and schema structure generation according to configured rules.
+ *
+ * <p>This class provides functionality to:
+ * <ul>
+ *   <li>Convert Spring configuration metadata to JSON Schema format</li>
+ *   <li>Handle complex type mappings and nested structures</li>
+ *   <li>Support validation rules and constraints</li>
+ *   <li>Process deprecation information</li>
+ *   <li>Generate schema definitions and references</li>
+ * </ul>
+ *
+ * <p>The builder supports features like:
+ * <ul>
+ *   <li>Anchor-based references</li>
+ *   <li>Definition-based references</li>
+ *   <li>OpenAPI annotations processing</li>
+ *   <li>Bean validation constraints</li>
+ * </ul>
  */
 @Slf4j
 public class JsonSchemaBuilder {
@@ -48,7 +65,7 @@ public class JsonSchemaBuilder {
      * @param included List of property paths to include in the schema
      * @return Map representing the complete JSON Schema structure
      */
-    public Map<String, Object> buildSchema(Map<String, Property> meta, List<String> included) {
+    public JsonSchemaRoot buildSchema(Map<String, Property> meta, List<String> included) {
         allMeta = meta;
         anchors = new HashSet<>();
         defs = new HashSet<>();
@@ -87,7 +104,7 @@ public class JsonSchemaBuilder {
         schemaRoot.setDefinitions(definitions);
         schemaRoot.setProperties(properties);
 
-        return schemaRoot.toMap();
+        return schemaRoot;
     }
 
     private void removeReferecedProperrties(Map<String, JsonSchemaProperties> properties, int depth) {
@@ -155,14 +172,13 @@ public class JsonSchemaBuilder {
     }
 
     /**
-     * Ensures that `node` contains an OBJECT-typed JsonSchemaProperties under `key`
-     * with a non-null, mutable `properties` map, and returns that map.
-     * <p>
-     * Ensures that a node exists at the given key and has the correct structure for an object type.
+     * Ensures that a node exists at the given key with proper object type structure.
+     * Creates or updates the node to have required object properties if needed.
      *
-     * @param node Parent node to check/update
-     * @param key  Key where the object node should exist
-     * @return Properties map of the ensured object node
+     * @param node Parent node where the object node should exist
+     * @param key  Key under which the object node should be stored
+     * @param prop Property metadata for the node
+     * @return The properties map of the ensured object node
      */
     private Map<String, JsonSchemaProperties> ensureObjectNode(Map<String, JsonSchemaProperties> node, String key, Property prop) {
         JsonSchemaProperties propNode = node.get(key);
@@ -243,11 +259,22 @@ public class JsonSchemaBuilder {
 
     /**
      * Processes a leaf property, handling type mapping, validation rules, and nested type definitions.
+     * This method is the core processor for individual properties in the schema generation process.
      *
-     * @param jsonSchemaProperties Schema properties to update
-     * @param prop                 Property metadata to process
-     * @param visited              Set of already processed types to prevent cycles
-     * @return True if property was processed successfully, false otherwise
+     * @param jsonSchemaProperties Schema properties object to be updated with processed information
+     * @param prop                 Property metadata containing type, validation, and other configuration details
+     * @param visited              Set of already processed types to prevent infinite recursion in cyclic references
+     * @return True if property was processed successfully, false if processing should be skipped
+     *
+     * <p>The method handles:
+     * <ul>
+     *   <li>Basic type mapping and validation</li>
+     *   <li>Complex object structures and nested properties</li>
+     *   <li>Array and Map type special processing</li>
+     *   <li>Enum value processing</li>
+     *   <li>Reference and anchor management</li>
+     *   <li>OpenAPI and validation annotation processing</li>
+     * </ul>
      */
     private Boolean processLeaf(JsonSchemaProperties jsonSchemaProperties, Property prop, Set<String> visited) {
         processedProp.add(prop.getName());
@@ -350,6 +377,15 @@ public class JsonSchemaBuilder {
         return true;
     }
 
+    /**
+     * Processes map-type properties by handling their value types and creating appropriate schema definitions.
+     * Handles special cases for Properties objects and generic Object values.
+     *
+     * @param prop     Property metadata for the map
+     * @param propType The full type description of the map
+     * @param propDef  The schema properties object to be updated
+     * @param visited  Set of visited types to prevent cycles
+     */
     private void processMap(Property prop, String propType, JsonSchemaProperties propDef, Set<String> visited) {
         if (visited == null) {
             visited = new HashSet<>();
@@ -413,6 +449,15 @@ public class JsonSchemaBuilder {
                 .build());
     }
 
+    /**
+     * Processes array-type properties by handling their item types and creating appropriate schema definitions.
+     * Supports both simple arrays and complex object arrays.
+     *
+     * @param prop                 Property metadata for the array
+     * @param propType             The full type description of the array
+     * @param jsonSchemaProperties The schema properties object to be updated
+     * @param visited              Set of visited types to prevent cycles
+     */
     private void processArray(Property prop, String propType, JsonSchemaProperties jsonSchemaProperties, Set<String> visited) {
         if (propType.equals("java.lang.String[]")) {
             jsonSchemaProperties.setItems(
@@ -446,8 +491,7 @@ public class JsonSchemaBuilder {
             JsonSchemaProperties jsonSchemaPropertiesItem = typeMappingService.typeProp(itemType, prop);
 
             if (jsonSchemaPropertiesItem.getType() == JsonSchemaType.OBJECT) {
-                if (addReference(jsonSchemaPropertiesItem, itemType)) {
-                } else {
+                if (!addReference(jsonSchemaPropertiesItem, itemType)) {
                     addAnchor(itemType, jsonSchemaPropertiesItem);
                     Map<String, JsonSchemaProperties> complexProperties = processComplexType(itemType, prop, visited);
                     if (complexProperties != null) {

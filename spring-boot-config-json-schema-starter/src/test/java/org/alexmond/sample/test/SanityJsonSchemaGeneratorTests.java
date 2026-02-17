@@ -32,6 +32,7 @@ class SanityJsonSchemaGeneratorTests {
     @Autowired
     private JsonSchemaBuilder jsonSchemaBuilder;
 
+    @SuppressWarnings("EmptyMethod")
     @Test
     void contextLoads() {
     }
