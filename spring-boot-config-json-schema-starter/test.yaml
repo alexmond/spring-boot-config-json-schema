@@ -53,37 +53,3 @@ server:
     session:
       cookie:
         partitioned: true
----
-$schema: ./sample-schema.json
-spring:
-  config:
-    activate:
-      on-profile:
-        - test
-
-sample:
-  string-sample: "Test profile"
-  deep-level1:
-    deep-level2:
-      list1:
-        - id: abc
-          param1: abd
-          param2: zzz
-      list2:
-        - id: abc
-          param2: bbbb
-          param1: zzz
-specialtype:
-  url: "http://abc.com"
-  uri: "http://abc.com"
-  email: bzzz
-  email-pattern: bzzz@yahoo.com
-  inet4-address: 192.168.100.10
-  uuid: AA97B177-9383-4934-8543-0F91A7A02836
-  inet6-address: "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
-
-
-
-
-
-

@@ -1,7 +1,5 @@
 package org.alexmond.sample.test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.Error;
 import com.networknt.schema.Schema;
 import com.networknt.schema.SchemaRegistry;
@@ -12,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -43,11 +42,7 @@ SimpleBootJsonSchemaGeneratorTests {
         SchemaRegistry factory = SchemaRegistry.withDialect(Dialects.getDraft202012());
         Schema schema = factory.getSchema(jsonConfigSchemaJson);
         List<Error> errors;
-        try {
-            errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
         if (!errors.isEmpty()) {
             errors.forEach(error -> log.error("Schema validation error: {}", error));
             throw new AssertionError("Schema validation failed");

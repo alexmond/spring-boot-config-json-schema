@@ -301,10 +301,10 @@ public class JsonSchemaBuilder {
             }
 
             if (field != null) {
-                if (!propType.equals(field.getGenericType().getTypeName())) {
-                    log.debug("Property {} type {} mismatch with real one {}",
-                            prop.getName(), propType, field.getGenericType().getTypeName());
-                    propType = field.getGenericType().getTypeName();
+                    if (!propType.equals(field.getGenericType().getTypeName())) {
+                        log.debug("Property {} type {} mismatch with real one {}",
+                                prop.getName(), propType, field.getGenericType().getTypeName());
+                        propType = field.getGenericType().getTypeName();
                 }
             }
         }
@@ -547,7 +547,13 @@ public class JsonSchemaBuilder {
         try {
             Class<?> clazz = Class.forName(type);
             for (Field field : clazz.getDeclaredFields()) {
-                String fieldGenName = field.getGenericType().getTypeName();
+                String fieldGenName;
+                try {
+                    fieldGenName = field.getGenericType().getTypeName();
+                } catch (TypeNotPresentException e) {
+                    log.debug("Type not present for field {} in class {}: {}", field.getName(), type, e.getMessage());
+                    continue;
+                }
                 if (config.getExcludeClasses().contains(fieldGenName)) {
                     log.warn("Excluding type {}. Skipping nested properties. for Property {}", fieldGenName, bootProp.getName());
                 } else {

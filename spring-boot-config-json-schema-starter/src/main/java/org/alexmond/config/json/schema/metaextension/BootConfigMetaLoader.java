@@ -1,12 +1,12 @@
 package org.alexmond.config.json.schema.metaextension;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.metamodel.BootConfigMeta;
 import org.alexmond.config.json.schema.metamodel.Group;
 import org.alexmond.config.json.schema.metamodel.Hint;
 import org.alexmond.config.json.schema.metamodel.Property;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,11 +23,7 @@ public class BootConfigMetaLoader {
     public BootConfigMeta loadFromStream(InputStream stream) {
         log.debug("Loading configuration from input stream");
         BootConfigMeta config = null;
-        try {
-            config = mapper.readValue(stream, BootConfigMeta.class);
-        } catch (IOException e) {
-            log.error("Failed to load config metadata {}", e.getMessage());
-        }
+        config = mapper.readValue(stream, BootConfigMeta.class);
         return config;
     }
 

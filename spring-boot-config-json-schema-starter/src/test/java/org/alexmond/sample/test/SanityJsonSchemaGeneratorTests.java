@@ -1,10 +1,7 @@
 package org.alexmond.sample.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
+//import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+//import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.alexmond.config.json.schema.service.JsonSchemaBuilder;
@@ -15,6 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.PropertyNamingStrategies;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -54,27 +55,19 @@ class SanityJsonSchemaGeneratorTests {
         assertFalse(meta.isEmpty(), "Collected metadata should not be empty");
     }
 
-    @Test
-    void useJacksonSchema() throws IOException {
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-        JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
-
-        // Generate schema for the Product class
-        JsonSchema productSchema = schemaGen.generateSchema(ConfigSample.class);
-        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-        writer.writeValue(Paths.get("gen.json").toFile(), productSchema);
-
-    }
+    // Waiting for 3.0 version
 //    @Test
-//    void testFieldTypes() throws IOException {
-//        Class<?> clazz = ConfigSample.class;
-//        for (Field field : clazz.getDeclaredFields()) {
-//            String fieldType = field.getType().getName();
-//            String fieldGenName = field.getGenericType().getTypeName();
-//            log.info("fieldType: {}, fieldGenName: {}", fieldType, fieldGenName);
-//        }
+//    void useJacksonSchema() throws IOException {
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+//        JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
+//
+//        // Generate schema for the Product class
+//        JsonSchema productSchema = schemaGen.generateSchema(ConfigSample.class);
+//        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+//        writer.writeValue(Paths.get("gen.json").toFile(), productSchema);
+//
 //    }
 
     @Test
@@ -82,7 +75,7 @@ class SanityJsonSchemaGeneratorTests {
         String jsonConfigSchema;
         jsonConfigSchema = jsonSchemaService.generateFullSchemaJson();
         ObjectMapper jsonMapper = new ObjectMapper();
-        com.fasterxml.jackson.databind.JsonNode jsonNode = jsonMapper.readTree(jsonConfigSchema);
+        JsonNode jsonNode = jsonMapper.readTree(jsonConfigSchema);
         Map<String, List<String>> duplicates = findDuplicateNodes(jsonNode);
         duplicates.entrySet().stream()
                 .filter(entry -> entry.getValue().size() > 1)
@@ -90,13 +83,13 @@ class SanityJsonSchemaGeneratorTests {
                 .forEach(entry -> log.info("Duplicate count {},value: ===== {} ====== found in paths: {}", entry.getValue().size(), entry.getKey(), entry.getValue()));
     }
 
-    private Map<String, List<String>> findDuplicateNodes(com.fasterxml.jackson.databind.JsonNode node) {
+    private Map<String, List<String>> findDuplicateNodes(JsonNode node) {
         Map<String, List<String>> duplicates = new HashMap<>();
         traverseNode(node, "", duplicates);
         return duplicates;
     }
 
-    private void traverseNode(com.fasterxml.jackson.databind.JsonNode node, String path, Map<String, List<String>> duplicates) {
+    private void traverseNode(JsonNode node, String path, Map<String, List<String>> duplicates) {
         if (node.isObject()) {
             node.properties().forEach(entry -> {
                 String newPath = path.isEmpty() ? entry.getKey() : path + "." + entry.getKey();

@@ -27,7 +27,15 @@ public class Property {
     private Deprecation deprecation;
     private Hint hint;
     @Builder.Default
-    private boolean groupProperty = false;
+    private Boolean groupProperty = false;
+
+    public Boolean isGroupProperty() {
+        return groupProperty != null && groupProperty;
+    }
+
+    public void setGroupProperty(Boolean groupProperty) {
+        this.groupProperty = groupProperty;
+    }
 
     /**
      * Merges this property with a Group, inheriting the group's properties if they are not empty.

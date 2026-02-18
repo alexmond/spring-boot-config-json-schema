@@ -1,8 +1,5 @@
 package org.alexmond.config.json.schema.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
@@ -12,6 +9,8 @@ import org.alexmond.config.json.schema.metamodel.BootConfigMeta;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,12 +80,7 @@ public class JsonSchemaService {
             if (config.getMissingTypeLog())
                 missingTypeCollector.getMissingTypes().forEach(type -> log.info("Missing types: {}", type));
         }
-        try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schemaCache);
-        } catch (JsonProcessingException e) {
-            log.error("Failed to generate schema", e);
-            return "";
-        }
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schemaCache);
     }
 
     /**
