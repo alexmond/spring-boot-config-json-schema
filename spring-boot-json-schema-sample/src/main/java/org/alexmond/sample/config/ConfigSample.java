@@ -12,12 +12,19 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.*;
 
-
 @Schema(description = "Sample type values")
-enum SampleType {TYPE1, TYPE2, TYPE3}
+enum SampleType {
+
+	TYPE1, TYPE2, TYPE3
+
+}
 
 @Schema(description = "Sample status values")
-enum SampleStatus {ACTIVE, PENDING, INACTIVE}
+enum SampleStatus {
+
+	ACTIVE, PENDING, INACTIVE
+
+}
 
 @Component
 @ConfigurationProperties(prefix = "sample")
@@ -25,99 +32,102 @@ enum SampleStatus {ACTIVE, PENDING, INACTIVE}
 @Data
 @Schema(description = "Configuration sample class")
 public class ConfigSample {
-    // Java doc style comments required for config metadata processor
-    /**
-     * String sample
-     **/
-    @Schema(description = "Sample string property", defaultValue = "stringSample")
-    @NotNull
-    String stringSample = "stringSample";
-    /**
-     * Boolean sample Default: true
-     **/
-    @Schema(description = "Sample boolean property", defaultValue = "true")
-    Boolean booleanSample = true;
 
-    /**
-     * String array sample
-     **/
-    String[] stringArraySample;
-    /**
-     * Integer sample
-     **/
-    @Min(10)
-    @Max(200)
-    @Schema(description = "Sample integer property", minimum = "10", maximum = "200", defaultValue = "100")
-    Integer integerSample = 100;
+	// Java doc style comments required for config metadata processor
+	/**
+	 * String sample
+	 **/
+	@Schema(description = "Sample string property", defaultValue = "stringSample")
+	@NotNull
+	String stringSample = "stringSample";
 
-    /**
-     * Sample enum property
-     **/
-    @Schema(description = "Sample enum property", defaultValue = "EN1")
-    EnumSample enumSample = EnumSample.EN1;
+	/**
+	 * Boolean sample Default: true
+	 **/
+	@Schema(description = "Sample boolean property", defaultValue = "true")
+	Boolean booleanSample = true;
 
-    /**
-     * Sample string collection
-     **/
-    @Schema(description = "Sample string collection")
-    List<String> collectionSample = new ArrayList<>();
-    /**
-     * Sample nested configuration collection
-     **/
-    @Schema(description = "Sample nested configuration collection")
-    List<ConfigSampleNested2> configSampleObjectArray = new ArrayList<>();
+	/**
+	 * String array sample
+	 **/
+	String[] stringArraySample;
 
-    /**
-     * Sample integer collection
-     **/
-    List<Integer> sampleIntArray = new ArrayList<>();
+	/**
+	 * Integer sample
+	 **/
+	@Min(10)
+	@Max(200)
+	@Schema(description = "Sample integer property", minimum = "10", maximum = "200", defaultValue = "100")
+	Integer integerSample = 100;
 
-    /**
-     * Sample string map
-     **/
-    @Schema(description = "Sample string map")
-    Map<String, String> mapSample = new HashMap<>();
+	/**
+	 * Sample enum property
+	 **/
+	@Schema(description = "Sample enum property", defaultValue = "EN1")
+	EnumSample enumSample = EnumSample.EN1;
 
-    /**
-     * Sample object map
-     **/
-    @Schema(description = "Sample object map")
-    Map<String, ConfigMapObject> mapObjectSample = new HashMap<>();
+	/**
+	 * Sample string collection
+	 **/
+	@Schema(description = "Sample string collection")
+	List<String> collectionSample = new ArrayList<>();
 
-    /**
-     * Nested class sample
-     **/
-    @NestedConfigurationProperty // required for config metadata processor
-    @Schema(description = "Nested configuration sample")
-    ConfigSampleNested configSampleNested = new ConfigSampleNested();
+	/**
+	 * Sample nested configuration collection
+	 **/
+	@Schema(description = "Sample nested configuration collection")
+	List<ConfigSampleNested2> configSampleObjectArray = new ArrayList<>();
 
-    /**
-     * Sample type set
-     **/
-    @Schema(description = "Sample type set")
-    EnumSet<SampleType> enumTypeSet = EnumSet.noneOf(SampleType.class);
+	/**
+	 * Sample integer collection
+	 **/
+	List<Integer> sampleIntArray = new ArrayList<>();
 
-    /**
-     * Sample status map
-     **/
-    @Schema(description = "Sample status map")
-    EnumMap<SampleStatus, String> enumStatusMap = new EnumMap<>(SampleStatus.class);
+	/**
+	 * Sample string map
+	 **/
+	@Schema(description = "Sample string map")
+	Map<String, String> mapSample = new HashMap<>();
 
-    /**
-     * Properties example
-     **/
-    Properties propertiesExample = new Properties();
+	/**
+	 * Sample object map
+	 **/
+	@Schema(description = "Sample object map")
+	Map<String, ConfigMapObject> mapObjectSample = new HashMap<>();
 
-    /**
-     * Properties map example
-     **/
-    Map<String, String> propertiesMapExample = new HashMap<>();
+	/**
+	 * Nested class sample
+	 **/
+	@NestedConfigurationProperty // required for config metadata processor
+	@Schema(description = "Nested configuration sample")
+	ConfigSampleNested configSampleNested = new ConfigSampleNested();
 
+	/**
+	 * Sample type set
+	 **/
+	@Schema(description = "Sample type set")
+	EnumSet<SampleType> enumTypeSet = EnumSet.noneOf(SampleType.class);
 
-    /**
-     * Deep level 1 nested configuration
-     **/
-    @NestedConfigurationProperty
-    DeepLevel1 deepLevel1 = new DeepLevel1();
+	/**
+	 * Sample status map
+	 **/
+	@Schema(description = "Sample status map")
+	EnumMap<SampleStatus, String> enumStatusMap = new EnumMap<>(SampleStatus.class);
+
+	/**
+	 * Properties example
+	 **/
+	Properties propertiesExample = new Properties();
+
+	/**
+	 * Properties map example
+	 **/
+	Map<String, String> propertiesMapExample = new HashMap<>();
+
+	/**
+	 * Deep level 1 nested configuration
+	 **/
+	@NestedConfigurationProperty
+	DeepLevel1 deepLevel1 = new DeepLevel1();
 
 }

@@ -8,13 +8,16 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
-@SuppressWarnings({"unused", "ConfigurationProperties"})
+@SuppressWarnings({ "unused", "ConfigurationProperties" })
 @Component
 @ConfigurationProperties
 @Validated
 @Data
 @Schema(description = "No prefix config")
 public class NoPrefix {
-    String noPrefix;
-    List<String> noPrefixList;
+
+	String noPrefix;
+
+	List<String> noPrefixList;
+
 }

@@ -13,10 +13,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ConfigSchemaYamlEndpoint {
 
-    private final JsonSchemaService jsonSchemaService;
+	private final JsonSchemaService jsonSchemaService;
 
-    @ReadOperation
-    public String schema() {
-        return jsonSchemaService.generateFullSchemaYaml();
-    }
+	@ReadOperation
+	public String schema() {
+		return jsonSchemaService.generateFullSchemaYaml();
+	}
+
 }

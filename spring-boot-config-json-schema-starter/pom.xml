@@ -8,7 +8,6 @@
         <version>1.0.10-SNAPSHOT</version>
     </parent>
     <artifactId>spring-boot-config-json-schema-starter</artifactId>
-    <version>1.0.10-SNAPSHOT</version>
     <name>Spring Boot Config Json Schema Starter</name>
 
     <url>https://www.alexmond.org/spring-boot-config-json-schema-starter/current/index.html</url>
@@ -108,7 +107,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>${jacoco.agent.arg}</argLine>
+                    <argLine>${argLine}</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -150,6 +149,18 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.spring.javaformat</groupId>
+                <artifactId>spring-javaformat-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

@@ -6,15 +6,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ConfigPrintRest {
-    final
-    ConfigSample configSample;
 
-    public ConfigPrintRest(ConfigSample configSample) {
-        this.configSample = configSample;
-    }
+	final ConfigSample configSample;
 
-    @GetMapping("/config")
-    public ConfigSample Config() {
-        return configSample;
-    }
+	public ConfigPrintRest(ConfigSample configSample) {
+		this.configSample = configSample;
+	}
+
+	@GetMapping("/config")
+	public ConfigSample Config() {
+		return configSample;
+	}
+
 }

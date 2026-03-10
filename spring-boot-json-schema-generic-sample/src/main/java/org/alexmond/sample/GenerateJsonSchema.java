@@ -10,18 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class GenerateJsonSchema {
 
-    @Autowired
-    private JsonSchemaService jsonSchemaService;
+	@Autowired
+	private JsonSchemaService jsonSchemaService;
 
-    @GetMapping("/config-schema")
-    public String getConfigSchema() {
-        return jsonSchemaService.generateFullSchemaJson();
-    }
+	@GetMapping("/config-schema")
+	public String getConfigSchema() {
+		return jsonSchemaService.generateFullSchemaJson();
+	}
 
-    @GetMapping("/config-schema.yaml")
-    public String getConfigSchemaYaml() {
-        return jsonSchemaService.generateFullSchemaYaml();
-    }
-
+	@GetMapping("/config-schema.yaml")
+	public String getConfigSchemaYaml() {
+		return jsonSchemaService.generateFullSchemaYaml();
+	}
 
 }

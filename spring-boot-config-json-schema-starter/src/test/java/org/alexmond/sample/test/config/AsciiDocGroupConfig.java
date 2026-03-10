@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class AsciiDocGroupConfig {
-    String prefix;
-    String description;
+
+	String prefix;
+
+	String description;
+
 }

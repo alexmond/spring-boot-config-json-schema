@@ -11,11 +11,13 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @Data
 @Schema(description = "First level of nested configuration properties")
 public class DeepLevel1 {
-    /**
-     * Nested configuration properties for the second level of configuration.
-     * Initialized with default DeepLevel2 instance.
-     */
-    @Schema(description = "Second level nested configuration properties")
-    @NestedConfigurationProperty
-    private DeepLevel2 deepLevel2 = new DeepLevel2();
+
+	/**
+	 * Nested configuration properties for the second level of configuration. Initialized
+	 * with default DeepLevel2 instance.
+	 */
+	@Schema(description = "Second level nested configuration properties")
+	@NestedConfigurationProperty
+	private DeepLevel2 deepLevel2 = new DeepLevel2();
+
 }

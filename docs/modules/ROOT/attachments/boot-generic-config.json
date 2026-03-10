@@ -21,7 +21,7 @@
     },
     "java.util.Locale" : {
       "type" : "string",
-      "enum" : [ "", "ksh", "rw_RW", "af_ZA", "en_TC", "fr_LU", "en_TK", "ccp", "sn_ZW_#Latn", "it_SM", "en_TO", "en_TT", "sbp_TZ_#Latn", "nl_AW", "de_IT", "en_TV", "om_ET_#Latn", "en_TZ", "teo", "fr_ML", "sr_ME_#Latn", "ti_ER", "nl_BE", "fr_MQ", "fr_MU", "ti_ET", "en_UG", "fr_MR", "en_UM", "os_RU", "nl_BQ", "seh_MZ_#Latn", "nus_SS_#Latn", "fr_MA", "ko_KR", "en_US", "ko_KP", "kok_IN", "ksh_DE", "fr_MC", "fr_MF", "ses_ML", "fr_MG", "ceb", "pcm_NG_#Latn", "be_BY", "de_LI", "dav_KE_#Latn", "se_NO", "xog", "en_RW", "nd_ZW", "dua_CM", "sr_XK_#Cyrl", "bn_IN", "mzn", "ms_ID", "en_SC", "pa_IN", "en_SD", "en_SB", "fr_KM", "en_SG", "en_SH", "en_SE", "en_SL", "en_SI", "et_EE_#Latn", "fi_FI", "en_SS", "ru_UA", "vai__#Latn", "ur_PK", "en_SX", "uz_UZ_#Latn", "en_SZ", "cgg", "en_PH", "bn_BD", "fr_HT", "en_PG", "nnh_CM", "en_PK", "ff_LR_#Latn", "en_PN", "sr_BA", "en_PR", "kw_GB_#Latn", "en_PW", "sg_CF_#Latn", "ewo_CM_#Latn", "ur_IN", "bg_BG_#Cyrl", "shi_MA_#Latn", "sg_CF", "be_BY_#Cyrl", "chr", "nds_DE_#Latn", "sw_TZ_#Latn", "jmc_TZ", "en_MY", "sw_UG", "en_MW", "da_DK_#Latn", "hi_IN", "en_NA", "en_NF", "en_NG", "sw_TZ", "fr_FR", "yo_BJ", "ms_MY", "sr_BA_#Latn", "nl_CW", "en_NL", "ks__#Arab", "en_NR", "sr_CS", "haw_US", "nl_NL_#Latn", "pcm", "en_NU", "tt_RU_#Cyrl", "wae_CH", "en_NZ", "fr_GF", "kam_KE", "fr_GN", "ca_ES_VALENCIA", "fr_GP", "fr_GQ", "cy_GB", "ceb_PH", "ckb", "lu_CD", "fr_GA", "de_AT", "en_KY", "mgo_CM_#Latn", "gsw", "agq", "lag_TZ_#Latn", "fr_DJ", "ca_IT", "ff_GM_#Adlm", "en_LC", "vai_LR_#Vaii", "yue__#Hant", "yue__#Hans", "ja_JP_JP_#u-ca-japanese", "sv_AX", "luy_KE", "en_LR", "naq", "en_LS", "ti_ET_#Ethi", "sn_ZW", "ff_NE_#Adlm", "ms_MY_#Latn", "ff_SN_#Latn", "en_MG", "en_MH", "ar_EG_#Arab", "naq_NA", "nmg_CM_#Latn", "kea_CV", "en_MO", "fr_DZ", "en_MP", "en_MU", "en_MS", "bs_BA_#Latn", "yue_CN_#Hans", "en_MT", "bas_CM_#Latn", "it_IT", "pl_PL", "fr_BE", "teo_UG_#Latn", "fr_BF", "ks_IN", "tr_TR", "fr_BI", "fr_BJ", "my_MM_#Mymr", "ff_GH_#Adlm", "ca_ES_#Latn", "guz", "de_DE", "fr_BL", "tg_TJ", "ksf_CM", "en_JE", "de_CH", "zh_HK", "uz_AF", "luy_KE_#Latn", "en_JM", "yo_NG", "pa_PK", "pa_PK_#Arab", "ee_GH", "zu_ZA_#Latn", "fr_CA", "fr_CF", "fr_CG", "fr_CD", "so_SO_#Latn", "ff_GN_#Adlm", "fr_CH", "fr_CI", "vi_VN", "fr_CM", "de_BE", "en_KE", "en_KI", "guz_KE_#Latn", "en_KN", "nds", "uz__#Latn", "fy_NL", "lag_TZ", "ast_ES_#Latn", "en_GU", "en_GY", "bn_BD_#Beng", "lv_LV_#Latn", "af_NA", "yo_NG_#Latn", "ig_NG", "vun", "th_TH_#Thai", "ca_ES", "lag", "sv_SE_#Latn", "en_HK", "sa_IN_#Deva", "nl_NL", "ff_GW_#Latn", "ky_KG_#Cyrl", "en_IE", "hr_HR", "ms_SG", "en_IM", "en_IN", "en_IL", "en_IO", "rof_TZ_#Latn", "en_ER", "kab_DZ_#Latn", "ii_CN_#Yiii", "zh_SG_#Hans", "rof", "sat_IN_#Olck", "hr_HR_#Latn", "fur_IT", "sat_IN", "en_FJ", "en_FK", "en_FI", "se_SE", "as_IN", "en_FM", "az_AZ_#Cyrl", "jmc_TZ_#Latn", "teo_UG", "ca_FR", "sr_ME", "en_GD", "ksb_TZ", "en_GB", "en_GG", "en_GH", "ml_IN", "en_GI", "zh_CN", "ewo", "dje_NE", "en_GM", "ta_LK", "jgo_CM_#Latn", "nb_NO_#Latn", "bem_ZM_#Latn", "to_TO_#Latn", "nb_NO", "sd__#Deva", "sd_IN_#Deva", "en_US_POSIX", "tg_TJ_#Cyrl", "sr_RS_#Latn", "el_GR_#Grek", "ia_001", "zh_CN_#Hans", "qu_BO", "bez_TZ", "mni_IN_#Beng", "ta_MY", "fo_FO", "se_NO_#Latn", "sa_IN", "jgo_CM", "sr__#Cyrl", "twq", "gl_ES_#Latn", "gsw_CH", "fo_DK", "asa", "yav", "ebu_KE", "mfe_MU_#Latn", "lv_LV", "ar_IQ", "zh_MO_#Hant", "ar_IL", "ksf_CM_#Latn", "zh_MO_#Hans", "br_FR", "ast", "nmg", "th_TH", "sw_CD", "gu_IN_#Gujr", "lb_LU_#Latn", "su_ID", "ru_KZ", "ar_BH", "shi__#Tfng", "uz__#Arab", "haw", "ff_BF_#Latn", "uz_AF_#Arab", "mgh_MZ", "sk_SK_#Latn", "ru_KG", "tzm", "gd_GB", "ta_IN", "nnh", "teo_KE", "rn_BI_#Latn", "dua_CM_#Latn", "yue_CN", "kk_KZ", "fr_YT", "no_NO", "fr_VU", "luo_KE", "rwk", "mgh_MZ_#Latn", "twq_NE_#Latn", "gsw_FR", "jgo", "lkt", "ar_DJ", "kde_TZ_#Latn", "wae", "nyn_UG", "qu_PE_#Latn", "ce_RU", "si_LK_#Sinh", "jv_ID", "kk_KZ_#Cyrl", "eu_ES_#Latn", "ar_DZ", "lb_LU", "dsb_DE_#Latn", "fr_WF", "tzm_MA", "mt_MT_#Latn", "kkj_CM_#Latn", "ar_ER", "qu_EC", "ar_EG", "kln_KE_#Latn", "ar_EH", "sq_XK", "nb_SJ", "saq_KE", "pl_PL_#Latn", "en_001", "fr_TD", "fr_TG", "ff_NE_#Latn", "ff_GH_#Latn", "fr_TN", "te_IN", "brx_IN", "ff_CM_#Adlm", "ff_GN_#Latn", "tr_CY", "ff_MR_#Adlm", "os_GE", "id_ID", "fr_RW", "en_ZM", "km_KH", "en_ZW", "se_FI", "rn_BI", "fr_RE", "no_NO_#Latn", "hy_AM_#Armn", "fr_SY", "ru_MD", "lkt_US_#Latn", "fr_SC", "zgh_MA", "sd_PK_#Arab", "sl_SI", "fr_SN", "te_IN_#Telu", "ar_AE", "gsw_LI", "jmc", "fr_PM", "nus", "luo_KE_#Latn", "lo_LA", "gv_IM", "dav", "ug_CN", "sw_KE", "fr_PF", "lrc", "qu_PE", "ja_JP_#Jpan", "pa_IN_#Guru", "is_IS_#Latn", "vai_LR_#Latn", "ms_BN", "de_LU", "eo_001", "en_ZA", "fy_NL_#Latn", "en_VC", "ru_RU", "it_VA", "en_VG", "mai_IN", "sd__#Arab", "seh_MZ", "en_VI", "ee_TG", "ff_GM_#Latn", "vai__#Vaii", "en_VU", "fr_NE", "fr_NC", "sah", "haw_US_#Latn", "az__#Latn", "saq", "sat", "ps_PK", "mai_IN_#Deva", "bg_BG", "mn_MN_#Cyrl", "en_WS", "et_EE", "bem_ZM", "ta_SG", "pcm_NG", "sbp", "ha_GH", "gv_IM_#Latn", "nyn", "bo_CN", "luo", "fil", "es_EA", "es_EC", "luy", "bas", "es_ES", "pt_ST", "mi_NZ_#Latn", "xh_ZA", "nn_NO_#Latn", "af", "nnh_CM_#Latn", "bo_CN_#Tibt", "af_ZA_#Latn", "to_TO", "no_NO_NY", "pt_BR_#Latn", "ak", "sd_PK", "am_ET", "am", "ar", "as", "es_ES_#Latn", "az", "pa__#Arab", "ki_KE_#Latn", "chr_US_#Cher", "be", "es_BR", "bg", "zu_ZA", "ccp_BD", "bm", "ff__#Latn", "bn", "bo", "es_BZ", "br", "bs", "ar_YE", "seh", "es_CO", "mk_MK_#Cyrl", "ses_ML_#Latn", "pa__#Guru", "ca", "es_CL", "sq_AL_#Latn", "ses", "ff_NG_#Latn", "ce", "nmg_CM", "es_CR", "es_CU", "rof_TZ", "br_FR_#Latn", "mg_MG", "cs", "az_AZ", "kam_KE_#Latn", "cy", "es_DO", "ff_BF_#Adlm", "da", "pt_PT", "de", "ln_CD_#Latn", "mg_MG_#Latn", "wae_CH_#Latn", "bem", "hu_HU", "ar_SA", "es_419", "ar_SD", "so_KE", "bez", "dz", "ff_MR_#Latn", "tr_TR_#Latn", "jv_ID_#Latn", "ak_GH", "dje", "ee", "en_US_#Latn", "ar_SS", "ro_MD", "vai_LR", "ar_SO", "es_AR", "el", "en", "eo", "es", "et", "eu", "ar_TD", "bas_CM", "he_IL_#Hebr", "shi", "su_ID_#Latn", "hsb", "ar_SY", "es_BO", "bs_BA_#Cyrl", "fa", "ug_CN_#Arab", "ff", "fi", "ar_TN", "yue", "hsb_DE_#Latn", "fo", "fr", "sah_RU_#Cyrl", "fy", "uz_UZ", "ga", "ro_RO_#Latn", "gd", "gl", "fr_FR_#Latn", "gu", "yi_001", "gv", "sr__#Latn", "xh_ZA_#Latn", "zh_TW_#Hant", "pt_TL", "ha", "ga_IE_#Latn", "ff_SL_#Latn", "he", "or_IN_#Orya", "om_ET", "hi", "cgg_UG", "ro_RO", "smn_FI_#Latn", "uk_UA_#Cyrl", "mt_MT", "hr", "ff_GN", "mgo_CM", "sah_RU", "hu", "hy", "lrc_IR_#Arab", "om_KE", "kkj_CM", "ia", "id", "ig", "ar_OM", "ii", "dz_BT", "ne_NP_#Deva", "yue_HK", "ccp_IN", "is", "it", "mzn_IR", "ceb_PH_#Latn", "ja", "kde_TZ", "cy_GB_#Latn", "doi", "kl_GL_#Latn", "ko_KR_#Kore", "jv", "ps_AF_#Arab", "rwk_TZ_#Latn", "saq_KE_#Latn", "ar_QA", "mai", "smn", "ka", "ar_PS", "ki", "mas", "kk", "hu_HU_#Latn", "kl", "km", "kn", "ko", "lt_LT_#Latn", "ks", "ku", "kw", "az__#Cyrl", "ky", "am_ET_#Ethi", "lb", "cs_CZ_#Latn", "lg", "mi_NZ", "fur", "ln", "lo", "lt", "lu", "lv", "ckb_IQ", "ckb_IR", "sq_MK", "mni__#Beng", "so_SO", "mg", "yi_001_#Hebr", "mi", "mk", "ar_JO", "ml", "ckb_IQ_#Arab", "mn", "is_IS", "fil_PH_#Latn", "sr_ME_#Cyrl", "mr", "ms", "mt", "nus_SS", "ee_GH_#Latn", "my", "chr_US", "ru_BY", "dsb", "nb", "shi_MA_#Tfng", "nd", "ar_KW", "kn_IN_#Knda", "nd_ZW_#Latn", "lt_LT", "ne", "kea_CV_#Latn", "ar_KM", "dyo_SN_#Latn", "ps_AF", "nl", "nn", "zh__#Hans", "no", "rm_CH_#Latn", "zh__#Hant", "ar_LB", "mas_KE_#Latn", "kab", "ki_KE", "vi_VN_#Latn", "sat__#Olck", "bs__#Latn", "kam", "ar_LY", "zh_HK_#Hans", "mer", "zh_HK_#Hant", "om", "mni_IN", "or", "os", "fil_PH", "naq_NA_#Latn", "mk_MK", "mfe", "ar_MA", "dua", "pa", "lg_UG", "ml_IN_#Mlym", "uz_UZ_#Cyrl", "twq_NE", "pl", "ku_TR_#Latn", "smn_FI", "ar_MR", "en_CM", "ps", "pt", "ca_AD", "it_CH", "en_CX", "es_US", "pt_BR", "en_CY", "mgh", "ig_NG_#Latn", "es_UY", "ii_CN", "mgo", "en_DE", "fo_FO_#Latn", "ln_CD", "mer_KE", "en_DG", "tzm_MA_#Latn", "en_DM", "en_DK", "dz_BT_#Tibt", "qu", "es_VE", "ff_NG_#Adlm", "da_DK", "ak_GH_#Latn", "brx", "pt_AO", "lkt_US", "kde", "mua_CM", "ln_AO", "yav_CM_#Latn", "fa_IR_#Arab", "rm", "rn", "ro", "el_GR", "ru", "eo_001_#Latn", "rw", "kea", "en_AU", "da_GL", "en_AS", "en_AT", "he_IL", "sa", "es_SV", "ka_GE_#Geor", "sr_BA_#Cyrl", "sd", "se", "sbp_TZ", "en_BB", "sg", "si", "gsw_CH_#Latn", "sk", "sl", "sn", "en_BE", "so", "rw_RW_#Latn", "sq", "asa_TZ", "en_BI", "sr", "hi_IN_#Deva", "su", "en_BM", "sv", "ln_CG", "sw", "ln_CF", "en_BS", "en_BW", "ur_PK_#Arab", "ia_001_#Latn", "en_BZ", "ta", "doi_IN_#Deva", "te", "tg", "th", "en_CC", "ti", "ka_GE", "en_CA", "tk", "uk_UA", "en_CH", "os_GE_#Cyrl", "hr_BA", "to", "dyo", "en_CK", "tr", "tt", "bez_TZ_#Latn", "si_LK", "ne_IN", "rm_CH", "ug", "sv_FI", "kl_GL", "kw_GB", "uk", "it_IT_#Latn", "mua_CM_#Latn", "ur", "uz", "sr_RS", "nds_NL", "ff_SL_#Adlm", "vi", "su__#Latn", "zh_MO", "khq", "en_AE", "en_AI", "en_AG", "lu_CD_#Latn", "nl_SR", "ff_LR_#Adlm", "nl_SX", "khq_ML_#Latn", "fur_IT_#Latn", "mn_MN", "el_CY", "ksh_DE_#Latn", "shi_MA", "wo", "sr_XK_#Latn", "zgh", "ar_001", "ff_CM_#Latn", "pt_CH", "nn_NO", "es_PE", "es_PA", "fa_IR", "mni", "mas_TZ", "es_PH", "pt_CV", "xh", "lg_UG_#Latn", "hsb_DE", "ewo_CM", "es_PR", "fi_FI_#Latn", "tt_RU", "ru_RU_#Cyrl", "es_PY", "kkj", "cs_CZ", "asa_TZ_#Latn", "yi", "yo", "mfe_MU", "kln_KE", "es_MX", "sk_SK", "ccp_BD_#Cakm", "vai", "sv_SE", "sq_AL", "gd_GB_#Latn", "es_NI", "my_MM", "kln", "zh", "th_TH_TH_#u-nu-thai", "vun_TZ", "doi_IN", "ha_NG_#Latn", "mer_KE_#Latn", "zu", "bm_ML_#Latn", "guz_KE", "km_KH_#Khmr", "ks_IN_#Arab", "ja_JP", "or_IN", "sd_IN", "bs__#Cyrl", "ha_NG", "eu_ES", "ha_NE", "as_IN_#Beng", "pt_GQ", "en_150", "az_AZ_#Latn", "ku_TR", "pt_GW", "nyn_UG_#Latn", "agq_CM_#Latn", "yue_HK_#Hant", "vun_TZ_#Latn", "ff_SN_#Adlm", "bs_BA", "ne_NP", "agq_CM", "ga_IE", "ebu", "brx_IN_#Deva", "bm_ML", "kok", "khq_ML", "es_IC", "sr_RS_#Cyrl", "mr_IN_#Deva", "ff__#Adlm", "gl_ES", "kn_IN", "ff_GW_#Adlm", "ast_ES", "sl_SI_#Latn", "shi__#Latn", "ksb_TZ_#Latn", "id_ID_#Latn", "pt_MZ", "dsb_DE", "zgh_MA_#Tfng", "cgg_UG_#Latn", "mas_KE", "mua", "ga_GB", "xog_UG_#Latn", "ce_RU_#Cyrl", "dyo_SN", "so_DJ", "pt_LU", "dje_NE_#Latn", "mr_IN", "lrc_IQ", "lrc_IR", "kok_IN_#Deva", "bo_IN", "ky_KG", "zh_TW", "yav_CM", "tk_TM", "rwk_TZ", "es_GT", "pt_MO", "es_GQ", "ta_IN_#Taml", "uz__#Cyrl", "zh_SG", "wo_SN", "fa_AF", "nds_DE", "hy_AM", "mzn_IR_#Arab", "xog_UG", "de_DE_#Latn", "dav_KE", "kab_DZ", "es_HN", "gu_IN", "wo_SN_#Latn", "ff_SN", "ebu_KE_#Latn", "so_ET", "ksb", "tk_TM_#Latn", "lo_LA_#Laoo", "ksf" ]
+      "enum" : [ "", "ksh", "rw_RW", "af_ZA", "en_TC", "fr_LU", "en_TK", "ccp", "sn_ZW_#Latn", "it_SM", "en_TO", "en_TT", "sbp_TZ_#Latn", "nl_AW", "de_IT", "en_TV", "raj", "om_ET_#Latn", "en_TZ", "teo", "fr_ML", "sr_ME_#Latn", "ti_ER", "nl_BE", "fr_MQ", "ann_NG_#Latn", "yrl_BR_#Latn", "fr_MU", "ti_ET", "en_UG", "fr_MR", "en_UM", "os_RU", "nl_BQ", "seh_MZ_#Latn", "nus_SS_#Latn", "fr_MA", "ko_KR", "en_US", "ko_KP", "kok_IN", "ksh_DE", "fr_MC", "oc_FR_#Latn", "fr_MF", "ses_ML", "fr_MG", "ceb", "pcm_NG_#Latn", "be_BY", "de_LI", "dav_KE_#Latn", "se_NO", "xog", "en_RW", "nd_ZW", "dua_CM", "sr_XK_#Cyrl", "bn_IN", "mzn", "ms_ID", "en_SC", "pa_IN", "en_SD", "en_SB", "fr_KM", "en_SG", "en_SH", "en_SE", "en_SL", "en_SI", "et_EE_#Latn", "fi_FI", "ks_IN_#Deva", "en_SS", "ru_UA", "vai__#Latn", "ur_PK", "en_SX", "uz_UZ_#Latn", "en_SZ", "cgg", "en_PH", "bn_BD", "fr_HT", "en_PG", "nnh_CM", "en_PK", "ff_LR_#Latn", "en_PN", "sr_BA", "en_PR", "kw_GB_#Latn", "en_PW", "sg_CF_#Latn", "ewo_CM_#Latn", "ur_IN", "bg_BG_#Cyrl", "shi_MA_#Latn", "sg_CF", "be_BY_#Cyrl", "chr", "raj_IN_#Deva", "nds_DE_#Latn", "sw_TZ_#Latn", "oc_ES", "jmc_TZ", "en_MY", "sw_UG", "en_MW", "da_DK_#Latn", "hi_IN", "en_NA", "en_NF", "en_NG", "sw_TZ", "fr_FR", "yo_BJ", "ms_MY", "sr_BA_#Latn", "nl_CW", "en_NL", "ks__#Arab", "en_NR", "sr_CS", "haw_US", "nl_NL_#Latn", "pcm", "en_NU", "tt_RU_#Cyrl", "wae_CH", "en_NZ", "fr_GF", "kam_KE", "fr_GN", "ca_ES_VALENCIA", "fr_GP", "fr_GQ", "cy_GB", "ceb_PH", "ckb", "lu_CD", "fr_GA", "de_AT", "en_KY", "bho_IN_#Deva", "mgo_CM_#Latn", "gsw", "agq", "lag_TZ_#Latn", "fr_DJ", "ca_IT", "tok_001", "ff_GM_#Adlm", "en_LC", "vai_LR_#Vaii", "bho_IN", "yue__#Hant", "yue__#Hans", "ja_JP_JP_#u-ca-japanese", "sv_AX", "luy_KE", "en_LR", "naq", "en_LS", "bgc_IN_#Deva", "ti_ET_#Ethi", "sn_ZW", "ff_NE_#Adlm", "ms_MY_#Latn", "ff_SN_#Latn", "en_MG", "en_MH", "ar_EG_#Arab", "naq_NA", "nmg_CM_#Latn", "kea_CV", "en_MO", "fr_DZ", "en_MP", "en_MU", "en_MV", "en_MS", "bs_BA_#Latn", "yue_CN_#Hans", "en_MT", "bas_CM_#Latn", "it_IT", "pl_PL", "fr_BE", "teo_UG_#Latn", "fr_BF", "ks_IN", "tr_TR", "fr_BI", "fr_BJ", "my_MM_#Mymr", "ff_GH_#Adlm", "ca_ES_#Latn", "guz", "de_DE", "fr_BL", "tg_TJ", "tok", "ksf_CM", "en_JE", "de_CH", "zh_HK", "uz_AF", "luy_KE_#Latn", "en_JM", "oc_FR", "yo_NG", "pa_PK", "pa_PK_#Arab", "ee_GH", "zu_ZA_#Latn", "mdf_RU", "fr_CA", "fr_CF", "fr_CG", "fr_CD", "so_SO_#Latn", "ff_GN_#Adlm", "fr_CH", "fr_CI", "vi_VN", "fr_CM", "de_BE", "en_KE", "en_KI", "guz_KE_#Latn", "en_KN", "nds", "uz__#Latn", "fy_NL", "lag_TZ", "ast_ES_#Latn", "en_GU", "en_GY", "bn_BD_#Beng", "lv_LV_#Latn", "af_NA", "yo_NG_#Latn", "ig_NG", "vun", "th_TH_#Thai", "ca_ES", "lag", "sv_SE_#Latn", "en_HK", "pis", "sa_IN_#Deva", "nl_NL", "ff_GW_#Latn", "kgp_BR", "ky_KG_#Cyrl", "en_IE", "hr_HR", "hi__#Latn", "ms_SG", "en_IM", "en_IN", "en_IL", "en_IO", "rof_TZ_#Latn", "en_ER", "kab_DZ_#Latn", "ii_CN_#Yiii", "zh_SG_#Hans", "rof", "sat_IN_#Olck", "hr_HR_#Latn", "fur_IT", "sat_IN", "en_FJ", "en_FK", "en_FI", "se_SE", "as_IN", "en_FM", "ann", "az_AZ_#Cyrl", "jmc_TZ_#Latn", "teo_UG", "frr_DE_#Latn", "ca_FR", "sr_ME", "en_GD", "ksb_TZ", "en_GB", "en_GG", "en_GH", "ml_IN", "be__TARASK", "en_GI", "zh_CN", "ewo", "dje_NE", "en_GM", "ta_LK", "jgo_CM_#Latn", "nb_NO_#Latn", "bem_ZM_#Latn", "to_TO_#Latn", "pis_SB", "nb_NO", "sd__#Deva", "sd_IN_#Deva", "en_US_POSIX", "tg_TJ_#Cyrl", "sr_RS_#Latn", "el_GR_#Grek", "ia_001", "zh_CN_#Hans", "qu_BO", "bez_TZ", "mni_IN_#Beng", "ta_MY", "fo_FO", "se_NO_#Latn", "sa_IN", "jgo_CM", "sr__#Cyrl", "twq", "gl_ES_#Latn", "gsw_CH", "fo_DK", "asa", "yav", "ebu_KE", "mfe_MU_#Latn", "lv_LV", "ar_IQ", "zh_MO_#Hant", "ar_IL", "ksf_CM_#Latn", "zh_MO_#Hans", "br_FR", "ast", "nmg", "th_TH", "sw_CD", "gu_IN_#Gujr", "lb_LU_#Latn", "su_ID", "ru_KZ", "ar_BH", "shi__#Tfng", "uz__#Arab", "haw", "hi_IN_#Latn", "ff_BF_#Latn", "uz_AF_#Arab", "mgh_MZ", "sk_SK_#Latn", "ru_KG", "tzm", "gd_GB", "ta_IN", "nnh", "teo_KE", "rn_BI_#Latn", "frr_DE", "dua_CM_#Latn", "yue_CN", "kk_KZ", "fr_YT", "no_NO", "fr_VU", "luo_KE", "rwk", "mgh_MZ_#Latn", "twq_NE_#Latn", "gsw_FR", "jgo", "lkt", "ar_DJ", "kde_TZ_#Latn", "mdf_RU_#Cyrl", "wae", "nyn_UG", "qu_PE_#Latn", "ce_RU", "si_LK_#Sinh", "jv_ID", "kk_KZ_#Cyrl", "eu_ES_#Latn", "ar_DZ", "lb_LU", "dsb_DE_#Latn", "fr_WF", "tzm_MA", "mt_MT_#Latn", "kkj_CM_#Latn", "ar_ER", "qu_EC", "ar_EG", "kln_KE_#Latn", "ar_EH", "sq_XK", "nb_SJ", "saq_KE", "el__POLYTON", "pl_PL_#Latn", "en_001", "fr_TD", "fr_TG", "ff_NE_#Latn", "ff_GH_#Latn", "fr_TN", "te_IN", "brx_IN", "cv_RU_#Cyrl", "ff_CM_#Adlm", "ff_GN_#Latn", "tr_CY", "ff_MR_#Adlm", "os_GE", "id_ID", "fr_RW", "yrl_CO", "en_ZM", "km_KH", "en_ZW", "se_FI", "rn_BI", "fr_RE", "no_NO_#Latn", "hy_AM_#Armn", "fr_SY", "ru_MD", "yrl_BR", "lkt_US_#Latn", "fr_SC", "zgh_MA", "sd_PK_#Arab", "sl_SI", "fr_SN", "te_IN_#Telu", "ar_AE", "gsw_LI", "jmc", "fr_PM", "nus", "luo_KE_#Latn", "lo_LA", "gv_IM", "dav", "ug_CN", "sw_KE", "fr_PF", "lrc", "qu_PE", "ja_JP_#Jpan", "pa_IN_#Guru", "is_IS_#Latn", "vai_LR_#Latn", "ms_BN", "de_LU", "eo_001", "en_ZA", "fy_NL_#Latn", "en_VC", "ru_RU", "it_VA", "en_VG", "mai_IN", "sd__#Arab", "seh_MZ", "en_VI", "ee_TG", "ff_GM_#Latn", "vai__#Vaii", "en_VU", "fr_NE", "raj_IN", "fr_NC", "sah", "haw_US_#Latn", "az__#Latn", "saq", "sat", "ps_PK", "mai_IN_#Deva", "bg_BG", "mn_MN_#Cyrl", "en_WS", "et_EE", "bem_ZM", "ta_SG", "sc_IT", "pcm_NG", "sbp", "ha_GH", "gv_IM_#Latn", "nyn", "bo_CN", "luo", "fil", "es_EA", "es_EC", "luy", "bas", "es_ES", "pt_ST", "mi_NZ_#Latn", "xh_ZA", "nn_NO_#Latn", "af", "nnh_CM_#Latn", "cv_RU", "bo_CN_#Tibt", "af_ZA_#Latn", "to_TO", "no_NO_NY", "pt_BR_#Latn", "ak", "sd_PK", "am_ET", "am", "ar", "as", "es_ES_#Latn", "az", "pa__#Arab", "ki_KE_#Latn", "chr_US_#Cher", "be", "es_BR", "bg", "zu_ZA", "ccp_BD", "bm", "ff__#Latn", "bn", "bo", "es_BZ", "br", "bs", "ar_YE", "seh", "es_CO", "mk_MK_#Cyrl", "ses_ML_#Latn", "pa__#Guru", "ca", "es_CL", "sq_AL_#Latn", "ses", "ff_NG_#Latn", "ce", "nmg_CM", "es_CR", "es_CU", "rof_TZ", "br_FR_#Latn", "mg_MG", "cs", "az_AZ", "kam_KE_#Latn", "yrl", "cv", "cy", "es_DO", "ff_BF_#Adlm", "da", "pt_PT", "de", "ln_CD_#Latn", "mg_MG_#Latn", "wae_CH_#Latn", "bem", "hu_HU", "ar_SA", "es_419", "ar_SD", "so_KE", "bez", "dz", "ff_MR_#Latn", "tr_TR_#Latn", "jv_ID_#Latn", "ak_GH", "dje", "ee", "en_US_#Latn", "ar_SS", "ro_MD", "vai_LR", "ar_SO", "es_AR", "el", "en", "eo", "es", "et", "eu", "ar_TD", "bas_CM", "he_IL_#Hebr", "shi", "su_ID_#Latn", "hsb", "ar_SY", "es_BO", "bs_BA_#Cyrl", "fa", "ug_CN_#Arab", "bgc", "ff", "fi", "ar_TN", "yue", "hsb_DE_#Latn", "fo", "kgp_BR_#Latn", "fr", "sah_RU_#Cyrl", "fy", "uz_UZ", "ga", "ro_RO_#Latn", "gd", "gl", "fr_FR_#Latn", "bho", "gu", "yi_001", "gv", "sr__#Latn", "xh_ZA_#Latn", "zh_TW_#Hant", "pt_TL", "ha", "ga_IE_#Latn", "ff_SL_#Latn", "he", "or_IN_#Orya", "om_ET", "hi", "cgg_UG", "ro_RO", "smn_FI_#Latn", "yrl_VE", "uk_UA_#Cyrl", "mt_MT", "hr", "ff_GN", "mgo_CM", "sah_RU", "hu", "hy", "lrc_IR_#Arab", "om_KE", "kkj_CM", "ia", "sc_IT_#Latn", "id", "ig", "ar_OM", "ii", "dz_BT", "ne_NP_#Deva", "yue_HK", "ccp_IN", "frr", "is", "it", "mzn_IR", "ceb_PH_#Latn", "ja", "kde_TZ", "cy_GB_#Latn", "doi", "kl_GL_#Latn", "ko_KR_#Kore", "jv", "ps_AF_#Arab", "rwk_TZ_#Latn", "saq_KE_#Latn", "bgc_IN", "ar_QA", "mai", "smn", "ka", "sms", "ar_PS", "ki", "mas", "kk", "hu_HU_#Latn", "kl", "km", "kn", "ko", "lt_LT_#Latn", "ks", "ku", "kw", "az__#Cyrl", "ky", "am_ET_#Ethi", "lb", "cs_CZ_#Latn", "lg", "mi_NZ", "fur", "ln", "lo", "lt", "lu", "lv", "ckb_IQ", "ckb_IR", "sq_MK", "mni__#Beng", "so_SO", "mg", "yi_001_#Hebr", "mi", "mk", "ar_JO", "ml", "ckb_IQ_#Arab", "mn", "is_IS", "fil_PH_#Latn", "sr_ME_#Cyrl", "mr", "ms", "mt", "nus_SS", "ee_GH_#Latn", "my", "mdf", "chr_US", "ru_BY", "dsb", "nb", "shi_MA_#Tfng", "nd", "ar_KW", "kn_IN_#Knda", "nd_ZW_#Latn", "lt_LT", "ne", "kea_CV_#Latn", "ar_KM", "dyo_SN_#Latn", "ps_AF", "nl", "nn", "zh__#Hans", "no", "rm_CH_#Latn", "zh__#Hant", "ar_LB", "mas_KE_#Latn", "kab", "ki_KE", "vi_VN_#Latn", "sat__#Olck", "oc", "bs__#Latn", "kam", "ar_LY", "zh_HK_#Hans", "mer", "zh_HK_#Hant", "om", "mni_IN", "or", "os", "fil_PH", "naq_NA_#Latn", "mk_MK", "mfe", "ar_MA", "dua", "pa", "lg_UG", "ml_IN_#Mlym", "uz_UZ_#Cyrl", "twq_NE", "pl", "ku_TR_#Latn", "smn_FI", "ar_MR", "en_CM", "ps", "pt", "ca_AD", "it_CH", "en_CX", "es_US", "pt_BR", "en_CY", "mgh", "ig_NG_#Latn", "es_UY", "ii_CN", "mgo", "en_DE", "fo_FO_#Latn", "ln_CD", "mer_KE", "en_DG", "tzm_MA_#Latn", "en_DM", "en_DK", "dz_BT_#Tibt", "qu", "es_VE", "ff_NG_#Adlm", "da_DK", "ak_GH_#Latn", "brx", "pt_AO", "lkt_US", "kde", "mua_CM", "ln_AO", "yav_CM_#Latn", "fa_IR_#Arab", "rm", "tok_001_#Latn", "rn", "ro", "el_GR", "ru", "eo_001_#Latn", "rw", "kea", "en_AU", "da_GL", "en_AS", "en_AT", "he_IL", "sa", "sc", "es_SV", "ka_GE_#Geor", "sr_BA_#Cyrl", "sd", "se", "sbp_TZ", "en_BB", "sg", "si", "gsw_CH_#Latn", "sk", "sl", "sn", "en_BE", "so", "rw_RW_#Latn", "sq", "asa_TZ", "en_BI", "sr", "hi_IN_#Deva", "su", "en_BM", "sv", "ln_CG", "sw", "ln_CF", "en_BS", "en_BW", "ur_PK_#Arab", "ia_001_#Latn", "en_BZ", "ta", "doi_IN_#Deva", "te", "tg", "th", "en_CC", "ti", "ka_GE", "en_CA", "tk", "uk_UA", "en_CH", "os_GE_#Cyrl", "hr_BA", "to", "dyo", "en_CK", "tr", "tt", "bez_TZ_#Latn", "si_LK", "ne_IN", "rm_CH", "ug", "sv_FI", "kl_GL", "kw_GB", "kgp", "uk", "it_IT_#Latn", "mua_CM_#Latn", "ur", "uz", "sr_RS", "nds_NL", "ff_SL_#Adlm", "vi", "su__#Latn", "zh_MO", "khq", "en_AE", "en_AI", "en_AG", "lu_CD_#Latn", "nl_SR", "ff_LR_#Adlm", "nl_SX", "khq_ML_#Latn", "fur_IT_#Latn", "mn_MN", "el_CY", "ksh_DE_#Latn", "shi_MA", "wo", "sr_XK_#Latn", "zgh", "ar_001", "ff_CM_#Latn", "pt_CH", "nn_NO", "es_PE", "es_PA", "fa_IR", "mni", "mas_TZ", "sms_FI_#Latn", "es_PH", "pt_CV", "xh", "lg_UG_#Latn", "hsb_DE", "ewo_CM", "es_PR", "fi_FI_#Latn", "tt_RU", "ru_RU_#Cyrl", "es_PY", "kkj", "cs_CZ", "asa_TZ_#Latn", "ann_NG", "yi", "yo", "mfe_MU", "kln_KE", "es_MX", "sk_SK", "sms_FI", "ccp_BD_#Cakm", "vai", "sv_SE", "sq_AL", "gd_GB_#Latn", "es_NI", "my_MM", "kln", "zh", "th_TH_TH_#u-nu-thai", "vun_TZ", "doi_IN", "ha_NG_#Latn", "mer_KE_#Latn", "zu", "ks__#Deva", "bm_ML_#Latn", "guz_KE", "km_KH_#Khmr", "ks_IN_#Arab", "ja_JP", "or_IN", "sd_IN", "bs__#Cyrl", "ha_NG", "eu_ES", "ha_NE", "as_IN_#Beng", "pt_GQ", "en_150", "az_AZ_#Latn", "ku_TR", "pt_GW", "nyn_UG_#Latn", "agq_CM_#Latn", "yue_HK_#Hant", "vun_TZ_#Latn", "ff_SN_#Adlm", "bs_BA", "ne_NP", "agq_CM", "ga_IE", "ebu", "brx_IN_#Deva", "bm_ML", "kok", "khq_ML", "es_IC", "sr_RS_#Cyrl", "mr_IN_#Deva", "ff__#Adlm", "gl_ES", "kn_IN", "ff_GW_#Adlm", "ast_ES", "sl_SI_#Latn", "shi__#Latn", "ksb_TZ_#Latn", "id_ID_#Latn", "pt_MZ", "dsb_DE", "zgh_MA_#Tfng", "cgg_UG_#Latn", "mas_KE", "mua", "ga_GB", "xog_UG_#Latn", "ce_RU_#Cyrl", "dyo_SN", "so_DJ", "pt_LU", "dje_NE_#Latn", "mr_IN", "lrc_IQ", "lrc_IR", "kok_IN_#Deva", "bo_IN", "ky_KG", "zh_TW", "yav_CM", "tk_TM", "rwk_TZ", "es_GT", "pt_MO", "es_GQ", "ta_IN_#Taml", "uz__#Cyrl", "zh_SG", "wo_SN", "fa_AF", "nds_DE", "hy_AM", "mzn_IR_#Arab", "xog_UG", "de_DE_#Latn", "dav_KE", "kab_DZ", "es_HN", "gu_IN", "pis_SB_#Latn", "wo_SN_#Latn", "ff_SN", "ebu_KE_#Latn", "so_ET", "ksb", "tk_TM_#Latn", "lo_LA_#Laoo", "ksf" ]
     },
     "java.nio.charset.Charset" : {
       "type" : "string",
@@ -70,6 +70,36 @@
         },
         "completed-task-count" : {
           "type" : "integer"
+        },
+        "container" : {
+          "type" : "object",
+          "$anchor" : "jdk.internal.vm.SharedThreadContainer",
+          "properties" : {
+            "c-l-o-s-e-d" : {
+              "type" : "string"
+            },
+            "closed" : {
+              "type" : "boolean"
+            },
+            "j-l-a" : {
+              "type" : "object"
+            },
+            "key" : {
+              "type" : "object"
+            },
+            "name" : {
+              "type" : "string"
+            },
+            "v-i-r-t-u-a-l_t-h-r-e-a-d-s" : {
+              "type" : "string"
+            },
+            "virtual-threads" : {
+              "type" : "array",
+              "items" : {
+                "type" : "string"
+              }
+            }
+          }
         },
         "core-pool-size" : {
           "type" : "integer"
@@ -2808,6 +2838,36 @@
             "completed-task-count" : {
               "type" : "integer"
             },
+            "container" : {
+              "type" : "object",
+              "$anchor" : "jdk.internal.vm.SharedThreadContainer",
+              "properties" : {
+                "c-l-o-s-e-d" : {
+                  "type" : "string"
+                },
+                "closed" : {
+                  "type" : "boolean"
+                },
+                "j-l-a" : {
+                  "type" : "object"
+                },
+                "key" : {
+                  "type" : "object"
+                },
+                "name" : {
+                  "type" : "string"
+                },
+                "v-i-r-t-u-a-l_t-h-r-e-a-d-s" : {
+                  "type" : "string"
+                },
+                "virtual-threads" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
             "core-pool-size" : {
               "type" : "integer"
             },
@@ -3028,6 +3088,7 @@
         "additional-properties" : {
           "type" : "array",
           "description" : "List of additional property paths to include",
+          "default" : "logging",
           "items" : {
             "type" : "string"
           }
@@ -3040,19 +3101,23 @@
         },
         "allow-additional-properties" : {
           "type" : "boolean",
-          "description" : "Allow additional properties not defined in schema, currently not supported by intellij"
+          "description" : "Allow additional properties not defined in schema, currently not supported by intellij",
+          "default" : "true"
         },
         "description" : {
           "type" : "string",
-          "description" : "Schema description"
+          "description" : "Schema description",
+          "default" : "Auto-generated schema from configuration metadata"
         },
         "enable-anchor-refs" : {
           "type" : "boolean",
-          "description" : "Enable JSON Schema anchor references"
+          "description" : "Enable JSON Schema anchor references",
+          "default" : "false"
         },
         "enable-definition-refs" : {
           "type" : "boolean",
-          "description" : "Enable JSON Schema definition references"
+          "description" : "Enable JSON Schema definition references",
+          "default" : "true"
         },
         "exclude-anchors" : {
           "type" : "array",
@@ -3077,27 +3142,33 @@
         },
         "missing-type-log" : {
           "type" : "boolean",
-          "description" : "Enable logging for missing type information"
+          "description" : "Enable logging for missing type information",
+          "default" : "false"
         },
         "schema-id" : {
           "type" : "string",
-          "description" : "Schema identifier urn, or url"
+          "description" : "Schema identifier urn, or url",
+          "default" : "urn:uuid:your-schema-id"
         },
         "schema-spec" : {
           "type" : "string",
-          "description" : "JSON Schema specification URL"
+          "description" : "JSON Schema specification URL",
+          "default" : "https://json-schema.org/draft/2020-12/schema"
         },
         "title" : {
           "type" : "string",
-          "description" : "Schema title"
+          "description" : "Schema title",
+          "default" : "Spring Boot Configuration Properties"
         },
         "use-openapi" : {
           "type" : "boolean",
-          "description" : "Enable OpenAPI annotations processing"
+          "description" : "Enable OpenAPI annotations processing",
+          "default" : "true"
         },
         "use-validation" : {
           "type" : "boolean",
-          "description" : "Enable validation annotations processing"
+          "description" : "Enable validation annotations processing",
+          "default" : "true"
         }
       }
     },

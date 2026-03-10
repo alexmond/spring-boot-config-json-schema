@@ -8,8 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class BootConfigJsonSchemaApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BootConfigJsonSchemaApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BootConfigJsonSchemaApplication.class, args);
+	}
 
 }

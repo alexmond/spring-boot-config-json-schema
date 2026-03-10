@@ -13,23 +13,25 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Hint {
-    /**
-     * The name of the hint that identifies its purpose or category.
-     */
-    private String name;
 
-    /**
-     * List of predefined values associated with this hint.
-     */
-    private List<HintValue> values;
+	/**
+	 * The name of the hint that identifies its purpose or category.
+	 */
+	private String name;
 
-    /**
-     * List of providers that can generate or supply hint information.
-     */
-    private List<HintProvider> providers;
+	/**
+	 * List of predefined values associated with this hint.
+	 */
+	private List<HintValue> values;
 
-    /**
-     * List of value providers that can dynamically generate values for this hint.
-     */
-    private List<HintValueProvider> valueProviders;
+	/**
+	 * List of providers that can generate or supply hint information.
+	 */
+	private List<HintProvider> providers;
+
+	/**
+	 * List of value providers that can dynamically generate values for this hint.
+	 */
+	private List<HintValueProvider> valueProviders;
+
 }

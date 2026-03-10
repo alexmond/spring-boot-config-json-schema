@@ -6,6 +6,9 @@ import java.util.List;
 
 @Data
 public class PropGroup {
-    AsciiDocGroupData group;
-    List<AsciiDocGroupData> subGroups;
+
+	AsciiDocGroupData group;
+
+	List<AsciiDocGroupData> subGroups;
+
 }

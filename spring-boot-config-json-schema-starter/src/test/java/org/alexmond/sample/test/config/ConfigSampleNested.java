@@ -10,28 +10,33 @@ import org.springframework.validation.annotation.Validated;
 
 @SuppressWarnings("unused")
 @Schema(description = "Sample enumeration values")
-enum NestEnumSample {NEN1, NEN2, NEN3}
+enum NestEnumSample {
+
+	NEN1, NEN2, NEN3
+
+}
 
 @Data
 @Schema(description = "Configuration class containing nested configuration properties")
 @Validated
 public class ConfigSampleNested {
-    /* Nested Config sample */
-    @Schema(description = "First nested configuration property", example = "nestedConfig1")
-    @NotEmpty
-    private String nestedConfig1 = "nestedConfig1";
 
-    @Schema(description = "Second nested configuration property", example = "123")
-    @NotNull
-    private Integer nestedConfig2 = 123;
+	/* Nested Config sample */
+	@Schema(description = "First nested configuration property", example = "nestedConfig1")
+	@NotEmpty
+	private String nestedConfig1 = "nestedConfig1";
 
-    @Email
-    private String emailValidTest = "abc@abc.com";
+	@Schema(description = "Second nested configuration property", example = "123")
+	@NotNull
+	private Integer nestedConfig2 = 123;
 
-    @URL
-    private String urlTest = "http://localhost:8080";
+	@Email
+	private String emailValidTest = "abc@abc.com";
 
-    @Schema(description = "Enumeration sample field")
-    private NestEnumSample nestEnumSample;
+	@URL
+	private String urlTest = "http://localhost:8080";
+
+	@Schema(description = "Enumeration sample field")
+	private NestEnumSample nestEnumSample;
 
 }
