@@ -10,7 +10,8 @@ import org.alexmond.config.json.schema.metamodel.Property;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import tools.jackson.databind.ObjectMapper;
-import tools.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +56,7 @@ public class JsonSchemaService {
 	 * @return A string containing the JSON Schema in pretty-printed JSON format
 	 */
 	public String generateFullSchemaJson() {
-		return generateFullSchema(new ObjectMapper());
+		return generateFullSchema(JsonMapper.builder().build());
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class JsonSchemaService {
 	 * @return A string containing the JSON Schema in pretty-printed YAML format
 	 */
 	public String generateFullSchemaYaml() {
-		return generateFullSchema(new ObjectMapper(new YAMLFactory()));
+		return generateFullSchema(YAMLMapper.builder().build());
 	}
 
 	/**

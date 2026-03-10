@@ -1,25 +1,22 @@
 package org.alexmond.sample.test;
 
-//import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
-//import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.alexmond.config.json.schema.service.JsonSchemaBuilder;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
-import org.alexmond.sample.test.config.ConfigSample;
 import org.alexmond.sample.test.config.EnumSample;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.ObjectWriter;
-import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.json.JsonMapper;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,26 +54,11 @@ class SanityJsonSchemaGeneratorTests {
 		assertFalse(meta.isEmpty(), "Collected metadata should not be empty");
 	}
 
-	// Waiting for 3.0 version
-	// @Test
-	// void useJacksonSchema() throws IOException {
-	//
-	// ObjectMapper mapper = new ObjectMapper();
-	// mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-	// JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
-	//
-	// // Generate schema for the Product class
-	// JsonSchema productSchema = schemaGen.generateSchema(ConfigSample.class);
-	// ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-	// writer.writeValue(Paths.get("gen.json").toFile(), productSchema);
-	//
-	// }
-
 	@Test
 	void generateSchema() throws Exception {
 		String jsonConfigSchema;
 		jsonConfigSchema = jsonSchemaService.generateFullSchemaJson();
-		ObjectMapper jsonMapper = new ObjectMapper();
+		var jsonMapper = JsonMapper.builder().build();
 		JsonNode jsonNode = jsonMapper.readTree(jsonConfigSchema);
 		Map<String, List<String>> duplicates = findDuplicateNodes(jsonNode);
 		duplicates.entrySet()

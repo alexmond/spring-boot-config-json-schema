@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -50,7 +51,7 @@ import java.util.Set;
 public class JsonSchemaProperties {
 
 	@JsonIgnore
-	private static final ObjectMapper objectMapper = new ObjectMapper();
+	private static final ObjectMapper objectMapper = JsonMapper.builder().build();
 
 	private JsonSchemaType type;
 

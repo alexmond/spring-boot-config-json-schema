@@ -7,6 +7,7 @@ import org.alexmond.config.json.schema.metamodel.Group;
 import org.alexmond.config.json.schema.metamodel.Hint;
 import org.alexmond.config.json.schema.metamodel.Property;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.TreeMap;
 @Slf4j
 public class BootConfigMetaLoader {
 
-	private final ObjectMapper mapper = new ObjectMapper();
+	private final ObjectMapper mapper = JsonMapper.builder().build();
 
 	public BootConfigMeta loadFromStream(InputStream stream) {
 		log.debug("Loading configuration from input stream");

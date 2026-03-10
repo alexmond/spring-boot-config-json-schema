@@ -13,8 +13,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -36,7 +36,7 @@ class SampleJsonSchemaGeneratorTests {
 
 		var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
 		var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
-		ObjectMapper jsonMapper = new ObjectMapper();
+		var jsonMapper = JsonMapper.builder().build();
 
 		// Validate generated schema
 		SchemaRegistry schemaRegistry = SchemaRegistry.withDialect(Dialects.getDraft202012());
@@ -67,7 +67,7 @@ class SampleJsonSchemaGeneratorTests {
 		// Validate application.yaml against schema
 		SchemaRegistry factory = SchemaRegistry.withDialect(Dialects.getDraft202012());
 		Schema schema = factory.getSchema(Files.newInputStream(Paths.get("sample-schema.json")));
-		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+		var yamlMapper = YAMLMapper.builder().build();
 		List<Error> errors = schema.validate(yamlMapper.readTree(Paths.get("test.yaml").toFile()));
 		if (!errors.isEmpty()) {
 			errors.forEach(error -> log.error("YAML validation error: {}", error));
