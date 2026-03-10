@@ -16,31 +16,35 @@ import java.nio.file.Paths;
 @ActiveProfiles("test")
 @SpringBootTest
 @Slf4j
-class
-SimpleBootJsonSchemaGeneratorTests {
+class SimpleBootJsonSchemaGeneratorTests {
 
-    @Autowired
-    JsonConfigSchemaConfig config;
+	@Autowired
+	JsonConfigSchemaConfig config;
 
-    @Autowired
-    private JsonSchemaService jsonSchemaService;
+	@Autowired
+	private JsonSchemaService jsonSchemaService;
 
+	@Test
+	void generateJsonSchema() {
 
-    @Test
-    void generateJsonSchema() {
+		config.setSchemaId(
+				"https://www.alexmond.org/spring-boot-config-json-schema-starter/current/boot-generic-config.json");
+		var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
+		config.setSchemaId(
+				"https://www.alexmond.org/spring-boot-config-json-schema-starter/current/boot-generic-config.yaml");
+		var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
 
-        config.setSchemaId("https://www.alexmond.org/spring-boot-config-json-schema-starter/current/boot-generic-config.json");
-        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
-        config.setSchemaId("https://www.alexmond.org/spring-boot-config-json-schema-starter/current/boot-generic-config.yaml");
-        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
+		try {
+			log.info("Writing json schema");
+			Files.writeString(Paths.get("../docs//modules/ROOT/attachments/boot-generic-config.json"),
+					jsonConfigSchemaJson, StandardCharsets.UTF_8);
+			log.info("Writing yaml schema");
+			Files.writeString(Paths.get("../docs/modules/ROOT/attachments/boot-generic-config.yaml"),
+					jsonConfigSchemaYaml, StandardCharsets.UTF_8);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-        try {
-            log.info("Writing json schema");
-            Files.writeString(Paths.get("../docs//modules/ROOT/attachments/boot-generic-config.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
-            log.info("Writing yaml schema");
-            Files.writeString(Paths.get("../docs/modules/ROOT/attachments/boot-generic-config.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

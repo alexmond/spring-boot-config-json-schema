@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<ruleset name="Project PMD Rules"
+		 xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+		 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+	<description>PMD ruleset for spring-boot-config-json-schema</description>
+
+	<!-- Best Practices -->
+	<rule ref="category/java/bestpractices.xml">
+		<exclude name="GuardLogStatement"/>
+		<exclude name="JUnitTestContainsTooManyAsserts"/>
+		<exclude name="JUnitAssertionsShouldIncludeMessage"/>
+		<exclude name="JUnitTestsShouldIncludeAssert"/>
+		<exclude name="AvoidReassigningParameters"/>
+		<exclude name="LiteralsFirstInComparisons"/>
+		<exclude name="UnusedAssignment"/>
+		<exclude name="DoubleBraceInitialization"/>
+		<exclude name="NonExhaustiveSwitch"/>
+		<exclude name="RedundantFieldInitializer"/>
+	</rule>
+
+	<!-- Code Style -->
+	<rule ref="category/java/codestyle.xml">
+		<exclude name="AtLeastOneConstructor"/>
+		<exclude name="CommentDefaultAccessModifier"/>
+		<exclude name="DefaultPackage"/>
+		<exclude name="LocalVariableCouldBeFinal"/>
+		<exclude name="LongVariable"/>
+		<exclude name="MethodArgumentCouldBeFinal"/>
+		<exclude name="OnlyOneReturn"/>
+		<exclude name="ShortClassName"/>
+		<exclude name="ShortMethodName"/>
+		<exclude name="ShortVariable"/>
+		<exclude name="TooManyStaticImports"/>
+		<exclude name="UnnecessaryAnnotationValueElement"/>
+		<exclude name="FieldNamingConventions"/>
+		<exclude name="ClassNamingConventions"/>
+		<exclude name="UseExplicitTypes"/>
+		<exclude name="LocalVariableNamingConventions"/>
+		<exclude name="PrematureDeclaration"/>
+		<exclude name="ConfusingTernary"/>
+	</rule>
+
+	<!-- Design -->
+	<rule ref="category/java/design.xml">
+		<exclude name="AvoidCatchingGenericException"/>
+		<exclude name="CouplingBetweenObjects"/>
+		<exclude name="ExcessiveImports"/>
+		<exclude name="LawOfDemeter"/>
+		<exclude name="LoosePackageCoupling"/>
+		<exclude name="TooManyMethods"/>
+		<exclude name="ExcessiveParameterList"/>
+		<exclude name="CyclomaticComplexity"/>
+		<exclude name="NPathComplexity"/>
+		<exclude name="GodClass"/>
+		<exclude name="DataClass"/>
+		<exclude name="TooManyFields"/>
+		<exclude name="AvoidThrowingRawExceptionTypes"/>
+		<exclude name="CognitiveComplexity"/>
+		<exclude name="NcssCount"/>
+		<exclude name="SimplifyConditional"/>
+		<exclude name="CollapsibleIfStatements"/>
+	</rule>
+
+	<!-- Error Prone -->
+	<rule ref="category/java/errorprone.xml">
+		<exclude name="BeanMembersShouldSerialize"/>
+		<exclude name="DataflowAnomalyAnalysis"/>
+		<exclude name="AvoidLiteralsInIfCondition"/>
+		<exclude name="AvoidDuplicateLiterals"/>
+		<exclude name="AvoidFieldNameMatchingMethodName"/>
+		<exclude name="NullAssignment"/>
+		<exclude name="ReturnEmptyCollectionRatherThanNull"/>
+		<exclude name="UseLocaleWithCaseConversions"/>
+		<exclude name="RedundantFieldInitializer"/>
+	</rule>
+
+	<!-- Multithreading -->
+	<rule ref="category/java/multithreading.xml">
+		<exclude name="UseConcurrentHashMap"/>
+	</rule>
+
+	<!-- Performance -->
+	<rule ref="category/java/performance.xml">
+		<exclude name="AvoidInstantiatingObjectsInLoops"/>
+	</rule>
+
+</ruleset>

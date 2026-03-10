@@ -13,20 +13,29 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"schema", "id", "title", "description", "type", "definitions", "properties"})
+@JsonPropertyOrder({ "schema", "id", "title", "description", "type", "definitions", "properties" })
 public class JsonSchemaRoot {
-    @Builder.Default
-    @JsonProperty("$schema")
-    private String schema = "https://json-schema.org/draft/2020-12/schema";
-    @JsonProperty("$id")
-    private String id;
-    private String title;
-    private String description;
-    @Builder.Default
-    private JsonSchemaType type = JsonSchemaType.OBJECT;
-    @JsonProperty("$defs")
-    private Map<String, JsonSchemaProperties> definitions;
-    private Map<String, JsonSchemaProperties> properties;
-    @JsonProperty("additionalProperties")
-    private Object additionalProperties;
+
+	@Builder.Default
+	@JsonProperty("$schema")
+	private String schema = "https://json-schema.org/draft/2020-12/schema";
+
+	@JsonProperty("$id")
+	private String id;
+
+	private String title;
+
+	private String description;
+
+	@Builder.Default
+	private JsonSchemaType type = JsonSchemaType.OBJECT;
+
+	@JsonProperty("$defs")
+	private Map<String, JsonSchemaProperties> definitions;
+
+	private Map<String, JsonSchemaProperties> properties;
+
+	@JsonProperty("additionalProperties")
+	private Object additionalProperties;
+
 }

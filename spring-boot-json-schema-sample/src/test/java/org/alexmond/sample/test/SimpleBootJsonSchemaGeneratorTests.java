@@ -21,43 +21,43 @@ import java.util.List;
 @ActiveProfiles("test")
 @SpringBootTest
 @Slf4j
-class
-SimpleBootJsonSchemaGeneratorTests {
+class SimpleBootJsonSchemaGeneratorTests {
 
-    @Autowired
-    private JsonSchemaService jsonSchemaService;
+	@Autowired
+	private JsonSchemaService jsonSchemaService;
 
-    @SuppressWarnings("EmptyMethod")
-    @Test
-    void contextLoads() {
-    }
+	@SuppressWarnings("EmptyMethod")
+	@Test
+	void contextLoads() {
+	}
 
-    @Test
-    void generateJsonSchema() {
+	@Test
+	void generateJsonSchema() {
 
-        var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
-        var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
+		var jsonConfigSchemaJson = jsonSchemaService.generateFullSchemaJson();
+		var jsonConfigSchemaYaml = jsonSchemaService.generateFullSchemaYaml();
 
-        ObjectMapper jsonMapper = new ObjectMapper();
-        SchemaRegistry factory = SchemaRegistry.withDialect(Dialects.getDraft202012());
-        Schema schema = factory.getSchema(jsonConfigSchemaJson);
-        List<Error> errors;
-        errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
-        if (!errors.isEmpty()) {
-            errors.forEach(error -> log.error("Schema validation error: {}", error));
-            throw new AssertionError("Schema validation failed");
-        }
-        log.info("Schema validation passed successfully");
+		ObjectMapper jsonMapper = new ObjectMapper();
+		SchemaRegistry factory = SchemaRegistry.withDialect(Dialects.getDraft202012());
+		Schema schema = factory.getSchema(jsonConfigSchemaJson);
+		List<Error> errors;
+		errors = schema.validate(jsonMapper.readTree(jsonConfigSchemaJson));
+		if (!errors.isEmpty()) {
+			errors.forEach(error -> log.error("Schema validation error: {}", error));
+			throw new AssertionError("Schema validation failed");
+		}
+		log.info("Schema validation passed successfully");
 
-        try {
-            log.info("Writing json schema");
-            Files.writeString(Paths.get("sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
+		try {
+			log.info("Writing json schema");
+			Files.writeString(Paths.get("sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
-            log.info("Writing yaml schema");
-            Files.writeString(Paths.get("sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+			log.info("Writing yaml schema");
+			Files.writeString(Paths.get("sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }

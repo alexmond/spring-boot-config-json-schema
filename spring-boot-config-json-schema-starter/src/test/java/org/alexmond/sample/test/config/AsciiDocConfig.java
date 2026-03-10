@@ -10,7 +10,11 @@ import java.util.*;
 @ConfigurationProperties(prefix = "ascii-doc")
 @Data
 public class AsciiDocConfig {
-    List<AsciiDocGroupConfig> asciiDocGroupConfigs = new LinkedList<>();
-    List<String> excludes = new ArrayList<>();
-    List<String> includes = new ArrayList<>();
+
+	List<AsciiDocGroupConfig> asciiDocGroupConfigs = new LinkedList<>();
+
+	List<String> excludes = new ArrayList<>();
+
+	List<String> includes = new ArrayList<>();
+
 }

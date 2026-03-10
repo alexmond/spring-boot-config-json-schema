@@ -15,6 +15,9 @@ import java.util.List;
 @Data
 @Schema(description = "No prefix config")
 public class NoPrefix {
-    String noPrefix;
-    List<String> noPrefixList;
+
+	String noPrefix;
+
+	List<String> noPrefixList;
+
 }

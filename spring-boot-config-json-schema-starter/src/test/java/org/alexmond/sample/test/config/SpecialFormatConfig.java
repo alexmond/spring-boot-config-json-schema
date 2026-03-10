@@ -21,53 +21,55 @@ import java.util.UUID;
 @Data
 @Schema(description = "Configuration sample class")
 public class SpecialFormatConfig {
-    /**
-     * Unique identifier in UUID format
-     */
-    @Schema(description = "Unique identifier in UUID format")
-    UUID uuid = UUID.randomUUID();
 
-    /**
-     * URI resource locator
-     */
-    @Schema(description = "URI resource locator")
-    URI uri = URI.create("https://example.com");
+	/**
+	 * Unique identifier in UUID format
+	 */
+	@Schema(description = "Unique identifier in UUID format")
+	UUID uuid = UUID.randomUUID();
 
-    /**
-     * URL resource locator
-     */
-    @Schema(description = "URL resource locator")
-    URL url;
+	/**
+	 * URI resource locator
+	 */
+	@Schema(description = "URI resource locator")
+	URI uri = URI.create("https://example.com");
 
-    /**
-     * IPv4 address
-     */
-    @Schema(description = "IPv4 address")
-    Inet4Address inet4Address;
+	/**
+	 * URL resource locator
+	 */
+	@Schema(description = "URL resource locator")
+	URL url;
 
-    /**
-     * IPv6 address
-     */
-    @Schema(description = "IPv6 address")
-    Inet6Address inet6Address;
+	/**
+	 * IPv4 address
+	 */
+	@Schema(description = "IPv4 address")
+	Inet4Address inet4Address;
 
-    /**
-     * Email address
-     */
-    @Schema(description = "Email address")
-    @Email
-    String email;
+	/**
+	 * IPv6 address
+	 */
+	@Schema(description = "IPv6 address")
+	Inet6Address inet6Address;
 
-    /**
-     * Email address
-     */
-    @Schema(description = "Email address", format = "email")
-    String emailSchemaFormat;
+	/**
+	 * Email address
+	 */
+	@Schema(description = "Email address")
+	@Email
+	String email;
 
-    /**
-     * Email address with pattern validation
-     */
-    @Schema(description = "Email address with pattern validation")
-    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
-    String emailPattern;
+	/**
+	 * Email address
+	 */
+	@Schema(description = "Email address", format = "email")
+	String emailSchemaFormat;
+
+	/**
+	 * Email address with pattern validation
+	 */
+	@Schema(description = "Email address with pattern validation")
+	@Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
+	String emailPattern;
+
 }

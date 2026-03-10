@@ -8,16 +8,22 @@ import java.util.TreeMap;
 
 @Data
 public class AsciiDocGroupData {
-    private String prefix;
-    private String description;
-    public AsciiDocGroupData(AsciiDocGroupConfig asciiDocGroupConfig) {
-        super();
-        this.setPrefix(asciiDocGroupConfig.getPrefix());
-        this.setDescription(asciiDocGroupConfig.getDescription());
-    }
-    public AsciiDocGroupData(String description) {
-        super();
-        this.setDescription(description);
-    }
-    Map<String, AsciiDoc> asciiDocs = new TreeMap<>();
+
+	private String prefix;
+
+	private String description;
+
+	public AsciiDocGroupData(AsciiDocGroupConfig asciiDocGroupConfig) {
+		super();
+		this.setPrefix(asciiDocGroupConfig.getPrefix());
+		this.setDescription(asciiDocGroupConfig.getDescription());
+	}
+
+	public AsciiDocGroupData(String description) {
+		super();
+		this.setDescription(description);
+	}
+
+	Map<String, AsciiDoc> asciiDocs = new TreeMap<>();
+
 }

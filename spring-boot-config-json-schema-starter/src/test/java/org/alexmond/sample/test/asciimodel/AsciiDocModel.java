@@ -7,6 +7,9 @@ import java.util.TreeMap;
 
 @Data
 public class AsciiDocModel {
-    Map<String, AsciiDocGroupData> commonGroup = new TreeMap<>();
-    Map<String, PropGroup> groups = new TreeMap<>();
+
+	Map<String, AsciiDocGroupData> commonGroup = new TreeMap<>();
+
+	Map<String, PropGroup> groups = new TreeMap<>();
+
 }
