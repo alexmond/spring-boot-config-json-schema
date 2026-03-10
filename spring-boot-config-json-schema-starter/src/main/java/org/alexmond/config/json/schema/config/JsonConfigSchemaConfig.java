@@ -125,7 +125,7 @@ public class JsonConfigSchemaConfig {
 	 * processing of system-level classes that aren't relevant to configuration.
 	 */
 	private List<String> excludeClasses = new ArrayList<>(
-			List.of("com.fasterxml.jackson.databind.ObjectMapper", "java.lang.ClassLoader",
+			List.of("tools.jackson.databind.ObjectMapper", "java.lang.ClassLoader",
 					"org.springframework.boot.context.logging.LoggingApplicationListener", "org.slf4j.Logger"));
 
 	/**
