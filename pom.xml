@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.2</version>
+        <version>4.0.3</version>
     </parent>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-parent</artifactId>
@@ -16,14 +16,14 @@
     <properties>
         <java.version>17</java.version>
 
-        <json-schema-validator.version>3.0.0</json-schema-validator.version>
-        <commons-text.version>1.14.0</commons-text.version>
+        <json-schema-validator.version>3.0.1</json-schema-validator.version>
+        <commons-text.version>1.15.0</commons-text.version>
         <spring-cloud.version>2025.1.1</spring-cloud.version>
-        <springdoc-openapi.version>3.0.1</springdoc-openapi.version>
-        <swagger-annotations.version>2.2.43</swagger-annotations.version>
+        <springdoc-openapi.version>3.0.2</springdoc-openapi.version>
+        <swagger-annotations.version>2.2.45</swagger-annotations.version>
 
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
-        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
 
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
 
@@ -72,7 +72,31 @@
     <!--    </distributionManagement>-->
     <dependencyManagement>
         <dependencies>
-
+            <dependency>
+                <groupId>org.alexmond</groupId>
+                <artifactId>spring-boot-config-json-schema-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.networknt</groupId>
+                <artifactId>json-schema-validator</artifactId>
+                <version>${json-schema-validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons-text.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
