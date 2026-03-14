@@ -15,12 +15,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Loads and merges Spring Boot configuration metadata from
+ * {@code spring-configuration-metadata.json} files. Combines multiple metadata sources
+ * into a unified property map for schema generation.
+ */
 @NoArgsConstructor
 @Slf4j
 public class BootConfigMetaLoader {
 
 	private final ObjectMapper mapper = JsonMapper.builder().build();
 
+	/**
+	 * Loads configuration metadata from an input stream.
+	 * @param stream the input stream containing JSON metadata
+	 * @return the parsed configuration metadata
+	 */
 	public BootConfigMeta loadFromStream(InputStream stream) {
 		log.debug("Loading configuration from input stream");
 		BootConfigMeta config = null;
@@ -28,6 +38,11 @@ public class BootConfigMetaLoader {
 		return config;
 	}
 
+	/**
+	 * Merges multiple configuration metadata sources into a unified property map.
+	 * @param metaList the list of metadata sources to merge
+	 * @return merged map of property names to their definitions
+	 */
 	public Map<String, Property> mergeConfig(List<BootConfigMeta> metaList) {
 		BootConfigMeta mergedConfig = new BootConfigMeta();
 		Map<String, Property> propertyMap = new TreeMap<>();

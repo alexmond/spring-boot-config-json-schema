@@ -15,7 +15,19 @@ import lombok.Getter;
 @Getter
 public enum JsonSchemaType {
 
-	STRING("string"), NUMBER("number"), INTEGER("integer"), BOOLEAN("boolean"), ARRAY("array"), OBJECT("object"),
+	/** JSON string type. */
+	STRING("string"),
+	/** JSON number type. */
+	NUMBER("number"),
+	/** JSON integer type. */
+	INTEGER("integer"),
+	/** JSON boolean type. */
+	BOOLEAN("boolean"),
+	/** JSON array type. */
+	ARRAY("array"),
+	/** JSON object type. */
+	OBJECT("object"),
+	/** JSON null type. */
 	NULL("null");
 
 	/**
