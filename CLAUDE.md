@@ -68,7 +68,7 @@ Test config classes in `org.alexmond.sample.test.config` provide sample `@Config
 
 ## Tech Stack
 
-- Java 17, Spring Boot 4.0.2, Jackson 3 (`tools.jackson` packages)
+- Java 17, Spring Boot 4.0.7, Jackson 3 (`tools.jackson` packages)
 - Jackson formats: YAML, CBOR, XML
 - OpenAPI/Swagger annotations (`swagger-annotations-jakarta`)
 - Apache Commons Text for string operations

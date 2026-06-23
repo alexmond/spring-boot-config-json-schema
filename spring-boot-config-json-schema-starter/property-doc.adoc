@@ -1,0 +1,360 @@
+:toc: left
+:sectnums:
+= Configuration Properties
+Description of all available configuration properties for JSON Schema generation.
+
+
+
+== Default
+|===
+|Name | Type | Description | Default Value | Example
+
+
+|logging.config
+|string
+l|Location of the logging configuration file. For instance, `classpath:logback.xml` for Logback.
+l|
+l|
+|logging.console.enabled
+|boolean
+l|Whether to enable console-based logging.
+l|
+l|
+|logging.exception-conversion-word
+|string
+l|Conversion word used when logging exceptions.
+l|%wEx
+l|
+|logging.file.clean-history-on-start
+|boolean
+l|Whether to clean the archive log files on startup. Only supported with the default logback setup.
+l|false
+l|
+|logging.file.max-history
+|integer
+l|Maximum number of archive log files to keep. Only supported with the default logback setup.
+l|7
+l|
+|logging.file.max-size
+|string
+l|Maximum log file size. Only supported with the default logback setup.
+l|10MB
+l|
+|logging.file.name
+|string
+l|Log file name (for instance, `myapp.log`). Names can be an exact location or relative to the current directory.
+l|
+l|
+|logging.file.path
+|string
+l|Location of the log file. For instance, `/var/log`.
+l|
+l|
+|logging.file.total-size-cap
+|string
+l|Total size of log backups to be kept. Only supported with the default logback setup.
+l|0B
+l|
+|logging.group.*
+|object
+l|
+l|
+l|
+|logging.include-application-group
+|boolean
+l|Whether to include the application group in the logs.
+l|true
+l|
+|logging.include-application-name
+|boolean
+l|Whether to include the application name in the logs.
+l|true
+l|
+|logging.log4j2.config.override
+|string array
+l|Overriding configuration files used to create a composite configuration. Can be prefixed with 'optional:' to only load the override if it exists.
+l|
+l|
+|logging.logback.rollingpolicy.clean-history-on-start
+|boolean
+l|Whether to clean the archive log files on startup.
+l|false
+l|
+|logging.logback.rollingpolicy.file-name-pattern
+|string
+l|Pattern for rolled-over log file names.
+l|${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
+l|
+|logging.logback.rollingpolicy.max-file-size
+|string
+l|Maximum log file size.
+l|10MB
+l|
+|logging.logback.rollingpolicy.max-history
+|integer
+l|Maximum number of archive log files to keep.
+l|7
+l|
+|logging.logback.rollingpolicy.total-size-cap
+|string
+l|Total size of log backups to be kept.
+l|0B
+l|
+|logging.pattern.console
+|string
+l|Appender pattern for output to the console. Its default value varies according to the logging system.
+l|
+l|
+|logging.pattern.correlation
+|string
+l|Appender pattern for log correlation. Its default value varies according to the logging system.
+l|
+l|
+|logging.pattern.dateformat
+|string
+l|Appender pattern for log date format.
+l|yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+l|
+|logging.pattern.file
+|string
+l|Appender pattern for output to a file. Its default value varies according to the logging system.
+l|
+l|
+|logging.pattern.level
+|string
+l|Appender pattern for log level.
+l|%5p
+l|
+|logging.pattern.rolling-file-name
+|string
+l|Pattern for rolled-over log file names. Supported only with the default Logback setup.
+l|${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
+l|
+|logging.register-shutdown-hook
+|boolean
+l|Register a shutdown hook for the logging system when it is initialized. Disabled automatically when deployed as a war file.
+l|true
+l|
+|logging.structured.ecs.service.environment
+|string
+l|Structured ECS service environment.
+l|
+l|
+|logging.structured.ecs.service.name
+|string
+l|Structured ECS service name (defaults to 'spring.application.name').
+l|
+l|
+|logging.structured.ecs.service.node-name
+|string
+l|Structured ECS service node name.
+l|
+l|
+|logging.structured.ecs.service.version
+|string
+l|Structured ECS service version (defaults to 'spring.application.version').
+l|
+l|
+|logging.structured.format.console
+|string
+l|Structured logging format for output to the console. Must be either a format id or a fully qualified class name.
+l|
+l|ecs
+gelf
+logstash
+|logging.structured.format.file
+|string
+l|Structured logging format for output to a file. Must be either a format id or a fully qualified class name.
+l|
+l|ecs
+gelf
+logstash
+|logging.structured.gelf.host
+|string
+l|Structured GELF host (defaults to 'spring.application.name').
+l|
+l|
+|logging.structured.gelf.service.version
+|string
+l|Structured GELF service version (defaults to 'spring.application.version').
+l|
+l|
+|logging.structured.json.context.include
+|boolean
+l|Whether context data should be included in the JSON.
+l|
+l|
+|logging.structured.json.context.prefix
+|string
+l|The prefix to use when inserting context data.
+l|
+l|
+|logging.structured.json.customizer
+|array
+l|Fully qualified class names of StructuredLoggingJsonMembersCustomizer implementations
+l|
+l|
+|logging.structured.json.exclude
+|string array
+l|Member paths that should be excluded from structured logging JSON
+l|
+l|
+|logging.structured.json.include
+|string array
+l|Member paths that should be included in structured logging JSON
+l|
+l|
+|logging.structured.json.stacktrace.include-common-frames
+|boolean
+l|Whether common frames should be included.
+l|
+l|
+|logging.structured.json.stacktrace.include-hashes
+|boolean
+l|Whether stack trace hashes should be included.
+l|
+l|
+|logging.structured.json.stacktrace.max-length
+|integer
+l|Maximum length to print.
+l|
+l|
+|logging.structured.json.stacktrace.max-throwable-depth
+|integer
+l|Maximum throwable depth to print.
+l|
+l|
+|logging.structured.json.stacktrace.printer
+|string
+l|Name of the printer to use. Can be 'standard', 'logging-system', or the fully-qualified class name of a StackTracePrinter. When not specified 'logging-system' or 'standard' will be used depending if other properties are set.
+l|
+l|standard
+logging-system
+|logging.structured.json.stacktrace.root
+|string
+l|Root ordering (root first or root last).
+l|
+l|
+|sample.boolean-sample
+|boolean
+l|Sample boolean property
+l|true
+l|
+|sample.collection-sample
+|string array
+l|Sample string collection
+l|
+l|
+|sample.config-sample-nested.email-valid-test
+|string
+l|
+l|abc@abc.com
+l|
+|sample.config-sample-nested.nest-enum-sample
+|enum
+l|Enumeration sample field
+l|
+l|nen2
+NEN3
+nen1
+NEN1
+NEN2
+nen3
+|sample.config-sample-nested.nested-config1
+|string
+l|First nested configuration property
+l|##default
+l|
+|sample.config-sample-nested.nested-config2
+|integer
+l|Second nested configuration property
+l|##default
+l|
+|sample.config-sample-nested.url-test
+|string
+l|
+l|http://localhost:8080
+l|
+|sample.config-sample-object-array
+|array
+l|Sample nested configuration collection
+l|
+l|
+|sample.deep-level1.deep-level2.list1
+|array
+l|List1 configurations
+l|
+l|
+|sample.deep-level1.deep-level2.list2
+|array
+l|List2 configurations
+l|
+l|
+|sample.enum-sample
+|enum
+l|Sample enum property
+l|EN1
+l|EN2
+en2
+EN1
+en1
+EN3
+en3
+|sample.enum-type-set
+|string array
+l|Sample type set
+l|
+l|
+|sample.h-t-t-p-request
+|string
+l|
+l|
+l|
+|sample.integer-sample
+|integer
+l|Sample integer property
+l|100
+l|
+|sample.kebab2-case
+|string
+l|
+l|
+l|
+|sample.map-object-sample.*
+|object
+l|
+l|
+l|
+|sample.map-object-sample.*.config-map1
+|string
+l|First nested configuration property
+l|
+l|
+|sample.map-object-sample.*.config-map2
+|integer
+l|Second nested configuration property
+l|
+l|
+|sample.properties-example.*
+|object
+l|
+l|
+l|
+|sample.sample-int-array
+|array
+l|Sample integer collection
+l|
+l|
+|sample.string-array-sample
+|string array
+l|String array sample
+l|
+l|
+|sample.string-sample
+|string
+l|Sample string property
+l|stringSample
+l|
+
+|===
+
