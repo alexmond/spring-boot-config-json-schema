@@ -38,10 +38,18 @@ public class Property {
 	@Builder.Default
 	private Boolean groupProperty = false;
 
+	/**
+	 * Returns whether this property represents a configuration group.
+	 * @return true if this is a group property
+	 */
 	public Boolean isGroupProperty() {
 		return groupProperty != null && groupProperty;
 	}
 
+	/**
+	 * Sets whether this property represents a configuration group.
+	 * @param groupProperty true if this is a group property
+	 */
 	public void setGroupProperty(Boolean groupProperty) {
 		this.groupProperty = groupProperty;
 	}

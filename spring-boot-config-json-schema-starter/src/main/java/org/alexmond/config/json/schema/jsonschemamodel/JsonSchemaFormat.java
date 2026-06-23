@@ -10,23 +10,40 @@ import lombok.Getter;
 @Getter
 public enum JsonSchemaFormat {
 
-	DATE_TIME("date-time"), // Combined date and time with timezone
-	TIME("time"), // Time with optional timezone
-	DATE("date"), // Full date without time
-	DURATION("duration"), // Time duration
-	EMAIL("email"), // Email address
-	IDN_EMAIL("idn-email"), // Internationalized email address
-	HOSTNAME("hostname"), // Internet hostname
-	IDN_HOSTNAME("idn-hostname"), // Internationalized hostname
-	IPV4("ipv4"), // IPv4 address
-	IPV6("ipv6"), // IPv6 address
-	URI("uri"), // Universal Resource Identifier
-	URI_REFERENCE("uri-reference"), // URI reference including relative URIs
-	IRI("iri"), // Internationalized URI
-	IRI_REFERENCE("iri-reference"), // Internationalized URI reference
-	UUID("uuid"), // Universally Unique Identifier
-	JSON_POINTER("json-pointer"), // JSON Pointer string
-	RELATIVE_JSON_POINTER("relative-json-pointer"); // Relative JSON Pointer string
+	/** Combined date and time with timezone. */
+	DATE_TIME("date-time"),
+	/** Time with optional timezone. */
+	TIME("time"),
+	/** Full date without time. */
+	DATE("date"),
+	/** Time duration. */
+	DURATION("duration"),
+	/** Email address. */
+	EMAIL("email"),
+	/** Internationalized email address. */
+	IDN_EMAIL("idn-email"),
+	/** Internet hostname. */
+	HOSTNAME("hostname"),
+	/** Internationalized hostname. */
+	IDN_HOSTNAME("idn-hostname"),
+	/** IPv4 address. */
+	IPV4("ipv4"),
+	/** IPv6 address. */
+	IPV6("ipv6"),
+	/** Universal Resource Identifier. */
+	URI("uri"),
+	/** URI reference including relative URIs. */
+	URI_REFERENCE("uri-reference"),
+	/** Internationalized URI. */
+	IRI("iri"),
+	/** Internationalized URI reference. */
+	IRI_REFERENCE("iri-reference"),
+	/** Universally Unique Identifier. */
+	UUID("uuid"),
+	/** JSON Pointer string. */
+	JSON_POINTER("json-pointer"),
+	/** Relative JSON Pointer string. */
+	RELATIVE_JSON_POINTER("relative-json-pointer");
 
 	/**
 	 * The string representation of the format as defined in JSON Schema specification.

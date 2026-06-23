@@ -25,6 +25,11 @@ public class TypeMappingService {
 
 	private final JsonConfigSchemaConfig jsonConfigSchemaConfig;
 
+	/**
+	 * Constructs a new TypeMappingService.
+	 * @param missingTypeCollector collector for tracking unmapped types
+	 * @param jsonConfigSchemaConfig configuration settings for schema generation
+	 */
 	public TypeMappingService(MissingTypeCollector missingTypeCollector,
 			JsonConfigSchemaConfig jsonConfigSchemaConfig) {
 		this.missingTypeCollector = missingTypeCollector;
