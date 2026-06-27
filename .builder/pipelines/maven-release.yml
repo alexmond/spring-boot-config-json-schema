@@ -1,0 +1,34 @@
+name: Maven Release
+
+on: [manual]
+inputs:
+  branch:
+    type: string
+    description: Branch to release from
+    default: main
+    required: true
+  releaseVersion:
+    type: string
+    description: Release version
+    required: true
+  nextVersion:
+    type: string
+    description: Next development version (with -SNAPSHOT suffix)
+    required: true
+
+jobs:
+  release:
+    image: maven:3.9-eclipse-temurin-17
+    cache:
+      key: m2-config-json-schema
+      paths: [.m2/repository]
+    secrets: [OSSRH_USERNAME, OSSRH_PASSWORD, GPG_PRIVATE_KEY, GPG_PASSPHRASE]
+    steps:
+      - name: Checkout release branch
+        run: git clone --depth 1 --branch "$branch" https://github.com/alexmond/spring-boot-config-json-schema.git .
+      - name: Set Release Version
+        run: mvn versions:set -DnewVersion="$releaseVersion" -Pdefault --no-transfer-progress -Dmaven.repo.local=.m2/repository
+      - name: Verify Build
+        run: mvn --batch-mode verify -Pdefault --no-transfer-progress -Dmaven.repo.local=.m2/repository
+      - name: Deploy to Maven Central
+        run: mvn --batch-mode clean deploy -Prelease -Dgpg.passphrase="$GPG_PASSPHRASE" --no-transfer-progress -Dmaven.repo.local=.m2/repository
