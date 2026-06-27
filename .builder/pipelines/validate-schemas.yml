@@ -1,0 +1,16 @@
+name: Validate JSON Schemas
+
+on: [push, manual]
+push:
+  branches: [main]
+
+jobs:
+  validate:
+    image: python:3-slim
+    steps:
+      - name: Checkout
+        run: git clone --depth 1 https://github.com/alexmond/spring-boot-config-json-schema.git .
+      - name: Install check-jsonschema
+        run: pip install --quiet check-jsonschema
+      - name: Validate sample config against its metaschema
+        run: check-jsonschema --check-metaschema spring-boot-json-schema-sample/application.yaml
