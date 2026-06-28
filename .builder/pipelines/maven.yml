@@ -4,6 +4,8 @@ on: [push, manual]
 push:
   branches: [main]
 
+checkout: true
+
 jobs:
   build:
     image: maven:3.9-eclipse-temurin-17
@@ -11,8 +13,6 @@ jobs:
       key: m2-config-json-schema
       paths: [.m2/repository]
     steps:
-      - name: Checkout
-        run: git clone --depth 1 https://github.com/alexmond/spring-boot-config-json-schema.git .
       - name: Build with Maven
         run: mvn -B package --file pom.xml -Pdefault --no-transfer-progress -Dmaven.repo.local=.m2/repository
       - name: Validate generated JSON schema sample
