@@ -16,6 +16,8 @@ inputs:
     description: Next development version (with -SNAPSHOT suffix)
     required: true
 
+checkout: true
+
 jobs:
   release:
     image: maven:3.9-eclipse-temurin-17
@@ -24,8 +26,6 @@ jobs:
       paths: [.m2/repository]
     secrets: [OSSRH_USERNAME, OSSRH_PASSWORD, GPG_PRIVATE_KEY, GPG_PASSPHRASE]
     steps:
-      - name: Checkout release branch
-        run: git clone --depth 1 --branch "$branch" https://github.com/alexmond/spring-boot-config-json-schema.git .
       - name: Set Release Version
         run: mvn versions:set -DnewVersion="$releaseVersion" -Pdefault --no-transfer-progress -Dmaven.repo.local=.m2/repository
       - name: Verify Build
