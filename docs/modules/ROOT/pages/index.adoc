@@ -18,7 +18,7 @@ The generated schemas enable configuration validation and autocompletion in popu
 A Spring Boot starter library uses Spring Context to process @ConfigurationProperties annotated classes and relevant properties from Spring Boot's configuration metadata (spring-configuration-metadata.json) to generate JSON Schema.
 The generated schema can be used by compatible editors for configuration validation and assistance outside the Java project, as well as for configuration validation during CI/CD pipelines.
 
-A good article on this subject: xref:https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
+A good article on this subject: link:https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
 
 == Features
 
@@ -26,7 +26,7 @@ A good article on this subject: xref:https://themightyprogrammer.dev/article/2wa
 
 - Automatic JSON Schema generation from @ConfigurationProperties classes
 - Support for Jakarta Bean Validation (JSR-380) annotations
-- Full Spring Boot 3.x compatibility
+- Full Spring Boot 4.x compatibility
 - Java 17+ runtime support
 
 === Integration Support  
@@ -46,7 +46,7 @@ A good article on this subject: xref:https://themightyprogrammer.dev/article/2wa
 == Prerequisites
 
 - Java 17 or higher
-- Spring Boot 3.x
+- Spring Boot 4.x
 - Maven or Gradle build system
 - Configuration processor for property metadata generation:
 
@@ -129,7 +129,7 @@ public class GenerateJsonSchema {
     }
 
     @GetMapping("/config-schema.yaml")
-    public String getConfigSchemaYaml() throws Exception {
+    public String getConfigSchemaYaml() {
         return jsonSchemaService.generateFullSchemaYaml();
     }
 }
@@ -180,7 +180,7 @@ public class ConfigSchemaYamlEndpoint {
     private final JsonSchemaService jsonSchemaService;
 
     @ReadOperation
-    public String schema() throws Exception {
+    public String schema() {
         return jsonSchemaService.generateFullSchemaYaml();
     }
 }
