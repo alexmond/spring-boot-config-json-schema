@@ -17,7 +17,7 @@ We value all contributions, including:
 
 To get started:
 
-1. Check the [Issues](https://github.com/alexmond/spring-boot-config-json-schema/issues) tab for open tasks or create a new issue to propose your idea.
+1. Check the link:https://github.com/alexmond/spring-boot-config-json-schema/issues[Issues] tab for open tasks or create a new issue to propose your idea.
 2. Look for issues labeled `good first issue` or `help wanted` for beginner-friendly tasks.
 3. Fork the repository and submit a pull request (PR) with your changes.
 
@@ -48,7 +48,7 @@ mvn test
 4. **Development**:
 - Use an IDE like IntelliJ IDEA for best support with Spring Boot.
 - Add tests in `src/test/java` using JUnit 5.
-- Follow existing code style (e.g., 2-space indentation, consistent Lombok usage).
+- Follow the existing code style. The build enforces spring-javaformat (Spring's Java format), Checkstyle, and PMD; run `mvn spring-javaformat:apply` to auto-format before committing.
 
 == Submitting Changes
 
@@ -77,18 +77,18 @@ Try these:
 - **Feature**: Implement `x-intellij-html-description` for richer IDE autocompletion (e.g., HTML-formatted property descriptions).
 - **Bug Fix**: Fix schema generation for deprecated `@ConfigurationProperties` fields.
 - **Test**: Add a test case for `enum` support in schemas (e.g., logging levels).
-Check [Issues](https://github.com/alexmond/spring-boot-config-json-schema/issues) for tasks labeled
+Check link:https://github.com/alexmond/spring-boot-config-json-schema/issues[Issues] for tasks labeled
 `good first issue`.
 
 == Code of Conduct
 
-We follow the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html).
+We follow the link:https://www.contributor-covenant.org/version/2/0/code_of_conduct.html[Contributor Covenant Code of Conduct].
 Please be respectful and inclusive in all interactions.
 
 == Questions?
 
 - Open an issue with the `question` label.
-- Reach out via [GitHub Discussions](https://github.com/alexmond/spring-boot-config-json-schema/discussions).
+- Reach out via link:https://github.com/alexmond/spring-boot-config-json-schema/discussions[GitHub Discussions].
 
 Thank you for helping make this project better!
 ⭐ Star the repo if you find it useful!
