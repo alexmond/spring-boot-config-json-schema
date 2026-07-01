@@ -1,7 +1,7 @@
 :toc: left
 :sectnums:
 :title: Spring Boot Config JSON Schema Generator
-:description: Generate JSON Schema documentation from Spring Boot configuration properties
+:description: Auto-generate JSON Schema from your Spring Boot @ConfigurationProperties for IDE autocomplete and CI validation of application.yml and .properties.
 :keywords: spring-boot, json-schema, configuration, validation, documentation
 
 [#_spring_boot_config_json_schema_generator]
