@@ -178,13 +178,13 @@ public class JsonSchemaBuilderHelper {
             if (!schema.format().isEmpty()) {
                 jsonSchemaProperties.setFormat(JsonSchemaFormat.valueOf(schema.format().toUpperCase()));
             }
-            if (!schema.example().isEmpty() && jsonSchemaProperties.getExamples() != null && jsonSchemaProperties.getExamples().isEmpty()) {
+            if (!schema.example().isEmpty() && (jsonSchemaProperties.getExamples() == null || jsonSchemaProperties.getExamples().isEmpty())) {
                 jsonSchemaProperties.setExamples(List.of(schema.example()));
             }
             if (schema.deprecated()) {
                 jsonSchemaProperties.setDeprecated(true);
             }
-            if (!schema.defaultValue().isEmpty() && (jsonSchemaProperties.getDefaultValue() != null)) {
+            if (!schema.defaultValue().isEmpty() && (jsonSchemaProperties.getDefaultValue() == null)) {
                 jsonSchemaProperties.setDefaultValue(schema.defaultValue());
             }
         }
