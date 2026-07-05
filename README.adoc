@@ -12,7 +12,7 @@ It simplifies the process of documenting and validating configuration by generat
 
 For detailed documentation, please visit our link:https://www.alexmond.org/spring-boot-config-json-schema-starter/current/index.html[full documentation].
 
-A good article on this subject: link:https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
+A good article on this subject: https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
 
 [[quick-start]]
 == Quick Start
