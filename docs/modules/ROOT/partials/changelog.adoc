@@ -3,6 +3,7 @@
 // and in the README via the root CHANGELOG.adoc include.
 
 - The project is maintained on parallel branches, one per Spring Boot minor line (`3.5`, `4.0`, and `main` for the latest). Each release version tracks the Spring Boot version it builds against, e.g. `4.0.7.1` targets Spring Boot 4.0.7 and `3.5.16.1` targets Spring Boot 3.5.16.
+- **4.1.0.1** Spring Boot 4.1.0 support (Boot 4.x line, now the `main` line).
 - **4.0.7.1** Spring Boot 4.0.7 support (Boot 4.x line).
 - **3.5.16.1** Spring Boot 3.5.16 support (Boot 3.5.x line).
 - **1.0.9** Updated website address to www.alexmond.org, updated validator to NetworkNT 2.0.0
