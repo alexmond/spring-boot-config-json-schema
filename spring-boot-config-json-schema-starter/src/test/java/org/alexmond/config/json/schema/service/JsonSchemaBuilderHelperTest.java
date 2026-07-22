@@ -1,6 +1,7 @@
 package org.alexmond.config.json.schema.service;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Size;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link JsonSchemaBuilderHelper}, focused on OpenAPI ({@code @Schema})
@@ -49,10 +51,39 @@ class JsonSchemaBuilderHelperTest {
         assertEquals("8080", props.getDefaultValue());
     }
 
+    /** {@code @Size(min, max)} maps to minLength/maxLength on the schema property. */
+    @Test
+    void appliesSizeConstraints() throws NoSuchFieldException {
+        JsonSchemaProperties props = new JsonSchemaProperties();
+        newHelper().processValidated(props, field("sized"), "sized");
+        assertEquals(2, props.getMinLength());
+        assertEquals(10, props.getMaxLength());
+    }
+
+    /** {@code @Schema(deprecated = true)} sets the deprecated flag. */
+    @Test
+    void appliesDeprecatedFromSchema() throws NoSuchFieldException {
+        JsonSchemaProperties props = new JsonSchemaProperties();
+        newHelper().processOpenapi(props, field("deprecatedField"), "deprecatedField");
+        assertTrue(props.getDeprecated());
+    }
+
+    /** A non-enum class yields no enum values. */
+    @Test
+    void processEnumItemReturnsNullForNonEnum() {
+        assertNull(newHelper().processEnumItem(String.class));
+    }
+
     private static final class Annotated {
 
         @Schema(example = "8080", defaultValue = "8080")
         private Integer port;
+
+        @Size(min = 2, max = 10)
+        private String sized;
+
+        @Schema(deprecated = true)
+        private String deprecatedField;
 
     }
 
