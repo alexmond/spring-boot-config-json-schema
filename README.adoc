@@ -6,11 +6,12 @@ image:https://img.shields.io/maven-central/v/org.alexmond/spring-boot-config-jso
 image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License,link=LICENSE]
 image:https://img.shields.io/github/actions/workflow/status/alexmond/spring-boot-config-json-schema/maven.yml[Build Status,link=https://github.com/alexmond/spring-boot-config-json-schema/actions]
 image:https://codecov.io/gh/alexmond/spring-boot-config-json-schema/graph/badge.svg?token=C4IEMB36WJ[codecov,link=https://codecov.io/gh/alexmond/spring-boot-config-json-schema]
+image:https://img.shields.io/badge/docs-alexmond.org-blue[Documentation,link=https://www.alexmond.org/spring-boot-config-json-schema-starter/{version}/]
 
 A Spring Boot starter library that automatically generates JSON Schema documentation for your application's configuration properties.
 It simplifies the process of documenting and validating configuration by generating JSON Schema from your Spring Boot configuration classes.
 
-For detailed documentation, please visit our link:https://www.alexmond.org/spring-boot-config-json-schema-starter/current/index.html[full documentation].
+📖 *Documentation:* https://www.alexmond.org/spring-boot-config-json-schema-starter/{version}/
 
 A good article on this subject: link:https://themightyprogrammer.dev/article/2ways-spring-configuration[Spring Boot Config Documentation, Two Ways With IntelliJ IDEA]
 
