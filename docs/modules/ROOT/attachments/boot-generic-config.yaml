@@ -4204,6 +4204,8 @@ properties:
                 type: "integer"
               max-connections-per-shard:
                 type: "integer"
+              max-idle:
+                type: "integer"
               max-idle-time:
                 type: "integer"
               max-pool-size:
