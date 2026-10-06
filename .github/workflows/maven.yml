@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B package --file pom.xml -Pdefault --no-transfer-progress
+        run: mvn -B verify --file pom.xml -Pdefault --no-transfer-progress
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
