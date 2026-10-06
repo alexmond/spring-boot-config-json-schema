@@ -14,7 +14,7 @@ jobs:
       paths: [.m2/repository]
     steps:
       - name: Build with Maven
-        run: mvn -B package --file pom.xml -Pdefault --no-transfer-progress -Dmaven.repo.local=.m2/repository
+        run: mvn -B verify --file pom.xml -Pdefault --no-transfer-progress -Dmaven.repo.local=.m2/repository
       - name: Validate generated JSON schema sample
         run: |
           # The maven:3.9-eclipse-temurin-17 image (Debian) has no Python/pip, so `pip` was `command
