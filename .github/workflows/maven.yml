@@ -8,15 +8,22 @@ on:
 
 jobs:
   build:
-
+    name: build (JDK ${{ matrix.java }})
     runs-on: ubuntu-latest
+    # Compatibility matrix: the Java 17 baseline plus the later LTS releases this Spring Boot
+    # line supports. Bytecode always targets the baseline. Reporting steps run once, on the
+    # baseline JDK, so results are not uploaded once per JDK.
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [ '17', '21', '25' ]
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: ${{ matrix.java }}
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
@@ -24,12 +31,13 @@ jobs:
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+        if: ${{ always() && matrix.java == '17' }}
         with:
           files: |
             **/surefire-reports/TEST-*.xml
 
       - name: Add coverage to PR
+        if: ${{ matrix.java == '17' }}
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -37,7 +45,7 @@ jobs:
           fail_ci_if_error: true
 
       - name: Upload test results to Codecov
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && matrix.java == '17' }}
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -46,7 +54,7 @@ jobs:
             **/surefire-reports/TEST-*.xml
 
       - name: Report tests + coverage to UniTrack
-        if: always()
+        if: ${{ always() && matrix.java == '17' }}
         uses: alexmond/unitrack/action@v0
         with:
           url: ${{ vars.UNITRACK_URL }}
@@ -57,6 +65,7 @@ jobs:
           split-by-module: "true"
 
       - name: Submit Dependency Snapshot
+        if: ${{ matrix.java == '17' }}
         uses: advanced-security/maven-dependency-submission-action@v5
 
 
