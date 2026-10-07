@@ -1,0 +1,26 @@
+version: 2
+updates:
+  # Maven dependencies across the reactor (parent + modules).
+  # Spring Boot is bumped by hand: the project version tracks the Boot line (<boot-version>.<n>),
+  # one branch per Boot minor. Dependabot only reads this file on the default branch.
+  - package-ecosystem: maven
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: "org.springframework.boot:*"
+    groups:
+      # Batch routine version bumps into one PR to cut noise; security updates
+      # still come through as their own PRs.
+      maven-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  # Keep the GitHub Actions used by the workflows current.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10

@@ -17,6 +17,11 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Inputs go through env, never inline in a `run` script.
+    env:
+      BRANCH: ${{ github.event.inputs.branch }}
+      RELEASE_VERSION: ${{ github.event.inputs.releaseVersion }}
+      NEXT_VERSION: ${{ github.event.inputs.nextVersion }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,15 +47,15 @@ jobs:
           git config user.email "actions@github.com"
 
       - name: Set Release Version
-        run: mvn versions:set -DnewVersion=${{ github.event.inputs.releaseVersion }} -Pdefault --no-transfer-progress
+        run: mvn versions:set -DnewVersion="$RELEASE_VERSION" -Pdefault --no-transfer-progress
 
       - name: Verify Build
         run: mvn --batch-mode verify -Pdefault --no-transfer-progress
 
       - name: Commit and Tag Release
         run: |
-          git commit -am "Prepare release ${{ github.event.inputs.releaseVersion }}"
-          git tag -a ${{ github.event.inputs.releaseVersion }} -m "Release ${{ github.event.inputs.releaseVersion }}"
+          git commit -am "Prepare release $RELEASE_VERSION"
+          git tag -a "$RELEASE_VERSION" -m "Release $RELEASE_VERSION"
 
       - name: Deploy to Maven Central
         run: mvn --batch-mode clean deploy -Prelease -Dgpg.passphrase="${GPG_PASSPHRASE}" --no-transfer-progress
@@ -61,11 +66,11 @@ jobs:
 
       - name: Set Next Development Version
         run: |
-          mvn versions:set -DnewVersion=${{ github.event.inputs.nextVersion }} -Pdefault --no-transfer-progress
-          git commit -am "Prepare for next development iteration: ${{ github.event.inputs.nextVersion }}"
+          mvn versions:set -DnewVersion="$NEXT_VERSION" -Pdefault --no-transfer-progress
+          git commit -am "Prepare for next development iteration: $NEXT_VERSION"
 
       - name: Push Changes
-        run: git push origin ${{ github.event.inputs.branch }} && git push origin --tags
+        run: git push origin "$BRANCH" && git push origin --tags
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
