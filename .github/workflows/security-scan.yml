@@ -1,0 +1,44 @@
+name: Security scan
+
+# Build-time CVE scan of the dependencies (complements the Dependabot
+# version/security updates and the dependency-graph snapshot in maven.yml).
+# Runs on PRs and pushes to every Spring Boot line branch, plus weekly to catch CVEs disclosed against
+# already-pinned dependencies.
+
+on:
+  push:
+    branches: [ main, "[0-9]+.[0-9]+" ]
+  pull_request:
+    branches: [ "**" ]
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  trivy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write # upload findings to the Security tab
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Trivy dependency vulnerability scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true # only fail on CVEs that actually have a fix available
+          exit-code: '1'
+          format: sarif
+          output: trivy-results.sarif
+
+      - name: Upload results to the Security tab
+        if: always() # publish findings even when the scan gate fails
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: trivy-results.sarif
