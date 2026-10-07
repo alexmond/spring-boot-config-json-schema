@@ -1,4 +1,4 @@
-$schema: ./sample-schema.yaml
+$schema: ./target/sample-schema.yaml
 spring:
   profiles:
     active:
