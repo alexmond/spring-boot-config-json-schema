@@ -3,13 +3,19 @@ package org.alexmond.config.json.schema.service;
 import org.alexmond.config.json.schema.config.JsonConfigSchemaConfig;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaRoot;
+import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.metamodel.Property;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -46,6 +52,61 @@ class JsonSchemaBuilderBuildSchemaTest {
 		Node next;
 
 		String name;
+
+	}
+
+	static class WithStatics {
+
+		static final String DEFAULT_NAME = "x";
+
+		static int counter;
+
+		String name;
+
+	}
+
+	/** Non-static on purpose: javac gives it a synthetic reference to the outer class. */
+	class Inner {
+
+		String value;
+
+		String outerName() {
+			return JsonSchemaBuilderBuildSchemaTest.this.toString() + this.value;
+		}
+
+	}
+
+	static class WithPlatformTypes {
+
+		java.util.concurrent.ThreadPoolExecutor executor;
+
+		java.util.concurrent.locks.ReentrantLock lock;
+
+		String name;
+
+	}
+
+	static class Zeta {
+
+		String value;
+
+	}
+
+	static class Alpha {
+
+		String value;
+
+	}
+
+	static class Holder {
+
+		Zeta first;
+
+		Alpha second;
+
+		Zeta third;
+
+		Alpha fourth;
 
 	}
 
@@ -207,6 +268,89 @@ class JsonSchemaBuilderBuildSchemaTest {
 		config.setEnableDefinitionRefs(false);
 		JsonSchemaRoot root = build(config, leaf("myapp.a", SIMPLE), leaf("myapp.b", SIMPLE));
 		assertNull(child(root, "b").getReference());
+	}
+
+	/** Static fields are not configuration and must not show up as properties. */
+	@Test
+	void staticFieldsAreSkipped() {
+		JsonSchemaRoot root = build(new JsonConfigSchemaConfig(), leaf("myapp.s", WithStatics.class.getName()));
+		assertEquals(Set.of("name"), child(root, "s").getProperties().keySet());
+	}
+
+	/** Compiler-generated fields such as the outer-instance reference are skipped. */
+	@Test
+	void syntheticFieldsAreSkipped() {
+		assertTrue(Arrays.stream(Inner.class.getDeclaredFields()).anyMatch(Field::isSynthetic),
+				"fixture must have a synthetic field");
+		JsonSchemaRoot root = build(new JsonConfigSchemaConfig(), leaf("myapp.i", Inner.class.getName()));
+		assertEquals(Set.of("value"), child(root, "i").getProperties().keySet());
+	}
+
+	/**
+	 * A type that belongs to the Java runtime is emitted as a plain object. Its private
+	 * fields differ between JDK releases and must not leak into the schema.
+	 */
+	@Test
+	void platformTypeIsNotExpanded() {
+		JsonSchemaRoot root = build(new JsonConfigSchemaConfig(),
+				leaf("myapp.pool", "java.util.concurrent.ThreadPoolExecutor"));
+		assertEquals(JsonSchemaType.OBJECT, child(root, "pool").getType());
+		assertNull(child(root, "pool").getProperties());
+		assertNull(child(root, "pool").getAnchor());
+	}
+
+	/** Platform-typed fields of an application class stay opaque objects too. */
+	@Test
+	void platformTypedFieldsAreNotExpanded() {
+		JsonSchemaRoot root = build(new JsonConfigSchemaConfig(), leaf("myapp.w", WithPlatformTypes.class.getName()));
+		Map<String, JsonSchemaProperties> props = child(root, "w").getProperties();
+		assertEquals(List.of("executor", "lock", "name"), List.copyOf(props.keySet()));
+		assertNull(props.get("executor").getProperties());
+		assertNull(props.get("lock").getProperties());
+		assertTrue(root.getDefinitions().keySet().stream().noneMatch((key) -> key.startsWith("java.util.concurrent")));
+	}
+
+	/** Application classes are not platform types; JDK classes are. */
+	@Test
+	void isPlatformTypeTellsRuntimeClassesApart() {
+		assertTrue(JsonSchemaBuilder.isPlatformType(String.class));
+		assertTrue(JsonSchemaBuilder.isPlatformType(java.sql.Connection.class));
+		assertFalse(JsonSchemaBuilder.isPlatformType(Simple.class));
+		assertFalse(JsonSchemaBuilder.isPlatformType(JsonSchemaBuilder.class));
+	}
+
+	/** Extracted definitions follow the built-in ones in name order. */
+	@Test
+	void definitionsAreEmittedInNameOrder() {
+		JsonSchemaRoot root = build(new JsonConfigSchemaConfig(), leaf("myapp.h", Holder.class.getName()));
+		assertEquals(
+				List.of("loggerLevel", "loggerLevelProp", "java.util.Locale", "java.nio.charset.Charset",
+						Alpha.class.getName().replace("$", ":"), Zeta.class.getName().replace("$", ":")),
+				List.copyOf(root.getDefinitions().keySet()));
+	}
+
+	/**
+	 * Locale and Charset are free-form strings with a fixed list of examples, not an enum
+	 * of whatever the running JDK knows.
+	 */
+	@Test
+	void localeAndCharsetAreStringsWithFixedExamples() {
+		JsonSchemaRoot root = build(new JsonConfigSchemaConfig(), leaf("myapp.locale", "java.util.Locale"),
+				leaf("myapp.charset", "java.nio.charset.Charset"));
+		assertEquals("#/$defs/java.util.Locale", child(root, "locale").getReference());
+		assertEquals("#/$defs/java.nio.charset.Charset", child(root, "charset").getReference());
+
+		JsonSchemaProperties locale = root.getDefinitions().get("java.util.Locale");
+		assertEquals(JsonSchemaType.STRING, locale.getType());
+		assertNull(locale.getEnumValues());
+		assertEquals(DefinitionsHelper.LOCALE_EXAMPLES, locale.getExamples());
+		assertTrue(locale.getExamples().contains(Locale.CANADA_FRENCH.toString()));
+
+		JsonSchemaProperties charset = root.getDefinitions().get("java.nio.charset.Charset");
+		assertEquals(JsonSchemaType.STRING, charset.getType());
+		assertNull(charset.getEnumValues());
+		assertEquals(List.of("UTF-8", "UTF-16", "UTF-16BE", "UTF-16LE", "ISO-8859-1", "US-ASCII"),
+				charset.getExamples());
 	}
 
 }
