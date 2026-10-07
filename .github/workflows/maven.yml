@@ -37,6 +37,17 @@ jobs:
       - name: Build with Maven
         run: mvn -B verify --file pom.xml -Pdefault --no-transfer-progress
 
+      # The generic sample test compares the schema it generates with the copies tracked in
+      # docs/modules/ROOT/attachments. Every JDK of the matrix must reproduce them byte for
+      # byte. On a failure, keep what this JDK generated so the difference can be inspected.
+      - name: Upload generated schema
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: generated-schema-jdk-${{ matrix.java }}
+          path: spring-boot-json-schema-generic-sample/target/generated-schema/
+          if-no-files-found: ignore
+
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: ${{ always() && matrix.java == '17' }}
