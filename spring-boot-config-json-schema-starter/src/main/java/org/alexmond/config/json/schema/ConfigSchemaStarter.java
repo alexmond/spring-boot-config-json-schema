@@ -33,6 +33,7 @@ public class ConfigSchemaStarter {
 	 * @param context The Spring application context
 	 * @param env The Spring environment containing configuration properties
 	 * @param config The JSON schema configuration settings
+	 * @param schemaBuilder The JSON schema builder for processing complex types
 	 * @return A new ConfigurationPropertyCollector instance
 	 */
 	@Bean

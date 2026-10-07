@@ -39,8 +39,15 @@ public class Deprecation {
 	 */
 	public enum Level {
 
+		/** Warning-level deprecation (uppercase). */
 		@SuppressWarnings("unused")
-		WARNING, ERROR, error, @SuppressWarnings("unused")
+		WARNING,
+		/** Error-level deprecation (uppercase). */
+		ERROR,
+		/** Error-level deprecation (lowercase). */
+		error,
+		/** Warning-level deprecation (lowercase). */
+		@SuppressWarnings("unused")
 		warning
 
 	}

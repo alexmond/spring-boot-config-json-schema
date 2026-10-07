@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
+/**
+ * Root element of a JSON Schema document (draft 2020-12). Contains the top-level schema
+ * metadata, type definitions ({@code $defs}), and property definitions.
+ */
 @Data
 @Builder
 @NoArgsConstructor

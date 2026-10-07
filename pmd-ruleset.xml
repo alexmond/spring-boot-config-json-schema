@@ -10,22 +10,17 @@
 	<!-- Best Practices -->
 	<rule ref="category/java/bestpractices.xml">
 		<exclude name="GuardLogStatement"/>
-		<exclude name="JUnitTestContainsTooManyAsserts"/>
-		<exclude name="JUnitAssertionsShouldIncludeMessage"/>
-		<exclude name="JUnitTestsShouldIncludeAssert"/>
 		<exclude name="AvoidReassigningParameters"/>
 		<exclude name="LiteralsFirstInComparisons"/>
 		<exclude name="UnusedAssignment"/>
 		<exclude name="DoubleBraceInitialization"/>
 		<exclude name="NonExhaustiveSwitch"/>
-		<exclude name="RedundantFieldInitializer"/>
 	</rule>
 
 	<!-- Code Style -->
 	<rule ref="category/java/codestyle.xml">
 		<exclude name="AtLeastOneConstructor"/>
 		<exclude name="CommentDefaultAccessModifier"/>
-		<exclude name="DefaultPackage"/>
 		<exclude name="LocalVariableCouldBeFinal"/>
 		<exclude name="LongVariable"/>
 		<exclude name="MethodArgumentCouldBeFinal"/>
@@ -66,15 +61,12 @@
 
 	<!-- Error Prone -->
 	<rule ref="category/java/errorprone.xml">
-		<exclude name="BeanMembersShouldSerialize"/>
-		<exclude name="DataflowAnomalyAnalysis"/>
 		<exclude name="AvoidLiteralsInIfCondition"/>
 		<exclude name="AvoidDuplicateLiterals"/>
 		<exclude name="AvoidFieldNameMatchingMethodName"/>
 		<exclude name="NullAssignment"/>
 		<exclude name="ReturnEmptyCollectionRatherThanNull"/>
 		<exclude name="UseLocaleWithCaseConversions"/>
-		<exclude name="RedundantFieldInitializer"/>
 	</rule>
 
 	<!-- Multithreading -->

@@ -7,7 +7,6 @@ import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 import org.alexmond.config.json.schema.service.JsonSchemaService;
 import org.alexmond.sample.test.asciimodel.AsciiDoc;
 import org.alexmond.sample.test.asciimodel.AsciiDocGroupData;
-import org.alexmond.sample.test.asciimodel.AsciiDocModel;
 import org.alexmond.sample.test.config.AsciiDocConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,6 @@ class SchemaToAsciiDocTests {
 
 	Map<String, AsciiDocGroupData> asciiDocGroupsDataMap = new TreeMap<>();
 
-	AsciiDocModel asciiDocModel = new AsciiDocModel();
-
 	@Autowired
 	JsonSchemaService jsonSchemaService;
 
@@ -42,7 +39,7 @@ class SchemaToAsciiDocTests {
 	private SpringTemplateEngine templateEngine;
 
 	@Test
-	void generateJsonSchema() throws Exception {
+	void generateAsciiDoc() {
 		JsonSchemaRoot jsonConfigSchema = jsonSchemaService.getSchemaCache();
 		jsonConfigSchema.getProperties().forEach(this::processNodeToAsciiDoc);
 		renderPropertyDoc();

@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Represents a JSON Schema property definition per the 2020-12 specification. Supports
+ * all standard JSON Schema keywords including type constraints, validation rules,
+ * composition (allOf/anyOf/oneOf), and custom extensions for IntelliJ and deprecation.
+ */
 @Slf4j
 @Data
 @Builder(toBuilder = true)
@@ -184,6 +189,10 @@ public class JsonSchemaProperties {
 	@JsonProperty("x-intellij-html-description")
 	private String htmlDescription;
 
+	/**
+	 * Returns the extended deprecation information.
+	 * @return the x-deprecation extension data, or null if not set
+	 */
 	public XDeprecation getxDeprecation() {
 		return xDeprecation;
 	}
@@ -234,6 +243,12 @@ public class JsonSchemaProperties {
 		return map1;
 	}
 
+	/**
+	 * Merges another schema properties instance into this one. Non-null values from the
+	 * other instance override values in this instance.
+	 * @param other the schema properties to merge from
+	 * @return this instance with merged values
+	 */
 	public JsonSchemaProperties merge(JsonSchemaProperties other) {
 		if (other == null) {
 			return this;

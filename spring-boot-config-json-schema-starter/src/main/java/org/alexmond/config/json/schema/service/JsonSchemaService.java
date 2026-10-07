@@ -40,6 +40,10 @@ public class JsonSchemaService {
 
 	private JsonSchemaRoot schemaCache;
 
+	/**
+	 * Returns the cached JSON Schema root, generating it on first access.
+	 * @return the generated JSON Schema root document
+	 */
 	public JsonSchemaRoot getSchemaCache() {
 		if (schemaCache == null) {
 			Map<String, Property> meta = collectMetadata();

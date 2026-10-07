@@ -66,6 +66,11 @@ public class JsonSchemaBuilder {
 
 	private Map<String, Property> allMeta;
 
+	/**
+	 * Constructs a new JsonSchemaBuilder.
+	 * @param config the JSON Schema configuration settings
+	 * @param typeMappingService the service for mapping Java types to JSON Schema types
+	 */
 	public JsonSchemaBuilder(JsonConfigSchemaConfig config, TypeMappingService typeMappingService) {
 		this.config = config;
 		this.typeMappingService = typeMappingService;
@@ -553,6 +558,14 @@ public class JsonSchemaBuilder {
 		return false;
 	}
 
+	/**
+	 * Processes a complex Java type into JSON Schema properties by reflecting on its
+	 * fields.
+	 * @param type the fully qualified class name to process
+	 * @param bootProp the parent configuration property metadata
+	 * @param visited set of already visited types for cycle detection
+	 * @return map of property names to schema definitions, or null if empty or excluded
+	 */
 	public Map<String, JsonSchemaProperties> processComplexType(String type, Property bootProp, Set<String> visited) {
 		if (visited.contains(type)) {
 			log.warn("Detected cyclic reference for type: {}. Skipping nested properties. for Property {}", type,
@@ -610,6 +623,11 @@ public class JsonSchemaBuilder {
 		return newProperties;
 	}
 
+	/**
+	 * Extracts the item type from a generic collection type string.
+	 * @param type the generic type string (e.g., {@code List<String>})
+	 * @return the extracted item type, or "object" if no generic parameter found
+	 */
 	public String extractListItemType(String type) {
 		if (type == null) {
 			return null;
@@ -621,6 +639,11 @@ public class JsonSchemaBuilder {
 		return "object";
 	}
 
+	/**
+	 * Extracts the value type from a generic map type string.
+	 * @param type the generic type string (e.g., {@code Map<String, Integer>})
+	 * @return the extracted value type
+	 */
 	public String extractMapValueType(String type) {
 		if (type == null) {
 			return null;
@@ -635,6 +658,11 @@ public class JsonSchemaBuilder {
 		return type;
 	}
 
+	/**
+	 * Converts a camelCase or PascalCase string to kebab-case.
+	 * @param input the input string to convert
+	 * @return the kebab-case representation, or null if input is null
+	 */
 	public String toKebabCase(String input) {
 		if (input == null) {
 			return null;
