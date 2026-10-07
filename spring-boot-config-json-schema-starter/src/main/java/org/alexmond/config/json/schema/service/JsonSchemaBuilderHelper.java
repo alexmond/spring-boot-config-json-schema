@@ -17,11 +17,11 @@ import org.alexmond.config.json.schema.metamodel.HintValue;
 import org.alexmond.config.json.schema.metamodel.Property;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Helper class for building JSON schema from configuration properties. Provides utility
@@ -62,7 +62,7 @@ public class JsonSchemaBuilderHelper {
 				.since(prop.getDeprecation().getSince())
 				.build();
 			if (prop.getDeprecation().getLevel() != null) {
-				xDeprecation.setLevel(prop.getDeprecation().getLevel().name().toUpperCase());
+				xDeprecation.setLevel(prop.getDeprecation().getLevel().name().toUpperCase(Locale.ROOT));
 			}
 			if (!xDeprecation.isEmpty()) {
 				jsonSchemaProperties.setXDeprecation(xDeprecation);
@@ -90,7 +90,8 @@ public class JsonSchemaBuilderHelper {
 
 	/**
 	 * Processes an enum class and returns a set of possible enum values. The returned set
-	 * includes both the original enum names and their lowercase versions.
+	 * includes both the original enum names and their lowercase versions, in declaration
+	 * order, so the output is the same on every run.
 	 * @param itemClass The enum class to process
 	 * @return Set of enum values, or null if the class is not an enum
 	 */
@@ -99,10 +100,12 @@ public class JsonSchemaBuilderHelper {
 		if (itemClass.isEnum()) {
 			Object[] enumConstants = itemClass.getEnumConstants();
 			if (enumConstants != null) {
-				return Arrays.stream(enumConstants)
-					.flatMap((enumConstant) -> Arrays
-						.stream(new String[] { enumConstant.toString(), enumConstant.toString().toLowerCase() }))
-					.collect(Collectors.toSet());
+				Set<String> values = new LinkedHashSet<>();
+				for (Object enumConstant : enumConstants) {
+					values.add(enumConstant.toString());
+					values.add(enumConstant.toString().toLowerCase(Locale.ROOT));
+				}
+				return values;
 			}
 		}
 		return null;
@@ -180,7 +183,7 @@ public class JsonSchemaBuilderHelper {
 				jsonSchemaProperties.setDescription(schema.description());
 			}
 			if (!schema.format().isEmpty()) {
-				jsonSchemaProperties.setFormat(JsonSchemaFormat.valueOf(schema.format().toUpperCase()));
+				jsonSchemaProperties.setFormat(JsonSchemaFormat.valueOf(schema.format().toUpperCase(Locale.ROOT)));
 			}
 			if (!schema.example().isEmpty()
 					&& (jsonSchemaProperties.getExamples() == null || jsonSchemaProperties.getExamples().isEmpty())) {

@@ -88,6 +88,15 @@ Key test classes:
 - `TestYamlFileVsSchema` — Validates YAML files against generated schema
 - `SchemaToAsciiDocTests` — Tests AsciiDoc documentation generation from schema
 
+**Published sample schema.** `docs/modules/ROOT/attachments/boot-generic-config.{json,yaml}` are
+generated from `spring-boot-json-schema-generic-sample`. Its `SimpleBootJsonSchemaGeneratorTests`
+fails when the generated schema differs from the tracked files, on every JDK of the CI matrix — this
+is what proves the output is JDK-independent. A Boot or dependency bump changes the schema, so
+refresh and commit the files in the same PR:
+```bash
+mvn -Pdefault verify -Dschema.attachments.update=true
+```
+
 Test config classes in `org.alexmond.sample.test.config` provide sample `@ConfigurationProperties` beans (nested objects, enums, maps, validation annotations, deep nesting).
 
 ## Tech Stack
