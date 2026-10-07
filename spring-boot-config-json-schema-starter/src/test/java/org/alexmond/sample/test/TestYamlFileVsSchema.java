@@ -21,7 +21,7 @@ public class TestYamlFileVsSchema {
 
 		// Validate application.yaml against schema
 		SchemaRegistry factory = SchemaRegistry.withDialect(Dialects.getDraft202012());
-		Schema schema = factory.getSchema(Files.newInputStream(Paths.get("sample-schema.json")));
+		Schema schema = factory.getSchema(Files.newInputStream(Paths.get("target", "sample-schema.json")));
 		var yamlMapper = YAMLMapper.builder().build();
 		List<Error> errors = schema.validate(yamlMapper.readTree(Paths.get("test.yaml").toFile()));
 		if (!errors.isEmpty()) {
