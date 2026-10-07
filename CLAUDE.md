@@ -25,10 +25,34 @@ mvn test -pl spring-boot-config-json-schema-starter -Dtest=SampleJsonSchemaGener
 mvn test -pl spring-boot-config-json-schema-starter -Dtest=SampleJsonSchemaGeneratorTests#testGenerateSchema
 ```
 
-JaCoCo enforces **80% minimum line coverage**. The CI build command is:
+JaCoCo enforces **80% minimum line coverage** (`BUNDLE` rule on the starter). The `check` goal
+runs at `verify`, so `mvn package` skips the gate. The CI build command, run on JDK 17, 21 and 25:
 ```bash
-mvn -B package --file pom.xml -Pdefault --no-transfer-progress
+mvn -B verify --file pom.xml -Pdefault --no-transfer-progress
 ```
+
+There is no Maven wrapper in this repo; use a local `mvn`.
+
+## Versioning & branches
+
+This repo follows the shared Boot-starter standard (same as `spring-boot-actuator-extensions`,
+`gotmpl4j-spring-boot`, `notify4j-spring-boot`).
+
+- **Version = `<boot-version>.<n>`**, e.g. `4.0.8.2` builds on Spring Boot 4.0.8. `<n>` starts at
+  **1** and resets to 1 on each new Boot patch. All POMs move in lockstep. Tags have no `v` prefix.
+- **This branch is the Spring Boot 4.0 line** (parent `spring-boot-starter-parent` 4.0.8). The
+  parent version in the root `pom.xml` is the source of truth.
+- **`main` is always the newest Boot line.** Older lines live on `<major>.<minor>` branches:
+  `4.0` (this branch, maintained) and `3.5` (end-of-life, terminal at Boot 3.5.16).
+- When `main` moves to a new Boot **minor**, cut the outgoing line to its own
+  `<major>.<minor>` branch **first**, from the pre-bump head.
+- A fix that applies to every line goes to each branch, one PR each. Each branch keeps only its
+  own changelog entries.
+- Release with `.github/workflows/maven_release.yml` (manual; inputs `branch`,
+  `releaseVersion`, `nextVersion`). It only changes POM versions. Run the `release-prep` skill
+  before it and `update-docs-hub` after it.
+
+Use the **`boot-upgrade` skill** to survey branches against the latest Boot patch.
 
 ## Module Structure
 
@@ -68,11 +92,11 @@ Test config classes in `org.alexmond.sample.test.config` provide sample `@Config
 
 ## Tech Stack
 
-- Java 17, Spring Boot 4.0.2, Jackson 3 (`tools.jackson` packages)
+- Java 17, Spring Boot 4.0.x (currently 4.0.8 — see the parent in `pom.xml`), Jackson 3 (`tools.jackson` packages)
 - Jackson formats: YAML, CBOR, XML
 - OpenAPI/Swagger annotations (`swagger-annotations-jakarta`)
 - Apache Commons Text for string operations
-- Schema validation in tests: `com.networknt:json-schema-validator:3.0.0`
+- Schema validation in tests: `com.networknt:json-schema-validator` (version in the `json-schema-validator.version` property)
 
 ## Code Style
 
