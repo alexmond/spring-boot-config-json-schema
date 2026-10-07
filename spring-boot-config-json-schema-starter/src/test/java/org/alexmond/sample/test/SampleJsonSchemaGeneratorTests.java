@@ -50,13 +50,13 @@ class SampleJsonSchemaGeneratorTests {
 
 		String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new java.util.Date());
 
-		Files.writeString(Paths.get("sample-schema-" + timestamp + ".json"), jsonConfigSchemaJson,
+		Files.writeString(Paths.get("target", "sample-schema-" + timestamp + ".json"), jsonConfigSchemaJson,
 				StandardCharsets.UTF_8);
-		Files.writeString(Paths.get("sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
+		Files.writeString(Paths.get("target", "sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
-		Files.writeString(Paths.get("sample-schema-" + timestamp + ".yaml"), jsonConfigSchemaYaml,
+		Files.writeString(Paths.get("target", "sample-schema-" + timestamp + ".yaml"), jsonConfigSchemaYaml,
 				StandardCharsets.UTF_8);
-		Files.writeString(Paths.get("sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
+		Files.writeString(Paths.get("target", "sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
 
 	}
 
@@ -66,7 +66,7 @@ class SampleJsonSchemaGeneratorTests {
 
 		// Validate application.yaml against schema
 		SchemaRegistry factory = SchemaRegistry.withDialect(Dialects.getDraft202012());
-		Schema schema = factory.getSchema(Files.newInputStream(Paths.get("sample-schema.json")));
+		Schema schema = factory.getSchema(Files.newInputStream(Paths.get("target", "sample-schema.json")));
 		var yamlMapper = YAMLMapper.builder().build();
 		List<Error> errors = schema.validate(yamlMapper.readTree(Paths.get("test.yaml").toFile()));
 		if (!errors.isEmpty()) {

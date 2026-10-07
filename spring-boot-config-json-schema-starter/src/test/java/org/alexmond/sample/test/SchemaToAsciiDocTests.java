@@ -133,7 +133,7 @@ class SchemaToAsciiDocTests {
 		String adoc = templateEngine.process("property-doc", ctx);
 
 		try {
-			Files.writeString(Path.of("property-doc.adoc"), adoc, StandardCharsets.UTF_8);
+			Files.writeString(Path.of("target", "property-doc.adoc"), adoc, StandardCharsets.UTF_8);
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);

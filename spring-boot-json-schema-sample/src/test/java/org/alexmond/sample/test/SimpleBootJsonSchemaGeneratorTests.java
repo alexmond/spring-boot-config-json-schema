@@ -50,10 +50,10 @@ class SimpleBootJsonSchemaGeneratorTests {
 
 		try {
 			log.info("Writing json schema");
-			Files.writeString(Paths.get("sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
+			Files.writeString(Paths.get("target", "sample-schema.json"), jsonConfigSchemaJson, StandardCharsets.UTF_8);
 
 			log.info("Writing yaml schema");
-			Files.writeString(Paths.get("sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
+			Files.writeString(Paths.get("target", "sample-schema.yaml"), jsonConfigSchemaYaml, StandardCharsets.UTF_8);
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);

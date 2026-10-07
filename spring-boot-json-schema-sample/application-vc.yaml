@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=./sample-schema.json
+# yaml-language-server: $schema=./target/sample-schema.json
 
 spring:
   profiles:

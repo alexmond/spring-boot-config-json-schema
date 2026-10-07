@@ -1,4 +1,4 @@
-$schema: ./sample-schema.json
+$schema: ./target/sample-schema.json
 spring:
   profiles:
     active:
