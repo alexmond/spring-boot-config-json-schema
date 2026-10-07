@@ -12,11 +12,14 @@ import org.apache.commons.text.CaseUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Builder class responsible for generating JSON Schema definitions from Spring
@@ -82,7 +85,7 @@ public class JsonSchemaBuilder {
 	public JsonSchemaRoot buildSchema(Map<String, Property> meta, List<String> included) {
 		allMeta = meta;
 		anchors = new HashSet<>();
-		defs = new HashSet<>();
+		defs = new TreeSet<>();
 		processedProp = new HashSet<>();
 		definitions = null;
 		extraDefinitions = new TreeMap<>();
@@ -108,8 +111,6 @@ public class JsonSchemaBuilder {
 
 		if (config.isEnableDefinitionRefs()) {
 			defs.forEach((def) -> definitions.put(def, extraDefinitions.get(def).toBuilder().build()));
-			definitions.forEach((key, value) -> {
-			});
 			removeReferecedProperrties(properties, 0);
 		}
 
@@ -567,7 +568,16 @@ public class JsonSchemaBuilder {
 		Map<String, JsonSchemaProperties> newProperties = new TreeMap<>();
 		try {
 			Class<?> clazz = Class.forName(type);
+			if (isPlatformType(clazz)) {
+				log.debug("Type {} belongs to the Java runtime. Skipping nested properties. for Property {}", type,
+						bootProp.getName());
+				visited.remove(type);
+				return null;
+			}
 			for (Field field : clazz.getDeclaredFields()) {
+				if (Modifier.isStatic(field.getModifiers()) || field.isSynthetic()) {
+					continue;
+				}
 				String fieldGenName;
 				try {
 					fieldGenName = field.getGenericType().getTypeName();
@@ -610,6 +620,24 @@ public class JsonSchemaBuilder {
 		return newProperties;
 	}
 
+	/**
+	 * Tells whether a class is part of the Java runtime itself, i.e. it lives in one of
+	 * the {@code java.*} or {@code jdk.*} modules. The fields of such classes are
+	 * implementation details that change between JDK releases, so they must not shape the
+	 * schema. Library classes that merely use a {@code javax} package name are not
+	 * platform types.
+	 * @param clazz the class to check
+	 * @return true if the class comes from the Java runtime
+	 */
+	static boolean isPlatformType(Class<?> clazz) {
+		Module module = clazz.getModule();
+		if (!module.isNamed()) {
+			return false;
+		}
+		String moduleName = module.getName();
+		return moduleName.startsWith("java.") || moduleName.startsWith("jdk.");
+	}
+
 	public String extractListItemType(String type) {
 		if (type == null) {
 			return null;
@@ -650,7 +678,7 @@ public class JsonSchemaBuilder {
 			// Collapse spaces
 			s = s.trim().replaceAll("\\s+", " ");
 			// Replace spaces with hyphens
-			segments[i] = String.join("-", s.split(" ")).toLowerCase();
+			segments[i] = String.join("-", s.split(" ")).toLowerCase(Locale.ROOT);
 		}
 		// Join the processed segments back with underscores
 		return String.join("_", segments);
