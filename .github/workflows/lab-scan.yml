@@ -1,0 +1,48 @@
+name: lab-scan
+
+# Block PRs/pushes that introduce new lab-internal references (internal DNS, private
+# IPs, lab registry/secret names). The scanner logic is the GLOBAL lab-leak-guard skill;
+# this workflow is self-contained (the only repo-side artifact) because GitHub CI can't
+# reach infra. The denylist + baseline are sensitive (they name the lab / list the leaked
+# values), so they are NOT in the repo — CI reads them from secrets. Set repo/org secrets
+# LAB_DENY_PATTERNS (required) and LAB_SCAN_BASELINE (optional); if LAB_DENY_PATTERNS is
+# unset the scan skips, so the gate can be added before the secret.
+on:
+  push:
+    branches: [ main, "[0-9]+.[0-9]+" ]
+  pull_request:
+    branches: [ "**" ]
+
+permissions:
+  contents: read
+
+jobs:
+  lab-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Scan tracked files for lab-internal references
+        env:
+          DENY: ${{ secrets.LAB_DENY_PATTERNS }}
+          BASE: ${{ secrets.LAB_SCAN_BASELINE }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DENY:-}" ]; then
+            echo "::notice::LAB_DENY_PATTERNS secret not set — skipping lab-scan (add it to enable the gate)."
+            exit 0
+          fi
+          pat="$(mktemp)"
+          printf '%s' "$DENY" | grep -vE '^[[:space:]]*(#|$)' > "$pat" || true
+          hits="$(git ls-files | while IFS= read -r f; do
+                    { grep -hoiE -f "$pat" -- "$f" 2>/dev/null || true; } | sort -u |
+                      while IFS= read -r m; do printf '%s\t%s\n' "$f" "$m"; done
+                  done | LC_ALL=C sort -u)"
+          base="$(printf '%s' "${BASE:-}" | LC_ALL=C sort -u)"
+          new="$(LC_ALL=C comm -23 <(printf '%s\n' "$hits" | grep -v '^$' || true) \
+                                   <(printf '%s\n' "$base" | grep -v '^$' || true) || true)"
+          if [ -n "$new" ]; then
+            echo "❌ lab-scan: new lab-internal reference(s):"
+            printf '%s\n' "$new" | sed 's/^/  /'
+            exit 1
+          fi
+          echo "✓ lab-scan: no new lab-internal references"
