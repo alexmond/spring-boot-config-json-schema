@@ -1,8 +1,10 @@
 name: Java CI with Maven
 
+# One long-lived branch per maintained Spring Boot line (main = latest line, plus a
+# <major>.<minor> maintenance branch each), so CI runs on all of them, not just main.
 on:
   push:
-    branches: [ "**" ]
+    branches: [ main, "[0-9]+.[0-9]+" ]
   pull_request:
     branches: [ "**" ]
 
@@ -17,6 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         java: [ '17', '21', '25' ]
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    permissions:
+      contents: write        # for the dependency-graph snapshot submission
+      checks: write          # for the unit-test-result check run
+      pull-requests: write   # to comment test results on PRs
 
     steps:
       - uses: actions/checkout@v4
@@ -36,19 +44,21 @@ jobs:
           files: |
             **/surefire-reports/TEST-*.xml
 
+      # Upload only when CODECOV_TOKEN is set; without it the step is skipped so CI stays
+      # green (tokenless upload is not allowed on this org).
       - name: Add coverage to PR
-        if: ${{ matrix.java == '17' }}
+        if: ${{ env.CODECOV_TOKEN != '' && matrix.java == '17' }}
         uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
           files: ${{ github.workspace }}/spring-boot-config-json-schema-starter/target/site/jacoco/jacoco.xml
           fail_ci_if_error: true
 
       - name: Upload test results to Codecov
-        if: ${{ !cancelled() && matrix.java == '17' }}
+        if: ${{ !cancelled() && env.CODECOV_TOKEN != '' && matrix.java == '17' }}
         uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
           report-type: test_results
           files: |
             **/surefire-reports/TEST-*.xml
@@ -64,8 +74,11 @@ jobs:
           soft-fail: "true"
           split-by-module: "true"
 
+      # Best-effort supply-chain snapshot; needs the repo's Dependency graph feature. Never
+      # fail CI on it, and only submit for pushes (a PR from a fork has no write token).
       - name: Submit Dependency Snapshot
-        if: ${{ matrix.java == '17' }}
+        if: ${{ github.event_name == 'push' && matrix.java == '17' }}
+        continue-on-error: true
         uses: advanced-security/maven-dependency-submission-action@v5
 
 
