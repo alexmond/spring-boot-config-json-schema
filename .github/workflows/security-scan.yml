@@ -32,6 +32,9 @@ jobs:
           scan-ref: .
           scanners: vuln
           severity: HIGH,CRITICAL
+          # Without this, SARIF output includes every severity and exit-code 1 fires on
+          # MEDIUM/LOW findings too, ignoring the severity filter above.
+          limit-severities-for-sarif: true
           ignore-unfixed: true # only fail on CVEs that actually have a fix available
           exit-code: '1'
           format: sarif
