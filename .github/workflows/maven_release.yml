@@ -19,13 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
-          fetch-depth: 0  # Important for git history
+          fetch-depth: 0
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -36,31 +36,30 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
 
-      - name: Configure Git User
+      - name: Configure Git
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Prepare Release
+      - name: Set Release Version
+        run: mvn versions:set -DnewVersion=${{ github.event.inputs.releaseVersion }} -Pdefault --no-transfer-progress
+
+      - name: Verify Build
+        run: mvn --batch-mode verify -Pdefault --no-transfer-progress
+
+      - name: Commit and Tag Release
         run: |
-          mvn versions:set -DnewVersion=${{ github.event.inputs.releaseVersion }} -Pdefault --no-transfer-progress
           git commit -am "Prepare release ${{ github.event.inputs.releaseVersion }}"
           git tag -a ${{ github.event.inputs.releaseVersion }} -m "Release ${{ github.event.inputs.releaseVersion }}"
 
-      - name: Copy Maven settings.xml
-        run: |
-          env
-          mkdir -p ~/.m2
-          cp .github/settings.xml ~/.m2/settings.xml
-
       - name: Deploy to Maven Central
-        run: mvn --batch-mode -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} clean deploy -Prelease --no-transfer-progress
+        run: mvn --batch-mode clean deploy -Prelease -Dgpg.passphrase="${GPG_PASSPHRASE}" --no-transfer-progress
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
-      - name: Prepare for Next Development Version
+      - name: Set Next Development Version
         run: |
           mvn versions:set -DnewVersion=${{ github.event.inputs.nextVersion }} -Pdefault --no-transfer-progress
           git commit -am "Prepare for next development iteration: ${{ github.event.inputs.nextVersion }}"
@@ -69,7 +68,7 @@ jobs:
         run: git push origin ${{ github.event.inputs.branch }} && git push origin --tags
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.releaseVersion }}
           name: Release ${{ github.event.inputs.releaseVersion }}
