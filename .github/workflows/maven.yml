@@ -48,7 +48,7 @@ jobs:
       # green (tokenless upload is not allowed on this org).
       - name: Add coverage to PR
         if: ${{ env.CODECOV_TOKEN != '' && matrix.java == '17' }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ env.CODECOV_TOKEN }}
           files: ${{ github.workspace }}/spring-boot-config-json-schema-starter/target/site/jacoco/jacoco.xml
@@ -56,7 +56,7 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() && env.CODECOV_TOKEN != '' && matrix.java == '17' }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ env.CODECOV_TOKEN }}
           report-type: test_results
