@@ -16,20 +16,20 @@
     <properties>
         <java.version>17</java.version>
 
-        <json-schema-validator.version>3.0.1</json-schema-validator.version>
+        <json-schema-validator.version>3.0.8</json-schema-validator.version>
         <commons-text.version>1.15.0</commons-text.version>
-        <spring-cloud.version>2025.1.1</spring-cloud.version>
-        <springdoc-openapi.version>3.0.2</springdoc-openapi.version>
-        <swagger-annotations.version>2.2.45</swagger-annotations.version>
+        <spring-cloud.version>2025.1.3</spring-cloud.version>
+        <springdoc-openapi.version>3.1.1</springdoc-openapi.version>
+        <swagger-annotations.version>2.2.55</swagger-annotations.version>
 
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
-        <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
 
-        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
 
         <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-        <spring-javaformat.version>0.0.47</spring-javaformat.version>
+        <spring-javaformat.version>0.0.48</spring-javaformat.version>
         <checkstyle.version>9.3</checkstyle.version>
     </properties>
     <url>https://www.alexmond.org/spring-boot-config-json-schema-starter/current/index.html</url>
