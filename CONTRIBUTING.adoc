@@ -41,14 +41,14 @@ cd spring-boot-config-json-schema
 
 [source,bash]
 ----
-mvn clean install
-mvn test
+./mvnw clean install
+./mvnw test
 ----
 
 4. **Development**:
 - Use an IDE like IntelliJ IDEA for best support with Spring Boot.
 - Add tests in `src/test/java` using JUnit 5.
-- Follow the existing code style. The build enforces spring-javaformat (Spring's Java format), Checkstyle, and PMD; run `mvn spring-javaformat:apply` to auto-format before committing.
+- Follow the existing code style. The build enforces spring-javaformat (Spring's Java format), Checkstyle, and PMD; run `./mvnw spring-javaformat:apply` to auto-format before committing.
 
 == Submitting Changes
 

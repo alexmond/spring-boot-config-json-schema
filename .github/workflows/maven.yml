@@ -35,7 +35,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B verify --file pom.xml -Pdefault --no-transfer-progress
+        run: ./mvnw -B verify --file pom.xml -Pdefault --no-transfer-progress
 
       # The generic sample test compares the schema it generates with the copies tracked in
       # docs/modules/ROOT/attachments. Every JDK of the matrix must reproduce them byte for
