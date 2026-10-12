@@ -10,28 +10,28 @@ A Spring Boot starter library that auto-generates JSON Schema (draft 2020-12) fr
 
 ```bash
 # Build all modules (starter + samples)
-mvn clean install -Pdefault
+./mvnw clean install -Pdefault
 
 # Build only the starter (default without profile)
-mvn clean install
+./mvnw clean install
 
 # Run all tests
-mvn test
+./mvnw test
 
 # Run a single test class
-mvn test -pl spring-boot-config-json-schema-starter -Dtest=SampleJsonSchemaGeneratorTests
+./mvnw test -pl spring-boot-config-json-schema-starter -Dtest=SampleJsonSchemaGeneratorTests
 
 # Run a single test method
-mvn test -pl spring-boot-config-json-schema-starter -Dtest=SampleJsonSchemaGeneratorTests#testGenerateSchema
+./mvnw test -pl spring-boot-config-json-schema-starter -Dtest=SampleJsonSchemaGeneratorTests#testGenerateSchema
 ```
 
 JaCoCo enforces **80% minimum line coverage** (`BUNDLE` rule on the starter). The `check` goal
-runs at `verify`, so `mvn package` skips the gate. The CI build command, run on JDK 17, 21 and 25:
+runs at `verify`, so `./mvnw package` skips the gate. The CI build command, run on JDK 17, 21 and 25:
 ```bash
-mvn -B verify --file pom.xml -Pdefault --no-transfer-progress
+./mvnw -B verify --file pom.xml -Pdefault --no-transfer-progress
 ```
 
-There is no Maven wrapper in this repo; use a local `mvn`.
+Use the Maven wrapper (`./mvnw`). It pins the Maven version; CI and the release workflow use it too.
 
 ## Versioning & branches
 
@@ -94,7 +94,7 @@ fails when the generated schema differs from the tracked files, on every JDK of 
 is what proves the output is JDK-independent. A Boot or dependency bump changes the schema, so
 refresh and commit the files in the same PR:
 ```bash
-mvn -Pdefault verify -Dschema.attachments.update=true
+./mvnw -Pdefault verify -Dschema.attachments.update=true
 ```
 
 Test config classes in `org.alexmond.sample.test.config` provide sample `@ConfigurationProperties` beans (nested objects, enums, maps, validation annotations, deep nesting).
