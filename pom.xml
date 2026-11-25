@@ -5,11 +5,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.8</version>
+        <version>4.0.10</version>
     </parent>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-parent</artifactId>
-    <version>4.0.8.3-SNAPSHOT</version>
+    <version>4.0.10.1-SNAPSHOT</version>
     <name>Spring Boot Config Json Schema Starter Parent pom</name>
     <packaging>pom</packaging>
 
@@ -23,14 +23,15 @@
         <swagger-annotations.version>2.2.45</swagger-annotations.version>
 
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
-        <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
+        <!-- 0.12.0 is a floor: 0.11.x stages maven-metadata-local.xml, which the Central Portal rejects ("does NOT have a .pom file"). -->
+        <central-publishing-maven-plugin.version>0.12.0</central-publishing-maven-plugin.version>
 
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
 
         <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-        <spring-javaformat.version>0.0.47</spring-javaformat.version>
-        <checkstyle.version>9.3</checkstyle.version>
+        <spring-javaformat.version>0.0.48</spring-javaformat.version>
+        <checkstyle.version>10.12.4</checkstyle.version>
     </properties>
     <url>https://www.alexmond.org/spring-boot-config-json-schema-starter/current/index.html</url>
     <description>A parent pom A Spring Boot starter for generating JSON Schema from Spring Boot application

@@ -1,12 +1,11 @@
 package org.alexmond.sample.test.asciimodel;
 
-import lombok.Builder;
 import lombok.Data;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaProperties;
 import org.alexmond.config.json.schema.jsonschemamodel.JsonSchemaType;
 
 @Data
-@Builder(builderClassName = "Builder", toBuilder = true)
+@lombok.Builder(builderClassName = "Builder", toBuilder = true)
 @lombok.AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
 public class AsciiDoc {
 

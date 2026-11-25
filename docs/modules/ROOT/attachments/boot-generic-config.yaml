@@ -876,7 +876,6 @@ properties:
         properties:
           health:
             type: "object"
-            $anchor: "org.springframework.boot.health.autoconfigure.actuate.endpoint.HealthEndpointProperties"
             properties:
               access:
                 type: "string"
@@ -989,6 +988,11 @@ properties:
                     - "OUT_OF_SERVICE"
                     - "UP"
                     - "UNKNOWN"
+                    examples:
+                    - "UNKNOWN"
+                    - "UP"
+                    - "DOWN"
+                    - "OUT_OF_SERVICE"
                     items:
                       type: "string"
               validate-group-membership:
@@ -1933,6 +1937,11 @@ properties:
               \ are disabled. When set to -1, an unlimited number of pipelined or\
               \ keep-alive requests are allowed."
             default: 100
+          max-locale-count:
+            type: "integer"
+            description: "Maximum number of locales that will be parsed from the Accept-Language\
+              \ header of a request. A value of less than 0 means no limit."
+            default: 10
           max-parameter-count:
             type: "integer"
             description: "Maximum number of parameters (GET plus POST) that will be\
@@ -2023,8 +2032,8 @@ properties:
                 type: "string"
                 description: "Internal proxies that are to be trusted. Can be set\
                   \ as a comma separate list of CIDR or as a regular expression."
-                default: "192.168.0.0/16, 172.16.0.0/12, 169.254.0.0/16, fc00::/7,\
-                  \ 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, fe80::/10, ::1/128"
+                default: "10.0.0.0/8, 192.168.0.0/16, 169.254.0.0/16, 100.64.0.0/10,\
+                  \ fc00::/7, 172.16.0.0/12, ::1/128, 127.0.0.0/8, fe80::/10"
               port-header:
                 type: "string"
                 description: "Name of the HTTP header used to override the original\
