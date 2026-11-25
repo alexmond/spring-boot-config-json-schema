@@ -2,6 +2,7 @@ package org.alexmond.config.json.schema.jsonschemamodel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ import java.util.Set;
 @Slf4j
 @Data
 @Builder(toBuilder = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({

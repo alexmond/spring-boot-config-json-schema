@@ -5,11 +5,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.8</version>
+        <version>4.0.10</version>
     </parent>
     <groupId>org.alexmond</groupId>
     <artifactId>spring-boot-config-json-schema-parent</artifactId>
-    <version>4.0.8.3-SNAPSHOT</version>
+    <version>4.0.10.1-SNAPSHOT</version>
     <name>Spring Boot Config Json Schema Starter Parent pom</name>
     <packaging>pom</packaging>
 
@@ -29,8 +29,8 @@
 
         <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-        <spring-javaformat.version>0.0.47</spring-javaformat.version>
-        <checkstyle.version>9.3</checkstyle.version>
+        <spring-javaformat.version>0.0.48</spring-javaformat.version>
+        <checkstyle.version>10.12.4</checkstyle.version>
     </properties>
     <url>https://www.alexmond.org/spring-boot-config-json-schema-starter/current/index.html</url>
     <description>A parent pom A Spring Boot starter for generating JSON Schema from Spring Boot application
