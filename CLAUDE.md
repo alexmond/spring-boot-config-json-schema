@@ -40,7 +40,7 @@ This repo follows the shared Boot-starter standard (same as `spring-boot-actuato
 
 - **Version = `<boot-version>.<n>`**, e.g. `4.1.1.2` builds on Spring Boot 4.1.1. `<n>` starts at
   **1** and resets to 1 on each new Boot patch. All POMs move in lockstep. Tags have no `v` prefix.
-- **This branch is the Spring Boot 4.1 line** (parent `spring-boot-starter-parent` 4.1.1). The
+- **This branch is the Spring Boot 4.1 line** (parent `spring-boot-starter-parent` 4.1.3). The
   parent version in the root `pom.xml` is the source of truth.
 - **`main` is always the newest Boot line.** Older lines live on `<major>.<minor>` branches:
   `4.0` (maintained) and `3.5` (end-of-life, terminal at Boot 3.5.16).
