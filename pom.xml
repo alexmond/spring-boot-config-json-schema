@@ -16,17 +16,17 @@
     <properties>
         <java.version>17</java.version>
 
-        <json-schema-validator.version>3.0.1</json-schema-validator.version>
+        <json-schema-validator.version>3.0.9</json-schema-validator.version>
         <commons-text.version>1.15.0</commons-text.version>
         <spring-cloud.version>2025.1.1</spring-cloud.version>
-        <springdoc-openapi.version>3.0.2</springdoc-openapi.version>
-        <swagger-annotations.version>2.2.45</swagger-annotations.version>
+        <springdoc-openapi.version>3.2.1</springdoc-openapi.version>
+        <swagger-annotations.version>2.2.56</swagger-annotations.version>
 
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
         <!-- 0.12.0 is a floor: 0.11.x stages maven-metadata-local.xml, which the Central Portal rejects ("does NOT have a .pom file"). -->
         <central-publishing-maven-plugin.version>0.12.0</central-publishing-maven-plugin.version>
 
-        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.16</jacoco-maven-plugin.version>
 
         <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
