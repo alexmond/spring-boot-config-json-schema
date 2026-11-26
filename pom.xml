@@ -16,7 +16,7 @@
     <properties>
         <java.version>17</java.version>
 
-        <json-schema-validator.version>3.0.1</json-schema-validator.version>
+        <json-schema-validator.version>3.0.9</json-schema-validator.version>
         <commons-text.version>1.15.0</commons-text.version>
         <spring-cloud.version>2025.1.1</spring-cloud.version>
         <springdoc-openapi.version>3.0.2</springdoc-openapi.version>
